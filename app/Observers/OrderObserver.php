@@ -37,7 +37,7 @@ class OrderObserver
         //
 
         if($order->status == OrderStatus::Completed && !$order->checkEarningPoint()){
-            $orderDetails = $order->orderDetails()->get();
+            $orderDetails = $order->details()->get();
 
             $point = 0;
 

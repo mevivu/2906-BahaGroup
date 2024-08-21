@@ -677,30 +677,20 @@ return [
         'id' => [
             'title' => 'Mã đơn hàng',
             'orderable' => false,
+            'addClass' => 'text-center align-middle'
         ],
         'user' => [
             'title' => 'customer',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
-        'driver' => [
-            'title' => 'driver',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'payment_code' => [
-            'title' => 'Mã thanh toán',
+        'payment_method' => [
+            'title' => 'Phương thức thanh toán',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
-            'visible' => false,
         ],
         'status' => [
             'title' => 'Trạng thái',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'order_type' => [
-            'title' => 'Loại hợp đồng',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
@@ -710,9 +700,8 @@ return [
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
-            'title' => 'Ngày đặt',
+            'title' => 'Thời gian đặt',
             'orderable' => false,
-            'visible' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [

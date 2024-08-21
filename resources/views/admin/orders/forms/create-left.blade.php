@@ -15,11 +15,20 @@
                     <label for="">{{ __('Ghi chú') }}:</label>
                     <textarea name="order[note]" class="form-control">{{ old('order.note') }}</textarea>
                 </div>
+                <div class="mb-3">
+                    <input type="checkbox" id="toggleShippingInfoOther"> Giao đến địa chỉ khác
+                </div>
             </div>
             <div class="col-12 col-md-6">
                 <h3>{{ __('Thông tin giao hàng') }}</h3>
                 <div id="infoShipping">
                     @include('admin.orders.partials.info-shipping')
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-none" id="infoShippingOther">
+                <h3>{{ __('Thông tin giao hàng khác') }}</h3>
+                <div>
+                    @include('admin.orders.partials.info-shipping-other')
                 </div>
             </div>
             <div class="col-12">
@@ -28,3 +37,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('toggleShippingInfoOther').addEventListener('change', function() {
+        var shippingInfoDiv = document.getElementById('infoShippingOther');
+        shippingInfoDiv.classList.toggle('d-none')
+    });
+</script>

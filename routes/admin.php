@@ -458,7 +458,9 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             Route::get('/user', [App\Admin\Http\Controllers\User\UserSearchSelectController::class, 'selectSearch'])->name('user');
             Route::get('/product', [App\Admin\Http\Controllers\Product\ProductSearchSelectController::class, 'selectSearch'])->name('product');
             Route::get('/customer', [App\Admin\Http\Controllers\User\CustomerSearchSelectController::class, 'selectSearch'])->name('customer');
-
+            Route::get('/province', [App\Admin\Http\Controllers\Province\ProvinceSearchSelectController::class, 'selectSearch'])->name('province');
+            Route::get('/district', [App\Admin\Http\Controllers\District\DistrictSearchSelectController::class, 'selectSearch'])->name('district');
+            Route::get('/ward', [App\Admin\Http\Controllers\Ward\WardSearchSelectController::class, 'selectSearch'])->name('ward');
         });
         Route::get('/render-product-and-variation', [App\Admin\Http\Controllers\Product\ProductController::class, 'searchRenderProductAndVariationOrder'])->name('render_product_and_variation');
         Route::get('/render-product', [App\Admin\Http\Controllers\Product\ProductController::class, 'searchRenderProductFlashSale'])->name('render_product');

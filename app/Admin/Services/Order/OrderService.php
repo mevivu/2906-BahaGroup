@@ -48,34 +48,16 @@ class OrderService implements OrderServiceInterface
     public function store(Request $request)
     {
         $this->data = $request->validated();
-        $this->data['order']['discount'] = 0;
-        $this->data['order']['payment_code'] = $this->createCodePayment();
         $this->data['order']['payment_method'] = PaymentMethod::Online->value;
         $this->data['order']['status'] = OrderStatus::Pending->value;
+        $this->data['order']['total'] = $this->calculateTotal($request);
         DB::beginTransaction();
         try {
             if (!$this->makeNewDataOrderDetail()) {
                 return false;
             }
             $order = $this->repository->create($this->data['order']);
-            dd($order);
             $this->storeOrderDetail($order->id, $this->orderDetails);
-            DB::commit();
-            return $order;
-        } catch (Exception $e) {
-            $this->logError('Failed to process order: ', $e);
-            DB::rollBack();
-            return false;
-        }
-    }
-
-    public function storeRentOrder(Request $request)
-    {
-        $this->data = $request->validated();
-        $this->data['payment_code'] = uniqid_real(6);
-        DB::beginTransaction();
-        try {
-            $order = $this->repository->create($this->data);
             DB::commit();
             return $order;
         } catch (Exception $e) {
@@ -101,9 +83,6 @@ class OrderService implements OrderServiceInterface
     {
         foreach ($this->data['order_detail']['product_id'] as $key => $value) {
             $product = $products->firstWhere('id', $value);
-            $detail = [
-                'product' => $product
-            ];
             if ($product->type == ProductType::Simple) {
                 $unitPrice = $product->promotion_price ?: $product->price;
             } else {
@@ -111,7 +90,6 @@ class OrderService implements OrderServiceInterface
                     $query->with('attributeVariations')->where('id', $this->data['order_detail']['product_variation_id'][$key]);
                 }]);
                 $unitPrice = $product->productVariation->promotion_price ?: $product->productVariation->price;
-                $detail['productVariation'] = $product->productVariation;
                 unset($product->productVariation);
             }
             $unitPrice = $product->is_user_discount ? $unitPrice : $unitPrice;
@@ -120,7 +98,6 @@ class OrderService implements OrderServiceInterface
                 'unit_price' => $unitPrice,
                 'product_variation_id' => $this->data['order_detail']['product_variation_id'][$key] ?: null,
                 'qty' => $this->data['order_detail']['product_qty'][$key],
-                'detail' => $detail
             ];
         }
     }
@@ -139,7 +116,7 @@ class OrderService implements OrderServiceInterface
 
         DB::beginTransaction();
         try {
-            if (isset($this->data['customer_name'])) {
+            if (isset($this->data['order']['user_id'])) {
                 $dataOrderDetail = $this->updateOrCreateDataOrderDetail();
                 if (!empty($dataOrderDetail)) {
                     $this->data['order_detail'] = $dataOrderDetail;
@@ -148,23 +125,12 @@ class OrderService implements OrderServiceInterface
                 }
             }
             $order = $this->repository->update($this->data['order']['id'], $this->data['order']);
-            DB::commit();
-            return $order;
-        } catch (Exception $e) {
-
-            $this->logError('Failed to process order: ', $e);
-            DB::rollBack();
-            return false;
-        }
-    }
-
-    public function updateRentOrder(Request $request)
-    {
-        $this->data = $request->validated();
-
-        DB::beginTransaction();
-        try {
-            $order = $this->repository->update($this->data['id'], $this->data);
+            $total = 0;
+            foreach ($order->details as $detail) {
+                $total += $detail->unit_price * $detail->qty;
+            }
+            $order->total = $total;
+            $order->save();
             DB::commit();
             return $order;
         } catch (Exception $e) {
@@ -184,7 +150,7 @@ class OrderService implements OrderServiceInterface
                 $data['product_variation_id'][] = $this->data['order_detail']['product_variation_id'][$key];
                 $data['product_qty'][] = $this->data['order_detail']['product_qty'][$key];
             } else {
-                $orderDetail = $this->repositoryOrderDetail->update(
+                $this->repositoryOrderDetail->update(
                     $value,
                     [
                         'qty' => $this->data['order_detail']['product_qty'][$key]

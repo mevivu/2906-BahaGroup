@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Http\Resources\Topping;
+namespace App\Admin\Http\Resources\District;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ToppingSearchSelectResource extends JsonResource
+class DistrictSearchSelectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

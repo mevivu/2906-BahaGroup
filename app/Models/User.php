@@ -93,11 +93,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
-    public function driver()
-    {
-        return $this->hasOne(Driver::class, 'user_id', 'id');
-    }
-
     public function getJWTCustomClaims(): array
     {
         return [];

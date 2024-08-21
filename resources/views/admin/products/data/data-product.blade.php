@@ -5,7 +5,7 @@
         <div class="wrap-select-type">
             <x-select id="selectProductType" class="form-control" name="product[type]" :required="true">
                 @foreach ($type as $key => $value)
-                    <x-select-option :option="$product->type->value ?? ''" :value="$key" :title="__($value)" />
+                    <x-select-option :option="$product->type->value" :value="$key" :title="__($value)" />
                 @endforeach
             </x-select>
         </div>

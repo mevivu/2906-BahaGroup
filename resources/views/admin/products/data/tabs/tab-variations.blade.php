@@ -1,5 +1,5 @@
 <div id="variations" class="tab-pane" role="tabpanel" aria-labelledby="tabVariations">
-    @if(isset($product) && $product->productAttributes->count() > 0)
+    @if(isset($product) && $product->type == App\Enums\Product\ProductType::Variable)
         @include('admin.products.data.partials.variations', [
             'actions' => App\Enums\Product\ProductVariationAction::asSelectArray(),
             'productVariations' => $product->productVariations,

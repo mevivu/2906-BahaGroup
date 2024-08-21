@@ -24,6 +24,7 @@
         <tr>
             <td colspan="4" class="font-weight-bold text-uppercase text-end">{{ __('Tổng cộng') }}</td>
             <td class="text-end">{{ format_price($total ?? 0) }}</td>
+            <x-input name="order[total]"/>
         </tr>
     </tbody>
 </table>

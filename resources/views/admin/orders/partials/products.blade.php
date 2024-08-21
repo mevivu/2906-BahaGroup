@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        @each('admin.orders.partials.item-product', $order->orderDetails ?? [], 'order_detail', 'admin.orders.partials.no-item-product')
+        @each('admin.orders.partials.item-product', $order->details ?? [], 'order_detail', 'admin.orders.partials.no-item-product')
     </tbody>
 </table>
 @include('admin.orders.partials.total', [

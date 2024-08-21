@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Http\Resources\Vehicle;
+namespace App\Admin\Http\Resources\Ward;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VehicleSearchSelectResource extends JsonResource
+class WardSearchSelectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class VehicleSearchSelectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'text' => $this->name . ' - ' . $this->color . ' - ' . $this->price . '$'
+            'text' => $this->name
         ];
     }
 }

@@ -15,7 +15,6 @@ use App\Admin\Traits\Setup;
 use Illuminate\Support\Facades\DB;
 use App\Admin\Repositories\AttributeVariation\AttributeVariationRepositoryInterface;
 use App\Api\V1\Support\AuthServiceApi;
-use App\Enums\DefaultStatus;
 use App\Enums\Product\ProductType;
 use App\Enums\Product\ProductVariationAction;
 use App\Traits\UseLog;

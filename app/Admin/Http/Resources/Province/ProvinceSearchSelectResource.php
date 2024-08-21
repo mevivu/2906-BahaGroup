@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Http\Resources\Driver;
+namespace App\Admin\Http\Resources\Province;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DriverSearchSelectResource extends JsonResource
+class ProvinceSearchSelectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class DriverSearchSelectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'text' => $this->user->fullname.' - '.$this->user->phone
+            'text' => $this->name
         ];
     }
 }

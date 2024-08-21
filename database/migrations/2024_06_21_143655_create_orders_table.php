@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->tinyInteger('payment_method')->default(PaymentMethod::Online->value);
             $table->text('address')->nullable();
+            $table->text('avatar')->nullable();
             $table->double('total');
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);
             $table->text('note')->nullable();
@@ -38,6 +39,13 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
+
+            $table->unsignedBigInteger('province_id');
+            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('ward_id');
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
+            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+            $table->foreign('ward_id')->references('id')->on('wards')->onDelete('cascade');
         });
     }
 

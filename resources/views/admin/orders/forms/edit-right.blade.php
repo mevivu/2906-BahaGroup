@@ -8,4 +8,16 @@
             <x-button.modal-delete data-route="{{ route('admin.order.delete', $order->id) }}" :title="__('Xóa')" />
         </div>
     </div>
+    <div class="card mb-3">
+        <div class="card-header">
+            {{ __('Trạng thái') }}
+        </div>
+        <div class="card-body p-2">
+            <x-select class="form-select" name="order[status]" :required="true">
+                @foreach ($status as $key => $value)
+                    <x-select-option :option="$order->status->value" :value="$key" :title="$value" />
+                @endforeach
+            </x-select>
+        </div>
+    </div>
 </div>

@@ -1,18 +1,18 @@
 <tr @class([
     'item-product',
-    'product-'.$order_detail->detail['product']['id'],
-    'product-variation-'.($order_detail->detail['productVariation']['id'] ?? '') => isset($order_detail->detail['productVariation']['id'])
-]) data-product-id="{{ $order_detail->detail['product']['id'] }}" data-product-variation-id="{{ $order_detail->detail['productVariation']['id'] ?? '' }}">
+    'product-'.$order_detail['product']['id'],
+    'product-variation-'.($order_detail['productVariation']['id'] ?? '') => isset($order_detail['productVariation']['id'])
+]) data-product-id="{{ $order_detail['product']['id'] }}" data-product-variation-id="{{ $order_detail['productVariation']['id'] ?? '' }}">
     <td class="align-middle">
         <span class="cursor-pointer remove-item-product" data-id="{{ $order_detail->id }}"><i class="ti ti-x"></i></span>
         <x-input type="hidden" name="order_detail[id][]" :value="$order_detail->id" />
-        <x-input type="hidden" name="order_detail[product_id][]" :value="$order_detail->detail['product']['id']" />
-        <x-input type="hidden" name="order_detail[product_variation_id][]" :value="$order_detail->detail['productVariation']['id'] ?? 0" />
+        <x-input type="hidden" name="order_detail[product_id][]" :value="$order_detail['product']['id']" />
+        <x-input type="hidden" name="order_detail[product_variation_id][]" :value="$order_detail['productVariation']['id'] ?? 0" />
     </td>
     <td class="align-middle">
-        <x-link :href="route('admin.product.edit', $order_detail->detail['product']['id'])" :title="$order_detail->detail['product']['name']" />
-        @includeUnless($order_detail->detail['product']['type'] == \App\Enums\Product\ProductType::Simple, 'admin.orders.partials.product-variation', [
-            'attribute_variations' => $order_detail->detail['productVariation']['attribute_variations'] ?? []
+        <x-link :href="route('admin.product.edit', $order_detail['product']['id'])" :title="$order_detail['product']['name']" />
+        @includeUnless($order_detail['product']['type'] == \App\Enums\Product\ProductType::Simple, 'admin.orders.partials.product-variation', [
+            'attribute_variations' => $order_detail['productVariation']['attribute_variations'] ?? []
         ])
     </td>
     <td class="text-center">

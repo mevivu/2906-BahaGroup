@@ -2,6 +2,7 @@
 
 namespace App\Admin\Http\Resources\Product;
 
+use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductEditResource extends JsonResource
@@ -22,13 +23,18 @@ class ProductEditResource extends JsonResource
      */
     public function toArray($request)
     {
-        $productAttributes = $this->productAttributes($this->productAttributes);
-        $productVariations = $this->productVariations($this->productVariations);
+        $productAttributes = [];
+        $productVariations = [];
+        if($this->type == ProductType::Variable){
+            $productAttributes = $this->productAttributes($this->productAttributes);
+            $productVariations = $this->productVariations($this->productVariations);
+        }
         $data = [
             'id' => $this->id,
             'type' => $this->type,
             'name' => $this->name,
             'price' => $this->price,
+            'qty' => $this->qty,
             'promotion_price' => $this->promotion_price,
             'in_stock' => $this->in_stock,
             'is_active' => $this->is_active,

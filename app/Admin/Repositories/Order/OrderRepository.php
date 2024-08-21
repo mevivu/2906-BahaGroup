@@ -14,7 +14,7 @@ class OrderRepository extends EloquentRepository implements OrderRepositoryInter
     {
         return Order::class;
     }
-    public function findOrFailWithRelations($id, array $relations = ['orderDetails', 'user']){
+    public function findOrFailWithRelations($id, array $relations = ['details', 'user']){
         $this->findOrFail($id);
         $this->instance = $this->instance->load($relations);
         return $this->instance;

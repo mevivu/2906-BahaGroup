@@ -128,12 +128,8 @@ return [
     OrderStatus::class => [
         OrderStatus::Pending->value => 'Chờ xác nhận',
         OrderStatus::Confirmed->value => ' Đã xác nhận',
-        OrderStatus::InTransit->value => 'Đang di chuyển',
-        OrderStatus::ArrivedAtStore->value => 'Đã đến cửa hàng',
-        OrderStatus::MovingToDestination->value => 'Đang di chuyển đến điểm đến',
         OrderStatus::Completed->value => 'Hoàn thành',
         OrderStatus::Cancelled->value => 'Hủy bỏ',
-        OrderStatus::Failed->value => 'Không thành công',
     ],
     OrderType::class => [
         OrderType::Renting->value => 'Thuê',

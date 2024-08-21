@@ -1,5 +1,4 @@
 <x-form id="formCreateVariation" class="d-none" action="#" />
-<x-input type="hidden" name="route_search_select_user" :value="route('admin.search.select.user')" />
 <x-input type="hidden" name="route_render_info_shipping" :value="route('admin.order.render_info_shipping')" />
 <x-input type="hidden" name="route_search_render_product_and_variation" :value="route('admin.search.render_product_and_variation')" />
 <x-input type="hidden" name="route_calculate_total_before_save_order" :value="route('admin.order.calculate_total_before_save_order')" />
@@ -138,19 +137,43 @@
     }
     $(document).on('click', '.remove-item-product', function(e){
         var id = $(this).data('id'), that = this;
-        if(!confirm('Bạn có chắc là muốn thực hiện?')){
-            return;
-        }
-        if(id){
-            deleteItemOrderDetail(id, that);
-        }else{
-            removeElmItemOrderDetail(that)
-        }
-        reloadTotalOrder();
+        Swal.fire({
+            title: "Bạn có chắc chắn muốn thực hiện?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Chắc chắn!",
+            cancelButtonText: "Quay lại!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if(id){
+                    deleteItemOrderDetail(id, that);
+                }else{
+                    removeElmItemOrderDetail(that)
+                }
+                reloadTotalOrder();
+            }
+        });
     })
     $(document).ready(function(e){
-        select2LoadData($('input[name="route_search_select_user"]').val());
+        select2LoadData($('#user_id').data('url'), '#user_id');
         searchProduct('', '#showSearchResultProduct');
+        const userId = document.getElementById('orderUserId').value;
+        var url = $('input[name="route_render_info_shipping"]').val();
+        if(userId){
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { user_id: userId },
+                success: function(response){
+                    $("#infoShipping").html(response);
+                },
+                error: function(response){
+                    handleAjaxError(response);
+                }
+            })
+        }
         $("#inputSearchProduct").keyup($.debounce(500, function(e) {
             searchProduct($(this).val(), '#showSearchResultProduct');
         }));

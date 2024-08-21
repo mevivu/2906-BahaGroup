@@ -11,12 +11,9 @@
     <div class="row mt-3">
         <label class="col-5 col-form-label" for="">{{ __('Số lượng sản phẩm') }}</label>
         <div class="col">
-            <x-input name="product[qty]"
+            <x-input min="1" name="product[qty]"
                         :value="$product->qty ?? old('product.qty')"
-                        :placeholder="__('Số lượng sản phẩm')"
-                        data-parsley-type="number"
-                        data-parsley-lt="input[name='product[qty]']"
-                        data-parsley-number-message="Trường này phải là số."/>
+                        :placeholder="__('Số lượng sản phẩm')"/>
         </div>
     </div>
 </div>

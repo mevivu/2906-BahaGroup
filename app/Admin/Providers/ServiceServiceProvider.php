@@ -33,6 +33,10 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Admin\Services\Discount\DiscountServiceInterface' => 'App\Admin\Services\Discount\DiscountService',
         'App\Admin\Services\FlashSale\FlashSaleServiceInterface' => 'App\Admin\Services\FlashSale\FlashSaleService',
 
+        'App\Admin\Repositories\Province\ProvinceRepositoryInterface' => 'App\Admin\Repositories\Province\ProvinceRepository',
+        'App\Admin\Repositories\District\DistrictRepositoryInterface' => 'App\Admin\Repositories\District\DistrictRepository',
+        'App\Admin\Repositories\Ward\WardRepositoryInterface' => 'App\Admin\Repositories\Ward\WardRepository',
+
     ];
     /**
      * Register services.

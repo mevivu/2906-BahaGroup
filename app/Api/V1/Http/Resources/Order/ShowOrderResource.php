@@ -29,7 +29,7 @@ class ShowOrderResource extends JsonResource
             'status' => $this->status,
             'note' => $this->note,
             'created_at' => $this->created_at,
-            'order_details' => $this->orderDetails->map(function($orderDetail){
+            'order_details' => $this->details->map(function($orderDetail){
                 return new ShowOrderDetailResource($orderDetail);
             })
         ];

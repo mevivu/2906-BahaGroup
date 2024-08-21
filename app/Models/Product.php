@@ -102,10 +102,6 @@ class Product extends Model
     {
         return $query->where('type', ProductType::Variable);
     }
-    public function toppings(): BelongsToMany
-    {
-        return $this->belongsToMany(Topping::class, 'topping_product', 'product_id', 'topping_id')->orderBy('position', 'asc');
-    }
 
     public function discounts(): BelongsToMany
     {
