@@ -7,7 +7,6 @@ use App\Admin\Repositories\Order\{OrderRepositoryInterface, OrderDetailRepositor
 use App\Admin\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
-use App\Admin\Repositories\Vehicle\VehicleRepositoryInterface;
 use App\Admin\Traits\Setup;
 use App\Enums\Product\ProductType;
 use App\Enums\Order\{OrderStatus};
@@ -35,13 +34,11 @@ class OrderService implements OrderServiceInterface
         UserRepositoryInterface $repositoryUser,
         ProductRepositoryInterface $repositoryProduct,
         ProductVariationRepositoryInterface $repositoryProductVariation,
-        VehicleRepositoryInterface $vehicleRepository
     ) {
         $this->repository = $repository;
         $this->repositoryOrderDetail = $repositoryOrderDetail;
         $this->repositoryUser = $repositoryUser;
         $this->repositoryProduct = $repositoryProduct;
-        $this->vehicleRepository = $vehicleRepository;
         $this->repositoryProductVariation = $repositoryProductVariation;
     }
 
@@ -164,27 +161,6 @@ class OrderService implements OrderServiceInterface
     public function delete($id)
     {
         return $this->repository->delete($id);
-    }
-
-    public function confirm($id)
-    {
-        $order = $this->repository->findOrFail($id);
-        if ($order->status == OrderStatus::Pending) {
-            $this->repository->update($id, ['status' => OrderStatus::Confirmed]);
-            return $this->vehicleRepository->update($order->vehicle->id, ['status' => VehicleStatus::Rented]);
-        }
-        return false;
-    }
-
-    public function cancel($id)
-    {
-        $order = $this->repository->findOrFail($id);
-        if ($order->status == OrderStatus::Confirmed) {
-            $this->repository->update($id, ['status' => OrderStatus::Cancelled]);
-            return $this->vehicleRepository->update($order->vehicle->id, ['status' => VehicleStatus::Pending]);
-        }
-        return $this->repository->update($id, ['status' => OrderStatus::Cancelled]);
-        return false;
     }
 
     public function addProduct(Request $request)

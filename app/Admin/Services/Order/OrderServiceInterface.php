@@ -7,8 +7,6 @@ interface OrderServiceInterface
 {
     public function addProduct(Request $request);
     public function calculateTotal(Request $request);
-    public function confirm($id);
-    public function cancel($id);
 
      /**
      * Tạo mới

@@ -60,13 +60,6 @@ return [
         ProductInStock::InStock->value => 'Còn hàng',
         ProductInStock::OutOfStock->value => 'Hết hàng',
     ],
-    VehicleType::class => [
-        VehicleType::Unclassified->value => 'Chưa được phân loại',
-        VehicleType::Motorcycle->value => ' Xe gắn máy',
-        VehicleType::Car->value => 'Ô tô',
-        VehicleType::Truck->value => 'Xe tải',
-        VehicleType::RefrigeratedRuck->value => 'Xe tải đông lạnh',
-    ],
     AutoAccept::class => [
         AutoAccept::Auto->value => 'Tự động nhận chuyến',
         AutoAccept::Off->value => 'Tắt tự động nhận chuyến',
@@ -90,12 +83,6 @@ return [
     DriverAssignmentType::class => [
         DriverAssignmentType::Auto->value => 'Tự động',
         DriverAssignmentType::Manual->value => 'Thủ công',
-    ],
-    VehicleStatus::class => [
-        VehicleStatus::Pending->value => 'Chờ xác nhận',
-        VehicleStatus::Rented->value => 'Đã thuê',
-        VehicleStatus::Inactive->value => 'Không hoạt động',
-        VehicleStatus::UnderMaintenance->value => 'Đang bảo trì',
     ],
     UserVip::class => [
         UserVip::Default => 'Mặc định',
