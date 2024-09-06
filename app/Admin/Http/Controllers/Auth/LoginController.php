@@ -8,35 +8,50 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    //
     private $login;
-    public function getView(){
+    public function getView()
+    {
         return [
-            'index' => 'admin.auth.login'
+            'index' => 'admin.auth.login',
+            'indexUser' => 'user.auth.login'
         ];
     }
 
-    public function index(){
+    public function index()
+    {
         return view($this->view['index']);
     }
 
-    public function login(LoginRequest $request){
+    public function indexUser()
+    {
+        return view($this->view['indexUser']);
+    }
 
+    public function login(LoginRequest $request)
+    {
         $this->login = $request->validated();
-        
-        if($this->resolve()){
+
+        if ($this->resolveAdmin() || $this->resolveWeb()) {
 
             $request->session()->regenerate();
-            
-            return redirect()->intended(route('admin.dashboard'))->with('success', __('Đăng nhập thành công'));
 
+            if (Auth::guard('admin')->check()) {
+                return redirect()->intended(route('admin.discount.index'))->with('success', __('Đăng nhập thành công'));
+            } elseif (Auth::guard('web')->check()) {
+                return redirect()->intended(route('user.auth.profile'))->with('success', __('Đăng nhập thành công'));
+            }
         }
+
         return back()->with('error', __('Tên đăng nhập hoặc mật khẩu không đúng'));
     }
 
-    protected function resolve(){
+    protected function resolveAdmin()
+    {
+        return Auth::guard('admin')->attempt($this->login, true);
+    }
 
-        return Auth::guard('admin')->attempt($this->login, true) ? true : false;
-
+    protected function resolveWeb()
+    {
+        return Auth::guard('web')->attempt($this->login, true);
     }
 }

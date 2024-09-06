@@ -1,0 +1,33 @@
+#container-category {
+  margin-top: 30px;
+  background-color: white;
+}
+
+#container-category .header-box a {
+  color: #1c5639;
+  text-decoration: none;
+}
+
+#container-category .header-box h4 {
+  display: inline-block;
+  padding: 15px 10px;
+}
+
+#container-category .category-box {
+  padding: 20px 0;
+}
+
+
+#container-category .category-box>div {
+  flex-direction: column !important;
+
+}
+
+.category-item a {
+  text-decoration: none;
+  color: black;
+}
+
+.category-item a:hover {
+  color: #1c5639;
+}

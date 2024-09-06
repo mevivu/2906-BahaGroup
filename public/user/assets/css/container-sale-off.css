@@ -1,0 +1,108 @@
+#container-sale-off {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 10px 50px;
+}
+
+#container-sale-off .header-box {
+    justify-content: space-between;
+    padding: 17px 24px;
+}
+
+#container-sale-off .header-box a {
+    color: #1c5639;
+    text-decoration: none;
+}
+
+#container-sale-off .header-box h4 {
+    display: inline-block;
+    padding: 15px 10px;
+}
+
+#container-sale-off .header-box .timer {
+    display: inline-block;
+    margin-right: 1em;
+    text-align: center;
+    height: 2em;
+    width: 10em;
+    color: #fff;
+    background-color: #1c5639;
+    font-weight: 700;
+}
+
+#container-sale-off .product-card {
+    flex-direction: column;
+}
+
+#container-sale-off .product-card h5 {
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: normal;
+}
+
+#container-sale-off .product-card h5:hover {
+    color: #1c5639;
+}
+
+#container-sale-off .product-card img {
+    height: 186px;
+    width: 186px;
+    object-fit: cover;
+}
+
+#productCarousel-1 .row ,
+#productCarousel-2 .row ,
+#productCarousel-3 .row,
+#productCarousel-4 .row ,
+#productCarousel-5 .row ,
+#productCarousel-6 .row ,
+#productCarousel-7 .row {
+    justify-content: space-evenly;
+}
+
+#productCarousel-1 .carousel-item ,
+#productCarousel-2 .carousel-item ,
+#productCarousel-3 .carousel-item ,
+#productCarousel-4 .carousel-item ,
+#productCarousel-5 .carousel-item ,
+#productCarousel-6 .carousel-item ,
+#productCarousel-7 .carousel-item{
+    padding: 20px 0;
+}
+
+#productCarousel-1 .carousel-item .progress ,
+#productCarousel-2 .carousel-item .progress ,
+#productCarousel-3 .carousel-item .progress ,
+#productCarousel-4 .carousel-item .progress ,
+#productCarousel-5 .carousel-item .progress ,
+#productCarousel-6 .carousel-item .progress ,
+#productCarousel-7 .carousel-item .progress{
+    border-radius: 1.25rem;
+    position: relative;
+}
+
+#productCarousel-1 .carousel-item .tb-sold ,
+#productCarousel-2 .carousel-item .tb-sold ,
+#productCarousel-3 .carousel-item .tb-sold ,
+#productCarousel-4 .carousel-item .tb-sold ,
+#productCarousel-5 .carousel-item .tb-sold ,
+#productCarousel-6 .carousel-item .tb-sold,
+#productCarousel-7 .carousel-item .tb-sold{
+    position: absolute;
+    right: 40%;
+    color: black;
+    font-weight: 700s;
+}
+
+#productCarousel-1 .carousel-item .progress-bar,
+#productCarousel-2 .carousel-item .progress-bar ,
+#productCarousel-3 .carousel-item .progress-bar ,
+#productCarousel-4 .carousel-item .progress-bar,
+#productCarousel-5 .carousel-item .progress-bar ,
+#productCarousel-6 .carousel-item .progress-bar, 
+#productCarousel-7 .carousel-item .progress-bar
+{
+    background-color: #1c5639;
+}
+
+#productCarousel .product-card:hover {}
