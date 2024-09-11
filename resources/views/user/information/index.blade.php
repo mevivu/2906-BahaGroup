@@ -4,20 +4,20 @@
     <div class="row container">
         <div class="breadcrumb-container">
             <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Trang chủ</a></li>
+                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Giới thiệu</li>
             </ol>
         </div>
     </div>
     <div style="width: 100%; position: relative;">
-        <div class="banner-information" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url('./assets/images/bg-about-us.jpg');">
+        <div class="banner-information" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url('{{ asset('public/user/assets/images/bg-about-us.jpg') }}');">
             <div class="banner-content text-white">
                 <div class="col-md-6">
                     <h1>
                         Bộ sưu tập <strong>phụ kiện điện tử và các sản phẩm công nghệ khác</strong>
                     </h1>
                     <p>Chất lượng là ưu tiên hàng đầu của chúng tôi, vì vậy bạn có thể yên tâm rằng bạn đang mua sắm những sản phẩm chính hãng và đáng tin cậy.</p>
-                    <a href="contact.php" class="btn btn-default"><strong>Liên hệ ngay</strong></a>
+                    <a href="{{ route('user.contact') }}" class="btn btn-default"><strong>Liên hệ ngay</strong></a>
                 </div>
             </div>
             <div style="width: 80%;" class="row mb-5 flex-section margin-information justify-content-between">
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <div style="background-image: url('./assets/images/nen1.png'); width: 80%" class="responsive-section bg-white text-white">
+    <div style="background-image: url('{{ asset('public/user/assets/images/nen1.png') }}'); width: 80%" class="responsive-section bg-white text-white">
         <div class="margin-information p-5 rounded">
             <div class="row mt-5">
                 <div class="col-md-12 text-center">
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    <div style="background-image: url('./assets/images/nen2.png'); width: 100%" class="responsive-section bg-white">
+    <div style="background-image: url('{{ asset('public/user/assets/images/nen2.png') }}'); width: 100%" class="responsive-section bg-white">
         <div class="margin-information p-5 rounded">
             <div class="row mt-5">
                 <div class="col-md-12 text-center">

@@ -2,17 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
+Route::controller(App\Admin\Http\Controllers\Home\UserHomeController::class)
+    ->prefix('/')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/information', 'information')->name('information');
+        Route::get('/contact', 'contact')->name('contact');
+    });
 
-Route::get('/information', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
+Route::controller(App\Admin\Http\Controllers\Product\ProductController::class)
+    ->prefix('/products')
+    ->as('product.')
+    ->group(function () {
+        Route::get('/', 'indexUser')->name('indexUser');
+        Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
+        Route::get('/detail/{id}', 'detail')->name('detail');
+    });
 
-Route::get('/contact', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
+Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController::class)
+    ->prefix('/payment')
+    ->as('payment.')
+    ->group(function () {
+        Route::get('/', 'payment')->name('payment');
+    });
 
-Route::get('/products', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
-
-Route::get('/sale-limited', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
-
-Route::get('/auth', [App\Admin\Http\Controllers\Home\UserHomeController::class, 'index'])->name('home');
+Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController::class)
+    ->prefix('/cart')
+    ->as('cart.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
 
 Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
     ->middleware('guest:web')
@@ -20,16 +39,44 @@ Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
     ->as('auth.')
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
-        Route::post('/', 'login')->name('post');
-});
+        Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
+        Route::post('/', 'loginUser')->name('loginUser');
+    });
 
-Route::group(['middleware' => 'admin.auth.admin:web'], function () {
+Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
+    ->prefix('/reset-password')
+    ->as('password.reset.')
+    ->group(function () {
+        Route::post('/edit', 'edit')->name('edit');
+        Route::get('/verify', 'verify')->name('verify');
+        Route::put('/update', 'update')->name('update');
+    });
+
+Route::controller(App\Admin\Http\Controllers\Order\OrderController::class)
+    ->prefix('/orders')
+    ->as('order.')
+    ->group(function () {
+        Route::get('/', 'indexUser')->name('indexUser');
+        Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::put('/', 'update')->name('update');
+    });
+
+Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::class)
+    ->prefix('/password')
+    ->as('password.')
+    ->group(function () {
+        Route::get('/', 'indexUser')->name('indexUser');
+        Route::put('/', 'update')->name('update');
+    });
+
+Route::group(['middleware' => 'admin.auth.user:web'], function () {
     Route::controller(App\Admin\Http\Controllers\Auth\ProfileController::class)
-        ->prefix('/auth')
-        ->as('auth.')
-        ->group(function () {
-            Route::get('/profile', 'profile')->name('profile');
-            Route::put('/', 'update')->name('update');
-            Route::put('/change-password', 'changePassword')->name('change-password');
-        });
+    ->prefix('/profile')
+    ->as('profile.')
+    ->group(function () {
+        Route::get('/', 'indexUser')->name('indexUser');
+        Route::put('/', 'update')->name('update');
+    });
+
+    Route::get('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
 });

@@ -11,7 +11,7 @@
                 </div>
                 <!-- Logo -->
                 <div style="margin-left: -2.5em;" class="col-3 d-flex align-items-center">
-                    <a href="{{ route('user.home') }}"><img style="image-rendering: pixelated;"
+                    <a href="{{ route('user.index') }}"><img style="image-rendering: pixelated;"
                             src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
                             alt="Baha" height="60" width="250"></a>
                 </div>
@@ -41,9 +41,19 @@
                 </div>
                 <!-- Cart Icon -->
                 <div class="col-3 d-flex justify-content-center align-items-center">
-                    <div class="me-5 pe-"><a class="top-item text-black" href="login.php">Đăng nhập</a></div>
+                    @if (!auth('web')->user())
+                        <div class="me-5 pe-"><a class="top-item text-black" href="{{ route('user.auth.indexUser') }}">Đăng nhập</a></div>
+                    @else
+                        <div class="me-5 pe- position-relative">
+                            <a class="top-item text-black" href="{{ route('user.profile.indexUser') }}">Hi {{ auth('web')->user()->fullname }}</a>
+                            <div class="dropdown-menu" id="userDropdown">
+                                <a class="dropdown-item" href="{{ route('user.profile.indexUser') }}">Tài khoản</a>
+                                <a class="dropdown-item" href="{{ route('user.logout') }}">Đăng xuất</a>
+                            </div>
+                        </div>
+                    @endif
                     <div class="position-relative">
-                        <i onclick="location.href='cart.php';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
+                        <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                             style="left: 100% !important;">0</span>
                     </div>
@@ -68,11 +78,11 @@
             <!-- Main Navigation Links -->
             <div class="col-9 d-flex align-items-center d-none d-xl-flex">
                 <ul class="nav">
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.home') }}">Trang chủ</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="information.php">Giới thiệu</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="category.php">Sản phẩm</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="contact.php">Liên hệ</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="sale-limited.php">Khuyến mãi giới hạn</a></strong></li>
+                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.index') }}">Trang chủ</a></strong></li>
+                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.information') }}">Giới thiệu</a></strong></li>
+                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.indexUser') }}">Sản phẩm</a></strong></li>
+                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.contact') }}">Liên hệ</a></strong></li>
+                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.saleLimited') }}">Khuyến mãi giới hạn</a></strong></li>
                 </ul>
             </div>
             <!-- NavBar Responsive-->
@@ -88,7 +98,7 @@
                 </div>
                 <div class="col-3 d-flex justify-content-center align-items-center cart">
                     <div class="position-relative">
-                        <i onclick="location.href='cart.php';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
+                        <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="left: 100% !important;">0</span>
                     </div>
                 </div>
@@ -117,15 +127,15 @@
                         <!-- Menu Tab -->
                         <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <ul class="nav">
-                                <li class="nav-item"><strong><a href="information.php">Giới thiệu</a></strong></li>
-                                <li class="nav-item"><strong><a href="category.php">Sản phẩm</a></strong></li>
-                                <li class="nav-item"><strong><a href="contact.php">Liên hệ</a></strong></li>
+                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.index') }}">Trang chủ</a></strong></li>
+                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.information') }}">Giới thiệu</a></strong></li>
+                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.indexUser') }}">Sản phẩm</a></strong></li>
+                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.contact') }}">Liên hệ</a></strong></li>
+                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.saleLimited') }}">Khuyến mãi giới hạn</a></strong></li>
                             </ul>
                         </div>
-                        <!-- Categories Tab -->
                         <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
                             <ul class="menu">
-                                <!-- Category Items -->
                                 <li>
                                     <a href="#"><i class="ti ti-device-mobile"></i>Thiết bị điện tử <i
                                             class="ti ti-chevron-right" data-bs-toggle="collapse"

@@ -48,6 +48,9 @@ class ProductController extends Controller
     {
         return [
             'index' => 'admin.products.index',
+            'indexUser' => 'user.products.index',
+            'sale-limited' => 'user.products.sale-limited',
+            'product-detail' => 'user.products.product-detail',
             'create' => 'admin.products.create',
             'edit' => 'admin.products.edit',
             'search_render_list' => 'admin.orders.partials.list-search-result-product',
@@ -78,7 +81,25 @@ class ProductController extends Controller
             'is_user_discount' => $isUserDiscount,
             'categories' => $categories,
         ]);
+    }
 
+    public function indexUser()
+    {
+        // $categories = $this->repositoryCategory->getFlatTree();
+        // $categories = $categories->map(function ($category) {
+        //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
+        // });
+        return view($this->view['indexUser']);
+    }
+
+    public function detail($id)
+    {
+        return view($this->view['product-detail']);
+    }
+
+    public function saleLimited()
+    {
+        return view($this->view['sale-limited']);
     }
 
     public function create(): Factory|View|Application

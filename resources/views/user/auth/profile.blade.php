@@ -4,7 +4,7 @@
     <div class="row container">
         <div class="breadcrumb-container">
             <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Trang chủ</a></li>
+                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Thông tin cá nhân</li>
             </ol>
         </div>

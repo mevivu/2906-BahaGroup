@@ -4,7 +4,7 @@
     <div class="row container">
         <div class="breadcrumb-container">
             <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Trang chủ</a></li>
+                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
             </ol>
         </div>
@@ -67,7 +67,7 @@
                             <tbody>
                                 <tr class="bold-text">
                                     <td data-label="Sản phẩm">
-                                        <div onclick="location.href='product-detail.php';" style="cursor: pointer" class="align-items-center product-info row">
+                                        <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
                                             <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
                                             <div class="col-md-8 col-12">
                                                 <div class="product-name">Tên sản phẩm 1</div>
@@ -76,18 +76,12 @@
                                         </div>
                                     </td>
                                     <td class="align-middle" data-label="Giá">1,000,000₫</td>
-                                    <td class="align-middle" data-label="Số lượng">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-default" type="button" onclick="decrement()">-</button>
-                                            <input class="form-control text-center mx-2" value="1" min="1" style="width: 60px;">
-                                            <button class="btn btn-default" type="button" onclick="increment()">+</button>
-                                        </div>
-                                    </td>
+                                    <td class="align-middle" data-label="Số lượng">1</td>
                                     <td class="align-middle text-center" data-label="Tổng">1,000,000₫</td>
                                 </tr>
                                 <tr class="bold-text">
                                     <td data-label="Sản phẩm">
-                                        <div onclick="location.href='product-detail.php';" style="cursor: pointer" class="align-items-center product-info row">
+                                        <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
                                             <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
                                             <div class="col-md-8 col-12">
                                                 <div class="product-name">Tên sản phẩm 1</div>
@@ -96,13 +90,7 @@
                                         </div>
                                     </td>
                                     <td class="align-middle" data-label="Giá">1,000,000₫</td>
-                                    <td class="align-middle" data-label="Số lượng">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-default" type="button" onclick="decrement()">-</button>
-                                            <input class="form-control text-center mx-2" value="1" min="1" style="width: 60px;">
-                                            <button class="btn btn-default" type="button" onclick="increment()">+</button>
-                                        </div>
-                                    </td>
+                                    <td class="align-middle" data-label="Số lượng">1</td>
                                     <td class="align-middle text-center" data-label="Tổng">1,000,000₫</td>
                                 </tr>
                             </tbody>

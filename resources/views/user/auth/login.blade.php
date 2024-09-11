@@ -4,7 +4,7 @@
     <div class="row container">
         <div class="breadcrumb-container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Đăng nhập</li>
             </ol>
         </div>
@@ -21,20 +21,20 @@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                    <form class="mt-3 align-items-center">
+                    <x-form :action="route('user.auth.loginUser')" class="mt-3" type="post" :validate="true">
                         <div class="mb-3">
-                            <input type="email" class="form-control" id="loginEmail" placeholder="Email" required>
+                            <x-input-email name="email" :required="true" />
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" id="loginPassword" placeholder="Mật khẩu" required>
+                            <x-input-password name="password" :required="true" />
                         </div>
                         <div class="text-center mb-3">
                             <button style="width: 100%;" type="submit" class="btn btn-default">Đăng nhập</button>
                         </div>
                         <div class="text-center">
-                            <a href="forgot-password.php" style="width: 100%;" type="Quên mật khẩu" class="btn btn-outline-success">Quên mật khẩu</a>
+                            <a href="{{ route('user.auth.forgotPassword') }}" style="width: 100%;" type="Quên mật khẩu" class="btn btn-outline-success">Quên mật khẩu</a>
                         </div>
-                    </form>
+                    </x-form>
                 </div>
                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                     <form class="mt-3">

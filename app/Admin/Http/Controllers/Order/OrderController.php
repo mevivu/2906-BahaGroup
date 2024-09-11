@@ -44,6 +44,8 @@ class OrderController extends Controller
     {
         return [
             'index' => 'admin.orders.index',
+            'indexUser' => 'user.orders.index',
+            'detail' => 'user.orders.order-detail',
             'create' => 'admin.orders.create',
             'edit' => 'admin.orders.edit',
             'info_shipping' => 'admin.orders.partials.info-shipping',
@@ -61,6 +63,17 @@ class OrderController extends Controller
             'delete' => 'admin.order.delete',
         ];
     }
+
+    public function indexUser()
+    {
+        return view($this->view['indexUser']);
+    }
+
+    public function detail($id)
+    {
+        return view($this->view['detail']);
+    }
+
     public function index(OrderDataTable $dataTable){
         return $dataTable->render($this->view['index'], [
             'status' => OrderStatus::asSelectArray()

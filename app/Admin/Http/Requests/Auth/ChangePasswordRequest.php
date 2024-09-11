@@ -14,8 +14,10 @@ class ChangePasswordRequest extends BaseRequest
 
     protected function methodPut()
     {
+        $guard = auth('admin')->check() ? 'admin' : 'web';
+
         return [
-            'old_password' =>['current_password:admin'],
+            'old_password' => ['required', "current_password:$guard"],
             'password' => ['required', 'string', 'max:255', 'confirmed'],
         ];
     }

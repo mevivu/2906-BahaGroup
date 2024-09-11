@@ -1518,7 +1518,7 @@ td[data-label="Tổng"] {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
 }
-    
+
 
 .product_view .modal-dialog{max-width: 800px; width: 100%;}
         .pre-cost{text-decoration: line-through; color: #a5a5a5;}
@@ -1541,4 +1541,19 @@ td[data-label="Tổng"] {
 
 .modal-dialog-product-preview {
     max-width: 1000px !important;
+}
+
+#userDropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.me-5:hover #userDropdown {
+    display: block;
 }

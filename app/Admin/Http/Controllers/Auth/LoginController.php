@@ -13,7 +13,8 @@ class LoginController extends Controller
     {
         return [
             'index' => 'admin.auth.login',
-            'indexUser' => 'user.auth.login'
+            'indexUser' => 'user.auth.login',
+            'login' => 'user.auth.login'
         ];
     }
 
@@ -27,22 +28,48 @@ class LoginController extends Controller
         return view($this->view['indexUser']);
     }
 
+    public function forgotPassword()
+
+    {
+        return view($this->view['forgot-password']);
+    }
+
+    public function loginUser(LoginRequest $request)
+    {
+        $this->login = $request->validated();
+
+        if ($this->resolveWeb()) {
+            $request->session()->regenerate();
+            return $this->handleUserLogin();
+        }
+
+        return back()->with('error', __('Tên đăng nhập hoặc mật khẩu không đúng'));
+    }
+
     public function login(LoginRequest $request)
     {
         $this->login = $request->validated();
 
-        if ($this->resolveAdmin() || $this->resolveWeb()) {
-
+        if ($this->resolveAdmin()) {
             $request->session()->regenerate();
-
-            if (Auth::guard('admin')->check()) {
-                return redirect()->intended(route('admin.discount.index'))->with('success', __('Đăng nhập thành công'));
-            } elseif (Auth::guard('web')->check()) {
-                return redirect()->intended(route('user.auth.profile'))->with('success', __('Đăng nhập thành công'));
-            }
+            return $this->handleAdminLogin();
         }
 
         return back()->with('error', __('Tên đăng nhập hoặc mật khẩu không đúng'));
+    }
+
+    protected function handleUserLogin()
+    {
+        if (Auth::guard('web')->check()) {
+            return redirect()->intended(route('user.profile.indexUser'))->with('success', __('Đăng nhập thành công'));
+        }
+    }
+
+    protected function handleAdminLogin()
+    {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->intended(route('admin.dashboard'))->with('success', __('Đăng nhập thành công'));
+        }
     }
 
     protected function resolveAdmin()

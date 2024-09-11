@@ -17,6 +17,7 @@
         @include('user.layouts.footer')
     </div>
 @include('user.layouts.scripts')
+<x-alert/>
 </body>
 
 </html>

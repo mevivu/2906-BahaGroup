@@ -4,7 +4,7 @@
     <div class="row container">
         <div class="breadcrumb-container">
             <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.home') }}">Trang chủ</a></li>
+                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
             </ol>
         </div>
@@ -26,7 +26,7 @@
                     <tbody>
                         <tr class="bold-text">
                             <td data-label="Sản phẩm">
-                                <div onclick="location.href='product-detail.php';" style="cursor: pointer" class="align-items-center product-info row">
+                                <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
                                     <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
                                     <div class="col-md-8 col-12">
                                         <div class="product-name">Tên sản phẩm 1</div>
@@ -47,7 +47,7 @@
                         </tr>
                         <tr class="bold-text">
                             <td data-label="Sản phẩm">
-                                <div onclick="location.href='product-detail.php';" style="cursor: pointer" class="align-items-center product-info row">
+                                <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
                                     <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
                                     <div class="col-md-8 col-12">
                                         <div class="product-name">Tên sản phẩm 1</div>
@@ -104,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="payment.php" class="btn btn-default w-100"><strong>Tiến hành thanh toán</strong></a>
+                <a href="{{ route('user.payment.payment') }}" class="btn btn-default w-100"><strong>Tiến hành thanh toán</strong></a>
             </div>
             </div>
         </div>
