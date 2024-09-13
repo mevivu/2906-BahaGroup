@@ -10,13 +10,11 @@ class DiscountApplication extends Model
 {
     use HasFactory;
     protected $table = 'discount_applications';
+    public $timestamps = false;
 
     protected $fillable = [
         'discount_code_id',
         'user_id',
-        'driver_id',
-        'product_id',
-        'store_id',
         'order_id'
     ];
 
@@ -29,17 +27,9 @@ class DiscountApplication extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
-    public function store(): BelongsTo
-    {
-        return $this->belongsTo(Store::class, 'store_id');
-    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-    public function driver(): BelongsTo
-    {
-        return $this->belongsTo(Driver::class, 'driver_id');
     }
 
     public function order(): BelongsTo

@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('slug')->unique();
             $table->double('price')->nullable();
-            $table->double('selling_price')->nullable();
+            $table->double('flashsale_price')->nullable();
             $table->double('promotion_price')->nullable();
             $table->string('sku')->nullable();
             $table->integer('qty')->nullable();

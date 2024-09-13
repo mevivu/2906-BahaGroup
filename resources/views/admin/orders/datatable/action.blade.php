@@ -5,8 +5,6 @@
                 Duyệt
             </x-button>
         </a>
-    @endif
-    @if($status != App\Enums\Order\OrderStatus::Cancelled->value)
         <a id="cancel-order" style="margin-left: 0.3rem" href="{{ route('admin.order.cancel', $id) }}" class="ml-2">
             <x-button type="button" class="btn-danger">
                 Từ chối

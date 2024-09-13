@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SettingSeeder::class,
-            PermissionSeeder::class
+            PermissionSeeder::class,
+            DistrictSeeder::class,
+            ProvinceSeeder::class,
+            WardSeeder::class,
         ]);
     }
 }

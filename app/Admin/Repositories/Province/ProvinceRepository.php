@@ -13,10 +13,10 @@ class ProvinceRepository extends EloquentRepository implements ProvinceRepositor
     public function searchAllLimit($keySearch = '', $meta = [], $limit = 10){
 
         $this->instance = $this->model->where('name', 'like', "%{$keySearch}%");
-        
+
         foreach($meta as $key => $value){
             $this->instance = $this->instance->where($key, $value);
         }
-        return $this->instance->limit($limit)->get();
+        return $this->instance->get();
     }
 }

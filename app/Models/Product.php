@@ -27,7 +27,7 @@ class Product extends Model
         'type', // Loại sản phẩm
         'name', // Tên sản phẩm
         'price', // Giá sản phẩm
-        'selling_price', // Giá bán
+        'flashsale_price', // Giá bán
         'promotion_price', // Giá khuyến mãi
         'sku', // Mã SKU
         'manager_stock', // Quản lý kho

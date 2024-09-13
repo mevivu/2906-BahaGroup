@@ -6,7 +6,8 @@
 
 <x-input type="hidden" name="route_add_product" :value="route('admin.order.add_product')" />
 <script>
-
+    let provinceId;
+    let districtId;
     $(document).on('click', '#confirm-order', function(e) {
         e.preventDefault();
         var url = $(this).attr('href');
@@ -158,6 +159,8 @@
     })
     $(document).ready(function(e){
         select2LoadData($('#user_id').data('url'), '#user_id');
+        select2LoadData($('#province_id').data('url'), '#province_id');
+        select2LoadData($('#discount_id').data('url'), '#discount_id');
         searchProduct('', '#showSearchResultProduct');
         const userId = document.getElementById('orderUserId').value;
         var url = $('input[name="route_render_info_shipping"]').val();
@@ -219,6 +222,27 @@
             })
         }
     });
+
+    $(document).on('change', 'select[name="order[discount_id]"]', function(e) {
+        reloadTotalOrder();
+    });
+
+
+    $(document).on('change', 'select[name="order[province_id]"]', function(e) {
+        provinceId = $(this).val();
+        let url = "{{ route('admin.search.select.district') }}";
+        select2LoadData(url + '?province_id=' + provinceId, '#district_id');
+        select2LoadData('', '#ward_id');
+    });
+
+    $(document).on('change', 'select[name="order[district_id]"]', function(e) {
+        districtId = $(this).val();
+        let url = "{{ route('admin.search.select.ward') }}";
+        select2LoadData(url + '?district_id=' + districtId, '#ward_id');
+    });
+
+
+
     $(document).on('change', 'input[name="order_detail[product_qty][]"]', $.debounce(300, function (e) {
         var unitPrice = $(this).parents('.item-product').find('td.unit-price').text();
         unitPrice = unitPrice.replace(/[$,]/g, '');

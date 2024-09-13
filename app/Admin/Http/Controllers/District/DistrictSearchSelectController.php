@@ -14,6 +14,13 @@ class DistrictSearchSelectController extends BaseSearchSelectController
         $this->repository = $repository;
     }
 
+    protected function data(){
+        $this->instance = $this->repository->searchAllLimit(
+            $this->request->input('term', ''),
+            $this->request->input('province_id', ''),
+        );
+    }
+
     protected function selectResponse(){
         $this->instance = [
             'results' => DistrictSearchSelectResource::collection($this->instance)

@@ -25,9 +25,21 @@
                     <div class="mb-3">
                         <input type="checkbox" checked id="toggleShippingInfoOther"> Giao đến địa chỉ khác
                     </div>
+                    <div class="col-12" id="infoShippingOther">
+                        <h3>{{ __('Thông tin giao hàng khác') }}</h3>
+                        <div>
+                            @include('admin.orders.partials.info-shipping-other')
+                        </div>
+                    </div>
                 @else
                     <div class="mb-3">
                         <input type="checkbox" id="toggleShippingInfoOther"> Giao đến địa chỉ khác
+                    </div>
+                    <div class="col-12 col-md-6 d-none" id="infoShippingOther">
+                        <h3>{{ __('Thông tin giao hàng khác') }}</h3>
+                        <div>
+                            @include('admin.orders.partials.info-shipping-other')
+                        </div>
                     </div>
                 @endif
             </div>
@@ -36,22 +48,37 @@
                 <div id="infoShipping">
                     @include('admin.orders.partials.info-shipping')
                 </div>
+                <div class="mb-3">
+                    <label for="">{{ __('Tỉnh') }}</label>
+                    <x-select name="order[province_id]"
+                    id="province_id"
+                    class="select2-bs5-ajax"
+                    data-url="{{ route('admin.search.select.province') }}"
+                    :required="true">
+                    <x-select-option :option="$order->province_id" :value="$order->province_id" :title="$order->province->name"/>
+                    </x-select>
+                </div>
+                <div class="mb-3">
+                    <label for="">{{ __('Quận/Huyện') }}</label>
+                    <x-select name="order[district_id]"
+                    id="district_id"
+                    class="select2-bs5-ajax"
+                    data-url="{{ route('admin.search.select.district') }}"
+                    :required="true">
+                    <x-select-option :option="$order->district_id" :value="$order->district_id" :title="$order->district->name"/>
+                    </x-select>
+                </div>
+                <div class="mb-3">
+                    <label for="">{{ __('Phường') }}</label>
+                    <x-select name="order[ward_id]"
+                    id="ward_id"
+                    class="select2-bs5-ajax"
+                    data-url="{{ route('admin.search.select.ward') }}"
+                    :required="true">
+                    <x-select-option :option="$order->ward_id" :value="$order->ward_id" :title="$order->ward->name"/>
+                    </x-select>
+                </div>
             </div>
-            @if ($order->name_other || $order->phone_other || $order->phone_other || $order->note_other)
-                <div class="col-12 col-md-6" id="infoShippingOther">
-                    <h3>{{ __('Thông tin giao hàng khác') }}</h3>
-                    <div>
-                        @include('admin.orders.partials.info-shipping-other')
-                    </div>
-                </div>
-            @else
-                <div class="col-12 col-md-6 d-none" id="infoShippingOther">
-                    <h3>{{ __('Thông tin giao hàng khác') }}</h3>
-                    <div>
-                        @include('admin.orders.partials.info-shipping-other')
-                    </div>
-                </div>
-            @endif
             <div class="col-12">
                 @include('admin.orders.partials.products')
             </div>

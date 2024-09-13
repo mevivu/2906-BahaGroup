@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->double('price')->nullable();
-            $table->double('selling_price')->nullable();
+            $table->double('flashsale_price')->nullable();
             $table->double('promotion_price')->nullable();
             $table->text('image')->nullable();
             $table->integer('qty');

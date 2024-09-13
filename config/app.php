@@ -205,8 +205,6 @@ return [
          * Api service providers
          *
          */
-        App\Api\V1\Providers\RepositoryServiceProvider::class,
-        App\Api\V1\Providers\ServiceServiceProvider::class,
     ],
 
     /*

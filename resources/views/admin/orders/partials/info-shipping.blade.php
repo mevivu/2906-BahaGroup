@@ -8,9 +8,9 @@
 </div>
 <div class="mb-3">
     <label for="">{{ __('Số điện thoại') }}:</label>
-    <x-input-phone :value="old('order.customer_phone', $customer_phone ?? '')" :required="true" />
+    <x-input-phone readonly :value="old('order.customer_phone', $customer_phone ?? '')" :required="true" />
 </div>
 <div class="mb-3">
     <label for="">{{ __('Địa chỉ') }}:</label>
-    <x-input name="order[address]" :value="old('order.shipping_address', $shipping_address ?? '')" :placeholder="__('Địa chỉ')" :required="true" />
+    <x-input readonly name="order[address]" :value="old('order.shipping_address', $shipping_address ?? '')" :placeholder="__('Địa chỉ')" :required="true" />
 </div>

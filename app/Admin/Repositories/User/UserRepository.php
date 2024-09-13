@@ -45,7 +45,7 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
             });
         }
 
-        return $this->instance->limit($limit)->get();
+        return $this->instance->get();
     }
 
     protected function getQueryBuilderFindByKey($key): void

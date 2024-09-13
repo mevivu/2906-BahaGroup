@@ -2,6 +2,8 @@
 
 namespace App\Admin\Services\Order;
 
+use App\Admin\Repositories\Discount\DiscountApplicationRepositoryInterface;
+use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Services\Order\OrderServiceInterface;
 use App\Admin\Repositories\Order\{OrderRepositoryInterface, OrderDetailRepositoryInterface};
 use App\Admin\Repositories\User\UserRepositoryInterface;
@@ -10,8 +12,6 @@ use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariation
 use App\Admin\Traits\Setup;
 use App\Enums\Product\ProductType;
 use App\Enums\Order\{OrderStatus};
-use App\Enums\Payment\PaymentMethod;
-use App\Enums\Vehicle\VehicleStatus;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -26,34 +26,40 @@ class OrderService implements OrderServiceInterface
     protected $repositoryUser;
     protected $repositoryProduct;
     protected $repositoryProductVariation;
-    protected $vehicleRepository;
+    protected $discountRepository;
+    protected $discountApplicationRepository;
 
     public function __construct(
         OrderRepositoryInterface $repository,
         OrderDetailRepositoryInterface $repositoryOrderDetail,
+        DiscountRepositoryInterface $discountRepository,
         UserRepositoryInterface $repositoryUser,
+        DiscountApplicationRepositoryInterface $discountApplicationRepository,
         ProductRepositoryInterface $repositoryProduct,
         ProductVariationRepositoryInterface $repositoryProductVariation,
     ) {
         $this->repository = $repository;
         $this->repositoryOrderDetail = $repositoryOrderDetail;
+        $this->discountRepository = $discountRepository;
         $this->repositoryUser = $repositoryUser;
         $this->repositoryProduct = $repositoryProduct;
+        $this->discountApplicationRepository = $discountApplicationRepository;
         $this->repositoryProductVariation = $repositoryProductVariation;
     }
 
     public function store(Request $request)
     {
         $this->data = $request->validated();
-        $this->data['order']['payment_method'] = PaymentMethod::Online->value;
         $this->data['order']['status'] = OrderStatus::Pending->value;
-        $this->data['order']['total'] = $this->calculateTotal($request);
         DB::beginTransaction();
         try {
             if (!$this->makeNewDataOrderDetail()) {
                 return false;
             }
             $order = $this->repository->create($this->data['order']);
+            if (isset($this->data['order']['discount_id'])) {
+                $this->handleDiscount('store', $order);
+            }
             $this->storeOrderDetail($order->id, $this->orderDetails);
             DB::commit();
             return $order;
@@ -64,6 +70,78 @@ class OrderService implements OrderServiceInterface
         }
     }
 
+    public function checkValidDiscount(Request $request)
+    {
+        $this->data = $request->validated();
+        if (isset($this->data['order']['discount_id'])) {
+            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+            if ($discount->min_order_amount > $this->data['order']['total']) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function confirm($id)
+    {
+        DB::beginTransaction();
+        try {
+            $order = $this->repository->findOrFail($id);
+            foreach ($order->details as $detail) {
+                if ($detail->product_variation_id) {
+                    $productVariation = $this->repositoryProductVariation->findOrFail($detail->product_variation_id);
+                    if ($productVariation->qty >= $detail->qty) {
+                        $this->repositoryProductVariation->update(
+                            $detail->product_variation_id,
+                            ['qty' => $productVariation->qty - $detail->qty]
+                        );
+                    } else {
+                        DB::rollBack();
+                        return $productVariation->product->name;
+                    }
+                } else {
+                    $product = $this->repositoryProduct->findOrFail($detail->product_id);
+                    if ($product->qty >= $detail->qty) {
+                        $this->repositoryProduct->update(
+                            $detail->product_id,
+                            ['qty' => $product->qty - $detail->qty]
+                        );
+                    } else {
+                        DB::rollBack();
+                        return $product->name;
+                    }
+                }
+            }
+            $this->repository->update($id, ['status' => OrderStatus::Confirmed]);
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            $this->logError('Failed to confirm order: ', $e);
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    public function cancel($id)
+    {
+        DB::beginTransaction();
+        try {
+            $order = $this->repository->update($id, ['status' => OrderStatus::Cancelled]);
+            if($order->discount){
+                $discount = $this->discountRepository->findOrFail($order->discount->id);
+                $discount->max_usage = $discount->max_usage + 1;
+                $discount->save();
+                $discountApplication = $this->discountApplicationRepository->findByField('order_id', $order->id);
+                $discountApplication->delete();
+            }
+            DB::commit();
+            return true;
+        } catch (Exception $e) {
+            $this->logError('Failed to cancel order: ', $e);
+            DB::rollBack();
+            return false;
+        }
+    }
 
     private function makeNewDataOrderDetail()
     {
@@ -121,13 +199,10 @@ class OrderService implements OrderServiceInterface
                     $this->storeOrderDetail($this->data['order']['id'], $this->orderDetails);
                 }
             }
-            $order = $this->repository->update($this->data['order']['id'], $this->data['order']);
-            $total = 0;
-            foreach ($order->details as $detail) {
-                $total += $detail->unit_price * $detail->qty;
+            if (isset($this->data['order']['discount_id'])) {
+                $this->handleDiscount('update', '');
             }
-            $order->total = $total;
-            $order->save();
+            $order = $this->repository->update($this->data['order']['id'], $this->data['order']);
             DB::commit();
             return $order;
         } catch (Exception $e) {
@@ -135,6 +210,41 @@ class OrderService implements OrderServiceInterface
             $this->logError('Failed to process order: ', $e);
             DB::rollBack();
             return false;
+        }
+    }
+
+    private function handleDiscount($type, $order)
+    {
+        if ($type == 'store') {
+            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+            $this->discountApplicationRepository->create([
+                'discount_code_id' => $discount->id,
+                'order_id' => $order->id,
+                'user_id' => $order->user_id
+            ]);
+            $discount->max_usage = $discount->max_usage - 1;
+            $discount->save();
+        } else {
+            $oldOrder = $this->repository->findOrFail($this->data['order']['id']);
+            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+            $discount->max_usage = $discount->max_usage - 1;
+            $discount->save();
+            if ($oldOrder->discount) {
+                if ($oldOrder->discount->id != $this->data['order']['discount_id']) {
+                    $oldDiscount = $this->discountRepository->findOrFail($oldOrder->discount->id);
+                    $oldDiscount->max_usage = $oldDiscount->max_usage + 1;
+                    $oldDiscount->save();
+                    $discountApplication = $this->discountApplicationRepository->findByField('order_id', $oldOrder->id);
+                    $discountApplication->discount_code_id = $discount->id;
+                    $discountApplication->save();
+                }
+            } else {
+                $this->discountApplicationRepository->create([
+                    'discount_code_id' => $discount->id,
+                    'order_id' => $this->data['order']['id'],
+                    'user_id' => $this->data['order']['user_id']
+                ]);
+            }
         }
     }
 
@@ -175,12 +285,10 @@ class OrderService implements OrderServiceInterface
                 return false;
             }
             if ($product->is_user_discount) {
-                $product->productVariation->price = $product->productVariation->price;
                 $product->productVariation->promotion_price = $product->productVariation->promotion_price ?: $product->productVariation->promotion_price;
             }
         } else {
             if ($product->is_user_discount) {
-                $product->price = $product->price;
                 $product->promotion_price = $product->promotion_price ?: $product->promotion_price;
             }
         }

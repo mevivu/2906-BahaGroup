@@ -11,8 +11,15 @@ class OrderRequest extends BaseRequest
     public function methodPost(){
         return [
             'order.user_id' => ['required', 'exists:App\Models\User,id'],
+            'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
+            'order.province_id' => ['required', 'exists:App\Models\Province,id'],
+            'order.district_id' => ['required', 'exists:App\Models\District,id'],
+            'order.discount_id' => ['required', 'exists:App\Models\Discount,id'],
             'order.address' => ['required'],
             'order.note' => ['nullable'],
+            'order.total' => ['nullable'],
+            'order.payment_method' => ['nullable'],
+            'order.discount_value' => ['nullable'],
             'order.name_other' => ['nullable'],
             'order.phone_other' => ['nullable'],
             'order.address_other' => ['nullable'],
@@ -35,9 +42,16 @@ class OrderRequest extends BaseRequest
     {
         return [
             'order.id' => ['required', 'exists:App\Models\Order,id'],
+            'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
+            'order.province_id' => ['required', 'exists:App\Models\Province,id'],
+            'order.district_id' => ['required', 'exists:App\Models\District,id'],
+            'order.discount_id' => ['required', 'exists:App\Models\Discount,id'],
             'order.status' => ['required', new Enum(OrderStatus::class)],
             'order.user_id' => ['required', 'exists:App\Models\User,id'],
             'order.note' => ['nullable'],
+            'order.total' => ['nullable'],
+            'order.payment_method' => ['nullable'],
+            'order.discount_value' => ['nullable'],
             'order.name_other' => ['nullable'],
             'order.phone_other' => ['nullable'],
             'order.address_other' => ['nullable'],
@@ -68,6 +82,7 @@ class OrderRequest extends BaseRequest
                 'order_detail.product_id.*' => ['required', 'exists:App\Models\Product,id'],
                 'order_detail.product_variation_id.*' => ['required'],
                 'order_detail.product_qty.*' => ['required', 'integer', 'min:1'],
+                'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             ];
         }
         return [

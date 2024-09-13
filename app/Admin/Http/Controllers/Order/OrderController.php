@@ -8,6 +8,7 @@ use App\Admin\Services\Order\OrderServiceInterface;
 use App\Admin\DataTables\Order\OrderDataTable;
 use App\Enums\Order\OrderStatus;
 use App\Admin\Http\Requests\Order\OrderRequest;
+use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Repositories\User\UserRepositoryInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
+use App\Enums\Discount\DiscountType;
 use App\Enums\Payment\PaymentMethod;
 use App\Traits\ResponseController;
 
@@ -23,19 +25,21 @@ class OrderController extends Controller
     use ResponseController;
     protected UserRepositoryInterface $repositoryUser;
     protected ProductRepositoryInterface $repositoryProduct;
+    protected DiscountRepositoryInterface $discountRepository;
     protected ProductVariationRepositoryInterface $repositoryProductVariation;
 
     public function __construct(
         OrderRepositoryInterface $repository,
         UserRepositoryInterface $repositoryUser,
         ProductRepositoryInterface $repositoryProduct,
+        DiscountRepositoryInterface $discountRepository,
         ProductVariationRepositoryInterface $repositoryProductVariation,
         OrderServiceInterface $service
-    )
-    {
+    ) {
         parent::__construct();
         $this->repository = $repository;
         $this->repositoryUser = $repositoryUser;
+        $this->discountRepository = $discountRepository;
         $this->repositoryProduct = $repositoryProduct;
         $this->repositoryProductVariation = $repositoryProductVariation;
         $this->service = $service;
@@ -74,22 +78,30 @@ class OrderController extends Controller
         return view($this->view['detail']);
     }
 
-    public function index(OrderDataTable $dataTable){
+    public function index(OrderDataTable $dataTable)
+    {
         return $dataTable->render($this->view['index'], [
             'status' => OrderStatus::asSelectArray()
         ]);
     }
     public function create(): Factory|View|Application
     {
-        return view($this->view['create']);
+        $payment_methods = PaymentMethod::asSelectArray();
+        return view($this->view['create'], [
+            'payment_methods' => $payment_methods
+        ]);
     }
     public function store(OrderRequest $request): RedirectResponse
     {
-        $order = $this->service->store($request);
-        if($order){
-            return to_route($this->route['edit'], $order->id);
+        $result = $this->service->checkValidDiscount($request);
+        if($result){
+            $order = $this->service->store($request);
+            if ($order) {
+                return to_route($this->route['edit'], $order->id);
+            }
+            return back()->with('error', __('notifyFail'));
         }
-        return back()->with('error', __('notifyFail'));
+        return back()->with('error', __('Hóa đơn không đủ điều kiện để nhập mã giảm giá hiện tại'));
     }
     public function edit($id): Factory|View|Application
     {
@@ -100,11 +112,15 @@ class OrderController extends Controller
     }
     public function update(OrderRequest $request): RedirectResponse
     {
-        $response = $this->service->update($request);
-        if($response){
-            return back()->with('success', __('notifySuccess'));
+        $result = $this->service->checkValidDiscount($request);
+        if($result){
+            $response = $this->service->update($request);
+            if ($response) {
+                return back()->with('success', __('notifySuccess'));
+            }
+            return back()->with('error', __('notifyFail'));
         }
-        return back()->with('error', __('notifyFail'));
+        return back()->with('error', __('Hóa đơn không đủ điều kiện để nhập mã giảm giá hiện tại'));
     }
 
     public function delete($id): RedirectResponse
@@ -127,7 +143,10 @@ class OrderController extends Controller
     public function confirm($id)
     {
         $result = $this->service->confirm($id);
-        if($result){
+        if ($result !== true && $result !== false) {
+            return to_route($this->route['index'])->with('error', __('Không đủ sản phẩm: ' . $result));
+        }
+        if ($result) {
             return to_route($this->route['index'])->with('success', __('Duyệt đơn hàng thành công'));
         }
         return to_route($this->route['index'])->with('error', __('Duyệt đơn hàng thất bại'));
@@ -136,7 +155,7 @@ class OrderController extends Controller
     public function cancel($id)
     {
         $result = $this->service->cancel($id);
-        if($result){
+        if ($result) {
             return to_route($this->route['index'])->with('success', __('Từ chối đơn hàng thành công'));
         }
         return to_route($this->route['index'])->with('error', __('Từ chối đơn hàng thất bại'));
@@ -147,7 +166,7 @@ class OrderController extends Controller
 
         $product = $this->service->addProduct($request);
 
-        if(!$product){
+        if (!$product) {
             return response()->json([
                 'status' => 400,
                 'message' => __('notifyFail')
@@ -164,15 +183,29 @@ class OrderController extends Controller
 
     public function calculateTotalBeforeSaveOrder(OrderRequest $request): JsonResponse
     {
-        if(!$request->input('order_detail.product_id')){
-            $total = 0;
-        }else{
+        $totalAfterDiscount = 0;
+        $total = 0;
+        $discountValue = 0;
+        if ($request->input('order_detail.product_id')) {
             $total = $this->service->calculateTotal($request);
+            if ($request->input('order.discount_id')) {
+                $discountId = $request->input('order.discount_id');
+                $discount = $this->discountRepository->findOrFail($discountId);
+                if ($total >= $discount->min_order_amount) {
+                    if ($discount->type == DiscountType::Money) {
+                        $discountValue = $discount->discount_value;
+                        $totalAfterDiscount = $total - $discountValue;
+                    } else {
+                        $discountValue = $total * $discount->discount_value / 100;
+                        $totalAfterDiscount = $total - $discountValue;
+                    }
+                }
+            }
         }
         return response()->json([
             'status' => 200,
             'message' => __('notifySuccess'),
-            'data' => view($this->view['total'], compact('total'))->render()
+            'data' => view($this->view['total'], compact('total', 'discountValue', 'totalAfterDiscount'))->render()
         ], 200);
     }
 }

@@ -118,7 +118,7 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
             $this->instance = $this->instance->where($key, $value);
         }
 
-        return $this->instance->limit($limit)->get();
+        return $this->instance->get();
     }
 
     protected function getQueryBuilderFindByKey($key)

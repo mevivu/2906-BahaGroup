@@ -5,7 +5,7 @@ namespace App\Admin\DataTables\Order;
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Enums\Order\OrderStatus;
-use App\Enums\Order\OrderType;
+use App\Enums\Payment\PaymentMethod;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderDataTable extends BaseDataTable
@@ -31,6 +31,10 @@ class OrderDataTable extends BaseDataTable
 
         $this->columnSearchSelect = [
             [
+                'column' => 2,
+                'data' => PaymentMethod::asSelectArray()
+            ],
+            [
                 'column' => 3,
                 'data' => OrderStatus::asSelectArray()
             ],
@@ -53,6 +57,7 @@ class OrderDataTable extends BaseDataTable
             'id' => $this->view['editlink'],
             'status' => $this->view['status'],
             'total' => '{{ format_price($total) }}',
+            'payment_method' => '{{ App\Enums\Payment\PaymentMethod::getDescription($payment_method) }}',
             'user' => $this->view['user'],
             'created_at' => '{{ format_datetime($created_at) }}',
         ];

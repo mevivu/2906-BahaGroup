@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('payment_method')->default(PaymentMethod::Online->value);
             $table->text('address')->nullable();
             $table->text('avatar')->nullable();
+            $table->double('discount_value')->default(0);
             $table->double('total');
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);
             $table->text('note')->nullable();

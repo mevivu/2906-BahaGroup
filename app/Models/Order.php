@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Order extends Model
 {
@@ -36,8 +37,16 @@ class Order extends Model
         'address_other',
         /** Số điện thoại người nhận khác */
         'phone_other',
+        /** ward_id */
+        'ward_id',
+        /** province_id */
+        'province_id',
+        /** district_id */
+        'district_id',
         /** Ghi chú người nhận khác */
-        'note_other'
+        'note_other',
+        /** Giá trị giảm */
+        'discount_value'
     ];
 
     protected $casts = [
@@ -60,20 +69,23 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function driver(): BelongsTo
+    public function discount(): HasOneThrough
     {
-        return $this->belongsTo(Driver::class, 'driver_id');
+        return $this->hasOneThrough(Discount::class, DiscountApplication::class, 'order_id', 'id', 'id', 'discount_code_id');
     }
 
-    public function vehicle(): BelongsTo
+    public function province(): BelongsTo
     {
-        return $this->BelongsTo(Vehicle::class);
+        return $this->belongsTo(Province::class, 'province_id');
     }
 
-    public function store(): BelongsTo
+    public function ward(): BelongsTo
     {
-        return $this->belongsTo(Store::class, 'store_id');
+        return $this->belongsTo(Ward::class, 'ward_id');
     }
 
-
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
 }

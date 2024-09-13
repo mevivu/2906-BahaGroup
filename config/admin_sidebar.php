@@ -2,14 +2,6 @@
 
 return [
     [
-        'title' => 'Dashboard',
-        'routeName' => 'admin.dashboard',
-        'icon' => '<i class="ti ti-home"></i>',
-        'roles' => [],
-        'permissions' => ['mevivuDev'],
-        'sub' => []
-    ],
-    [
         'title' => 'Mã giảm giá',
         'routeName' => null,
         'icon' => '<i class="ti ti-ticket"></i>',
@@ -169,66 +161,66 @@ return [
     //         ],
     //     ]
     // ],
-    [
-        'title' => 'Bài viết',
-        'routeName' => null,
-        'icon' => '<i class="ti ti-article"></i>',
-        'roles' => [],
-        'permissions' =>
-        [
-            'createPost',
-            'viewPost',
-            'updatePost',
-            'deletePost',
-            'viewPostCategory',
-            'createPostCategory',
-            'updatePostCategory'
-        ],
-        'sub' => [
-            [
-                'title' => 'Thêm bài viết',
-                'routeName' => 'admin.post.create',
-                'icon' => '<i class="ti ti-plus"></i>',
-                'roles' => [],
-                'permissions' => ['createPost'],
-            ],
-            [
-                'title' => 'DS Bài viết',
-                'routeName' => 'admin.post.index',
-                'icon' => '<i class="ti ti-list"></i>',
-                'roles' => [],
-                'permissions' => ['viewPost'],
-            ],
-            [
-                'title' => 'DS Chuyên mục',
-                'routeName' => 'admin.post_category.index',
-                'icon' => '<i class="ti ti-list"></i>',
-                'roles' => [],
-                'permissions' => ['viewPostCategory'],
-            ]
-        ]
-    ],
-    [
-        'title' => 'Cài đặt',
-        'routeName' => null,
-        'icon' => '<i class="ti ti-settings"></i>',
-        'roles' => [],
-        'permissions' => ['settingGeneral'],
-        'sub' => [
-            [
-                'title' => 'Chung',
-                'routeName' => 'admin.setting.general',
-                'icon' => '<i class="ti ti-tool"></i>',
-                'roles' => [],
-                'permissions' => ['settingGeneral'],
-            ],
-            [
-                'title' => 'Thành viên mua hàng',
-                'routeName' => 'admin.setting.user_shopping',
-                'icon' => '<i class="ti ti-user-cog"></i>',
-                'roles' => [],
-                'permissions' => [],
-            ],
-        ]
-    ],
+    // [
+    //     'title' => 'Bài viết',
+    //     'routeName' => null,
+    //     'icon' => '<i class="ti ti-article"></i>',
+    //     'roles' => [],
+    //     'permissions' =>
+    //     [
+    //         'createPost',
+    //         'viewPost',
+    //         'updatePost',
+    //         'deletePost',
+    //         'viewPostCategory',
+    //         'createPostCategory',
+    //         'updatePostCategory'
+    //     ],
+    //     'sub' => [
+    //         [
+    //             'title' => 'Thêm bài viết',
+    //             'routeName' => 'admin.post.create',
+    //             'icon' => '<i class="ti ti-plus"></i>',
+    //             'roles' => [],
+    //             'permissions' => ['createPost'],
+    //         ],
+    //         [
+    //             'title' => 'DS Bài viết',
+    //             'routeName' => 'admin.post.index',
+    //             'icon' => '<i class="ti ti-list"></i>',
+    //             'roles' => [],
+    //             'permissions' => ['viewPost'],
+    //         ],
+    //         [
+    //             'title' => 'DS Chuyên mục',
+    //             'routeName' => 'admin.post_category.index',
+    //             'icon' => '<i class="ti ti-list"></i>',
+    //             'roles' => [],
+    //             'permissions' => ['viewPostCategory'],
+    //         ]
+    //     ]
+    // ],
+    // [
+    //     'title' => 'Cài đặt',
+    //     'routeName' => null,
+    //     'icon' => '<i class="ti ti-settings"></i>',
+    //     'roles' => [],
+    //     'permissions' => ['settingGeneral'],
+    //     'sub' => [
+    //         [
+    //             'title' => 'Chung',
+    //             'routeName' => 'admin.setting.general',
+    //             'icon' => '<i class="ti ti-tool"></i>',
+    //             'roles' => [],
+    //             'permissions' => ['settingGeneral'],
+    //         ],
+    //         [
+    //             'title' => 'Thành viên mua hàng',
+    //             'routeName' => 'admin.setting.user_shopping',
+    //             'icon' => '<i class="ti ti-user-cog"></i>',
+    //             'roles' => [],
+    //             'permissions' => [],
+    //         ],
+    //     ]
+    // ],
 ];

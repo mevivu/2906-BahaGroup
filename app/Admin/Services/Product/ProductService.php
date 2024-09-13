@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 use App\Admin\Traits\Setup;
 use Illuminate\Support\Facades\DB;
 use App\Admin\Repositories\AttributeVariation\AttributeVariationRepositoryInterface;
-use App\Api\V1\Support\AuthServiceApi;
 use App\Enums\Product\ProductType;
 use App\Enums\Product\ProductVariationAction;
 use App\Traits\UseLog;
@@ -23,7 +22,7 @@ use Throwable;
 
 class ProductService implements ProductServiceInterface
 {
-    use Setup, UseLog, AuthServiceApi;
+    use Setup, UseLog;
 
     /**
      * Current Object instance
@@ -96,31 +95,6 @@ class ProductService implements ProductServiceInterface
             DB::commit();
             return $instance;
         } catch (Throwable $th) {
-            DB::rollBack();
-            return false;
-        }
-    }
-
-    public function storeApi(Request $request)
-    {
-
-        $this->data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $this->data['product']['store_id'] = $this->getCurrentStoreId();
-            $instance = $this->repository->create($this->data['product']);
-            $this->repository->attachCategories($instance, $this->data['categories_id'] ?? []);
-            $this->repository->attachToppings($instance, $this->data['toppings_id'] ?? []);
-            $this->repository->attachDiscounts($instance, $this->data['discount_ids'] ?? []);
-            if ($instance->type == ProductType::Variable && isset($this->data['product_attribute'])) {
-                $this->repositoryProductAttribute->createOrUpdateWithVariationApi($instance->id, $this->data['product_attribute']);
-
-                $this->storeOrUpdateProductVariations($instance->id);
-            }
-            DB::commit();
-            return $instance;
-        } catch (Exception $e) {
-            $this->logError('Create Product Failed: ', $e);
             DB::rollBack();
             return false;
         }

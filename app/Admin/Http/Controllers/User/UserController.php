@@ -62,7 +62,6 @@ class UserController extends Controller
     public function create(): Factory|View|Application
     {
         $roles = $this->repository->getAllRolesByGuardName('web');
-
         return view($this->view['create'], [
             'gender' => Gender::asSelectArray(),
             'roles' => $roles,

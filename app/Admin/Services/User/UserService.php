@@ -4,10 +4,10 @@ namespace App\Admin\Services\User;
 
 use  App\Admin\Repositories\User\UserRepositoryInterface;
 use App\Admin\Traits\Roles;
-use App\Api\V1\Support\UseLog;
 use Exception;
 use Illuminate\Http\Request;
 use App\Admin\Traits\Setup;
+use App\Traits\UseLog;
 use Illuminate\Support\Facades\DB;
 
 class UserService implements UserServiceInterface
