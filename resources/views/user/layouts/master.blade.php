@@ -1,3 +1,8 @@
+@php
+    $categoryRepository = app()->make(App\Admin\Repositories\Category\CategoryRepository::class);
+    $categories = $categoryRepository->getFlatTree();
+    $parentCategories = $categoryRepository->getParentCategory();
+@endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 

@@ -16,8 +16,8 @@ enum PaymentMethod: int
     public function badge(): string
     {
         return match($this) {
-            PaymentMethod::Online => 'bg-green-lt',
-            PaymentMethod::Direct => 'bg-red-lt',
+            PaymentMethod::Online => 'bg-green',
+            PaymentMethod::Direct => 'bg-red',
         };
     }
 }

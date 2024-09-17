@@ -51,6 +51,7 @@ class OrderService implements OrderServiceInterface
     {
         $this->data = $request->validated();
         $this->data['order']['status'] = OrderStatus::Pending->value;
+        $this->data['order']['code'] = $this->createCodeOrder();
         DB::beginTransaction();
         try {
             if (!$this->makeNewDataOrderDetail()) {

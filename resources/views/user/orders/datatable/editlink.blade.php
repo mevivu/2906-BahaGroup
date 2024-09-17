@@ -1,2 +1,2 @@
 
-<x-link :href="route('admin.order.edit', $id)" :title="'#'.$id"/>
+<x-link :href="route('user.order.detail', $id)" :title="'#'.$code"/>

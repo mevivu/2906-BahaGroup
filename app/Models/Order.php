@@ -46,7 +46,9 @@ class Order extends Model
         /** Ghi chú người nhận khác */
         'note_other',
         /** Giá trị giảm */
-        'discount_value'
+        'discount_value',
+        /** code */
+        'code'
     ];
 
     protected $casts = [

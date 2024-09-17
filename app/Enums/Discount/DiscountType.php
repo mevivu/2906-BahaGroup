@@ -9,8 +9,8 @@ enum DiscountType: int
 {
     use Enum;
 
-    case Money = 1;
-    case Percent = 2;
+    case Percent = 1;
+    case Money = 2;
 
     public function badge(): string
     {

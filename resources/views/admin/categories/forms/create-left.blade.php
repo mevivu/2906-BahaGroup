@@ -12,14 +12,43 @@
                         placeholder="{{ __('Tên danh mục') }}" />
                 </div>
             </div>
+            <!-- Danh mục cha -->
             <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label class="control-label">{{ __('Danh mục cha') }}:</label>
+                    <x-select class="select2-bs5" name="parent_id">
+                        <x-select-option value="" :title="__('Trống')" />
+                        @foreach ($categories as $item)
+                            <x-select-option :value="$item->id" :title="generate_text_depth_tree($item->depth).' '.__($item->name)" />
+                        @endforeach
+                    </x-select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Vị trí') }}:</label>
                     <x-input type="number" name="position" :value="old('position', 1)" :required="true"
                         placeholder="{{ __('Vị trí') }}" />
                 </div>
             </div>
-
+            <!-- is active -->
+            <div class="col-md-6 col-sm-12">
+                <div class="mb-3">
+                    <label class="control-label">{{ __('Trạng thái') }}:</label>
+                    <x-select class="select2-bs5" name="is_active" :required="true">
+                        <x-select-option value="1" :title="__('Hoạt động')" />
+                        <x-select-option value="0" :title="__('Tạm ngưng')" />
+                    </x-select>
+                </div>
+            </div>
+            <p>Chọn Icon ở đây: <a target="blank" href="https://tabler.io/icons">https://tabler.io/icons</a>. Tìm Icon bạn thích. Ví dụ icon là alert-circle, bạn nhập vô ô dưới ti ti-alert-circle</p>
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label class="control-label">{{ __('Icon') }}:</label>
+                    <x-input name="icon" :value="old('icon')" :required="true"
+                        placeholder="{{ __('Ví dụ: ti ti-alert-circle') }}" />
+                </div>
+            </div>
         </div>
     </div>
 </div>

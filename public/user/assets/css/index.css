@@ -118,7 +118,7 @@ li {
 #slide-show {
     margin-left: 322px;
     width: 76%;
-    z-index: 99;
+    z-index: 4;
 }
 
 .btn-carousel-slider {
@@ -127,6 +127,9 @@ li {
 
 
 @media (max-width: 1199px) {
+    #top-bar, #top-header {
+        display: none !important;
+    }
     .badge-danger {
         font-size: 0.5em !important;
     }
@@ -328,7 +331,12 @@ li {
 
 /* Ẩn các cột không cần thiết trên màn hình nhỏ */
 @media (max-width: 768px) {
-
+    .tab-btn {
+        font-size: 0.8em !important;
+    }
+    #allBtn {
+        display: none;
+    }
     #top-bar, #top-header {
         display: none !important;
     }
@@ -784,6 +792,10 @@ li {
     background-color: #1c5639;
 }
 
+.text-category {
+    color: #6C757D;
+}
+
 .text-red {
     color: red;
 }
@@ -1227,7 +1239,6 @@ td[data-label="Tổng"] {
 .absolute-category {
     position: absolute;
     top: 0;
-    z-index: 3;
 }
 
 .text-justify {

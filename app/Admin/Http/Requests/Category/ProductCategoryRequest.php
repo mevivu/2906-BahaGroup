@@ -19,6 +19,7 @@ class ProductCategoryRequest extends BaseRequest
             'parent_id' => ['nullable', 'exists:App\Models\Category,id'],
             'position' => ['required', 'integer', 'min:0'],
             'is_active' => ['required', 'boolean'],
+            'icon' => ['nullable'],
             'avatar' => ['required']
         ];
     }
@@ -31,6 +32,7 @@ class ProductCategoryRequest extends BaseRequest
             'parent_id' => ['nullable', 'exists:App\Models\Category,id', new CategoryParent($this->id)],
             'position' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['required', 'boolean'],
+            'icon' => ['nullable'],
             'avatar' => ['required']
         ];
     }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('avatar')->nullable();
+            $table->text('icon')->nullable();
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(DefaultActiveStatus::Active->value);
             $table->timestamps();

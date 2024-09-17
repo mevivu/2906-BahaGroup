@@ -35,8 +35,13 @@ if (! function_exists('uniqid_real')) {
 }
 
 if (! function_exists('format_price')) {
-    function format_price($price, $positionCurrent = 'left') {
-        return $positionCurrent == 'left' ? config('custom.currency').number_format($price) : number_format($price).config('custom.currency');
+    function format_price($price, $positionCurrent = 0) {
+        if($positionCurrent == 'left'){
+            return config('custom.currency').number_format($price);
+        }
+        else{
+            return number_format($price).config('custom.currency');
+        }
     }
 }
 

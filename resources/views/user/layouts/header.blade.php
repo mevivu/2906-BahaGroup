@@ -13,7 +13,7 @@
             <!-- Logo -->
             <div class="col-3 d-flex align-items-center">
                 <x-link :href="route('user.index')">
-                    <img class="img-fluid" src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
+                    <img style="max-height: 80px" class="img-fluid" src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
                         alt="Baha">
                 </x-link>
             </div>
@@ -22,9 +22,11 @@
                 <div class="input-group">
                     <x-button class="btn-outline-secondary dropdown-toggle" type="button"
                         data-bs-toggle="dropdown" aria-expanded="false">Tất cả</x-button>
-                    <ul class="dropdown-menu search">
-                        <li class="dropdown-item selected">Tất cả</li>
-                        <li class="dropdown-item">Babies & Toys</li>
+                    <ul style="cursor: pointer" class="dropdown-menu search">
+                        <li class="dropdown-item selected"><x-link class="text-category" :href="route('user.product.indexUser')">Tất cả</x-link></li>
+                        @foreach ($categories as $category)
+                            <li class="dropdown-item selected"><x-link class="text-category" :href="route('user.product.indexUser', ['category_id' => $category->id])">{{ $category->name }}</x-link></li>
+                        @endforeach
                     </ul>
                     <input type="text" class="form-control" placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
                     <x-button type="submit" class="button-search"><i class="ti ti-search"></i></x-button>
@@ -95,7 +97,7 @@
                 </button>
                 <div class="col-6 d-flex justify-content-center align-items-center">
                     <x-link :href="route('user.index')">
-                        <img src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
+                        <img style="max-height: 40px" src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
                             alt="Baha" class="img-fluid">
                     </x-link>
                 </div>
@@ -131,31 +133,31 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <ul class="nav">
-                                <li class="nav-item default-font-size">
+                                <li class="nav-item">
                                     <x-link :href="route('user.index')">Trang chủ</x-link>
                                 </li>
-                                <li class="nav-item default-font-size">
+                                <li class="nav-item">
                                     <x-link :href="route('user.information')">Giới thiệu</x-link>
                                 </li>
-                                <li class="nav-item default-font-size">
+                                <li class="nav-item">
                                     <x-link :href="route('user.product.indexUser')">Sản phẩm</x-link>
                                 </li>
-                                <li class="nav-item default-font-size">
+                                <li class="nav-item">
                                     <x-link :href="route('user.contact')">Liên hệ</x-link>
                                 </li>
-                                <li class="nav-item default-font-size">
+                                <li class="nav-item">
                                     <x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
                                 </li>
                                 @if (auth('web')->user())
-                                    <li class="nav-item default-font-size">
+                                    <li class="nav-item">
                                         <x-link :href="route('user.order.indexUser')">Đơn hàng</x-link>
                                     </li>
-                                    <li class="nav-item default-font-size">
+                                    <li class="nav-item">
                                         <x-link :href="route('user.profile.indexUser')">Tài khoản</x-link>
-                                    <li class="nav-item default-font-size">
+                                    <li class="nav-item">
                                         <x-link :href="route('user.password.indexUser')">Mật khẩu</x-link>
                                     </li>
-                                    <li class="nav-item default-font-size">
+                                    <li class="nav-item">
                                         <x-link data-bs-toggle="modal" data-bs-target="#modalLogout" :href="route('user.product.saleLimited')">Đăng xuất</x-link>
                                     </li>
                                 @endif
@@ -163,164 +165,39 @@
                         </div>
                         <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
                             <ul class="menu">
-                                <li>
-                                    <x-link href="#">
-                                        <i class="ti ti-device-mobile"></i>Thiết bị điện tử <i
-                                            class="ti ti-chevron-right" data-bs-toggle="collapse"
-                                            href="#collapseExample-1" role="button" aria-expanded="false"
-                                            aria-controls="collapseExample-1"></i>
-                                    </x-link>
-                                    <div class="submenu mega-menu collapse" id="collapseExample-1"
-                                        data-bs-parent="#menu-collapse">
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện di động</h3>
-                                            <ul>
-                                                <li><x-link :href="route('user.index')">Laptops</x-link></li>
-                                                <li><a href="#">Desktops</a></li>
-                                                <li><a href="#">Mobile</a></li>
-                                                <li><a href="#">Computers</a></li>
-                                                <li><a href="#">Speakers</a></li>
-                                                <li><a href="#">Headphones</a></li>
-                                                <li><a href="#">Smartwatch</a></li>
-                                                <li><a href="#">Drives & Storage</a></li>
-                                            </ul>
+                                @foreach ($parentCategories as $category)
+                                    <li class="mt-2">
+                                        <div class="ms-3 d-flex fs-6">
+                                            <x-link class="text-black col-6" href="{{ route('user.product.indexUser', ['category_id' => $category->id]) }}">
+                                                <i class="{{ $category->icon }} me-2 fs-4"></i>{{ $category->name }}
+                                            </x-link>
+                                            <i class="ti ti-chevron-right col-6 text-end" data-bs-toggle="collapse"
+                                                    href="#collapseExample-{{ $category->id }}" role="button" aria-expanded="false"
+                                                    aria-controls="collapseExample-{{ $category->id }}"></i>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="ti ti-headphones"></i>Accessories <i
-                                            class="ti ti-chevron-right" data-bs-toggle="collapse"
-                                            href="#collapseExample-2" role="button" aria-expanded="false"
-                                            aria-controls="collapseExample-2"></i></a>
-                                    <div class="submenu mega-menu collapse" id="collapseExample-2"
-                                        data-bs-parent="#menu-collapse">
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện di động</h3>
-                                            <ul>
-                                                <li><a href="#">Power Banks</a></li>
-                                                <li><a href="#">Cables & Converters</a></li>
-                                                <li><a href="#">Wall Chargers</a></li>
-                                                <li><a href="#">Wireless Chargers</a></li>
-                                                <li><a href="#">Phone Cases & Covers</a></li>
-                                                <li><a href="#">Tablet Cases & Covers</a></li>
-                                                <li><a href="#">Screen Protectors</a></li>
-                                                <li><a href="#">Selfie Sticks</a></li>
-                                                <li><a href="#">Car Chargers</a></li>
-                                                <li><a href="#">Prepaid Cards</a></li>
-                                            </ul>
+                                        @if(isset($category->children[0]))
+                                        <div class="submenu mega-menu collapse" id="collapseExample-{{ $category->id }}"
+                                            data-bs-parent="#menu-collapse">
+                                            @foreach ($category->children as $item)
+                                                    <div class="mega-column">
+                                                        <x-link class="text-black" :href="route('user.product.indexUser', ['category_id' => $item->id])">
+                                                            <h3>{{ $item->name }}</h3>
+                                                        </x-link>
+                                                        @foreach ($item->children as $children)
+                                                            <ul class="sub-category">
+                                                                <li>
+                                                                    <x-link class="text-black" :href="route('user.product.indexUser', ['category->id' => $children->id])">
+                                                                        {{ $children->name }}
+                                                                    </x-link>
+                                                                </li>
+                                                            </ul>
+                                                        @endforeach
+                                                    </div>
+                                            @endforeach
                                         </div>
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện máy móc</h3>
-                                            <ul>
-                                                <li><a href="#">Mac Accessories</a></li>
-                                                <li><a href="#">Keyboards</a></li>
-                                                <li><a href="#">Mice</a></li>
-                                                <li><a href="#">Webcams</a></li>
-                                                <li><a href="#">Cooling Pads/Cooling Stands</a></li>
-                                                <li><a href="#">External DVD Writers</a></li>
-                                                <li><a href="#">Laptop Batteries</a></li>
-                                                <li><a href="#">Software</a></li>
-                                                <li><a href="#">Mousepads</a></li>
-                                                <li><a href="#">Skins & Decals</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-column">
-                                            <h3>Công cụ</h3>
-                                            <ul>
-                                                <li><a href="#">Laser Pointers</a></li>
-                                                <li><a href="#">Metal Detectors</a></li>
-                                                <li><a href="#">Dictionaries & Translators</a></li>
-                                                <li><a href="#">Universal Chargers</a></li>
-                                                <li><a href="#">Graphic Tablets</a></li>
-                                                <li><a href="#">Walkie-Talkies</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện mạng</h3>
-                                            <ul>
-                                                <li><a href="#">Routers</a></li>
-                                                <li><a href="#">Network Access Points</a></li>
-                                                <li><a href="#">Switches</a></li>
-                                                <li><a href="#">Network Interface Cards</a></li>
-                                                <li><a href="#">Wireless USB Adapters</a></li>
-                                                <li><a href="#">Modems</a></li>
-                                                <li><a href="#">Range Extender</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- Other Category Items -->
-                                <li><a href="#"><i class="ti ti-screen-share"></i> TV & Home Appliances</a></li>
-                                <li><a href="#"><i class="ti ti-clipboard-heart"></i>Health & Beauty</a></li>
-                                <li><a href="#"><i class="ti ti-baby-carriage"></i>Babies & Toys</a></li>
-                                <li><a href="#"><i class="ti ti-jacket"></i>Fashion & Clothing</a></li>
-                                <li>
-                                    <a href="#"><i class="ti ti-tools-kitchen"></i>Home & Kitchen <i
-                                            class="ti ti-chevron-right" data-bs-toggle="collapse"
-                                            href="#collapseExample-3" role="button" aria-expanded="false"
-                                            aria-controls="collapseExample-3"></i></a>
-                                    <div class="submenu mega-menu collapse" id="collapseExample-3"
-                                        data-bs-parent="#menu-collapse">
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện di động</h3>
-                                            <ul>
-                                                <li><a href="#">Power Banks</a></li>
-                                                <li><a href="#">Cables & Converters</a></li>
-                                                <li><a href="#">Wall Chargers</a></li>
-                                                <li><a href="#">Wireless Chargers</a></li>
-                                                <li><a href="#">Phone Cases & Covers</a></li>
-                                                <li><a href="#">Tablet Cases & Covers</a></li>
-                                                <li><a href="#">Screen Protectors</a></li>
-                                                <li><a href="#">Selfie Sticks</a></li>
-                                                <li><a href="#">Car Chargers</a></li>
-                                                <li><a href="#">Prepaid Cards</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện máy móc</h3>
-                                            <ul>
-                                                <li><a href="#">Mac Accessories</a></li>
-                                                <li><a href="#">Keyboards</a></li>
-                                                <li><a href="#">Mice</a></li>
-                                                <li><a href="#">Webcams</a></li>
-                                                <li><a href="#">Cooling Pads/Cooling Stands</a></li>
-                                                <li><a href="#">External DVD Writers</a></li>
-                                                <li><a href="#">Laptop Batteries</a></li>
-                                                <li><a href="#">Software</a></li>
-                                                <li><a href="#">Mousepads</a></li>
-                                                <li><a href="#">Skins & Decals</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-column">
-                                            <h3>Công cụ</h3>
-                                            <ul>
-                                                <li><a href="#">Laser Pointers</a></li>
-                                                <li><a href="#">Metal Detectors</a></li>
-                                                <li><a href="#">Dictionaries & Translators</a></li>
-                                                <li><a href="#">Universal Chargers</a></li>
-                                                <li><a href="#">Graphic Tablets</a></li>
-                                                <li><a href="#">Walkie-Talkies</a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="mega-column">
-                                            <h3>Phụ kiện mạng</h3>
-                                            <ul>
-                                                <li><a href="#">Routers</a></li>
-                                                <li><a href="#">Network Access Points</a></li>
-                                                <li><a href="#">Switches</a></li>
-                                                <li><a href="#">Network Interface Cards</a></li>
-                                                <li><a href="#">Wireless USB Adapters</a></li>
-                                                <li><a href="#">Modems</a></li>
-                                                <li><a href="#">Range Extender</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="#"><i class="ti ti-ball-football"></i>Sports & Travel</a></li>
-                                <li><a href="#"><i class="ti ti-book"></i>Book & Audible</a></li>
-                                <li><a href="#"><i class="ti ti-dog"></i>Pantry Food & Pet Supplies</a></li>
-                                <li><a href="#"><i class="ti ti-trees"></i>Garden</a></li>
-                                <li><a href="#"><i class="ti ti-radio"></i> Home Audio</a></li>
+                                        @endif
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

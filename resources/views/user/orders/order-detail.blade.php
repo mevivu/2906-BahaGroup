@@ -9,30 +9,44 @@
                     <div class="row">
                         <div class="col-md-4 col-12 border-right">
                             <h3>Chi tiết đơn hàng</h3>
-                            <p><strong>Mã đơn hàng:</strong> ORD123456</p>
-                            <p><strong>Ngày đặt:</strong> 15/08/2024</p>
-                            <p><strong>Phương thức thanh toán:</strong> Thanh toán khi nhận hàng</p>
-                            <p><strong>Địa chỉ giao:</strong> 123 Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
-                            <p><strong>Tổng hoá đơn:</strong> 3,000,000₫</p>
-                            <p><strong>Trạng thái:</strong> Đang xử lý</p>
-                            <p><strong>Ghi chú:</strong> Giao hàng trong giờ hành chính</p>
+                            <p><strong>Mã đơn hàng:</strong> {{ $instance->code }}</p>
+                            <p><strong>Ngày đặt:</strong> {{ format_date($instance->created_at) }}</p>
+                            <p><strong>Phương thức thanh toán:</strong>
+                                <span @class([
+                                    'badge',
+                                    App\Enums\Payment\PaymentMethod::from($instance->payment_method->value)->badge(),
+                                ])>{{ \App\Enums\Payment\PaymentMethod::getDescription($instance->payment_method->value) }}</span>
+                            </p>
+                            <p><strong>Địa chỉ giao hàng:</strong> {{ $instance->province->name }}, {{ $instance->district->name }}, {{ $instance->ward->name }}</p>
+                            <p><strong>Tổng hoá đơn:</strong> {{ format_price($instance->total) }}</p>
+                            @if($instance->discount_value)
+                                <p><strong>Mã giảm giá áp dụng:</strong> {{ $instance->discount->code }}</p>
+                                <p><strong>Giá trị giảm:</strong> {{ format_price($instance->discount_value) }}</p>
+                            @endif
+                            <p><strong>Trạng thái:</strong>
+                                <span @class([
+                                    'badge',
+                                    App\Enums\Order\OrderStatus::from($instance->status->value)->badge(),
+                                ])>{{ \App\Enums\Order\OrderStatus::getDescription($instance->status->value) }}</span>
+                            </p>
+                            <p><strong>Ghi chú:</strong> {{ $instance->note }}</p>
                         </div>
 
                         <!-- Thông tin người dùng -->
                         <div class="col-md-4 col-12 border-right mt-4 mt-md-0">
                             <h4>Thông tin người dùng</h4>
-                            <p><strong>Tên:</strong> Nguyễn Văn A</p>
-                            <p><strong>Địa chỉ:</strong> 123 Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
-                            <p><strong>Số điện thoại:</strong> 0123456789</p>
+                            <p><strong>Tên:</strong> {{ $instance->user->fullname }}</p>
+                            <p><strong>Địa chỉ:</strong> {{ $instance->user->address }}</p>
+                            <p><strong>Số điện thoại:</strong> {{ $instance->user->phone }}</p>
                         </div>
 
                         <!-- Thông tin khác -->
                         <div class="col-md-4 col-12 mt-4 mt-md-0">
                             <h4>Thông tin khác</h4>
-                            <p><strong>Tên người nhận:</strong> Trần Thị B</p>
-                            <p><strong>Địa chỉ người nhận:</strong> 456 Đường XYZ, Quận 2, TP. Hồ Chí Minh</p>
-                            <p><strong>Số điện thoại người nhận:</strong> 0987654321</p>
-                            <p><strong>Ghi chú khác:</strong> Giao hàng sau 6 giờ tối</p>
+                            <p><strong>Tên người nhận:</strong> {{ $instance->name_other }}</p>
+                            <p><strong>Địa chỉ người nhận:</strong> {{ $instance->address_other }}</p>
+                            <p><strong>Số điện thoại người nhận:</strong> {{ $instance->phone_other }}</p>
+                            <p><strong>Ghi chú khác:</strong> {{ $instance->note_other }}</p>
                         </div>
                     </div>
 
@@ -50,34 +64,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="bold-text">
-                                    <td data-label="Sản phẩm">
-                                        <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
-                                            <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
-                                            <div class="col-md-8 col-12">
-                                                <div class="product-name">Tên sản phẩm 1</div>
-                                                <div class="product-color">Xanh, 128GB</div>
+                                @foreach ($instance->details as $item)
+                                    <tr class="bold-text">
+                                        <td data-label="Sản phẩm">
+                                            <div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product_id]) }}';" style="cursor: pointer" class="align-items-center product-info row">
+                                                <div class="col-md-4 col-12"><img src="{{ asset($item->product->avatar) }}" class="img-fluid card-item-img"></div>
+                                                <div class="col-md-8 col-12">
+                                                    <div class="product-name">{{ $item->product->name }}</div>
+                                                    <div class="product-color">Xanh, 128GB</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle" data-label="Giá">1,000,000₫</td>
-                                    <td class="align-middle" data-label="Số lượng">1</td>
-                                    <td class="align-middle text-center" data-label="Tổng">1,000,000₫</td>
-                                </tr>
-                                <tr class="bold-text">
-                                    <td data-label="Sản phẩm">
-                                        <div onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer" class="align-items-center product-info row">
-                                            <div class="col-md-4 col-12"><img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="img-fluid card-item-img"></div>
-                                            <div class="col-md-8 col-12">
-                                                <div class="product-name">Tên sản phẩm 1</div>
-                                                <div class="product-color">Xanh, 128GB</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="align-middle" data-label="Giá">1,000,000₫</td>
-                                    <td class="align-middle" data-label="Số lượng">1</td>
-                                    <td class="align-middle text-center" data-label="Tổng">1,000,000₫</td>
-                                </tr>
+                                        </td>
+                                        <td class="align-middle" data-label="Giá">{{ format_price($item->unit_price) }}</td>
+                                        <td class="align-middle" data-label="Số lượng">{{ $item->qty }}</td>
+                                        <td class="align-middle text-center" data-label="Tổng">{{ format_price($item->unit_price * $item->qty) }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

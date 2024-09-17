@@ -4,15 +4,15 @@
             <h4 class="mb-0">Đồ gia dụng hiện đại</h4>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link" id="nav-sport-1-tab" data-bs-toggle="tab" data-bs-target="#nav-sport-1"
-                        type="button" role="tab" aria-controls="nav-sport-1" aria-selected="false">Sports &
+                    <button class="nav-link tab-btn" data-bs-toggle="tab" data-bs-target="#nav-sport-1"
+                        type="button" role="tab" aria-selected="false">Sports &
                         Travel</button>
-                    <button class="nav-link" id="nav-tv-1-tab" data-bs-toggle="tab" data-bs-target="#nav-tv-1" type="button"
+                    <button class="nav-link tab-btn" id="nav-tv-1-tab" data-bs-toggle="tab" data-bs-target="#nav-tv-1" type="button"
                         role="tab" aria-controls="nav-tv-1" aria-selected="false">TV & Home
                         Appliances</button>
-                    <button class="nav-link active" id="nav-home-1-tab" data-bs-toggle="tab" data-bs-target="#nav-home-1"
+                    <button class="nav-link active tab-btn" id="nav-home-1-tab" data-bs-toggle="tab" data-bs-target="#nav-home-1"
                         type="button" role="tab" aria-controls="nav-home-1" aria-selected="true">Home & Kitchen</button>
-                    <button class="nav-link" onclick="location.href='{{ route('user.product.indexUser') }}';"
+                    <button id="allBtn" class="nav-link" onclick="location.href='{{ route('user.product.indexUser') }}';"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả</button>
                 </div>
             </nav>
@@ -255,7 +255,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="nav-sport-1" role="tabpanel" aria-labelledby="nav-sport-1-tab">
+                <div class="tab-pane fade" id="nav-sport-1" role="tabpanel">
                     <div id="productCarousel-5" class="carousel slide">
                         <div class="carousel-inner">
                             <!-- Slide 1 -->

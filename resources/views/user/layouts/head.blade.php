@@ -29,50 +29,59 @@
 <link href="{{ asset('public/user/assets/css/index.css') }}" rel="stylesheet">
 @if (Route::currentRouteName() != 'user.order.indexUser')
     <style>
-        .table {
-            width: 100%;
-            table-layout: fixed;
-        }
+        @media (max-width: 768px) {
+            .table {
+                width: 100%;
+                table-layout: fixed;
+            }
 
-        .table thead {
-            display: none;
-        }
+            .table thead {
+                display: none;
+            }
 
-        .table tbody tr {
-            display: block;
-            margin-bottom: 10px;
-        }
+            .table tbody tr {
+                display: block;
+                margin-bottom: 10px;
+            }
 
-        .table tbody td {
-            display: block;
-            text-align: right;
-            border-bottom: 1px solid #ddd;
-            position: relative;
-            padding-left: 50%;
-        }
+            .table tbody td {
+                display: block;
+                text-align: right;
+                border-bottom: 1px solid #ddd;
+                position: relative;
+                padding-left: 50%;
+            }
 
-        .table tbody td::before {
-            content: attr(data-label);
-            position: absolute;
-            left: 0;
-            width: 50%;
-            padding-left: 15px;
-            font-weight: bold;
-            text-align: left;
-        }
+            .table tbody td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+            }
 
-        .table tfoot {
-            display: block;
-        }
+            .table tfoot {
+                display: block;
+            }
 
-        .table tfoot td {
-            display: block;
-            text-align: right;
-        }
+            .table tfoot td {
+                display: block;
+                text-align: right;
+            }
 
-        .table tfoot tr {
-            display: flex;
-            justify-content: flex-end;
+            .table tfoot tr {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+@endif
+@if (Route::currentRouteName() != 'user.index')
+    <style>
+        .absolute-category {
+            z-index: 3;
         }
     </style>
 @endif

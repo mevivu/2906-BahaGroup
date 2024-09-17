@@ -12,8 +12,8 @@ trait Setup
     public function createCodeUser(){
         return 'U'.$this->uniqidReal(5).time();
     }
-    public function createCodeStore(){
-        return 'S'.$this->uniqidReal(5).time();
+    public function createCodeOrder(){
+        return 'HD'.$this->uniqidReal(5).time();
     }
     public function createCodePayment(){
         return 'P'.$this->uniqidReal(5).time();

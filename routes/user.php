@@ -58,6 +58,7 @@ Route::controller(App\Admin\Http\Controllers\Order\OrderController::class)
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::get('/cancel/{id?}', 'cancel')->name('cancel');
         Route::put('/', 'update')->name('update');
     });
 

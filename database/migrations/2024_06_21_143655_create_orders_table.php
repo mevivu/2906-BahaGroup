@@ -28,6 +28,7 @@ return new class extends Migration
             $table->double('total');
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);
             $table->text('note')->nullable();
+            $table->text('code')->unique();
             $table->tinyInteger('is_deleted')->default(DefaultStatus::Published->value);
 
             $table->string('name_other')->nullable();

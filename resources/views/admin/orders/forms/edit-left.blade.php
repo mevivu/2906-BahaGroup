@@ -1,7 +1,7 @@
 <div class="col-12 col-md-9">
     <div class="card">
         <div class="card-header justify-content-between">
-            <h2 class="mb-0">{{ __('Thông tin đơn hàng') }}</h2>
+            <h2 class="mb-0">{{ __('Thông tin đơn hàng') .' #'.$order->code }}</h2>
         </div>
         <x-input type="hidden" :value="$order->user_id" id="orderUserId"/>
         <div class="row card-body">

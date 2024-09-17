@@ -79,7 +79,10 @@ class OrderController extends Controller
 
     public function detail($id)
     {
-        return view($this->view['detail']);
+        $instance = $this->repository->findOrFail($id);
+        return view($this->view['detail'], [
+            'instance' => $instance
+        ]);
     }
 
     public function index(OrderDataTable $dataTable)

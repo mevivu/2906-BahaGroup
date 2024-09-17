@@ -4,15 +4,15 @@
             <h4 class="mb-0">Thiết bị công nghệ hàng đầu</h4>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
+                    <button class="nav-link tab-btn" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
                         type="button" role="tab" aria-controls="nav-sport" aria-selected="false">Sports &
                         Travel</button>
-                    <button class="nav-link" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv" type="button"
+                    <button class="nav-link tab-btn" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv" type="button"
                         role="tab" aria-controls="nav-tv" aria-selected="false">TV & Home
                         Appliances</button>
-                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                    <button class="nav-link tab-btn active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home & Kitchen</button>
-                    <button class="nav-link" onclick="location.href='{{ route('user.product.indexUser') }}';"
+                    <button id="allBtn" class="nav-link" onclick="location.href='{{ route('user.product.indexUser') }}';"
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả</button>
                 </div>
             </nav>
