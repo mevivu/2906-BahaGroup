@@ -712,41 +712,20 @@ return [
             'addClass' => 'text-center align-middle'
         ],
     ],
-    'renting-order' => [
+    'order_user' => [
         'id' => [
             'title' => 'Mã đơn hàng',
-            'orderable' => false,
-        ],
-        'user' => [
-            'title' => 'customer',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'vehicle' => [
-            'title' => 'Phương tiện',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'payment_code' => [
-            'title' => 'Mã thanh toán',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => false,
-        ],
-        'status' => [
-            'title' => 'Trạng thái',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'payment_method' => [
             'title' => 'Phương thức thanh toán',
             'orderable' => false,
-            'addClass' => 'align-middle text-center',
+            'addClass' => 'text-center align-middle',
         ],
-        'order_type' => [
-            'title' => 'Loại',
+        'status' => [
+            'title' => 'Trạng thái',
             'orderable' => false,
-            'visible' => false,
             'addClass' => 'text-center align-middle'
         ],
         'total' => [
@@ -755,7 +734,7 @@ return [
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
-            'title' => 'Ngày tạo',
+            'title' => 'Thời gian đặt',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],

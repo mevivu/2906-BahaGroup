@@ -30,6 +30,6 @@
         'id_table' => $dataTable->getTableAttribute('id')
 ])
 
-@include('admin.orders.scripts.scripts')
+@include('user.orders.scripts.scripts')
 
 @endpush
