@@ -1,15 +1,7 @@
-<div id="product-category" class="container">
+<div id="product-category" class="container shadow rounded-3">
     <div class="row">
-        <div class="col-12 header-box d-flex align-items-center">
-            <h4>Thiết bị công nghệ hàng đầu</h4>
-        </div>
-        <div class="col-3 d-none d-lg-block">
-            <a href="#" class="banner-img">
-                <img loading="lazy" decoding="async" width="240" height="433"
-                    src="{{ asset('public/user/assets/images/banner-home2-04.jpg') }}"
-                    class="d-none d-xl-inline-block" alt=""> </a>
-        </div>
-        <div class="col-12 col-lg-9 ">
+        <div class="col-12 header-box d-flex align-items-center shadow-sm">
+            <h4 class="mb-0">Thiết bị công nghệ hàng đầu</h4>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
@@ -24,6 +16,15 @@
                         type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả</button>
                 </div>
             </nav>
+        </div>
+        <div class="col-12 col-md-2 p-0">
+            <a href="#" class="banner-img">
+                <img loading="lazy" decoding="async"
+                    src="{{ asset('public/user/assets/images/banner-home2-04.jpg') }}"
+                    class="d-none d-xl-inline-block" alt="">
+            </a>
+        </div>
+        <div class="col-12 col-md-10">
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div id="productCarousel-1" class="carousel slide">
@@ -37,21 +38,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -62,21 +63,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -87,21 +88,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -112,21 +113,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -144,21 +145,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -169,21 +170,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -194,21 +195,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -219,21 +220,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -266,21 +267,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -291,21 +292,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -316,21 +317,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -341,21 +342,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -373,21 +374,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -398,21 +399,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -423,21 +424,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a class="add-to-cart" href="#"><i style="border-radius: 20px;" class="fa fa-shopping-cart w-100" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -448,21 +449,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a class="add-to-cart" href="#"><i style="border-radius: 20px;" class="fa fa-shopping-cart w-100" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -497,21 +498,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -522,21 +523,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -547,21 +548,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -572,21 +573,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -604,21 +605,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -629,21 +630,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -654,21 +655,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
@@ -679,21 +680,21 @@
                                                 <div class="position-relative">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
                                                     <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body shadow-sm">
                                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
+                                                        <span class="star text-warning">★</span>
                                                         <span>100</span>
                                                     </div>
                                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
+                                                    <div class="text-center product-hover">
                                                         <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>

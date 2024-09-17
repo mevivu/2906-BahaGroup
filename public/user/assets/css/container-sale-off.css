@@ -1,7 +1,7 @@
 #container-sale-off {
-    margin-top: 30px;
+    /* margin-top: 30px; */
     background-color: #fff;
-    padding: 10px 50px;
+    /* padding: 10px 50px; */
 }
 
 #container-sale-off .header-box {
@@ -14,14 +14,10 @@
     text-decoration: none;
 }
 
-#container-sale-off .header-box h4 {
-    display: inline-block;
-    padding: 15px 10px;
-}
 
 #container-sale-off .header-box .timer {
     display: inline-block;
-    margin-right: 1em;
+    /* margin-right: 1em; */
     text-align: center;
     height: 2em;
     width: 10em;
@@ -106,3 +102,7 @@
 }
 
 #productCarousel .product-card:hover {}
+
+.product-hover {
+    height: 0px;
+}

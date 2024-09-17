@@ -1,3 +1,4 @@
+@include('floating-contact')
 <div id="footer" class="bg-white">
     <div class="container">
         <div class="row d-flex justify-content-center">

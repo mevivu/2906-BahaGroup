@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Repositories\Order;
+
 use App\Admin\Repositories\EloquentRepository;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Models\Order;
@@ -14,12 +15,14 @@ class OrderRepository extends EloquentRepository implements OrderRepositoryInter
     {
         return Order::class;
     }
-    public function findOrFailWithRelations($id, array $relations = ['details', 'user']){
+    public function findOrFailWithRelations($id, array $relations = ['details', 'user'])
+    {
         $this->findOrFail($id);
         $this->instance = $this->instance->load($relations);
         return $this->instance;
     }
-    public function getQueryBuilderWithRelations($relations = ['user']){
+    public function getQueryBuilderWithRelations($relations = ['user'])
+    {
         $this->getQueryBuilder();
         $this->instance = $this->instance->with($relations)->orderBy('id', 'desc');
         return $this->instance;

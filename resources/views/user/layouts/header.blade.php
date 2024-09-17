@@ -1,62 +1,54 @@
 <!-- Main Header -->
-<div id="main-container" class="d-none d-xl-block bg-white pt-3">
-    <div class="d-flex align-items-center justify-content-center wrap-nav mb-3">
-        <div class="container row justify-content-center align-items-center">
-            <div class="row">
-                <div style="margin-left: -2.5em;" class="col-6 d-flex align-items-center mb-3">
-                    <p class="m-0">Miễn phí vận chuyển trong <span style="color: #02734a;"><strong>Ngày của
-                                Baha.</strong></span></p>
+<div id="top-bar" class="pt-2 pb-2 shadow-sm">
+    <div class="container">
+        <p class="m-0">Miễn phí vận chuyển trong
+            <span class="text-success fw-bold">Ngày của Baha.</span>
+        </p>
+    </div>
+</div>
+
+<div id="top-header" class="d-flex align-items-center justify-content-center wrap-nav">
+    <div class="container">
+        <div class="row pt-3 pb-3">
+            <!-- Logo -->
+            <div class="col-3 d-flex align-items-center">
+                <x-link :href="route('user.index')">
+                    <img class="img-fluid" src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
+                        alt="Baha">
+                </x-link>
+            </div>
+            <!-- Search Bar -->
+            <div class="col-6 d-flex justify-content-center align-items-center">
+                <div class="input-group">
+                    <x-button class="btn-outline-secondary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Tất cả</x-button>
+                    <ul class="dropdown-menu search">
+                        <li class="dropdown-item selected">Tất cả</li>
+                        <li class="dropdown-item">Babies & Toys</li>
+                    </ul>
+                    <input type="text" class="form-control" placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
+                    <x-button type="submit" class="button-search"><i class="ti ti-search"></i></x-button>
                 </div>
-                <div class="col-6 text-center d-flex align-items-center justify-content-center mb-3">
-                </div>
-                <!-- Logo -->
-                <div style="margin-left: -2.5em;" class="col-3 d-flex align-items-center">
-                    <a href="{{ route('user.index') }}"><img style="image-rendering: pixelated;"
-                            src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
-                            alt="Baha" height="60" width="250"></a>
-                </div>
-                <!-- Search Bar -->
-                <div class="col-6 d-flex justify-content-center align-items-center">
-                    <div class="input-group">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Tất cả</button>
-                        <ul class="dropdown-menu search">
-                            <li class="dropdown-item selected"><label>Tất cả</label></li>
-                            <li class="dropdown-item"><label>Babies & Toys&nbsp;&nbsp;(6)</label></li>
-                            <li class="dropdown-item"><label>Books & Audible&nbsp;&nbsp;(4)</label></li>
-                            <li class="dropdown-item"><label>Fashion & Clothing&nbsp;&nbsp;(16)</label></li>
-                            <li class="dropdown-item"><label>Games & Toys&nbsp;&nbsp;(1)</label></li>
-                            <li class="dropdown-item"><label>Garden&nbsp;&nbsp;(5)</label></li>
-                            <li class="dropdown-item"><label>Health & Beauty&nbsp;&nbsp;(12)</label></li>
-                            <li class="dropdown-item"><label>Home & Kitchen&nbsp;&nbsp;(9)</label></li>
-                            <li class="dropdown-item"><label>Home Audio&nbsp;&nbsp;(4)</label></li>
-                            <li class="dropdown-item"><label>Phụ kiện điện tử&nbsp;&nbsp;(15)</label></li>
-                            <li class="dropdown-item"><label>Sports & Travel&nbsp;&nbsp;(14)</label></li>
-                            <li class="dropdown-item"><label>Thiết bị điện tử&nbsp;&nbsp;(19)</label></li>
-                            <li class="dropdown-item"><label>TV & Home Appliances&nbsp;&nbsp;(10)</label></li>
-                        </ul>
-                        <input type="text" class="form-control" placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
-                        <button type="submit" class="button-search btn"><i class="ti ti-search"></i></button>
+            </div>
+            <!-- Cart Icon -->
+            <div class="col-3 d-flex justify-content-center align-items-center">
+                @if (!auth('web')->user())
+                    <div class="me-5 pe-"><a class="top-item text-black" href="{{ route('user.auth.indexUser') }}">Đăng nhập</a></div>
+                @else
+                <div class="me-5 pe- position-relative">
+                    <a class="top-item text-black" href="{{ route('user.profile.indexUser') }}">Hi {{ auth('web')->user()->fullname }}</a>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a class="dropdown-item" href="{{ route('user.order.indexUser') }}">Đơn hàng</a>
+                        <a class="dropdown-item" href="{{ route('user.profile.indexUser') }}">Tài khoản</a>
+                        <a class="dropdown-item" href="{{ route('user.password.indexUser') }}">Mật khẩu</a>
+                        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalLogout">{{ __('Đăng xuất') }}</a>
                     </div>
                 </div>
-                <!-- Cart Icon -->
-                <div class="col-3 d-flex justify-content-center align-items-center">
-                    @if (!auth('web')->user())
-                        <div class="me-5 pe-"><a class="top-item text-black" href="{{ route('user.auth.indexUser') }}">Đăng nhập</a></div>
-                    @else
-                        <div class="me-5 pe- position-relative">
-                            <a class="top-item text-black" href="{{ route('user.profile.indexUser') }}">Hi {{ auth('web')->user()->fullname }}</a>
-                            <div class="dropdown-menu" id="userDropdown">
-                                <a class="dropdown-item" href="{{ route('user.profile.indexUser') }}">Tài khoản</a>
-                                <a class="dropdown-item" href="{{ route('user.logout') }}">Đăng xuất</a>
-                            </div>
-                        </div>
-                    @endif
-                    <div class="position-relative">
-                        <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                            style="left: 100% !important;">0</span>
-                    </div>
+                @endif
+                <div class="position-relative">
+                    <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="left: 100% !important;">0</span>
                 </div>
             </div>
         </div>
@@ -64,7 +56,7 @@
 </div>
 
 <!-- Navbar -->
-<div id="navbar" class="row mt-2">
+<div id="navbar" class="">
     <div class="d-flex align-items-center justify-content-center wrap-nav" style="background-color: #1c5639;">
         <div class="row container">
             <!-- Categories Menu -->
@@ -78,11 +70,21 @@
             <!-- Main Navigation Links -->
             <div class="col-9 d-flex align-items-center d-none d-xl-flex">
                 <ul class="nav">
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.index') }}">Trang chủ</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.information') }}">Giới thiệu</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.indexUser') }}">Sản phẩm</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.contact') }}">Liên hệ</a></strong></li>
-                    <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.saleLimited') }}">Khuyến mãi giới hạn</a></strong></li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.index')">Trang chủ</x-link>
+                    </li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.information')">Giới thiệu</x-link>
+                    </li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.product.indexUser')">Sản phẩm</x-link>
+                    </li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.contact')">Liên hệ</x-link>
+                    </li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
+                    </li>
                 </ul>
             </div>
             <!-- NavBar Responsive-->
@@ -92,13 +94,14 @@
                     <i class="ti ti-list default-double-font-size"></i>
                 </button>
                 <div class="col-6 d-flex justify-content-center align-items-center">
-                    <a href="#"><img
-                            src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
-                            alt="Baha" height="42" width="174"></a>
+                    <x-link :href="route('user.index')">
+                        <img src="{{ asset('public/user/assets/images/logo-ngang.png') }}"
+                            alt="Baha" class="img-fluid">
+                    </x-link>
                 </div>
                 <div class="col-3 d-flex justify-content-center align-items-center cart">
                     <div class="position-relative">
-                        <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="ti ti-shopping-cart"></i>
+                        <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="left: 100% !important;">0</span>
                     </div>
                 </div>
@@ -114,39 +117,65 @@
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu"
-                                type="button" role="tab" aria-controls="menu" aria-selected="true"><i
-                                    class="ti ti-list"></i> Menu</button>
+                                type="button" role="tab" aria-controls="menu" aria-selected="true">
+                                <i class="ti ti-list"></i> Menu
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#category"
-                                type="button" role="tab" aria-controls="category" aria-selected="false"><i
-                                    class="ti ti-list"></i> Danh mục</button>
+                                type="button" role="tab" aria-controls="category" aria-selected="false">
+                                <i class="ti ti-list"></i> Danh mục
+                            </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <!-- Menu Tab -->
                         <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
                             <ul class="nav">
-                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.index') }}">Trang chủ</a></strong></li>
-                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.information') }}">Giới thiệu</a></strong></li>
-                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.indexUser') }}">Sản phẩm</a></strong></li>
-                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.contact') }}">Liên hệ</a></strong></li>
-                                <li class="nav-item default-font-size"><strong><a href="{{ route('user.product.saleLimited') }}">Khuyến mãi giới hạn</a></strong></li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.index')">Trang chủ</x-link>
+                                </li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.information')">Giới thiệu</x-link>
+                                </li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.product.indexUser')">Sản phẩm</x-link>
+                                </li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.contact')">Liên hệ</x-link>
+                                </li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
+                                </li>
+                                @if (auth('web')->user())
+                                    <li class="nav-item default-font-size">
+                                        <x-link :href="route('user.order.indexUser')">Đơn hàng</x-link>
+                                    </li>
+                                    <li class="nav-item default-font-size">
+                                        <x-link :href="route('user.profile.indexUser')">Tài khoản</x-link>
+                                    <li class="nav-item default-font-size">
+                                        <x-link :href="route('user.password.indexUser')">Mật khẩu</x-link>
+                                    </li>
+                                    <li class="nav-item default-font-size">
+                                        <x-link data-bs-toggle="modal" data-bs-target="#modalLogout" :href="route('user.product.saleLimited')">Đăng xuất</x-link>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="category" role="tabpanel" aria-labelledby="category-tab">
                             <ul class="menu">
                                 <li>
-                                    <a href="#"><i class="ti ti-device-mobile"></i>Thiết bị điện tử <i
+                                    <x-link href="#">
+                                        <i class="ti ti-device-mobile"></i>Thiết bị điện tử <i
                                             class="ti ti-chevron-right" data-bs-toggle="collapse"
                                             href="#collapseExample-1" role="button" aria-expanded="false"
-                                            aria-controls="collapseExample-1"></i></a>
+                                            aria-controls="collapseExample-1"></i>
+                                    </x-link>
                                     <div class="submenu mega-menu collapse" id="collapseExample-1"
                                         data-bs-parent="#menu-collapse">
                                         <div class="mega-column">
                                             <h3>Phụ kiện di động</h3>
                                             <ul>
-                                                <li><a href="#">Laptops</a></li>
+                                                <li><x-link :href="route('user.index')">Laptops</x-link></li>
                                                 <li><a href="#">Desktops</a></li>
                                                 <li><a href="#">Mobile</a></li>
                                                 <li><a href="#">Computers</a></li>
@@ -300,6 +329,21 @@
         </div>
     </div>
 </div>
+
+@if (!Route::is('user.index'))
+<div class="container">
+    <div class="breadcrumb-container pt-3 pb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <x-link :href="route('user.index')">Trang chủ</x-link>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                @yield('title')
+            </li>
+        </ol>
+    </div>
+</div>
+@endif
 
 <button onclick="topFunction()" id="backToTopBtn" title="Go to top">
     <img src="{{ asset('public/user/assets/images/up-arrow.png') }}" alt="Back to Top" style="width: 48px; height: 48px;">

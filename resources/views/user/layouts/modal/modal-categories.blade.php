@@ -1,11 +1,11 @@
-<div class="row container container-fluid p-0 absolute-category">
+<div style="{{ Route::currentRouteName() != 'user.index' ? 'margin-top: -3.4em' : '' }}" class="row container container-fluid p-0 absolute-category">
     <div style="margin-left: -16px;" id="side-bar" class="col-3 {{ Route::currentRouteName() != 'user.index' ? 'd-none' : '' }}">
         <ul class="menu">
             <li><a href="#"><i class="ti ti-device-mobile"></i>Thiết bị điện tử <i class="ti ti-chevron-right"></i></a>
                 <div class="submenu mega-menu">
                     <div class="mega-column">
                         <h3>Phụ kiện di động</h3>
-                        <ul>
+                        <ul class="sub-category">
                             <li><a href="#">Laptops</a></li>
                             <li><a href="#">Desktops</a></li>
                             <li><a href="#">Mobile</a></li>

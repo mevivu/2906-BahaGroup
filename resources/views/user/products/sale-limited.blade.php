@@ -1,14 +1,7 @@
 @extends('user.layouts.master')
+@section('title', __('Khuyến mãi giới hạn'))
 
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Khuyến mãi giới hạn</li>
-            </ol>
-        </div>
-    </div>
     <div id="quickViewProductModal1" class="modal">
         <div class="modal-dialog modal-dialog-product-preview">
             <div class="modal-content">
@@ -37,25 +30,24 @@
                             <div class="col-md-8">
                                 <h3>Phụ kiện điện tử</h3>
                                 <div class="rating">
-                                    <span class="star" style="color: #ffa200;">★</span>
-                                    <span class="star" style="color: #ffa200;">★</span>
-                                    <span class="star" style="color: #ffa200;">★</span>
-                                    <span class="star" style="color: #ffa200;">★</span>
-                                    <span class="star" style="color: #ffa200;">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                     <span>100 khách hàng đánh giá</span>
-                                    <span class="ms-2"><strong> Đã bán:</strong> 4</span>
+                                    <span class="ms-2 text-uppercase">Đã bán: 4</span>
                                 </div>
                             </div>
                             <div class="col-md-4 text-end justify-content-between align-items-center">
-                                <a class="lead" href="#"><i class="fa text-black fa-facebook-square"></i></a>
-                                <a class="lead ms-2 me-2" href="#"><i class="fa text-black fa-envelope-open-o"></i></a>
-                                <a class="lead me-2" href="#"><i class="fa text-black fa-google"></i></a>
-                                <a class="lead" href="#"><i class="fa text-black fa-linkedin-square"></i></a>
+                                <a class="lead" href="https://www.facebook.com/people/BaHa-Group/61559205100698/"><i class="fa-brands fa-facebook text-black"></i></a>
+                                <a class="lead ms-2 me-2" href="https://www.tiktok.com/@baha_group_official"><i class="fa-brands fa-tiktok text-black"></i></a>
+                                <a class="lead" href="https://www.linkedin.com/company/baha-group-joint-stock-company/?viewAsMember=true"><i class="fa-brands fa-linkedin text-black"></i></a>
                             </div>
                         </div>
                         <div class="row align-items-center ms-1 mt-3 mb-3">
-                            <div class="col-md-8 bg-default text-white text-center h-100">End in
-                                <strong>121 : 09 : 47 : 39</strong>
+                            <div class="col-md-8 bg-default text-white text-center text-uppercase h-100">End in
+                                121 : 09 : 47 : 39
                             </div>
                             <div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold : 4/100</div>
                         </div>
@@ -149,19 +141,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
+                                        <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -183,19 +175,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -217,19 +209,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -251,19 +243,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -285,19 +277,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -319,19 +311,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -353,19 +345,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
@@ -387,19 +379,19 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress" style="display: flex; align-items: center;">
+                                    <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
-                                        <div style="color:#ffffff" class="progress-text">
+                                        <div class="progress-text fs-6">
                                             <strong>Sold: 95/100</strong>
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>

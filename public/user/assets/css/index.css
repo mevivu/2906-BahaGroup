@@ -116,8 +116,9 @@ li {
 }
 
 #slide-show {
-    margin-left: 318px;
+    margin-left: 322px;
     width: 76%;
+    z-index: 99;
 }
 
 .btn-carousel-slider {
@@ -126,12 +127,24 @@ li {
 
 
 @media (max-width: 1199px) {
+    .badge-danger {
+        font-size: 0.5em !important;
+    }
+
+    .badge-featured {
+        font-size: 0.5em !important;
+    }
+
     .progress-text {
         font-size: 10px !important;
     }
 
     .left-btn-slider {
-        margin-left: -3em !important;
+        margin-left: -0.5em !important;
+    }
+
+    .right-btn-slider {
+        margin-right: -0.5em !important;
     }
 
     .right-btn-slider,
@@ -153,12 +166,8 @@ li {
         margin-right: -0.5em !important;
     }
 
-    .right-btn-slider {
-        margin-right: -3em !important;
-    }
-
     .right-btn-slider1 {
-        margin-right: -3em !important;
+        margin-right: -0.5em !important;
     }
 
     .search-bar {
@@ -200,12 +209,6 @@ li {
         justify-content: flex-end;
     }
 
-
-    #carouselExampleIndicators .content h3 {
-        font-size: unset;
-    }
-
-
     #carouselExampleIndicators .image-box img {
         height: auto !important;
     }
@@ -214,7 +217,7 @@ li {
         margin-left: 0px;
         padding: 10px 0;
         position: fixed;
-        z-index: 99;
+        z-index: 999;
         background-color: white;
         left: 0px;
     }
@@ -318,14 +321,6 @@ li {
         margin-left: 0 !important;
     }
 
-    /* responsive cart */
-    /* Đảm bảo bảng không bị tràn ra ngoài màn hình */
-    /* Đảm bảo bảng không bị tràn ra ngoài màn hình */
-    .table {
-        width: 100%;
-        table-layout: fixed;
-    }
-
     .modal-dialog-product-preview {
         max-width: 1000px !important;
     }
@@ -333,52 +328,25 @@ li {
 
 /* Ẩn các cột không cần thiết trên màn hình nhỏ */
 @media (max-width: 768px) {
-    .table thead {
-        display: none;
+
+    #top-bar, #top-header {
+        display: none !important;
     }
+
+    .add-to-cart {
+        display: none !important;;
+    }
+
+    .progress-text {
+        font-size: 12px !important;
+    }
+
 
     .margin-information {
         width: 100% !important;
         /* Tràn full màn hình */
         margin-bottom: 16px;
         /* Khoảng cách giữa các thẻ */
-    }
-
-    .table tbody tr {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .table tbody td {
-        display: block;
-        text-align: right;
-        border-bottom: 1px solid #ddd;
-        position: relative;
-        padding-left: 50%;
-    }
-
-    .table tbody td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 15px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    .table tfoot {
-        display: block;
-    }
-
-    .table tfoot td {
-        display: block;
-        text-align: right;
-    }
-
-    .table tfoot tr {
-        display: flex;
-        justify-content: flex-end;
     }
 
     .category-filter {
@@ -852,6 +820,10 @@ li {
     color: gray;
 }
 
+.text-6 {
+    color: #666666;
+}
+
 .text-black {
     color: black;
 }
@@ -1092,12 +1064,8 @@ li {
 }
 
 .breadcrumb {
-    padding: 10px 0px;
-    list-style: none;
     margin-bottom: 0;
     /* Đảm bảo không có khoảng cách giữa breadcrumb và phần dưới */
-    display: flex;
-    align-items: center;
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
@@ -1259,7 +1227,7 @@ td[data-label="Tổng"] {
 .absolute-category {
     position: absolute;
     top: 0;
-    z-index: 999;
+    z-index: 3;
 }
 
 .text-justify {
@@ -1306,9 +1274,9 @@ td[data-label="Tổng"] {
     /* Vị trí cố định */
     bottom: 20px;
     /* Cách đáy trang 20px */
-    right: 30px;
+    left: 30px;
     /* Cách phải trang 30px */
-    z-index: 99;
+    z-index: 999;
     /* Đảm bảo nút không bị che khuất */
     border: none;
     /* Loại bỏ viền */
@@ -1348,10 +1316,6 @@ td[data-label="Tổng"] {
     width: 73.6% !important;
 }
 
-.left-btn-slider {
-    margin-left: -5.5em;
-}
-
 .right-btn-slider,
 .left-btn-slider,
 .right-btn-slider1 {
@@ -1386,6 +1350,7 @@ td[data-label="Tổng"] {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 .left-btn-slider-related {
     margin-left: -2em;
 }
@@ -1400,10 +1365,6 @@ td[data-label="Tổng"] {
 
 .slider-button-right {
     margin-right: 2em;
-}
-
-.right-btn-slider {
-    margin-right: -5.5em;
 }
 
 .left-btn-slider:hover,
@@ -1449,10 +1410,6 @@ td[data-label="Tổng"] {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.progress-text {
-    font-size: 16px;
 }
 
 .progress-bar {
@@ -1556,4 +1513,139 @@ td[data-label="Tổng"] {
 
 .me-5:hover #userDropdown {
     display: block;
+}
+
+.menu {
+    max-height: 42.5em;
+    min-height: 42.5em;
+}
+
+.submenu {
+    z-index: 999 !important;
+}
+
+/* Floating button */
+.fab-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    user-select: none;
+    position: fixed;
+    bottom: 30px;
+    z-index: 999;
+    right: 30px;
+}
+
+.fab-container:hover {
+    height: 100%;
+}
+
+.fab-container:hover .sub-button:nth-child(2) {
+    transform: translateY(-80px);
+}
+
+.fab-container:hover .sub-button:nth-child(3) {
+    transform: translateY(-140px);
+}
+
+.fab-container:hover .sub-button:nth-child(4) {
+    transform: translateY(-200px);
+}
+
+.fab-container:hover .sub-button:nth-child(5) {
+    transform: translateY(-260px);
+}
+
+.fab-container:hover .sub-button:nth-child(6) {
+    transform: translateY(-320px);
+}
+
+.fab-container .fab {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    background-color: #0a7cff;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.fab-container .fab .fab-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.fab-container .fab .fab-content .material-icons {
+    color: white;
+    font-size: 48px;
+}
+
+.fab-container .sub-button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 10px;
+    right: 10px;
+    height: 30px;
+    width: 30px;
+    background-color: #0a7cff;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.fab-container .sub-button:hover {
+    cursor: pointer;
+}
+
+.fab-container .sub-button .material-icons {
+    color: white;
+    padding-top: 6px;
+}
+
+/* Floating button */
+#bottom-menu .nav-link {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.star {
+    color: #ffa200;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+/* datatable */
+
+table.dataTable>thead .sorting:before, table.dataTable>thead .sorting_asc:before, table.dataTable>thead .sorting_desc:before, table.dataTable>thead .sorting_asc_disabled:before, table.dataTable>thead .sorting_desc_disabled:before{
+    content: "\f30c";
+    font-family: 'Font Awesome 5 free';
+}
+table.dataTable>thead .sorting:after, table.dataTable>thead .sorting_asc:after, table.dataTable>thead .sorting_desc:after, table.dataTable>thead .sorting_asc_disabled:after, table.dataTable>thead .sorting_desc_disabled:after{
+    content: "\f309";
+    font-family: 'Font Awesome 5 free';
+}
+.dt-buttons{
+    width: 100%;
+    margin-bottom: 20px;
+}
+.dt-buttons button.btn{
+    width: fit-content;
+    flex: unset;
+}
+.dataTables_length{
+    float: left;
+}
+div.dataTables_wrapper div.dataTables_processing{
+    z-index: 9;
+}
+.dataTables_filter{
+    opacity: 0;
 }

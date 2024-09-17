@@ -1,6 +1,6 @@
 <div class="row container container-fluid p-0">
     <div id="slide-show" class="container-fluid col-10 p-0">
-        <div id="carouselExampleIndicators" class="carousel slide h-100" data-bs-ride="carousel">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner wrap-slide">
                 <div class="carousel-item active">
                     <div class="d-flex justify-content-center align-items-center position-relative">
@@ -20,9 +20,9 @@
 
                     </div>
                 </div>
-                <div class="carousel-item h-100">
+                <div class="carousel-item">
                     <div class="d-flex justify-content-center align-items-center position-relative">
-                        <div class="row h-100">
+                        <div class="row">
                             <div class="content col-5 ">
                                 <h2>Ghế xịn Velvet</h2>
                                 <h3>bọc nhung Easyfashion</h3>
@@ -38,7 +38,7 @@
 
                     </div>
                 </div>
-                <div class="carousel-item h-100">
+                <div class="carousel-item">
                     <div class="d-flex justify-content-center align-items-center position-relative">
                         <div class="row">
                             <div class="content col-5">

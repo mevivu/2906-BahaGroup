@@ -39,10 +39,9 @@
                                 </div>
                             </div>
                             <div class="col-md-4 text-end justify-content-between align-items-center">
-                                <a class="lead" href="#"><i class="fa text-black fa-facebook-square"></i></a>
-                                <a class="lead ms-2 me-2" href="#"><i class="fa text-black fa-envelope-open-o"></i></a>
-                                <a class="lead me-2" href="#"><i class="fa text-black fa-google"></i></a>
-                                <a class="lead" href="#"><i class="fa text-black fa-linkedin-square"></i></a>
+                                <a class="lead" href="https://www.facebook.com/people/BaHa-Group/61559205100698/"><i class="fa-brands fa-facebook text-black"></i></a>
+                                <a class="lead ms-2 me-2" href="https://www.tiktok.com/@baha_group_official"><i class="fa-brands fa-tiktok text-black"></i></a>
+                                <a class="lead" href="https://www.linkedin.com/company/baha-group-joint-stock-company/?viewAsMember=true"><i class="fa-brands fa-linkedin text-black"></i></a>
                             </div>
                         </div>
                         <div class="row align-items-center ms-1 mt-3 mb-3">
@@ -267,11 +266,11 @@
                                 <div>
                                     <p><strong>Nguyễn Văn A</strong> - 15/08/2024</p>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                     </div>
                                     <p>Sản phẩm rất tốt, tôi rất hài lòng!</p>
                                 </div>

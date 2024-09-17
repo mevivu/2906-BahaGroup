@@ -13,7 +13,7 @@ class OrderDataTable extends BaseDataTable
 
     protected $nameTable = 'orderTable';
 
-    protected array $actions = ['excel', 'reset', 'reload'];
+    protected array $actions = ['reset', 'reload'];
 
     public function __construct(
         OrderRepositoryInterface $repository

@@ -1,77 +1,71 @@
 @extends('user.layouts.master')
-
+@section('title', __('Thông tin cá nhân'))
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Thông tin cá nhân</li>
-            </ol>
-        </div>
-    </div>
     <div class="container d-flex justify-content-center align-items-center bg-white">
         <div class="container">
             <div class="row mb-3 mt-3">
-            <div class="col-md-2">
-                <ul class="list-group">
-                    <li onclick="location.href='my-order.php';" class="list-group-item list-item-my-account"><i class="fa fa-shopping-cart ms-2 me-2"></i>ĐƠN HÀNG</li>
-                    <li onclick="location.href='my-account.php';" class="list-group-item list-item-my-account bg-default text-white"><i class="fa fa-user ms-2 me-2"></i>TÀI KHOẢN</li>
-                    <li onclick="location.href='change-password.php';" class="list-group-item list-item-my-account"><i class="fa fa-sign-out ms-2 me-2"></i>MẬT KHẨU</li>
-                    <li onclick="location.href='index.php';" class="list-group-item list-item-my-account"><i class="fa fa-sign-out ms-2 me-2"></i>ĐĂNG XUẤT</li>
-                </ul>
-            </div>
+                @include('user.auth.menu')
             <div class="col-md-10">
-                <form>
+                <x-form :action="route('user.profile.update')" type="put" enctype="multipart/form-data" :validate="true">
                     <div class="row">
                         <!-- Họ và tên -->
                         <div class="col-md-6">
                             <label for="fullName">Họ và tên <p style="display: inline;" class="text-red">*</p></label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Nhập họ và tên">
+                            <x-input name="fullname" :value="$auth->fullname" :required="true"
+                                placeholder="{{ __('Ví dụ: Phạm Minh Mạnh') }}" />
                         </div>
 
                         <!-- Email -->
                         <div class="col-md-6">
                             <label for="email">Email <p style="display: inline;" class="text-red">*</p></label>
-                            <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                            <x-input-email name="email" :value="$auth->email" :required="true" />
                         </div>
 
                         <!-- Số điện thoại -->
                         <div class="col-md-6 mt-3">
                             <label for="phone">Số điện thoại <p style="display: inline;" class="text-red">*</p></label>
-                            <input type="tel" class="form-control" id="phone" placeholder="Nhập số điện thoại">
+                            <x-input-phone name="phone" :value="$auth->phone" :required="true" />
                         </div>
 
                         <!-- Ngày sinh -->
-                        <div class="col-md-6 mt-3">
+                        <div class="col-md-3 mt-3">
                             <label for="dob">Ngày sinh <p style="display: inline;" class="text-red">*</p></label>
-                            <input type="date" class="form-control" id="dob">
+                            <x-input type="date" name="birthday" :value="isset($auth->birthday) ? format_date($auth->birthday, 'Y-m-d') : null"
+                                :required="true"/>
                         </div>
 
                         <!-- Giới tính -->
                         <div class="col-md-3 mt-3">
                             <label for="gender">Giới tính <p style="display: inline;" class="text-red">*</p></label>
-                            <select class="form-control" id="gender">
-                                <option value="male">Nam</option>
-                                <option value="female">Nữ</option>
-                                <option value="other">Khác</option>
-                            </select>
+                            <x-select name="gender" :required="true">
+                                <x-select-option value="" :title="__('Chọn Giới tính')" />
+                                @foreach ($gender as $key => $value)
+                                    <x-select-option :option="$auth->gender->value" :value="$key" :title="__($value)" />
+                                @endforeach
+                            </x-select>
                         </div>
 
                         <!-- Địa chỉ -->
-                        <div class="col-md-9 mt-3">
-                            <label for="address">Địa chỉ <p style="display: inline;" class="text-red">*</p></label>
-                            <input type="text" class="form-control" id="address" placeholder="Nhập địa chỉ">
+                        <div class="col-md-12 mt-3">
+                            <x-input-pick-address :label="trans('address')" name="address" :value="$auth->address"
+                                :placeholder="trans('address')" :required="true" />
+                            <x-input type="hidden" name="lat" :value="$auth->lat" />
+                            <x-input type="hidden" name="lng" :value="$auth->lng" />
                         </div>
                         <div class="col-md-4"></div>
                         <div class="col-md-4"><button type="submit" class="btn btn-default w-100 mt-2"><strong>CẬP NHẬT</strong></button></div>
                         <div class="col-md-4"></div>
                     </div>
-                </form>
+                </x-form>
             </div>
             </div>
         </div>
     </div>
 @endsection
+@push('custom-js')
+    @include('admin.layouts.modal.modal-pick-address')
+    @include('admin.scripts.google-map-input')
+@endpush
 
 
 

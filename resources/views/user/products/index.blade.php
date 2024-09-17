@@ -1,14 +1,7 @@
 @extends('user.layouts.master')
+@section('title', __('Danh mục sản phẩm'))
 
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
-            </ol>
-        </div>
-    </div>
     <div class="container d-flex justify-content-center align-items-center bg-white">
         <div class="container">
             <div class="row">
@@ -106,11 +99,11 @@
                                 <div class="card-body">
                                     <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
                                     <div class="rating">
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
-                                        <span class="star" style="color: #ffa200;">★</span>
+                                        <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
+                                    <span class="star">★</span>
                                         <span>100</span>
                                     </div>
                                     <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
@@ -157,10 +150,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 text-end justify-content-between align-items-center">
-                                                        <a class="lead" href="#"><i class="fa text-black fa-facebook-square"></i></a>
-                                                        <a class="lead ms-2 me-2" href="#"><i class="fa text-black fa-envelope-open-o"></i></a>
-                                                        <a class="lead me-2" href="#"><i class="fa text-black fa-google"></i></a>
-                                                        <a class="lead" href="#"><i class="fa text-black fa-linkedin-square"></i></a>
+                                                        <a class="lead" href="https://www.facebook.com/people/BaHa-Group/61559205100698/"><i class="fa-brands fa-facebook text-black"></i></a>
+                                                        <a class="lead ms-2 me-2" href="https://www.tiktok.com/@baha_group_official"><i class="fa-brands fa-tiktok text-black"></i></a>
+                                                        <a class="lead" href="https://www.linkedin.com/company/baha-group-joint-stock-company/?viewAsMember=true"><i class="fa-brands fa-linkedin text-black"></i></a>
                                                     </div>
                                                 </div>
                                                 <div class="row align-items-center ms-1 mt-3 mb-3">

@@ -20,10 +20,10 @@ enum OrderStatus: int
     public function badge(): string
     {
         return match($this) {
-            self::Pending => 'bg-yellow-lt',
-            self::Confirmed => 'bg-blue-lt',
-            self::Completed => 'bg-green-lt',
-            self::Cancelled => 'bg-red-lt',
+            self::Pending => 'bg-orange',
+            self::Confirmed => 'bg-blue',
+            self::Completed => 'bg-green',
+            self::Cancelled => 'bg-red',
         };
     }
 

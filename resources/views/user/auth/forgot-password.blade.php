@@ -1,14 +1,6 @@
 @extends('user.layouts.master')
-
+@section('title', __('Quên mật khẩu'))
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Quên mật khẩu</li>
-            </ol>
-        </div>
-    </div>
     <div class="container mt-5">
         <div class="form-container">
         <h4 class="text-center">Lấy lại mật khẩu</h4>

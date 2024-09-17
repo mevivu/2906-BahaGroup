@@ -5,6 +5,7 @@ namespace App\Admin\Http\Controllers\Auth;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Auth\ProfileRequest;
 use App\Admin\Services\File\FileService;
+use App\Enums\User\Gender;
 
 class ProfileController extends Controller
 {
@@ -34,10 +35,10 @@ class ProfileController extends Controller
     public function indexUser()
     {
 
-        // $auth = auth('web')->user();
+        $auth = auth('web')->user();
+        $gender = Gender::asSelectArray();
 
-        // return view($this->view['indexUser'], compact('auth'));
-        return view($this->view['indexUser']);
+        return view($this->view['indexUser'], compact('auth', 'gender'));
     }
 
     public function update(ProfileRequest $request)

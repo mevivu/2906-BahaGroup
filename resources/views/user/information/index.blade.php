@@ -1,14 +1,7 @@
 @extends('user.layouts.master')
+@section('title', __('Giới thiệu'))
 
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Giới thiệu</li>
-            </ol>
-        </div>
-    </div>
     <div style="width: 100%; position: relative;">
         <div class="banner-information" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url('{{ asset('public/user/assets/images/bg-about-us.jpg') }}');">
             <div class="banner-content text-white">
@@ -101,7 +94,7 @@
                     <p class="text-justify">BaHa đề cao tinh thần cầu tiến, mỗi thành viên trong tập thể cam kết cải tiến 1% mỗi ngày. Chúng tôi không ngừng nâng cao chất lượng dịch vụ, hoàn thiện từng khâu nhỏ để mang đến trải nghiệm hoàn hảo cho khách hàng.</p>
                 </div>
                 <div class="col-md-4 col-12 text-center p-3" style="border-radius: 5px">
-                    <i class="fa fa-handshake-o fa-3x mb-3" style="border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
+                    <i class="fa-solid fa-hands-holding-child fa-3x mb-3" style="border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
                     <p class="text-justify">BaHa hướng đến xây dựng một môi trường làm việc văn minh, đề cao giá trị đạo đức và văn hóa doanh nghiệp. Mỗi hành trình mua sắm tại BaHa đều mang đến cho khách hàng trải nghiệm TỐT, sự hài lòng và ấn tượng sâu sắc.</p>
                 </div>
                 <div class="col-md-4 col-12 text-center p-3" style="border-radius: 5px">
@@ -147,7 +140,7 @@
                     <p class="text-justify">Đề cao giá trị con người, xây dựng đội ngũ nhân viên năng động, có trình độ chuyên môn giỏi, tâm huyết với công việc.</p>
                 </div>
                 <div class="col-md-2 col-12 text-center p-3" style="border-radius: 5px">
-                    <i class="fa fa-handshake-o fa-3x mb-3" style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
+                    <i class="fa-solid fa-handshake-angle fa-3x mb-3" style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
                     <div class="highlight-container">
                         <span class="highlight">TÍN</span>
                     </div>

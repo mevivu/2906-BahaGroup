@@ -1,14 +1,8 @@
 @extends('user.layouts.master')
 
+@section('title', __('Giỏ hàng'))
+
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
-            </ol>
-        </div>
-    </div>
     <div class="container d-flex justify-content-center align-items-center bg-white">
         <div class="container">
             <div class="row">
@@ -68,7 +62,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <div class="progress" style="display: flex; align-items: center;">
+                <div class="progress d-flex align-items-center">
                     <div style="font-size: 16px; color: #ffffff" class="progress-text">
                         <strong>95%</strong>
                     </div>

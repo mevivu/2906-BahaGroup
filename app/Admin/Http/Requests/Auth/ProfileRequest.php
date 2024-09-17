@@ -24,7 +24,7 @@ class ProfileRequest extends BaseRequest
             $this->validate = [
                 'fullname' => ['required', 'string', 'max:255'],
                 'phone' => ['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/', 'unique:App\Models\User,phone,' . auth('web')->user()->id],
-                'email' => ['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/', 'unique:App\Models\User,email,' . auth('web')->user()->id],
+                'email' => ['required', 'unique:App\Models\User,email,' . auth('web')->user()->id],
                 'address' => ['nullable'],
                 'birthday' => ['required'],
                 'gender' => ['required'],

@@ -8,7 +8,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-link link-secondary me-auto"
                     data-bs-dismiss="modal">{{ __('Hủy') }}</button>
-                <x-form :action="route('admin.logout')" type="post">
+                <x-form :action="route('user.logout')" type="post">
                     <button type="submit" class="btn btn-danger">{{ __('Đăng xuất') }}</button>
                 </x-form>
             </div>

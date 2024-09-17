@@ -1,14 +1,7 @@
 @extends('user.layouts.master')
+@section('title', __('Đăng nhập'))
 
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Đăng nhập</li>
-            </ol>
-        </div>
-    </div>
     <div class="container mt-5">
         <div style="border: none; border-radius: 0" class="form-container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">

@@ -6,6 +6,8 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\Order\OrderServiceInterface;
 use App\Admin\DataTables\Order\OrderDataTable;
+use App\Admin\DataTables\Order\UserOrderDataTable;
+use App\Admin\DataTables\User\UserDataTable;
 use App\Enums\Order\OrderStatus;
 use App\Admin\Http\Requests\Order\OrderRequest;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
@@ -16,13 +18,14 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
+use App\Admin\Traits\AuthService;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Payment\PaymentMethod;
 use App\Traits\ResponseController;
 
 class OrderController extends Controller
 {
-    use ResponseController;
+    use ResponseController, AuthService;
     protected UserRepositoryInterface $repositoryUser;
     protected ProductRepositoryInterface $repositoryProduct;
     protected DiscountRepositoryInterface $discountRepository;
@@ -68,9 +71,10 @@ class OrderController extends Controller
         ];
     }
 
-    public function indexUser()
+    public function indexUser(UserOrderDataTable $dataTable)
+
     {
-        return view($this->view['indexUser']);
+        return $dataTable->render($this->view['indexUser'], []);
     }
 
     public function detail($id)
@@ -80,9 +84,7 @@ class OrderController extends Controller
 
     public function index(OrderDataTable $dataTable)
     {
-        return $dataTable->render($this->view['index'], [
-            'status' => OrderStatus::asSelectArray()
-        ]);
+        return $dataTable->render($this->view['index'], []);
     }
     public function create(): Factory|View|Application
     {
@@ -94,7 +96,7 @@ class OrderController extends Controller
     public function store(OrderRequest $request): RedirectResponse
     {
         $result = $this->service->checkValidDiscount($request);
-        if($result){
+        if ($result) {
             $order = $this->service->store($request);
             if ($order) {
                 return to_route($this->route['edit'], $order->id);
@@ -113,7 +115,7 @@ class OrderController extends Controller
     public function update(OrderRequest $request): RedirectResponse
     {
         $result = $this->service->checkValidDiscount($request);
-        if($result){
+        if ($result) {
             $response = $this->service->update($request);
             if ($response) {
                 return back()->with('success', __('notifySuccess'));

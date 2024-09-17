@@ -14,6 +14,7 @@
             @include('user.layouts.modal.modal-categories')
         </div>
         @yield('content')
+        @include('user.layouts.modal.modal-logout')
         @include('user.layouts.footer')
     </div>
 @include('user.layouts.scripts')

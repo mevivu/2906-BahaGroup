@@ -1,15 +1,7 @@
-
 @extends('user.layouts.master')
+@section('title', __('Liên hệ'))
 
 @section('content')
-    <div class="row container">
-        <div class="breadcrumb-container">
-            <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Trang chủ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
-            </ol>
-        </div>
-    </div>
     <div class="container d-flex justify-content-center align-items-center bg-white">
         <div class="container">
             <div class="row">
