@@ -56,7 +56,7 @@ class ProductService implements ProductServiceInterface
         DB::beginTransaction();
         try {
             $this->data['product']['gallery'] = $this->data['product']['gallery'] ? explode(",", $this->data['product']['gallery']) : null;
-
+            $this->data['product']['sku'] = $this->createCodeSKU();
             $instance = $this->repository->create($this->data['product']);
             $this->repository->attachCategories($instance, $this->data['categories_id'] ?? []);
             if ($instance->type == ProductType::Variable && isset($this->data['product_attribute'])) {

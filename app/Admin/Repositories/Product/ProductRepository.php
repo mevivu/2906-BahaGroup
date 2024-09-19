@@ -4,8 +4,8 @@ namespace App\Admin\Repositories\Product;
 
 use App\Admin\Repositories\EloquentRepository;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
-use App\Models\Discount;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository extends EloquentRepository implements ProductRepositoryInterface

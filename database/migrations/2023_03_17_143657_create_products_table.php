@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\DefaultActiveStatus;
 use App\Enums\DefaultStatus;
 use App\Enums\Product\ProductInStock;
 use App\Enums\Product\ProductManagerStock;
@@ -35,7 +36,7 @@ return new class extends Migration {
             $table->longText('desc')->nullable();
             $table->longText('informations')->nullable();
 
-            $table->tinyInteger('is_deleted')->default(DefaultStatus::Published->value);
+            $table->tinyInteger('is_featured')->default(DefaultActiveStatus::Active->value);
             $table->timestamps();
         });
     }

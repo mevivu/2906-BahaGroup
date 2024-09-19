@@ -796,6 +796,10 @@ li {
     color: #6C757D;
 }
 
+.text-footer-category {
+    color: #777777 !important;
+}
+
 .text-red {
     color: red;
 }

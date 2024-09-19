@@ -1,6 +1,11 @@
 @extends('user.layouts.master')
 @section('title', __('Danh mục sản phẩm'))
 
+@php
+    $categoryRepository = app()->make(App\Admin\Repositories\Category\CategoryRepository::class);
+    $categories = $categoryRepository->getFlatTree();
+@endphp
+
 @section('content')
     <div class="container d-flex justify-content-center align-items-center bg-white">
         <div class="container">
@@ -9,32 +14,13 @@
                     <i class="fa fa-filter me-2"></i>Lọc</a>
                 <div class="col-md-2 category-filter" id="filter-container">
                     <div class="mt-4">
-                        <h6><strong>Categories</strong></h6>
-                        <div class="d-flex align-items-center mb-2">
-                            <a href="#" class="text-decoration-none text-black">Babies & Toys</a>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <a href="#" class="text-decoration-none text-black">Fashion & Clothing</a>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <a href="#" class="text-decoration-none text-black">Fashion & Clothing</a>
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <h6><strong>Thương hiệu</strong></h6>
-                        <div class="d-flex align-items-center mb-2">
-                            <input type="checkbox" id="brand1" class="me-2">
-                            <label for="brand1" class="mb-0">Brand 1</label>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <input type="checkbox" id="brand2" class="me-2">
-                            <label for="brand2" class="mb-0">Brand 2</label>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                            <input type="checkbox" id="brand3" class="me-2">
-                            <label for="brand3" class="mb-0">Brand 3</label>
-                        </div>
+                        <h6><strong>Danh mục</strong></h6>
+                        @foreach ($categories as $category)
+                            <div class="d-flex align-items-center mb-2">
+                                <input name="category_ids[]" value="{{ $category->id }}" type="checkbox" id="category{{ $category->id }}" class="me-2">
+                                <label for="category{{ $category->id }}" class="mb-0">{{ $category->name }}</label>
+                            </div>
+                        @endforeach
                     </div>
 
                     <h6 class="mt-4"><strong>Màu sắc</strong></h6>

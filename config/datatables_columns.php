@@ -673,6 +673,45 @@ return [
             'addClass' => 'text-center align-middle'
         ],
     ],
+    'review' => [
+        'id' => [
+            'title' => 'Mã đánh giá',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'user' => [
+            'title' => 'Khách hàng',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'product' => [
+            'title' => 'Sản phẩm',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'rating' => [
+            'title' => 'Số sao đánh giá',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'content' => [
+            'title' => 'Bình luận',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'created_at' => [
+            'title' => 'Ngày đánh giá',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
     'order' => [
         'id' => [
             'title' => 'Mã đơn hàng',

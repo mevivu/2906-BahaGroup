@@ -12,6 +12,7 @@ use App\Enums\Product\ProductType;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
+use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -34,8 +35,7 @@ class ProductController extends Controller
         CategoryRepositoryInterface  $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
         ProductServiceInterface      $service
-    )
-    {
+    ) {
         parent::__construct();
         $this->repository = $repository;
         $this->repositoryCategory = $repositoryCategory;
@@ -94,7 +94,44 @@ class ProductController extends Controller
 
     public function detail($id)
     {
-        return view($this->view['product-detail']);
+        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
+            'categories:id',
+            'productAttributes' => function ($query) {
+                return $query->with(['attribute.variations', 'attributeVariations:id']);
+            },
+            'productVariations.attributeVariations'
+        ]);
+        $product = new ProductEditResource($product);
+        return view($this->view['product-detail'], [
+            'product' => $product
+        ]);
+    }
+
+    public function findVariationByAttributeVariationIds(Request $request)
+    {
+        $id = $request->input('product_id');
+        $attributeVariationIds = $request->input('attribute_variation_ids');
+        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
+            'productVariations.attributeVariations'
+        ]);
+
+        $matchingProductVariation = $product->productVariations->first(function ($productVariation) use ($attributeVariationIds) {
+            $variationAttributeIds = $productVariation->attributeVariations->pluck('id')->toArray();
+            return empty(array_diff($attributeVariationIds, $variationAttributeIds)) &&
+                count($attributeVariationIds) === count($variationAttributeIds);
+        });
+
+        if ($matchingProductVariation) {
+            return response()->json([
+               'status' => true,
+                'data' => new ProductVariationResource($matchingProductVariation)
+            ]);
+        } else {
+            return response()->json([
+               'status' => false,
+               'message' => __('Không tìm thấy sản phẩm phù hợp.')
+            ], 400);
+        }
     }
 
     public function saleLimited()
@@ -161,7 +198,6 @@ class ProductController extends Controller
         $this->service->delete($id);
 
         return to_route($this->route['index'])->with('success', __('notifySuccess'));
-
     }
 
     public function searchRenderProductAndVariationOrder(ProductRequest $request): Factory|View|Application

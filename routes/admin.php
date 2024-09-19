@@ -32,14 +32,11 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
 
             Route::group(['middleware' => ['permission:updateDiscountCode', 'auth:admin']], function () {
                 Route::put('/sua', 'update')->name('update');
-
             });
 
             Route::group(['middleware' => ['permission:deleteDiscountCode', 'auth:admin']], function () {
                 Route::delete('/xoa/{id}', 'delete')->name('delete');
-
             });
-
         });
 
     //FlashSale
@@ -65,6 +62,29 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             Route::group(['middleware' => ['permission:deleteFlashSale', 'auth:admin']], function () {
                 Route::delete('/xoa/{id}', 'delete')->name('delete');
                 Route::delete('/xoa-detail/{id?}', 'deleteDetail')->name('deleteDetail');
+            });
+        });
+
+    //FlashSale
+    Route::controller(App\Admin\Http\Controllers\Review\ReviewController::class)
+        ->prefix('/reviews')
+        ->as('review.')
+        ->group(function () {
+            Route::group(['middleware' => ['permission:createUser', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewUser', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
+
+            Route::group(['middleware' => ['permission:updateUser', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
+
+            Route::group(['middleware' => ['permission:deleteUser', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
             });
         });
 
@@ -354,28 +374,6 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             });
 
             Route::group(['middleware' => ['permission:deleteUser', 'auth:admin']], function () {
-                Route::delete('/xoa/{id}', 'delete')->name('delete');
-            });
-        });
-        // Route::get('/select-search', [AdminSearchController::class, 'selectSearch'])->name('selectsearch');
-    });
-    //admin
-    Route::prefix('/admins')->as('admin.')->group(function () {
-        Route::controller(App\Admin\Http\Controllers\Admin\AdminController::class)->group(function () {
-            Route::group(['middleware' => ['permission:createAdmin', 'auth:admin']], function () {
-                Route::get('/them', 'create')->name('create');
-                Route::post('/them', 'store')->name('store');
-            });
-            Route::group(['middleware' => ['permission:viewAdmin', 'auth:admin']], function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/sua/{id}', 'edit')->name('edit');
-            });
-
-            Route::group(['middleware' => ['permission:updateAdmin', 'auth:admin']], function () {
-                Route::put('/sua', 'update')->name('update');
-            });
-
-            Route::group(['middleware' => ['permission:deleteAdmin', 'auth:admin']], function () {
                 Route::delete('/xoa/{id}', 'delete')->name('delete');
             });
         });

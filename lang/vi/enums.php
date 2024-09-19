@@ -1,4 +1,6 @@
 <?php
+
+use App\Enums\DefaultActiveStatus;
 use App\Enums\DefaultStatus;
 use App\Enums\Discount\DiscountType;
 use App\Enums\FeaturedStatus;
@@ -14,6 +16,10 @@ return [
         Gender::Male->value => 'Nam',
         Gender::Female->value => 'Nữ',
         Gender::Other->value => 'Khác',
+    ],
+    DefaultActiveStatus::class => [
+        DefaultActiveStatus::Active->value => 'Có',
+        DefaultActiveStatus::UnActive->value => 'Không',
     ],
     ProductStatus::class => [
         ProductStatus::Active->value => 'Đang hoạt động',

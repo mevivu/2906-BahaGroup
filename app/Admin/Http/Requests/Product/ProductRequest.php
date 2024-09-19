@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Requests\Product;
 
 use App\Admin\Http\Requests\BaseRequest;
+use App\Enums\DefaultActiveStatus;
 use App\Enums\Product\ProductInStock;
 use App\Enums\Product\ProductStatus;
 use App\Enums\Product\ProductType;
@@ -35,6 +36,7 @@ class ProductRequest extends BaseRequest
             'product.type' => ['nullable', new Enum(ProductType::class)],
             'product.in_stock' => ['required', new Enum(ProductInStock::class)],
             'product.is_active' => ['required', new Enum(ProductStatus::class)],
+            'product.is_featured' => ['required', new Enum(DefaultActiveStatus::class)],
             'product.gallery' => ['nullable'],
         ];
         if ($this->input('product.type') == ProductType::Simple->value) {
@@ -79,6 +81,7 @@ class ProductRequest extends BaseRequest
             'product.type' => ['nullable', new Enum(ProductType::class)],
             'product.in_stock' => ['required', new Enum(ProductInStock::class)],
             'product.is_active' => ['required', new Enum(ProductStatus::class)],
+            'product.is_featured' => ['required', new Enum(DefaultActiveStatus::class)],
             'product.gallery' => ['nullable'],
         ];
         if ($this->input('product.type') == ProductType::Simple->value) {

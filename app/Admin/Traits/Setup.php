@@ -15,6 +15,10 @@ trait Setup
     public function createCodeOrder(){
         return 'HD'.$this->uniqidReal(5).time();
     }
+
+    public function createCodeSKU(){
+        return 'SKU'.$this->uniqidReal(5).time();
+    }
     public function createCodePayment(){
         return 'P'.$this->uniqidReal(5).time();
     }

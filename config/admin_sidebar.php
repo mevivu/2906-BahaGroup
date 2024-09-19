@@ -130,11 +130,34 @@ return [
                 'permissions' => ['createFlashSale'],
             ],
             [
-                'title' => 'DS FlashSale',
+                'title' => 'DS flashSale',
                 'routeName' => 'admin.flashsale.index',
                 'icon' => '<i class="ti ti-list"></i>',
                 'roles' => [],
                 'permissions' => ['viewFlashSale'],
+            ],
+        ]
+    ],
+    [
+        'title' => 'Đánh giá',
+        'routeName' => null,
+        'icon' => '<i class="ti ti-star"></i>',
+        'roles' => [],
+        'permissions' => ['createUser', 'viewUser', 'updateUser', 'deleteUser'],
+        'sub' => [
+            [
+                'title' => 'Thêm đánh giá',
+                'routeName' => 'admin.review.create',
+                'icon' => '<i class="ti ti-plus"></i>',
+                'roles' => [],
+                'permissions' => ['createUser'],
+            ],
+            [
+                'title' => 'DS đánh giá',
+                'routeName' => 'admin.review.index',
+                'icon' => '<i class="ti ti-list"></i>',
+                'roles' => [],
+                'permissions' => ['createUser'],
             ],
         ]
     ],

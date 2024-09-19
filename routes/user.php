@@ -17,6 +17,7 @@ Route::controller(App\Admin\Http\Controllers\Product\ProductController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
     });
 
 Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController::class)

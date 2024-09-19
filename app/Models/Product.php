@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DefaultActiveStatus;
 use App\Enums\DefaultStatus;
 use App\Enums\Product\ProductInStock;
 use App\Enums\Product\ProductManagerStock;
@@ -39,7 +40,7 @@ class Product extends Model
         'desc', // Mô tả
         'informations', // Thông tin chi tiết
         'store_id', // ID cửa hàng
-        'is_deleted', // Trạng thái xóa
+        'is_featured', // Nổi bật
     ];
 
     protected $columnSlug = 'name';
@@ -56,7 +57,7 @@ class Product extends Model
         'is_active' => ProductStatus::class,
         'in_stock' => ProductInStock::class,
         'manager_stock' => ProductManagerStock::class,
-        'is_deleted' => DefaultStatus::class,
+        'is_featured' => DefaultActiveStatus::class,
         'price' => 'double',
         'promotion_price' => 'double'
     ];
@@ -76,6 +77,15 @@ class Product extends Model
     public function productVariations(): HasMany
     {
         return $this->hasMany(ProductVariation::class, 'product_id')->orderBy('position', 'asc');
+    }
+
+    public function getMinPromotionPriceAttribute()
+    {
+        return $this->productVariations->min('promotion_price');
+    }
+    public function getMaxPromotionPriceAttribute()
+    {
+        return $this->productVariations->max('promotion_price');
     }
 
     public function getTotalQtyAttribute()

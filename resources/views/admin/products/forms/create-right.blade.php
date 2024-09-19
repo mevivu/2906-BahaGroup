@@ -30,6 +30,17 @@
     </div>
     <div class="card mb-3">
         <div class="card-header">
+            {{ __('Nổi bật') }}
+        </div>
+        <div class="card-body p-2">
+            <x-select class="form-select" name="product[is_featured]" :required="true">
+                <x-select-option value="1" :title="__('Có')" />
+                <x-select-option value="2" :title="__('Không')" />
+            </x-select>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-header">
             {{ __('Ảnh đại diện') }}
         </div>
         <div class="card-body p-2">
