@@ -36,6 +36,7 @@ class ReviewDataTable extends BaseDataTable
             'action' => 'admin.reviews.datatable.action',
             'editlink' => 'admin.reviews.datatable.editlink',
             'user' => 'admin.reviews.datatable.user',
+            'rating' => 'admin.reviews.datatable.rating',
             'product' => 'admin.reviews.datatable.product',
         ];
     }
@@ -46,6 +47,7 @@ class ReviewDataTable extends BaseDataTable
             'id' => $this->view['editlink'],
             'user' => $this->view['user'],
             'product' => $this->view['product'],
+            'rating' => $this->view['rating'],
             'created_at' => '{{ format_datetime($created_at) }}',
         ];
     }
@@ -90,7 +92,7 @@ class ReviewDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['id', 'product', 'user', 'action'];
+        $this->customRawColumns = ['id', 'product', 'user', 'action', 'rating'];
     }
 
     public function setCustomFilterColumns(): void

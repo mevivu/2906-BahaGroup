@@ -139,7 +139,7 @@ li {
     }
 
     .progress-text {
-        font-size: 10px !important;
+        font-size: 16px !important;
     }
 
     .left-btn-slider {
@@ -218,7 +218,7 @@ li {
 
     .nav-responsive {
         margin-left: 0px;
-        padding: 10px 0;
+        padding: 5px 0;
         position: fixed;
         z-index: 999;
         background-color: white;
@@ -331,6 +331,12 @@ li {
 
 /* Ẩn các cột không cần thiết trên màn hình nhỏ */
 @media (max-width: 768px) {
+    .section-gap-default {
+        margin-top: 72em !important;
+    }
+    .flex-section {
+        top: 27em !important;
+    }
     .tab-btn {
         font-size: 0.8em !important;
     }
@@ -407,11 +413,6 @@ li {
 
 .offcanvas>.offcanvas-body .nav-tabs .nav-item:first-child {
     border-right: 1px solid;
-}
-
-.offcanvas>.offcanvas-body .nav-tabs .nav-link {
-    width: 100%;
-    color: black;
 }
 
 .offcanvas>.offcanvas-body h5 {
@@ -1663,4 +1664,15 @@ div.dataTables_wrapper div.dataTables_processing{
 }
 .dataTables_filter{
     opacity: 0;
+}
+
+.card-title {
+    max-width: 150px; /* Điều chỉnh giá trị này để phù hợp với độ dài "Cell phone Silver" */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.offcanvas-body {
+    padding: 0 !important;
 }

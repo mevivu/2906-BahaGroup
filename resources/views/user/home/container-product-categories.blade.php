@@ -1,12 +1,15 @@
 <div id="product-category" class="container shadow rounded-3">
     <div class="row">
-        <div class="col-12 header-box d-flex align-items-center shadow-sm">
+        <div class="col-12 header-box d-flex align-items-center shadow-sm nav-tabs-wrapper">
             <h4 class="mb-0">Thiết bị công nghệ hàng đầu</h4>
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link tab-btn" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
                         type="button" role="tab" aria-controls="nav-sport" aria-selected="false">Sports &
                         Travel</button>
+                    <button class="nav-link tab-btn" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv" type="button"
+                        role="tab" aria-controls="nav-tv" aria-selected="false">TV & Home
+                        Appliances</button>
                     <button class="nav-link tab-btn" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv" type="button"
                         role="tab" aria-controls="nav-tv" aria-selected="false">TV & Home
                         Appliances</button>

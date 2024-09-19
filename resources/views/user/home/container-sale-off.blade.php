@@ -40,8 +40,8 @@
                                                 <div class="progress-icon">
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
-                                                <div style="color:#ffffff" class="progress-text">
-                                                    <strong>Sold: 95/100</strong>
+                                                <div style="color:#ffffff" class="progress-text fs-6">
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -79,7 +79,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 30/100</strong>
+                                                    Sold: 30/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 30%;">.</div>
                                             </div>
@@ -117,7 +117,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -155,7 +155,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -200,7 +200,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -238,7 +238,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -276,7 +276,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
@@ -314,7 +314,7 @@
                                                     <i class="fa fa-bolt"></i>
                                                 </div>
                                                 <div class="progress-text fs-6">
-                                                    <strong>Sold: 95/100</strong>
+                                                    Sold: 95/100
                                                 </div>
                                                 <div class="progress-bar" role="progressbar" style="width: 95%;">.</div>
                                             </div>
