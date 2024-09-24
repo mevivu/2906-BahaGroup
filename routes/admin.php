@@ -176,17 +176,15 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
     //     });
     // });
 
-    // Route::controller(App\Admin\Http\Controllers\Setting\SettingController::class)
-    //     ->prefix('/settings')
-    //     ->as('setting.')
-    //     ->group(function () {
-    //         Route::group(['middleware' => ['permission:settingGeneral', 'auth:admin']], function () {
-    //             Route::get('/general', 'general')->name('general');
-    //         });
-
-    //         Route::get('/user-shopping', 'userShopping')->name('user_shopping');
-    //         Route::put('/update', 'update')->name('update');
-    //     });
+    Route::controller(App\Admin\Http\Controllers\Setting\SettingController::class)
+        ->prefix('/settings')
+        ->as('setting.')
+        ->group(function () {
+            Route::group(['middleware' => ['permission:settingGeneral', 'auth:admin']], function () {
+                Route::get('/general', 'general')->name('general');
+            });
+            Route::put('/update', 'update')->name('update');
+        });
 
     // Route::prefix('/sliders')->as('slider.')->group(function () {
     //     Route::controller(App\Admin\Http\Controllers\Slider\SliderItemController::class)

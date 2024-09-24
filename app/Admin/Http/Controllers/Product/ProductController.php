@@ -13,6 +13,7 @@ use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
+use App\Models\Product;
 use App\Traits\ResponseController;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -95,15 +96,17 @@ class ProductController extends Controller
     public function detail($id)
     {
         $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
-            'categories:id',
+            'categories:id,name',
             'productAttributes' => function ($query) {
                 return $query->with(['attribute.variations', 'attributeVariations:id']);
             },
             'productVariations.attributeVariations'
         ]);
+        $randomProducts = $this->repository->getRelatedProducts($product->id);
         $product = new ProductEditResource($product);
         return view($this->view['product-detail'], [
-            'product' => $product
+            'product' => $product,
+            'relatedProducts' => $randomProducts
         ]);
     }
 

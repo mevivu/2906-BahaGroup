@@ -19,18 +19,17 @@
                                      :placeholder="__('max_usage')"/>
                         </div>
                     </div>
-                    <!--Sku-->
                     <div class="col-6">
                         <div class="mb-3">
                             <label class="control-label">@lang('date_start')</label>
-                            <x-input input type="datetime-local" name="date_start" :value="old('date_start')"
+                            <x-input input type="datetime-local" name="date_start" onblur="checkStartDate(this)" :value="old('date_start')"
                                      :required="true" :placeholder="__('date_start')"/>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="mb-3">
                             <label class="control-label">@lang('date_end')</label>
-                            <x-input name="date_end" input type="datetime-local" :value="old('date_end')"
+                            <x-input name="date_end" input type="datetime-local" onblur="checkEndDate(this)" :value="old('date_end')"
                                      :required="true" :placeholder="__('date_end')"/>
                         </div>
                     </div>
@@ -58,7 +57,7 @@
                     <div class="col-12">
                         <div class="mb-3">
                             <label class="control-label">{{ __('Giá trị giảm giá') }}</label>
-                            <x-input-price name="discount_value"
+                            <x-input-price onblur="checkDiscountValue(this)" name="discount_value"
                                            id="discount_value"
                                            :value="old('discount_value')"
                                            :required="true"

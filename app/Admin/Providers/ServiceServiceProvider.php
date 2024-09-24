@@ -34,6 +34,7 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Admin\Services\FlashSale\FlashSaleServiceInterface' => 'App\Admin\Services\FlashSale\FlashSaleService',
 
         'App\Admin\Services\Review\ReviewServiceInterface' => 'App\Admin\Services\Review\ReviewService',
+        'App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface' => 'App\Admin\Services\ShoppingCart\ShoppingCartService',
 
     ];
     /**

@@ -62,36 +62,3 @@ function decrement() {
         input.value = parseInt(input.value) - 1;
     }
 }
-
-function incrementDetail() {
-    var input = document.getElementById('filter-input-detail');
-    input.value = parseInt(input.value) + 1;
-}
-
-function decrementDetail() {
-    var input = document.getElementById('filter-input-detail');
-    if (input.value > 1) {
-        input.value = parseInt(input.value) - 1;
-    }
-}
-
-function isEnoughQuantity(input) {
-    if (input.value <= 0) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Lưu ý',
-            text: 'Số lượng phải lớn hơn 0!',
-            showConfirmButton: true
-        });
-        input.value = 1;
-    }
-    if (input.value > $('input[name="hidden_quantity"]').val()) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Lưu ý',
-            text: 'Số lượng vượt quá hàng trong kho!',
-            showConfirmButton: true
-        });
-        input.value = 1;
-    }
-}

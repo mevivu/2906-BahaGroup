@@ -3,6 +3,7 @@
 namespace App\Admin\Http\Resources\Product;
 
 use App\Enums\Product\ProductType;
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductEditResource extends JsonResource

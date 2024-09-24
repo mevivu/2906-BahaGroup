@@ -129,9 +129,9 @@
                             @endforeach
                         </div>
                         @if(!isset($product->productVariations[0]))
-                            <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round($product->promotion_price / $product->price * 100) }}%</span>
+                            <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $product->promotion_price / $product->price * 100) }}%</span>
                         @else
-                            <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round($product->productVariations[0]->promotion_price / $product->productVariations[0]->price * 100) }}%</span>
+                            <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $product->productVariations[0]->promotion_price / $product->productVariations[0]->price * 100) }}%</span>
                         @endif
                         @if ($product->is_featured == App\Enums\DefaultActiveStatus::Active)
                             <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
@@ -144,13 +144,14 @@
                         <div class="col-md-8">
                             <h3>{{ $product->name }}</h3>
                             <div class="rating">
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span>100 khách hàng đánh giá</span>
-                                <span class="ms-2"><strong> Đã bán:</strong> 4</span>
+                                @for ($i = 1; $i <= $product->avg_rating ; $i++)
+                                    <span class="star">★</span>
+                                @endfor
+                                @for ($i = 5; $i > $product->avg_rating ; $i--)
+                                    <span style="color: gray" class="star">★</span>
+                                @endfor
+                                <span>{{ $product->reviews->count() }} khách hàng đánh giá</span>
+                                <span class="ms-2"><strong> Đã bán:</strong> {{ $product->total_sold }}</span>
                             </div>
                         </div>
                         <div class="col-md-4 text-end justify-content-between align-items-center">
@@ -159,12 +160,19 @@
                             <a class="lead" href="https://www.linkedin.com/company/baha-group-joint-stock-company/?viewAsMember=true"><i class="fa-brands fa-linkedin text-black"></i></a>
                         </div>
                     </div>
-                    <div class="row align-items-center ms-1 mt-3 mb-3">
-                        <div class="col-md-8 bg-default text-white text-center h-100">End in
-                            <strong>121 : 09 : 47 : 39</strong>
+                    @if($product->on_flash_sale)
+                    @php
+                        $flash_sale = $product->on_flash_sale->details->where('product_id','=', $product->id)->first();
+                    @endphp
+                        <div class="row align-items-center ms-1 mt-3 mb-3">
+                            <div class="col-md-8 bg-default text-white text-center h-100">End in
+                                <strong id="countdown-flashsale-product"></strong>
+                            </div>
+                            <div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold : {{ $flash_sale->sold ?? 0 .'/'.$flash_sale->qty }}</div>
                         </div>
-                        <div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold : 4/100</div>
-                    </div>
+                    @endif
+
+
                     @if(!isset($product->productVariations[0]))
                         <p class="lead"><del>{{ format_price($product->price) }}</del> <strong class="text-red">{{ format_price($product->promotion_price) }}</strong></p>
                     @else
@@ -172,6 +180,8 @@
                     @endif
 
                     <x-input type="hidden" name="hidden_product_id" :value="$product->id" />
+
+
                     @if(isset($product->productVariations[0]))
                     <x-input type="hidden" name="hidden_quantity" />
                     <x-input type="hidden" name="hidden_product_variation_id" />
@@ -217,10 +227,12 @@
                                     <button class="btn btn-default" type="button" onclick="incrementDetail()">+</button>
                                 </div>
                             </div>
-                            <div class="col-md-4"><button class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ hàng</strong></button></div>
-                            <div class="col-md-3"><button class="btn btn-default w-100 mt-2"><strong>Mua ngay</strong></button></div>
+                            <div class="col-md-4"><button id="btnAddToCart" class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ hàng</strong></button></div>
+                            <div class="col-md-3"><button id="btnBuyNow" class="btn btn-default w-100 mt-2"><strong>Mua ngay</strong></button></div>
                         </div>
                     @endif
+
+
                     <div style="border-top: 1px solid #f5f5f5" class="row mt-5">
                         <p class="mt-2">SKU: {{ $product->sku }}</p>
                         <p>Danh mục:
@@ -250,37 +262,25 @@
         <div class="container">
             <div class="row bg-white">
                 <div class="col-12 d-flex align-items-center">
-                    <h4 class="mt-3 ms-1 mb-3">Những đánh giá của khách hàng</h4>
+                    <h4 class="mt-3 ms-3 mb-3">Những đánh giá của khách hàng</h4>
                 </div>
                 <div class="col-12">
-                    <div class="d-flex mb-3">
-                        <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g" alt="Customer Image" class="customer-image me-3">
-                        <div>
-                            <p><strong>Nguyễn Văn A</strong> - 15/08/2024</p>
-                            <div class="rating">
-                                <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            </div>
-                            <p>Sản phẩm rất tốt, tôi rất hài lòng!</p>
+                    @foreach ($product->reviews as $review)
+                        <div class="d-flex mb-3">
+                            <img src="{{ $review->user->avatar ? asset($review->user->avatar) : asset(config('custom.images.default-rating')) }}" alt="Customer Image" class="customer-image me-3">
+                                <div class="rating">
+                                    <strong>{{ $review->user->fullname }}</strong> - {{ format_date_user($review->created_at) }}
+                                    <br>
+                                    @for ($i = 1; $i <= $review->rating ; $i++)
+                                        <span class="star">★</span>
+                                    @endfor
+                                    @for ($i = 5; $i > $review->rating ; $i--)
+                                    <span style="color: gray" class="star">★</span>
+                                @endfor
+                                    <p>{!! $review->content !!}</p>
+                                </div>
                         </div>
-                    </div>
-                    <div class="d-flex mb-3">
-                        <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g" alt="Customer Image" class="customer-image me-3">
-                        <div>
-                            <p><strong>Trần Thị B</strong> - 14/08/2024</p>
-                            <div class="rating">
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ccc;">★</span>
-                            </div>
-                            <p>Giao hàng nhanh, chất lượng ổn.</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -289,115 +289,50 @@
         <div class="container">
             <div class="row bg-white">
                 <div class="col-12 header-box d-flex align-items-center">
-                    <h4 class="mt-3 ms-3">Sản phẩm liên quan</h4>
+                    <h4 class="mt-3 ms-1">Sản phẩm liên quan</h4>
                 </div>
                 <div class="col-12">
-                    <div id="productCarousel-7" class="carousel slide">
+                    <div id="productCarousel-related" class="carousel slide">
                         <div class="carousel-inner">
                             <!-- Slide 1 -->
                             <div class="carousel-item active">
                                 <div class="container">
                                     <div class="row">
+                                        @foreach($relatedProducts->take(4) as $relatedProduct)
                                         <div class="col-6 col-md-3 mb-4">
                                             <div class="card border-0 hover-shadow">
                                                 <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-default" src="{{ asset($relatedProduct->avatar) }}" style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
+                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-hover" src="{{ asset($relatedProduct->gallery[0]) }}" alt="{{ $relatedProduct->name }}" style="display: none;cursor: pointer;">
+                                                    @if(!isset($relatedProduct->productVariations[0]))
+                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->promotion_price / $relatedProduct->price * 100) }}%</span>
+                                                    @else
+                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 -$relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price * 100) }}%</span>
+                                                    @endif
+                                                    @if($relatedProduct->is_featured)
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
+                                                    @endif
                                                 </div>
                                                 <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
+                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            <span class="star" style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
+                                                        @endfor
+                                                        <span>{{ $relatedProduct->reviews->count() }}</span>
                                                     </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
+                                                    @if(!isset($relatedProduct->productVariations[0]))
+                                                        <p><del>{{ format_price($relatedProduct->price) }}</del> <strong class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong></p>
+                                                    @else
+                                                        <p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del> <strong id="productVariationPromotionPrice" class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong></p>
+                                                    @endif
                                                     <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
+                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="{{ $relatedProduct->id }}" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -405,111 +340,50 @@
                             <div class="carousel-item">
                                 <div class="container">
                                     <div class="row">
+                                        @foreach($relatedProducts->skip(4)->take(4) as $relatedProduct)
                                         <div class="col-6 col-md-3 mb-4">
                                             <div class="card border-0 hover-shadow">
                                                 <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer;" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="card-img-top mt-3" alt="Product 3">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-default" src="{{ asset($relatedProduct->avatar) }}" style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
+                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-hover" src="{{ asset($relatedProduct->gallery[0]) }}" alt="{{ $relatedProduct->name }}" style="display: none;cursor: pointer;">
+                                                    @if(!isset($relatedProduct->productVariations[0]))
+                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->promotion_price / $relatedProduct->price * 100) }}%</span>
+                                                    @else
+                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price * 100) }}%</span>
+                                                    @endif
+                                                    @if($relatedProduct->is_featured)
                                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
+                                                    @endif
                                                 </div>
                                                 <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
+                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a></h6>
                                                     <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                        <span class="star" style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
+                                                        @endfor
+                                                        <span>{{ $relatedProduct->reviews->count() }}</span>
                                                     </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
+                                                    @if(!isset($relatedProduct->productVariations[0]))
+                                                        <p><del>{{ format_price($relatedProduct->price) }}</del> <strong class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong></p>
+                                                    @else
+                                                        <p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del> <strong id="productVariationPromotionPrice" class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong></p>
+                                                    @endif
                                                     <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
+                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="{{ $relatedProduct->id }}" onclick="openModal(this)" aria-hidden="true"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer;" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="card-img-top mt-3" alt="Product 3">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer;" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="card-img-top mt-3" alt="Product 3">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" style="cursor: pointer;" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" class="card-img-top mt-3" alt="Product 3">
-                                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                                    <div class="rating">
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span class="star" style="color: #ffa200;">★</span>
-                                                        <span>100</span>
-                                                    </div>
-                                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="carousel-control-prev left-btn-slider-related" type="button" data-bs-target="#productCarousel-7"
+                        <button class="carousel-control-prev left-btn-slider-related" type="button" data-bs-target="#productCarousel-related"
                             data-bs-slide="prev">
                             <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </button>
-                        <button class="carousel-control-next right-btn-slider-related" type="button" data-bs-target="#productCarousel-7"
+                        <button class="carousel-control-next right-btn-slider-related" type="button" data-bs-target="#productCarousel-related"
                             data-bs-slide="next">
                             <i class="fa fa-chevron-right" aria-hidden="true"></i>
                         </button>

@@ -27,6 +27,16 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         return $this->instance;
     }
 
+    public function getRelatedProducts($id)
+    {
+        $this->instance = $this->model
+            ->where('id', '!=', $id)
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
+        return $this->instance;
+    }
+
     public function getAllByColumns(array $data)
     {
         $this->getQueryBuilder();
