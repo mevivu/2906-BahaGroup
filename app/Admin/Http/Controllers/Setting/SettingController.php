@@ -13,7 +13,7 @@ class SettingController extends Controller
     )
     {
         parent::__construct();
-        $this->repository = $repository;    
+        $this->repository = $repository;
     }
     public function getView()
     {
@@ -24,7 +24,6 @@ class SettingController extends Controller
     }
     public function general(){
         $settings = $this->repository->getByGroup([SettingGroup::General]);
-
         return view($this->view['general'], compact('settings'));
     }
 

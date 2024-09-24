@@ -16,6 +16,8 @@ class FlashSaleDetail extends Model
         'flash_sale_id',
         /** Số lượng */
         'qty',
+        /** Đã bán */
+        'sold',
         /** ID sản phẩm */
         'product_id',
     ];

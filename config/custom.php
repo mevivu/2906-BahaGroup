@@ -5,7 +5,8 @@ return [
         'avatar' => '/public/assets/images/avatar-user.png',
         'default' => '/public/assets/images/default-image.png',
         'logo' => '/public/assets/images/logo.png',
-        'norecord' => '/public/assets/images/norecord.svg'
+        'norecord' => '/public/assets/images/norecord.svg',
+        'default-rating' => '/public/assets/images/default-rating.png',
     ],
     'format' => [
         'datetime' => 'd-m-Y H:i',

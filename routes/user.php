@@ -32,7 +32,12 @@ Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController
     ->as('cart.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-    });
+        Route::post('/', 'store')->name('store');
+        Route::put('/', 'update')->name('update');
+        Route::post('/increament', 'increament')->name('increament');
+        Route::post('/decreament', 'decreament')->name('decreament');
+        Route::delete('/remove/{id}', 'remove')->name('remove');
+});
 
 Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
     ->middleware('guest:web')

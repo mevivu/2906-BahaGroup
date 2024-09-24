@@ -60,6 +60,21 @@ if (!function_exists('format_date')) {
     }
 }
 
+if (!function_exists('format_date_user')) {
+    /*
+     * @param string|\DateTimeInterface $date
+     * @param string $format
+     * @return string
+     */
+    function format_date_user($date, $format = 'd-m-Y'): string
+    {
+        if (is_string($date)) {
+            $date = new \DateTime($date);
+        }
+        return $date->format($format);
+    }
+}
+
 if (!function_exists('format_datetime')) {
     function format_datetime($datetime, $format = null)
     {

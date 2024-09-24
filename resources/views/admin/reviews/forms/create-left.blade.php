@@ -47,11 +47,22 @@ h1 {
                     </x-select>
                 </div>
                 <div class="review_rating">
-                    @for ($i = 0; $i <= 5; $i++)
-                        <input type="radio" value="{{ $i }}" id="star-{{ $i }}" name="rating"
-                            {{ $i == $instance->rating ? 'checked' : '' }} />
-                        <label for="star-{{ $i }}">★</label>
-                    @endfor
+                    <input type=radio checked value='0' id='star-0' name='rating' />
+
+                    <label for='star-1'>★</label>
+                    <input type=radio value='1' id='star-1' name='rating' />
+
+                    <label for='star-2'>★</label>
+                    <input type=radio value='2' id='star-2' name='rating' />
+
+                    <label for='star-3'>★</label>
+                    <input type=radio value='3' id='star-3' name='rating' />
+
+                    <label for='star-4'>★</label>
+                    <input type=radio value='4' id='star-4' name='rating' />
+
+                    <label for='star-5'>★</label>
+                    <input type=radio value='5' id='star-5' name='rating' />
                 </div>
                 <div class="mb-3">
                     <label for="">{{ __('Bình luận') }}:</label>

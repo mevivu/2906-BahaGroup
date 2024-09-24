@@ -49,8 +49,12 @@
                 @endif
                 <div class="position-relative">
                     <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                        style="left: 100% !important;">0</span>
+                    <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                        style="left: 100% !important;">
+                        @if (auth('web')->user())
+                            {{ auth('web')->user()->shopping_cart()->sum('qty') }}
+                        @endif
+                    </span>
                 </div>
             </div>
         </div>
@@ -104,7 +108,11 @@
                 <div class="col-3 d-flex justify-content-center align-items-center cart">
                     <div class="position-relative">
                         <i onclick="location.href='{{ route('user.cart.index' )}}';" style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="left: 100% !important;">0</span>
+                        <span id="cart-count-mobile" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="left: 100% !important;">
+                            @if (auth('web')->user())
+                                {{ auth('web')->user()->shopping_cart()->sum('qty') }}
+                            @endif
+                        </span>
                     </div>
                 </div>
             </div>

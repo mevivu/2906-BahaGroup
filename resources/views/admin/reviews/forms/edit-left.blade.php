@@ -48,22 +48,22 @@
                     </x-select>
                 </div>
                 <div class="review_rating">
-                    <input type=radio checked value='0' id='star-0' name='rating' />
+                    <input type=radio value='0' id='star-0' name='rating' />
 
                     <label for='star-1'>★</label>
-                    <input type=radio value='1' id='star-1' name='rating' />
+                    <input {{ $instance->rating == 1 ? 'checked' : '' }} type=radio value='1' id='star-1' name='rating' />
 
                     <label for='star-2'>★</label>
-                    <input type=radio value='2' id='star-2' name='rating' />
+                    <input {{ $instance->rating == 2 ? 'checked' : '' }} type=radio value='2' id='star-2' name='rating' />
 
                     <label for='star-3'>★</label>
-                    <input type=radio value='3' id='star-3' name='rating' />
+                    <input {{ $instance->rating == 3 ? 'checked' : '' }} type=radio value='3' id='star-3' name='rating' />
 
                     <label for='star-4'>★</label>
-                    <input type=radio value='4' id='star-4' name='rating' />
+                    <input {{ $instance->rating == 4 ? 'checked' : '' }} type=radio value='4' id='star-4' name='rating' />
 
                     <label for='star-5'>★</label>
-                    <input type=radio value='5' id='star-5' name='rating' />
+                    <input {{ $instance->rating == 5 ? 'checked' : '' }} type=radio value='5' id='star-5' name='rating' />
                 </div>
                 <div class="mb-3">
                     <label for="">{{ __('Bình luận') }}:</label>

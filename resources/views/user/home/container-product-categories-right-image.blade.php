@@ -3,7 +3,7 @@
         <div class="col-12 header-box d-flex align-items-center shadow-sm">
             <h4 class="mb-0">Đồ gia dụng hiện đại</h4>
             <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <div class="nav nav-tabs overflow-scroll-container" id="nav-tab" role="tablist">
                     <button class="nav-link tab-btn" data-bs-toggle="tab" data-bs-target="#nav-sport-1"
                         type="button" role="tab" aria-selected="false">Sports &
                         Travel</button>

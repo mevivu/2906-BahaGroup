@@ -33,8 +33,6 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
     public function attachDiscounts(Product $product, array $discountIds);
 
     public function syncDiscounts(Product $product, array $discountIds);
-
-
-
+    public function getRelatedProducts($id);
 
 }

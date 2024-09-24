@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\DefaultActiveStatus;
-use App\Enums\DefaultStatus;
 use App\Enums\Product\ProductInStock;
 use App\Enums\Product\ProductManagerStock;
 use App\Enums\Product\ProductStatus;
@@ -15,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use App\Enums\Product\ProductType;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 class Product extends Model
 {
@@ -120,5 +120,34 @@ class Product extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class, 'product_id', 'id');
+    }
+
+    public function order_details(): HasMany
+    {
+        return $this->hasMany(OrderDetail::class, 'product_id', 'id');
+    }
+
+    public function flash_sales(): BelongsToMany
+    {
+        return $this->belongsToMany(FlashSale::class, 'flash_sales_products', 'product_id', 'flash_sale_id');
+    }
+
+    public function getAvgRatingAttribute()
+    {
+        return $this->reviews->avg('rating');
+    }
+    public function getTotalSoldAttribute()
+    {
+        return $this->order_details->count();
+    }
+
+    public function getOnFlashSaleAttribute()
+    {
+        $now = Carbon::now();
+
+        return $this->flash_sales()
+            ->where('start_time', '<=', $now)
+            ->where('end_time', '>=', $now)
+            ->where('qty', '>', 0)->first();
     }
 }
