@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="bg-white section-gap-default responsive-section" style="width: 80%">
+    <div class="bg-white section-gap-default responsive-section" style="width: 100%">
         <div class="margin-information p-5 rounded">
             <div class="row mt-5">
                 <div class="col-md-12 text-center">
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div style="background-image: url('{{ asset('public/user/assets/images/nen1.png') }}'); width: 80%" class="responsive-section bg-white text-white">
+    <div style="background-image: url('{{ asset('public/user/assets/images/nen1.png') }}'); width: 100%" class="responsive-section bg-white text-white">
         <div class="margin-information p-5 rounded">
             <div class="row mt-5">
                 <div class="col-md-12 text-center">
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <div class="text-center mt-5" style="width: 80%;">
+    <div class="text-center mt-5" style="width: 100%;">
         <h2><strong>THÀNH TỰU TUYỆT VỜI</strong></h2>
         <p class="lead">
             Khám phá <strong>tận hưởng tiện lợi và sự đa dạng</strong> của mua sắm trực tuyến
