@@ -61,7 +61,6 @@
             <x-input type="hidden" name="hidden_product_variation_id" />
             @foreach ($product->productAttributes as $item)
             <div class="row">
-<<<<<<< HEAD
                 <div class="col-md-5 mt-5 mb-5">
                     <div class="position-relative text-center">
                         <div class="fotorama" data-nav="thumbs" data-allowfullscreen="true">
@@ -182,7 +181,6 @@
                                 @if (!$loop->last) , @endif
                             @endforeach
                         </p>
-=======
                 <div class="col-md-12">
                     <span>{{ $item->attribute->name }}: <strong id="attribute_variation_name{{ $item->attribute->id }}">Black</strong></span><br>
                     <x-input id="hiddenAttribute" type="hidden" name="attribute_variation_ids[{{ $item->attribute->id }}]" />
@@ -196,7 +194,6 @@
                         </a>
                         @endif
                         @endforeach
->>>>>>> 5443f6253b63678b1de3320f4ece16b8b6021f14
                     </div>
                 </div>
             </div>
@@ -253,7 +250,7 @@
         </div>
         <div class="col-12">
             <div class="d-flex mb-3 align-items-center">
-                <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g" 
+                <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g"
                     alt="Customer Image" class="customer-image me-3 shadow">
                 <div>
                     <p class="mb-0"><strong>Nguyễn Văn A</strong> - 15/08/2024</p>
@@ -268,7 +265,7 @@
                 </div>
             </div>
             <div class="d-flex mb-3 align-items-center">
-                <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g" 
+                <img src="https://secure.gravatar.com/avatar/75d23af433e0cea4c0e45a56dba18b30?s=60&d=mm&r=g"
                     alt="Customer Image" class="customer-image me-3 shadow">
                 <div>
                     <p class="mb-0"><strong>Nguyễn Văn A</strong> - 15/08/2024</p>
@@ -288,138 +285,6 @@
         <div class="col-12 header-box">
             <h4 class="mt-3 ms-3">Sản phẩm liên quan</h4>
         </div>
-<<<<<<< HEAD
-    </div>
-    <div id="container-sale-off" class="container d-flex justify-content-center align-items-center">
-        <div class="container">
-            <div class="row bg-white">
-                <div class="col-12 d-flex align-items-center">
-                    <h4 class="mt-3 ms-3 mb-3">Những đánh giá của khách hàng</h4>
-                </div>
-                <div class="col-12">
-                    @foreach ($product->reviews as $review)
-                        <div class="d-flex mb-3">
-                            <img src="{{ $review->user->avatar ? asset($review->user->avatar) : asset(config('custom.images.default-rating')) }}" alt="Customer Image" class="customer-image me-3">
-                                <div class="rating">
-                                    <strong>{{ $review->user->fullname }}</strong> - {{ format_date_user($review->created_at) }}
-                                    <br>
-                                    @for ($i = 1; $i <= $review->rating ; $i++)
-                                        <span class="star">★</span>
-                                    @endfor
-                                    @for ($i = 5; $i > $review->rating ; $i--)
-                                    <span style="color: gray" class="star">★</span>
-                                @endfor
-                                    <p>{!! $review->content !!}</p>
-                                </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="container-sale-off" class="container d-flex justify-content-center align-items-center">
-        <div class="container">
-            <div class="row bg-white">
-                <div class="col-12 header-box d-flex align-items-center">
-                    <h4 class="mt-3 ms-1">Sản phẩm liên quan</h4>
-                </div>
-                <div class="col-12">
-                    <div id="productCarousel-related" class="carousel slide">
-                        <div class="carousel-inner">
-                            <!-- Slide 1 -->
-                            <div class="carousel-item active">
-                                <div class="container">
-                                    <div class="row">
-                                        @foreach($relatedProducts->take(4) as $relatedProduct)
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-default" src="{{ asset($relatedProduct->avatar) }}" style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-hover" src="{{ asset($relatedProduct->gallery[0]) }}" alt="{{ $relatedProduct->name }}" style="display: none;cursor: pointer;">
-                                                    @if(!isset($relatedProduct->productVariations[0]))
-                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->promotion_price / $relatedProduct->price * 100) }}%</span>
-                                                    @else
-                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 -$relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price * 100) }}%</span>
-                                                    @endif
-                                                    @if($relatedProduct->is_featured)
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                    @endif
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a></h6>
-                                                    <div class="rating">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                            <span class="star" style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
-                                                        @endfor
-                                                        <span>{{ $relatedProduct->reviews->count() }}</span>
-                                                    </div>
-                                                    @if(!isset($relatedProduct->productVariations[0]))
-                                                        <p><del>{{ format_price($relatedProduct->price) }}</del> <strong class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong></p>
-                                                    @else
-                                                        <p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del> <strong id="productVariationPromotionPrice" class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong></p>
-                                                    @endif
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="{{ $relatedProduct->id }}" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Slide 2 -->
-                            <div class="carousel-item">
-                                <div class="container">
-                                    <div class="row">
-                                        @foreach($relatedProducts->skip(4)->take(4) as $relatedProduct)
-                                        <div class="col-6 col-md-3 mb-4">
-                                            <div class="card border-0 hover-shadow">
-                                                <div class="position-relative">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-default" src="{{ asset($relatedProduct->avatar) }}" style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
-                                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';" class="card-img-top img-hover" src="{{ asset($relatedProduct->gallery[0]) }}" alt="{{ $relatedProduct->name }}" style="display: none;cursor: pointer;">
-                                                    @if(!isset($relatedProduct->productVariations[0]))
-                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->promotion_price / $relatedProduct->price * 100) }}%</span>
-                                                    @else
-                                                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ round(100 - $relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price * 100) }}%</span>
-                                                    @endif
-                                                    @if($relatedProduct->is_featured)
-                                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                                    @endif
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a></h6>
-                                                    <div class="rating">
-                                                        @for($i = 1; $i <= 5; $i++)
-                                                        <span class="star" style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
-                                                        @endfor
-                                                        <span>{{ $relatedProduct->reviews->count() }}</span>
-                                                    </div>
-                                                    @if(!isset($relatedProduct->productVariations[0]))
-                                                        <p><del>{{ format_price($relatedProduct->price) }}</del> <strong class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong></p>
-                                                    @else
-                                                        <p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del> <strong id="productVariationPromotionPrice" class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong></p>
-                                                    @endif
-                                                    <div class="text-center">
-                                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="{{ $relatedProduct->id }}" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev left-btn-slider-related" type="button" data-bs-target="#productCarousel-related"
-                            data-bs-slide="prev">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </button>
-                        <button class="carousel-control-next right-btn-slider-related" type="button" data-bs-target="#productCarousel-related"
-                            data-bs-slide="next">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </button>
-=======
         <div class="col-12">
             <div id="productCarousel-7" class="carousel slide">
                 <div class="carousel-inner">
@@ -460,7 +325,6 @@
                                 </div>
                             </div>
                         </div>
->>>>>>> 5443f6253b63678b1de3320f4ece16b8b6021f14
                     </div>
                 </div>
                 <button class="carousel-control-prev left-btn-slider-related" type="button" data-bs-target="#productCarousel-7"

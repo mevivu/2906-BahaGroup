@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Requests\ShoppingCart;
+namespace App\Http\Requests\ShoppingCart;
 
 use App\Admin\Http\Requests\BaseRequest;
 
