@@ -20,6 +20,10 @@ li {
     flex-wrap: nowrap;
 }
 
+.fs-12 {
+    font-size: 12px;
+}
+
 #header {
     font-size: 15px;
 }
@@ -521,9 +525,6 @@ li {
 
 .nav-tabs .nav-link {
     border: none;
-    font-size: 1.1rem;
-    /* Tăng cỡ chữ */
-    color: black
 }
 
 .nav-tabs .nav-link.active {
@@ -1135,7 +1136,7 @@ li {
 }
 
 .category-filter {
-    border-right: 1px solid #cccccc
+    border-right: 1px solid #f4f4f4;
 }
 
 /* Style the filter icon */
@@ -1499,10 +1500,9 @@ td[data-label="Tổng"] {
 
 .close {
     position: absolute;
-    top: 10px;
     right: 10px;
-    padding: 0px 15px 5px 15px;
-    font-size: 32px;
+    padding: 2px 6px 2px 6px;
+    font-size: 16px;
     cursor: pointer;
 }
 

@@ -1,7 +1,7 @@
 <!-- Main Header -->
-<div id="top-bar" class="pt-2 pb-2 shadow-sm">
-    <div class="container">
-        <p class="m-0">Miễn phí vận chuyển trong
+<div id="top-bar" class="pt-1 pb-1 shadow-sm">
+    <div class="container p-0">
+        <p class="m-0 fs-12">Miễn phí vận chuyển trong
             <span class="text-success fw-bold">Ngày của Baha.</span>
         </p>
     </div>
@@ -9,7 +9,7 @@
 
 <div id="top-header" class="d-flex align-items-center justify-content-center wrap-nav">
     <div class="container">
-        <div class="row pt-3 pb-3">
+        <div class="row pt-2 pb-2">
             <!-- Logo -->
             <div class="col-3 d-flex align-items-center">
                 <x-link :href="route('user.index')">

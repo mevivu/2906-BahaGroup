@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="root" class="d-flex justify-content-center align-items-center " style="flex-direction: column;">
+    <div id="root">
         <div id="header" class="container-fluid p-0">
             @include('user.layouts.header')
         </div>
