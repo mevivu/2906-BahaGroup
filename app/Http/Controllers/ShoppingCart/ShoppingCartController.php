@@ -129,6 +129,7 @@ class ShoppingCartController extends Controller
         $result = $this->service->decreament($request);
         if ($result) {
             $user = $this->getCurrentUser();
+            $code = $this->discountRepository->findByField('code', $request->get('code'));
             return response()->json([
                 'status' => true,
                 'data' => [

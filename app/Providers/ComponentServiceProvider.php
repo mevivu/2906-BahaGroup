@@ -25,5 +25,9 @@ class ComponentServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::component('quickview', \App\Views\QuickView::class);
+        Blade::component('header', \App\Views\Header::class);
+        Blade::component('modal-category', \App\Views\ModalCategory::class);
+        Blade::component('footer', \App\Views\Footer::class);
+        Blade::component('floating-contact', \App\Views\FloatingContact::class);
     }
 }

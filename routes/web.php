@@ -39,7 +39,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::delete('/remove/{id}', 'remove')->name('remove');
 });
 
-Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
+Route::controller(App\Http\Controllers\Auth\LoginController::class)
     ->middleware('guest:web')
     ->prefix('/auth')
     ->as('auth.')
@@ -58,14 +58,13 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::put('/update', 'update')->name('update');
     });
 
-Route::controller(App\Admin\Http\Controllers\Order\OrderController::class)
+Route::controller(App\Http\Controllers\Order\OrderController::class)
     ->prefix('/orders')
     ->as('order.')
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/detail/{id}', 'detail')->name('detail');
         Route::get('/cancel/{id?}', 'cancel')->name('cancel');
-        Route::put('/', 'update')->name('update');
     });
 
 Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::class)
@@ -84,8 +83,7 @@ Route::group(['middleware' => 'admin.auth.user:web'], function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::put('/', 'update')->name('update');
     });
-
-    Route::get('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
+    Route::post('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
 });
 
 Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
