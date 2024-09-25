@@ -16,7 +16,7 @@ class AttributeVariation extends Model
     protected $guarded = [];
 
     protected $casts = [
-        // 'meta_value' => AsArrayObject::class
+        'meta_value' => AsArrayObject::class
     ];
 
     public function attribute(){

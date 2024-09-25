@@ -35,7 +35,7 @@
                     <div class="mb-3">
                         <input type="checkbox" id="toggleShippingInfoOther"> Giao đến địa chỉ khác
                     </div>
-                    <div class="col-12 col-md-6 d-none" id="infoShippingOther">
+                    <div class="col-12 d-none" id="infoShippingOther">
                         <h3>{{ __('Thông tin giao hàng khác') }}</h3>
                         <div>
                             @include('admin.orders.partials.info-shipping-other')

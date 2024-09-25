@@ -58,7 +58,7 @@ class AttributeVariationController extends Controller
         return view($this->view['create'],
             [
                 'attribute' => $instance,
-                'has_meta_value_color' => $instance->type == AttributeType::Color->value
+                'has_meta_value_color' => $instance->type == AttributeType::Color
             ]
         );
     }
@@ -79,7 +79,7 @@ class AttributeVariationController extends Controller
             $this->view['edit'],
             [
                 'variation' => $instance,
-                'has_meta_value_color' => optional($instance->attribute)->type == AttributeType::Color->value
+                'has_meta_value_color' => optional($instance->attribute)->type == AttributeType::Color
             ]
         );
 

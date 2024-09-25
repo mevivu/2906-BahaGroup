@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->tinyInteger('position')->default(0);
-            $table->text('meta_value')->nullable();
+            $table->longText('meta_value')->nullable();
             $table->text('desc')->nullable();
             $table->timestamps();
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
