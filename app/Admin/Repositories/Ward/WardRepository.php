@@ -14,7 +14,7 @@ class WardRepository extends EloquentRepository implements WardRepositoryInterfa
     public function searchAllLimit($keySearch = '', $districtId = 0)
     {
         $district = District::find($districtId);
-        $this->instance = $this->model->where('district_code', $district[0]->code)->where('name', 'like', "%{$keySearch}%");
+        $this->instance = $this->model->where('district_code', $district->code)->where('name', 'like', "%{$keySearch}%");
         return $this->instance->get();
     }
 }
