@@ -8,8 +8,7 @@
             <div class="col-md-6 col-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Họ và tên') }}:</label>
-                    <x-input name="fullname" :value="old('fullname')" :required="true"
-                        placeholder="{{ __('Họ và tên') }}" />
+                    <x-input name="fullname" :value="old('fullname')" :required="true" placeholder="{{ __('Họ và tên') }}" />
                 </div>
             </div>
             <!-- email -->
@@ -47,11 +46,7 @@
             <!-- address -->
             <div class="col-md-12 col-12">
                 <div class="mb-3">
-                    <x-input-pick-address :label="trans('address')" name="address"
-                                          :placeholder="trans('pickAddress')"
-                                          :required="true" />
-                    <x-input  hidden name="lat" />
-                    <x-input  hidden name="lng" />
+                    <x-input :label="trans('address')" name="address" :placeholder="trans('pickAddress')" :required="true" />
                 </div>
             </div>
 
