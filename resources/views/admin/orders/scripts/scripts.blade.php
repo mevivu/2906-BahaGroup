@@ -162,6 +162,18 @@
         select2LoadData($('#province_id').data('url'), '#province_id');
         select2LoadData($('#discount_id').data('url'), '#discount_id');
         searchProduct('', '#showSearchResultProduct');
+
+        let provinceId;
+        let districtId;
+
+        provinceId = $('#province_id').val();
+        districtId = $('#district_id').val();
+
+        let urlDistrict = "{{ route('admin.search.select.district') }}";
+        let urlWard = "{{ route('admin.search.select.ward') }}";
+        select2LoadData(urlDistrict + '?province_id=' + provinceId, '#district_id');
+        select2LoadData(urlWard + '?district_id=' + districtId, '#ward_id');
+
         const userId = document.getElementById('orderUserId').value;
         var url = $('input[name="route_render_info_shipping"]').val();
         if(userId){
@@ -233,12 +245,15 @@
         let url = "{{ route('admin.search.select.district') }}";
         select2LoadData(url + '?province_id=' + provinceId, '#district_id');
         select2LoadData('', '#ward_id');
+        $('#district_id').val(null).trigger('change');
+        $('#ward_id').val(null).trigger('change');
     });
 
     $(document).on('change', 'select[name="order[district_id]"]', function(e) {
         districtId = $(this).val();
         let url = "{{ route('admin.search.select.ward') }}";
         select2LoadData(url + '?district_id=' + districtId, '#ward_id');
+        $('#ward_id').val(null).trigger('change');
     });
 
 
