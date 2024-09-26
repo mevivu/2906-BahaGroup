@@ -9,8 +9,7 @@
             <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Họ và tên') }}:</label>
-                    <x-input name="fullname" :value="$user->fullname" :required="true"
-                        placeholder="{{ __('Họ và tên') }}" />
+                    <x-input name="fullname" :value="$user->fullname" :required="true" placeholder="{{ __('Họ và tên') }}" />
                 </div>
             </div>
             <!-- email -->
@@ -31,8 +30,7 @@
             <div class="col-md-6 col-12">
                 <div class="mb-3">
                     <label class="control-label">@lang('birthday'):</label>
-                    <x-input type="date" name="birthday" :value="isset($user->birthday) ? format_date($user->birthday, 'Y-m-d') : null"
-                             required="true"/>
+                    <x-input type="date" name="birthday" :value="isset($user->birthday) ? format_date($user->birthday, 'Y-m-d') : null" required="true" />
                 </div>
             </div>
 
@@ -51,8 +49,8 @@
             <!-- address -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <x-input-pick-address :label="trans('address')" name="address" :value="$user->address"
-                                          :placeholder="trans('address')" :required="true" />
+                    <x-input :label="trans('address')" name="address" :value="$user->address" :placeholder="trans('address')"
+                        :required="true" />
                     <x-input type="hidden" name="lat" :value="$user->lat" />
                     <x-input type="hidden" name="lng" :value="$user->lng" />
                 </div>
