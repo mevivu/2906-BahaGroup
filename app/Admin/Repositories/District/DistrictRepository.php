@@ -16,7 +16,7 @@ class DistrictRepository extends EloquentRepository implements DistrictRepositor
     public function searchAllLimit($keySearch = '', $provinceId = 0)
     {
         $province = Province::find($provinceId);
-        $this->instance = $this->model->where('province_code', $province[0]->code)->where('name', 'like', "%{$keySearch}%");
+        $this->instance = $this->model->where('province_code', $province->code)->where('name', 'like', "%{$keySearch}%");
         return $this->instance->get();
     }
 }
