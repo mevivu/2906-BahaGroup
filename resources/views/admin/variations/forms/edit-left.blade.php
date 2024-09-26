@@ -12,7 +12,6 @@
                         placeholder="{{ __('Tên biến thể') }}" />
                 </div>
             </div>
-
             @includeWhen($has_meta_value_color, 'admin.variations.forms.fields.meta-value-color')
             <!-- position -->
             <div class="col-md-12 col-12">
@@ -27,12 +26,6 @@
                 <div class="mb-3">
                     <label class="control-label">{{ __('Mô tả') }}:</label>
                     <textarea class="form-control" name="desc">{{ $variation->desc }}</textarea>
-                </div>
-            </div>
-            <div class="col-md-6 col-12">
-                <div class="mb-3">
-                    <label class="control-label">{{ __('Màu sắc') }}:</label>
-                    <x-input name="meta_value[color]" :value="$variation->meta_value ? $variation->meta_value['color'] : ''" placeholder="{{ __('Nhập mã màu nếu là màu sắc') }}" />
                 </div>
             </div>
         </div>

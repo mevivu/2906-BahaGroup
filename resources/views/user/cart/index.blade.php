@@ -9,11 +9,11 @@
 @endphp
 
 @section("content")
-				<div class="d-flex justify-content-center align-items-center container bg-white">
+				<div class="d-flex align-items-center container bg-white">
 								<div class="container">
 												<div class="row">
 																<div class="col-md-8 mb-3 mt-3">
-																				<table class="table-center justify-content-center table text-center">
+																				<table class="table-center table text-center">
 																								<thead>
 																												<tr>
 																																<th class="text-start">Sản phẩm</th>
@@ -27,7 +27,7 @@
 																												@foreach ($shoppingCart as $item)
 																																<tr class="bold-text">
 																																				<td data-label="Sản phẩm">
-																																								<div onclick="location.href='{{ route("user.product.detail", ["id" => $item->product_id]) }}';"
+																																								<div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product_id]) }}';"
 																																												style="cursor: pointer" class="align-items-center product-info row">
 																																												<div class="col-md-4 col-12"><img
 																																																				src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
@@ -117,10 +117,11 @@
 																<div class="col-md-4 mb-3 mt-3">
 																				<div class="card mb-3">
 																								<div class="card-body">
-																												<h5 class="card-title">Áp dụng mã giảm giá</h5>
+																												<h5>Áp dụng mã giảm giá</h5>
 																												<div class="input-group">
-																																<input type="text" class="form-control" placeholder="Nhập mã giảm giá">
-																																<button class="btn btn-default" type="button">Áp dụng</button>
+																																<input id="code" type="text" class="form-control" placeholder="Nhập mã giảm giá">
+																																<button id="apply_code" class="btn btn-default" type="button">Áp dụng</button>
+																																<input type="hidden" id="applied_code">
 																												</div>
 																								</div>
 																				</div>
@@ -144,7 +145,7 @@
 																												</div>
 																								</div>
 																				</div>
-																				<a href="{{ route("user.payment.payment") }}" class="btn btn-default w-100"><strong>Tiến hành thanh
+																				<a href="{{ route('user.payment.payment') }}" class="btn btn-default w-100"><strong>Tiến hành thanh
 																												toán</strong></a>
 																</div>
 												</div>

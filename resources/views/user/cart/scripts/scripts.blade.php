@@ -28,6 +28,8 @@
 								var id = $(button).data('id');
 								var input = $(`#quantity-input` + id);
 								var hiddenValue = $(`input[name="hidden_product_qty${id}"]`);
+        var code = $(`#code`).val();
+        
 								if (input.val() == hiddenValue.val()) {
 												Swal.fire({
 																icon: 'warning',

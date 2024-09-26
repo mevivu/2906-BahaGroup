@@ -54,7 +54,6 @@ class AttributeVariationDataTable extends BaseDataTable
     protected function setCustomEditColumns(): void
     {
         $this->customEditColumns = [
-            'created_at' => '{{ format_date($created_at) }}',
             'name' => $this->view['editlink_color'],
         ];
     }

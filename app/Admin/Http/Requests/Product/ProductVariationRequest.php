@@ -57,9 +57,9 @@ class ProductVariationRequest extends BaseRequest
         return [
             'id' => ['required', 'exists:App\Models\User,id'],
             // 'username' => [
-            //     'required', 
+            //     'required',
             //     'string', 'min:6', 'max:50',
-            //     'unique:App\Models\User,username,'.$this->id, 
+            //     'unique:App\Models\User,username,'.$this->id,
             //     'regex:/^[A-Za-z0-9_-]+$/',
             //     function ($attribute, $value, $fail) {
             //         if (in_array(strtolower($value), ['admin', 'user', 'password'])) {

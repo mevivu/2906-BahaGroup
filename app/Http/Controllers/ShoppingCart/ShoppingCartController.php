@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Admin\Http\Controllers\ShoppingCart;
+namespace App\Http\Controllers\ShoppingCart;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
-use App\Admin\Http\Requests\ShoppingCart\ChangeQtyRequest;
-use App\Admin\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Admin\Traits\AuthService;
+use App\Http\Requests\ShoppingCart\ChangeQtyRequest;
+use App\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Traits\ResponseController;
 
 
@@ -129,6 +129,7 @@ class ShoppingCartController extends Controller
         $result = $this->service->decreament($request);
         if ($result) {
             $user = $this->getCurrentUser();
+            $code = $this->discountRepository->findByField('code', $request->get('code'));
             return response()->json([
                 'status' => true,
                 'data' => [

@@ -13,7 +13,6 @@ use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
-use App\Models\Product;
 use App\Traits\ResponseController;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -49,9 +48,6 @@ class ProductController extends Controller
     {
         return [
             'index' => 'admin.products.index',
-            'indexUser' => 'user.products.index',
-            'sale-limited' => 'user.products.sale-limited',
-            'product-detail' => 'user.products.product-detail',
             'create' => 'admin.products.create',
             'edit' => 'admin.products.edit',
             'search_render_list' => 'admin.orders.partials.list-search-result-product',
@@ -82,64 +78,6 @@ class ProductController extends Controller
             'is_user_discount' => $isUserDiscount,
             'categories' => $categories,
         ]);
-    }
-
-    public function indexUser()
-    {
-        // $categories = $this->repositoryCategory->getFlatTree();
-        // $categories = $categories->map(function ($category) {
-        //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
-        // });
-        return view($this->view['indexUser']);
-    }
-
-    public function detail($id)
-    {
-        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
-            'categories:id,name',
-            'productAttributes' => function ($query) {
-                return $query->with(['attribute.variations', 'attributeVariations:id']);
-            },
-            'productVariations.attributeVariations'
-        ]);
-        $randomProducts = $this->repository->getRelatedProducts($product->id);
-        $product = new ProductEditResource($product);
-        return view($this->view['product-detail'], [
-            'product' => $product,
-            'relatedProducts' => $randomProducts
-        ]);
-    }
-
-    public function findVariationByAttributeVariationIds(Request $request)
-    {
-        $id = $request->input('product_id');
-        $attributeVariationIds = $request->input('attribute_variation_ids');
-        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
-            'productVariations.attributeVariations'
-        ]);
-
-        $matchingProductVariation = $product->productVariations->first(function ($productVariation) use ($attributeVariationIds) {
-            $variationAttributeIds = $productVariation->attributeVariations->pluck('id')->toArray();
-            return empty(array_diff($attributeVariationIds, $variationAttributeIds)) &&
-                count($attributeVariationIds) === count($variationAttributeIds);
-        });
-
-        if ($matchingProductVariation) {
-            return response()->json([
-               'status' => true,
-                'data' => new ProductVariationResource($matchingProductVariation)
-            ]);
-        } else {
-            return response()->json([
-               'status' => false,
-               'message' => __('Không tìm thấy sản phẩm phù hợp.')
-            ], 400);
-        }
-    }
-
-    public function saleLimited()
-    {
-        return view($this->view['sale-limited']);
     }
 
     public function create(): Factory|View|Application

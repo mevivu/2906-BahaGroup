@@ -189,7 +189,6 @@ class OrderService implements OrderServiceInterface
     public function update(Request $request)
     {
         $this->data = $request->validated();
-
         DB::beginTransaction();
         try {
             if (isset($this->data['order']['user_id'])) {

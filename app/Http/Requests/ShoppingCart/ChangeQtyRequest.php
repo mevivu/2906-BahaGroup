@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Http\Requests\ShoppingCart;
+namespace App\Http\Requests\ShoppingCart;
 
 use App\Admin\Http\Requests\BaseRequest;
 
@@ -10,6 +10,7 @@ class ChangeQtyRequest extends BaseRequest
     {
         return [
             'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
+            'code' => ['nullable', 'exists:App\Models\Discount,id'],
         ];
     }
 
@@ -18,6 +19,7 @@ class ChangeQtyRequest extends BaseRequest
         return [
             'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
             'qty' => ['required', 'integer', 'min:1'],
+            'code' => ['nullable', 'exists:App\Models\Discount,id'],
         ];
     }
 }

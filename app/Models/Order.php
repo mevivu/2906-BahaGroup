@@ -37,14 +37,14 @@ class Order extends Model
         'address_other',
         /** Số điện thoại người nhận khác */
         'phone_other',
+        /** Ghi chú người nhận khác */
+        'note_other',
         /** ward_id */
         'ward_id',
         /** province_id */
         'province_id',
         /** district_id */
         'district_id',
-        /** Ghi chú người nhận khác */
-        'note_other',
         /** Giá trị giảm */
         'discount_value',
         /** code */

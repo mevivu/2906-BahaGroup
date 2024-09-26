@@ -4,7 +4,6 @@ namespace App\Admin\DataTables\FlashSale;
 
 use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
-use App\Enums\FlashSale\FlashSaleType;
 use Illuminate\Database\Eloquent\Builder;
 
 class FlashSaleDataTable extends BaseDataTable

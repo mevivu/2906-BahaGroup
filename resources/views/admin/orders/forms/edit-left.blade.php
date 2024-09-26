@@ -35,7 +35,7 @@
                     <div class="mb-3">
                         <input type="checkbox" id="toggleShippingInfoOther"> Giao đến địa chỉ khác
                     </div>
-                    <div class="col-12 col-md-6 d-none" id="infoShippingOther">
+                    <div class="col-12 d-none" id="infoShippingOther">
                         <h3>{{ __('Thông tin giao hàng khác') }}</h3>
                         <div>
                             @include('admin.orders.partials.info-shipping-other')
@@ -49,7 +49,7 @@
                     @include('admin.orders.partials.info-shipping')
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Tỉnh') }}</label>
+                    <label for="">{{ __('Tỉnh/Thành phố') }}</label>
                     <x-select name="order[province_id]"
                     id="province_id"
                     class="select2-bs5-ajax"
@@ -69,7 +69,7 @@
                     </x-select>
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Phường') }}</label>
+                    <label for="">{{ __('Phường/Xã') }}</label>
                     <x-select name="order[ward_id]"
                     id="ward_id"
                     class="select2-bs5-ajax"
