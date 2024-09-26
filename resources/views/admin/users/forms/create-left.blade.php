@@ -47,8 +47,6 @@
             <div class="col-md-12 col-12">
                 <div class="mb-3">
                     <x-input :label="trans('address')" name="address" :placeholder="trans('pickAddress')" :required="true" />
-                    <x-input hidden name="lat" />
-                    <x-input hidden name="lng" />
                 </div>
             </div>
 

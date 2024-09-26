@@ -24,7 +24,7 @@
                             <!-- Số điện thoại -->
                             <div class="col-md-6 mt-3">
                                 <label for="phone">Số điện thoại <p style="display: inline;" class="text-red">*</p>
-                                    </label>
+                                </label>
                                 <x-input-phone name="phone" :value="$auth->phone" :required="true" />
                             </div>
 
@@ -49,8 +49,6 @@
                             <div class="col-md-12 mt-3">
                                 <x-input :label="trans('address')" name="address" :value="$auth->address" :placeholder="trans('address')"
                                     :required="true" />
-                                <x-input type="hidden" name="lat" :value="$auth->lat" />
-                                <x-input type="hidden" name="lng" :value="$auth->lng" />
                             </div>
                             <div class="col-md-4"></div>
                             <div class="col-md-4"><button type="submit" class="btn btn-default w-100 mt-2"><strong>CẬP

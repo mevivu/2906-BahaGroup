@@ -51,8 +51,6 @@
                 <div class="mb-3">
                     <x-input :label="trans('address')" name="address" :value="$user->address" :placeholder="trans('address')"
                         :required="true" />
-                    <x-input type="hidden" name="lat" :value="$user->lat" />
-                    <x-input type="hidden" name="lng" :value="$user->lng" />
                 </div>
             </div>
 
