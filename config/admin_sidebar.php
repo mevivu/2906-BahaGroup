@@ -161,6 +161,45 @@ return [
             ],
         ]
     ],
+    [
+        'title' => 'Bài viết',
+        'routeName' => null,
+        'icon' => '<i class="ti ti-article"></i>',
+        'roles' => [],
+        'permissions' =>
+        [
+            'createPost',
+            'viewPost',
+            'updatePost',
+            'deletePost',
+            'viewPostCategory',
+            'createPostCategory',
+            'updatePostCategory'
+        ],
+        'sub' => [
+            [
+                'title' => 'Thêm bài viết',
+                'routeName' => 'admin.post.create',
+                'icon' => '<i class="ti ti-plus"></i>',
+                'roles' => [],
+                'permissions' => ['createPost'],
+            ],
+            [
+                'title' => 'DS Bài viết',
+                'routeName' => 'admin.post.index',
+                'icon' => '<i class="ti ti-list"></i>',
+                'roles' => [],
+                'permissions' => ['viewPost'],
+            ],
+            [
+                'title' => 'DS Chuyên mục',
+                'routeName' => 'admin.post_category.index',
+                'icon' => '<i class="ti ti-list"></i>',
+                'roles' => [],
+                'permissions' => ['viewPostCategory'],
+            ]
+        ]
+    ],
     // [
     //     'title' => 'Sliders',
     //     'routeName' => null,
@@ -182,45 +221,6 @@ return [
     //             'roles' => [],
     //             'permissions' => ['viewSlider'],
     //         ],
-    //     ]
-    // ],
-    // [
-    //     'title' => 'Bài viết',
-    //     'routeName' => null,
-    //     'icon' => '<i class="ti ti-article"></i>',
-    //     'roles' => [],
-    //     'permissions' =>
-    //     [
-    //         'createPost',
-    //         'viewPost',
-    //         'updatePost',
-    //         'deletePost',
-    //         'viewPostCategory',
-    //         'createPostCategory',
-    //         'updatePostCategory'
-    //     ],
-    //     'sub' => [
-    //         [
-    //             'title' => 'Thêm bài viết',
-    //             'routeName' => 'admin.post.create',
-    //             'icon' => '<i class="ti ti-plus"></i>',
-    //             'roles' => [],
-    //             'permissions' => ['createPost'],
-    //         ],
-    //         [
-    //             'title' => 'DS Bài viết',
-    //             'routeName' => 'admin.post.index',
-    //             'icon' => '<i class="ti ti-list"></i>',
-    //             'roles' => [],
-    //             'permissions' => ['viewPost'],
-    //         ],
-    //         [
-    //             'title' => 'DS Chuyên mục',
-    //             'routeName' => 'admin.post_category.index',
-    //             'icon' => '<i class="ti ti-list"></i>',
-    //             'roles' => [],
-    //             'permissions' => ['viewPostCategory'],
-    //         ]
     //     ]
     // ],
     // [

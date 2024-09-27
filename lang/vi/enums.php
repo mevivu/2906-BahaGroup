@@ -7,6 +7,7 @@ use App\Enums\FeaturedStatus;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Payment\PaymentMethod;
 use App\Enums\Order\OrderType;
+use App\Enums\Post\PostStatus;
 use App\Enums\PriorityStatus;
 use App\Enums\Product\{ProductInStock, ProductManagerStock, ProductStatus, ProductType, ProductVariationAction};
 use App\Enums\User\{Gender, UserVip, UserRoles};
@@ -20,6 +21,10 @@ return [
     DefaultActiveStatus::class => [
         DefaultActiveStatus::Active->value => 'Có',
         DefaultActiveStatus::UnActive->value => 'Không',
+    ],
+    PostStatus::class => [
+        PostStatus::Draft->value => 'Bản nháp',
+        PostStatus::Published->value => 'Đã xuất bản',
     ],
     ProductStatus::class => [
         ProductStatus::Active->value => 'Đang hoạt động',

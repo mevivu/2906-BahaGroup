@@ -133,48 +133,48 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
     //     });
     // });
 
-    // Route::prefix('/posts')->as('post.')->group(function () {
-    //     Route::controller(App\Admin\Http\Controllers\Post\PostController::class)->group(function () {
+    Route::prefix('/posts')->as('post.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\Post\PostController::class)->group(function () {
 
-    //         Route::group(['middleware' => ['permission:createPost', 'auth:admin']], function () {
-    //             Route::get('/them', 'create')->name('create');
-    //             Route::post('/them', 'store')->name('store');
-    //         });
-    //         Route::group(['middleware' => ['permission:viewPost', 'auth:admin']], function () {
-    //             Route::get('/', 'index')->name('index');
-    //             Route::get('/sua/{id}', 'edit')->name('edit');
-    //         });
+            Route::group(['middleware' => ['permission:createPost', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewPost', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
 
-    //         Route::group(['middleware' => ['permission:updatePost', 'auth:admin']], function () {
-    //             Route::put('/sua', 'update')->name('update');
-    //         });
+            Route::group(['middleware' => ['permission:updatePost', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
 
-    //         Route::group(['middleware' => ['permission:deletePost', 'auth:admin']], function () {
-    //             Route::delete('/xoa/{id}', 'delete')->name('delete');
-    //         });
-    //     });
-    // });
+            Route::group(['middleware' => ['permission:deletePost', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
 
-    // Route::prefix('/posts-categories')->as('post_category.')->group(function () {
-    //     Route::controller(App\Admin\Http\Controllers\PostCategory\PostCategoryController::class)->group(function () {
-    //         Route::group(['middleware' => ['permission:createPostCategory', 'auth:admin']], function () {
-    //             Route::get('/them', 'create')->name('create');
-    //             Route::post('/them', 'store')->name('store');
-    //         });
-    //         Route::group(['middleware' => ['permission:viewPostCategory', 'auth:admin']], function () {
-    //             Route::get('/', 'index')->name('index');
-    //             Route::get('/sua/{id}', 'edit')->name('edit');
-    //         });
+    Route::prefix('/posts-categories')->as('post_category.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\PostCategory\PostCategoryController::class)->group(function () {
+            Route::group(['middleware' => ['permission:createPostCategory', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewPostCategory', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
 
-    //         Route::group(['middleware' => ['permission:updatePostCategory', 'auth:admin']], function () {
-    //             Route::put('/sua', 'update')->name('update');
-    //         });
+            Route::group(['middleware' => ['permission:updatePostCategory', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
 
-    //         Route::group(['middleware' => ['permission:deletePostCategory', 'auth:admin']], function () {
-    //             Route::delete('/xoa/{id}', 'delete')->name('delete');
-    //         });
-    //     });
-    // });
+            Route::group(['middleware' => ['permission:deletePostCategory', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
 
     Route::controller(App\Admin\Http\Controllers\Setting\SettingController::class)
         ->prefix('/settings')
