@@ -100,7 +100,7 @@ class PostCategoryController extends Controller
 
         $response = $this->service->update($request);
 
-        return $this->handleUpdateResponse($response);
+        return $this->handleUpdateResponse($response, $this->route['edit']);
 
     }
 

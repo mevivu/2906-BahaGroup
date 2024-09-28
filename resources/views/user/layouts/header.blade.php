@@ -91,6 +91,9 @@
                     <li class="nav-item default-font-size">
                         <x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
                     </li>
+                    <li class="nav-item default-font-size">
+                        <x-link :href="route('user.post.index')">Tin tức</x-link>
+                    </li>
                 </ul>
             </div>
             <!-- NavBar Responsive-->
@@ -155,6 +158,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
+                                </li>
+                                <li class="nav-item default-font-size">
+                                    <x-link :href="route('user.post.index')">Tin tức</x-link>
                                 </li>
                                 @if (auth('web')->user())
                                     <li class="nav-item">
