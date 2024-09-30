@@ -8,13 +8,14 @@ use Illuminate\Validation\Rules\Enum;
 
 class OrderRequest extends BaseRequest
 {
-    public function methodPost(){
+    public function methodPost()
+    {
         return [
             'order.user_id' => ['required', 'exists:App\Models\User,id'],
             'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
             'order.province_id' => ['required', 'exists:App\Models\Province,id'],
             'order.district_id' => ['required', 'exists:App\Models\District,id'],
-            'order.discount_id' => ['required', 'exists:App\Models\Discount,id'],
+            'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             'order.address' => ['required'],
             'order.note' => ['nullable'],
             'order.total' => ['nullable'],
@@ -45,7 +46,7 @@ class OrderRequest extends BaseRequest
             'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
             'order.province_id' => ['required', 'exists:App\Models\Province,id'],
             'order.district_id' => ['required', 'exists:App\Models\District,id'],
-            'order.discount_id' => ['required', 'exists:App\Models\Discount,id'],
+            'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             'order.status' => ['required', new Enum(OrderStatus::class)],
             'order.user_id' => ['required', 'exists:App\Models\User,id'],
             'order.note' => ['nullable'],
@@ -66,17 +67,18 @@ class OrderRequest extends BaseRequest
         ];
     }
 
-    protected function methodGet(){
-        if($this->routeIs('admin.order.render_info_shipping')){
+    protected function methodGet()
+    {
+        if ($this->routeIs('admin.order.render_info_shipping')) {
             return [
                 'user_id' => ['required', 'exists:App\Models\User,id']
             ];
-        }elseif($this->routeIs('admin.order.add_product')){
+        } elseif ($this->routeIs('admin.order.add_product')) {
             return [
                 'product_id' => ['required', 'exists:App\Models\Product,id'],
                 'product_variation_id' => ['nullable', 'exists:App\Models\ProductVariation,id'],
             ];
-        }elseif($this->routeIs('admin.order.calculate_total_before_save_order')){
+        } elseif ($this->routeIs('admin.order.calculate_total_before_save_order')) {
             return [
                 'order.user_id' => ['required', 'exists:App\Models\User,id'],
                 'order_detail.product_id.*' => ['required', 'exists:App\Models\Product,id'],
@@ -85,8 +87,6 @@ class OrderRequest extends BaseRequest
                 'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             ];
         }
-        return [
-
-        ];
+        return [];
     }
 }

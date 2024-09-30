@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
-->prefix('/reset-password')
-->as('password.reset.')
-->group(function(){
-    Route::get('/edit', 'edit')->name('edit')->middleware('signed');
-    Route::put('/update', 'update')->name('update');
-    Route::get('/success', 'success')->name('success');
-});
+    ->prefix('/reset-password')
+    ->as('password.reset.')
+    ->group(function () {
+        Route::get('/edit', 'edit')->name('edit')->middleware('signed');
+        Route::put('/update', 'update')->name('update');
+        Route::get('/success', 'success')->name('success');
+    });

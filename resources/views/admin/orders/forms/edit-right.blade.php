@@ -38,31 +38,30 @@
         </div>
         @if ($order->discount)
             @php
-                if($order->type == App\Enums\Discount\DiscountType::Money){
-                    $type = $order->discount->discount_value.'đ';
-                }
-                else{
-                    $type = $order->discount->discount_value.'%';
+                if ($order->type == App\Enums\Discount\DiscountType::Money) {
+                    $type = $order->discount->discount_value . 'đ';
+                } else {
+                    $type = $order->discount->discount_value . '%';
                 }
             @endphp
             <div class="card-body p-2 d-flex justify-content-between">
-                <x-select name="order[discount_id]"
-                    id="discount_id"
-                    class="select2-bs5-ajax"
-                    data-url="{{ route('admin.search.select.discount') }}"
-                    :required="true">
-                    <x-select-option :option="$order->discount->id" :value="$order->discount->id" :title="$order->discount->code.' - Tối thiểu: '.$order->discount->min_order_amount.'đ - Còn lại: '.$order->discount->max_usage.' - Giảm: '.$type"/>
+                <x-select name="order[discount_id]" id="discount_id" class="select2-bs5-ajax"
+                    data-url="{{ route('admin.search.select.discount') }}" :required="true">
+                    <x-select-option :option="$order->discount->id" :value="$order->discount->id" :title="$order->discount->code .
+                        ' - Tối thiểu: ' .
+                        $order->discount->min_order_amount .
+                        'đ - Còn lại: ' .
+                        $order->discount->max_usage .
+                        ' - Giảm: ' .
+                        $type" />
                 </x-select>
             </div>
         @else
-        <div class="card-body p-2 d-flex justify-content-between">
-            <x-select name="order[discount_id]"
-                id="discount_id"
-                class="select2-bs5-ajax"
-                data-url="{{ route('admin.search.select.discount') }}"
-                :required="true">
-            </x-select>
-        </div>
+            <div class="card-body p-2 d-flex justify-content-between">
+                <x-select name="order[discount_id]" id="discount_id" class="select2-bs5-ajax"
+                    data-url="{{ route('admin.search.select.discount') }}" :required="false">
+                </x-select>
+            </div>
         @endif
     </div>
 </div>

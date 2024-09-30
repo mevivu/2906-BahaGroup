@@ -18,6 +18,7 @@ Route::controller(App\Admin\Http\Controllers\Product\ProductController::class)
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
+        Route::get('/search', 'searchRenderProduct')->name('search');
     });
 
 Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController::class)
@@ -37,7 +38,7 @@ Route::controller(App\Admin\Http\Controllers\ShoppingCart\ShoppingCartController
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
         Route::delete('/remove/{id}', 'remove')->name('remove');
-});
+    });
 
 Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
     ->middleware('guest:web')
@@ -78,12 +79,12 @@ Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::clas
 
 Route::group(['middleware' => 'admin.auth.user:web'], function () {
     Route::controller(App\Admin\Http\Controllers\Auth\ProfileController::class)
-    ->prefix('/profile')
-    ->as('profile.')
-    ->group(function () {
-        Route::get('/', 'indexUser')->name('indexUser');
-        Route::put('/', 'update')->name('update');
-    });
+        ->prefix('/profile')
+        ->as('profile.')
+        ->group(function () {
+            Route::get('/', 'indexUser')->name('indexUser');
+            Route::put('/', 'update')->name('update');
+        });
 
     Route::get('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
 });

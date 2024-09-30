@@ -126,13 +126,13 @@ class ProductController extends Controller
 
         if ($matchingProductVariation) {
             return response()->json([
-               'status' => true,
+                'status' => true,
                 'data' => new ProductVariationResource($matchingProductVariation)
             ]);
         } else {
             return response()->json([
-               'status' => false,
-               'message' => __('Không tìm thấy sản phẩm phù hợp.')
+                'status' => false,
+                'message' => __('Không tìm thấy sản phẩm phù hợp.')
             ], 400);
         }
     }
@@ -217,5 +217,12 @@ class ProductController extends Controller
             'name' => $request->input('key')
         ]);
         return view($this->view['search_render_flash_sale'], compact('products'));
+    }
+
+    public function searchRenderProduct(Request $request)
+    {
+        $query = $request->input('q');
+        $result = Product::where('name', 'like', "%{$query}%")->get();
+        return response()->json($result);
     }
 }

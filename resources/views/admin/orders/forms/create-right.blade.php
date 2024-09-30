@@ -24,11 +24,8 @@
             {{ __('Mã giảm giá') }}
         </div>
         <div class="card-body p-2 d-flex justify-content-between">
-            <x-select name="order[discount_id]"
-                id="discount_id"
-                class="select2-bs5-ajax"
-                data-url="{{ route('admin.search.select.discount') }}"
-                :required="true">
+            <x-select name="order[discount_id]" id="discount_id" class="select2-bs5-ajax"
+                data-url="{{ route('admin.search.select.discount') }}" :required="false">
             </x-select>
         </div>
     </div>
