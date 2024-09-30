@@ -22,7 +22,8 @@
                     @foreach($relatedPosts as $relatedPost)
                         <div class="col-md-4">
                             <div class="related-post">
-                                <a href="{{ route('user.post.detail', ['id' => $relatedPost->id]) }}">
+                                <a
+                                    href="{{ route('user.post.detail', ['idPost' => $relatedPost->id, 'slugPost' => $relatedPost->slug]) }}">
                                     <img src="{{ asset($relatedPost->image) }}" class="related-post-image img-fluid"
                                         alt="{{ $relatedPost->title }}">
                                     <p class="related-post-title">{{ $relatedPost->title }}</p>
