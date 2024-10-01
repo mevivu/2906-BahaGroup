@@ -99,13 +99,12 @@
                                                             </p>
                                                         </div>
                                                         <div class="col-6 text-truncate text-end">
-                                                            <span class="card-text ${value.promotion_price ? 'text-decoration-line-through' : ''}">
-                                                                ${value.price ? value.price : 'Liên hệ'}
+                                                            <span class="card-text ${value.promotion_price ? 'text-decoration-line-through text-secondary' : 'text-dark'}">
+                                                                ${value.price ? number_format(value.price).toString() + '₫' : 'Liên hệ'}
                                                             </span>
-                                                            ${value.promotion_price ? `<span class="card-text">${value.promotion_price}</span>` : ''}
+                                                            ${value.promotion_price ? `<span class="card-text text-red">${number_format(value.promotion_price).toString()}₫</span>` : ''}
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
