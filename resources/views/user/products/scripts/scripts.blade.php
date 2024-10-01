@@ -2,7 +2,7 @@
 				$(document).ready(function() {
 								function updateCountdown() {
 												const startTime = new Date();
-												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
+												const endTime = new Date('{{ $products[0]->product->on_flash_sale->end_time ?? 0 }}');
 
 												const diffInMs = endTime - startTime;
 												const diffInHours = Math.floor(diffInMs / 3600000);
@@ -14,7 +14,7 @@
                 console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
-								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
+								const endTime = '{{ $products[0]->product->on_flash_sale->end_time ?? 0 }}';
 								if (endTime != 0) {
 												updateCountdown();
 												const countdownInterval = setInterval(updateCountdown, 1000);

@@ -21,4 +21,12 @@ class FlashSaleRepository extends EloquentRepository implements FlashSaleReposit
         }
         return false;
     }
+
+    public function getAllFlashSaleProducts_Rows($flash_sale_id) {
+        // dd($flash_sale_id);
+        $detail = FlashSaleDetail::where('flash_sale_id', $flash_sale_id)->get();
+        if ($detail) {
+            return $detail;
+        }
+    }
 }

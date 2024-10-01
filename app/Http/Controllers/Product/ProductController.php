@@ -9,21 +9,25 @@ use App\Admin\Services\Product\ProductServiceInterface;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
+use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
-
+use Maatwebsite\Excel\Concerns\ToArray;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class ProductController extends Controller
 {
     use ResponseController;
 
+    protected FlashSaleRepositoryInterface $flashSaleRepository;
     protected CategoryRepositoryInterface $repositoryCategory;
     protected AttributeRepositoryInterface $repositoryAttribute;
     protected DiscountRepositoryInterface $discountRepository;
 
     public function __construct(
         ProductRepositoryInterface   $repository,
+        FlashSaleRepositoryInterface $flashSaleRepository,
         DiscountRepositoryInterface  $discountRepository,
         CategoryRepositoryInterface  $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
@@ -31,6 +35,7 @@ class ProductController extends Controller
     ) {
         parent::__construct();
         $this->repository = $repository;
+        $this->flashSaleRepository = $flashSaleRepository;
         $this->repositoryCategory = $repositoryCategory;
         $this->repositoryAttribute = $repositoryAttribute;
         $this->discountRepository = $discountRepository;
@@ -70,6 +75,7 @@ class ProductController extends Controller
             },
             'productVariations.attributeVariations'
         ]);
+        // dd($product->on_flash_sale);
         $randomProducts = $this->repository->getRelatedProducts($product->id);
         $product = new ProductEditResource($product);
         return view($this->view['product-detail'], [
@@ -107,6 +113,34 @@ class ProductController extends Controller
 
     public function saleLimited()
     {
-        return view($this->view['sale-limited']);
+        // params: flash_sale_id
+        $flash_sale_id = 2;
+        $flashSaleProduct_Rows = $this->flashSaleRepository->getAllFlashSaleProducts_Rows($flash_sale_id);
+        $flashSaleProducts = [];
+        $on_flash_sale = false;
+
+        foreach ($flashSaleProduct_Rows as $item) {
+            $on_flash_sale = true;
+            // Get All Flash Sale Products
+            $product = $this->repository->loadRelations($this->repository->findOrFail($item->product_id), [
+                'categories:id,name',
+                'productAttributes' => function ($query) {
+                    return $query->with(['attribute.variations', 'attributeVariations:id']);
+                },
+                'productVariations.attributeVariations'
+            ]);
+            $product = new ProductEditResource($product);
+            $products = (object)[
+                'product' => $product,
+                'in_stock' => $item->qty,
+                'sold' => $item->sold = $item->sold ? $item->sold : 0,
+            ];
+            array_push($flashSaleProducts, $products);
+        }
+        
+        return view($this->view['sale-limited'], [
+            'products' => $flashSaleProducts,
+            'on_flash_sale' => $on_flash_sale,
+        ]);
     }
 }

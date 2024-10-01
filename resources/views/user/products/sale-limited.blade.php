@@ -7,7 +7,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                    <h3 class="modal-title">Xem nhanh: Cell phone Silver</h3>
+                    <h3 class="modal-title">Xem nhanh: Cell phone Silver 1 </h3>
                     <span class="close">&times;</span>
                 </div>
                 <div class="modal-body row">
@@ -124,22 +124,28 @@
                 <div class="col-12 text-center"><img class="img-fluid" src="./assets/images/bg-flash-sale.jpg" alt=""></div>
                 <div class="col-12 header-box d-flex align-items-center">
                     <h4>Khuyến mãi giới hạn</h4>
+                    @if($on_flash_sale)
+                    @php
+                        $flash_sale = $products[0]->product->on_flash_sale->details->where('product_id','=', $products[0]->product->id)->first();
+                    @endphp
                     <div class="timer">
-                        <p class="mt-1">216:19:42:02</p>
+                        <p class="mt-1"><span id="countdown-flashsale-product">216:19:42:02</span></p>
                     </div>
+                    @endif
                 </div>
                 <div class="col-12">
                     <div class="row no-gutters">
+                        @foreach($products as $item)
                         <div class="col-6 col-md-3 mb-4">
                             <div class="card border-0 hover-shadow">
                                 <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://balitourist.com.vn/public/uploads/images/eo%20gi%C3%B3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-default" src="/Mevivu_Company/2906-BahaGroup/{{ $item->product->avatar }}" style="cursor: pointer;" alt="{{ $item->product->name }}">
+                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-hover" src="/Mevivu_Company/2906-BahaGroup/{{ $item->product->avatar }}" alt="{{ $item->product->name }}" style="display: none;cursor: pointer;">
+                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">{{ ceil(100 - ($item->product->promotion_price * 100 / $item->product->price)) }}%</span>
                                     <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
+                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">{{ $item->product->name }}</a></h6>
                                     <div class="rating">
                                         <span class="star">★</span>
                                         <span class="star">★</span>
@@ -148,13 +154,13 @@
                                         <span class="star">★</span>
                                         <span>100</span>
                                     </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
+                                    <p><del>{{ number_format($item->product->price, 0, '.', ',') }}₫</del> <strong class="text-red">{{ number_format($item->product->promotion_price, 0, '.', ',') }}₫</strong></p>
                                     <div class="progress d-flex align-items-center">
                                         <div class="progress-icon">
                                             <i class="fa fa-bolt"></i>
                                         </div>
                                         <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
+                                            Sold: {{ $item->sold }}/{{ $item->in_stock }}
                                         </div>
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
                                     </div>
@@ -164,210 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                         <div class="col-6 col-md-3 mb-4">
                             <div class="card border-0 hover-shadow">
                                 <div class="position-relative">
@@ -417,7 +220,11 @@
         </div>
     </div>
 @endsection
+@push('custom-js')
 
+@include('user.products.scripts.scripts')
+
+@endpush
 
 
 
