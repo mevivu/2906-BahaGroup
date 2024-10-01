@@ -42,7 +42,6 @@
 <script>
     $('#search-input').keyup(function() {
         let key = $(this).val();
-
         if (key.length >= 3) {
             $.ajax({
                 type: "GET",
@@ -78,6 +77,21 @@
                     $('#menu-1').html('');
                     $('#menu-1').append(``);
                     $.each(response.data, function(index, value) {
+                        let minPromotionPrice = null;
+                        let maxPromotionPrice = null;
+
+                        if (value.product_variations && value.product_variations.length >
+                            0) {
+                            let prices = value.product_variations
+                                .map(variation => variation.promotion_price)
+                                .filter(price => price !== null);
+
+                            if (prices.length > 0) {
+                                minPromotionPrice = Math.min(...prices);
+                                maxPromotionPrice = Math.max(...prices);
+                            }
+                        }
+
                         $('#menu-1').append(`
                             <li>
                                 <a class="dropdown-item p-0" href="/2906-BahaGroup/products/detail/${value.id}">
@@ -99,10 +113,15 @@
                                                             </p>
                                                         </div>
                                                         <div class="col-6 text-truncate text-end">
-                                                            <span class="card-text ${value.promotion_price ? 'text-decoration-line-through text-secondary' : 'text-dark'}">
-                                                                ${value.price ? number_format(value.price).toString() + '₫' : 'Liên hệ'}
-                                                            </span>
-                                                            ${value.promotion_price ? `<span class="card-text text-red">${number_format(value.promotion_price).toString()}₫</span>` : ''}
+                                                            ${value.price != null && value.promotion_price != null 
+                                                            ? `<span class="card-text">
+                                                                <del class="text-muted">${number_format(value.price)}₫</del>
+                                                                ${value.promotion_price ? number_format(value.promotion_price).toString() + '₫' : ''}
+                                                                </span>`
+                                                            : ''}
+                                                            ${minPromotionPrice !== null && maxPromotionPrice !== null
+                                                                ? `<span class="card-text text-red">${number_format(minPromotionPrice)}₫ - ${number_format(maxPromotionPrice)}₫</span>`
+                                                                : ''}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,8 +130,8 @@
                                     </div>
                                 </a>
                             </li>
-                        `)
-                    })
+                        `);
+                    });
                 },
                 error: function(response) {
                     $('#menu-1').html('');
@@ -125,7 +144,7 @@
                     `);
                     handleAjaxError(response);
                 }
-            })
+            });
         } else {
             $('#menu-1').html('');
             $('#menu-1').append(`
@@ -136,6 +155,7 @@
                 </li>
             `);
         }
-    })
+    });
 </script>
+
 @stack('custom-js')
