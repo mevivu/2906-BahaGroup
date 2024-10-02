@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/footer.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/product-category.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/container-categories-right-image.css') }}">
+<link rel="stylesheet" href="{{ asset('public/user/assets/css/post.css') }}">
 <link rel="stylesheet" href="{{ asset('public/libs/fontawesome6/css/all.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('public/user/assets/fotorama-4.6.4/fotorama.css') }}">
 
