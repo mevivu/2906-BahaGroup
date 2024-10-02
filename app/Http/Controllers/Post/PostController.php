@@ -10,6 +10,8 @@ use App\Traits\ResponseController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
+use App\Admin\Repositories\Setting\SettingRepositoryInterface;
+use App\Enums\Setting\SettingGroup;
 
 class PostController extends Controller
 {
@@ -18,20 +20,22 @@ class PostController extends Controller
     protected $repository;
     protected $service;
     protected $categoryRepository;
-
     protected $model;
+    protected SettingRepositoryInterface $settingRepository;
 
     public function __construct(
         PostRepositoryInterface $repository,
         PostServiceInterface $service,
         PostCategoryRepositoryInterface $categoryRepository,
         Post $model,
+        SettingRepositoryInterface $settingRepository
     ) {
         parent::__construct();
         $this->repository = $repository;
         $this->service = $service;
         $this->categoryRepository = $categoryRepository;
         $this->model = $model;
+        $this->settingRepository = $settingRepository;
     }
 
     public function getView(): array
@@ -57,7 +61,10 @@ class PostController extends Controller
         if ($category->slug !== $slug) {
             return abort(404);
         }
-        return view($this->view['index'], compact('posts'));
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
+        return view($this->view['index'], compact('posts', 'title', 'meta_desc'));
     }
 
     public function detail($id, $slug)
@@ -81,7 +88,9 @@ class PostController extends Controller
         $posts = $this->model->scopePublished($query)
             ->orderByRaw('is_featured ASC, posted_at DESC')
             ->paginate(10);
-
-        return view($this->view['index'], compact('posts'));
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
+        return view($this->view['index'], compact('posts', 'title', 'meta_desc'));
     }
 }

@@ -1,5 +1,9 @@
 @extends('user.layouts.master')
-@section('title', __('Tin tức'))
+@section('title', __($title))
+
+<head>
+    <meta name="description" content="{{ $meta_desc }}">
+</head>
 
 @section('content')
 <div id="post" class="container">

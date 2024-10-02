@@ -5,8 +5,9 @@
 <meta name="url-home" content="{{ url('/') }}">
 <meta name="currency" content="{{ config('custom.currency') }}">
 <meta name="position_currency" content="{{ config('custom.format.position_currency') }}">
-<title>@yield('title') - Baha Office</title>
-<link rel="icon" type="image/png" href="{{ asset('public/user/assets/images/icon.png') }}" />
+<title>@yield('title') - {{ $settingsGeneral->where('setting_key', 'site_name')->first()->plain_value }}</title>
+<link rel="icon" type="image/png"
+    href="{{ asset($settingsGeneral->where('setting_key', 'site_logo_tab')->first()->plain_value) }}" />
 <!-- CSS files -->
 <link href="{{ asset('public/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="{{ asset('public/user/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}">
