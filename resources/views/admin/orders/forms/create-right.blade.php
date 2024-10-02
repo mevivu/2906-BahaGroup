@@ -27,8 +27,7 @@
             <x-select name="order[discount_id]"
                 id="discount_id"
                 class="select2-bs5-ajax"
-                data-url="{{ route('admin.search.select.discount') }}"
-                :required="true">
+                data-url="{{ route('admin.search.select.discount') }}">
             </x-select>
         </div>
     </div>

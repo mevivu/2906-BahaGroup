@@ -223,27 +223,27 @@ return [
     //         ],
     //     ]
     // ],
-    // [
-    //     'title' => 'Cài đặt',
-    //     'routeName' => null,
-    //     'icon' => '<i class="ti ti-settings"></i>',
-    //     'roles' => [],
-    //     'permissions' => ['settingGeneral'],
-    //     'sub' => [
-    //         [
-    //             'title' => 'Chung',
-    //             'routeName' => 'admin.setting.general',
-    //             'icon' => '<i class="ti ti-tool"></i>',
-    //             'roles' => [],
-    //             'permissions' => ['settingGeneral'],
-    //         ],
-    //         [
-    //             'title' => 'Thành viên mua hàng',
-    //             'routeName' => 'admin.setting.user_shopping',
-    //             'icon' => '<i class="ti ti-user-cog"></i>',
-    //             'roles' => [],
-    //             'permissions' => [],
-    //         ],
-    //     ]
-    // ],
+    [
+        'title' => 'Cài đặt',
+        'routeName' => null,
+        'icon' => '<i class="ti ti-settings"></i>',
+        'roles' => [],
+        'permissions' => ['settingGeneral'],
+        'sub' => [
+            [
+                'title' => 'Chung',
+                'routeName' => 'admin.setting.general',
+                'icon' => '<i class="ti ti-tool"></i>',
+                'roles' => [],
+                'permissions' => ['settingGeneral'],
+            ],
+            [
+                'title' => 'Thành viên mua hàng',
+                'routeName' => 'admin.setting.user_shopping',
+                'icon' => '<i class="ti ti-user-cog"></i>',
+                'roles' => [],
+                'permissions' => [],
+            ],
+        ]
+    ],
 ];

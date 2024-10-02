@@ -48,8 +48,7 @@ class ProductController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function indexUser()
@@ -94,13 +93,13 @@ class ProductController extends Controller
 
         if ($matchingProductVariation) {
             return response()->json([
-               'status' => true,
+                'status' => true,
                 'data' => new ProductVariationResource($matchingProductVariation)
             ]);
         } else {
             return response()->json([
-               'status' => false,
-               'message' => __('Không tìm thấy sản phẩm phù hợp.')
+                'status' => false,
+                'message' => __('Không tìm thấy sản phẩm phù hợp.')
             ], 400);
         }
     }
@@ -108,5 +107,15 @@ class ProductController extends Controller
     public function saleLimited()
     {
         return view($this->view['sale-limited']);
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $data = $request->input('key');
+        $products = $this->repository->searchAllLimit($data);
+        return response()->json([
+            'status' => true,
+            'data' => $products
+        ]);
     }
 }
