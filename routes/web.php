@@ -18,6 +18,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
+        Route::get('/search', 'searchProduct')->name('search');
     });
 
 Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
@@ -37,7 +38,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
         Route::delete('/remove/{id}', 'remove')->name('remove');
-});
+    });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)
     ->middleware('guest:web')
@@ -77,29 +78,20 @@ Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::clas
 
 Route::group(['middleware' => 'admin.auth.user:web'], function () {
     Route::controller(App\Admin\Http\Controllers\Auth\ProfileController::class)
-    ->prefix('/profile')
-    ->as('profile.')
-    ->group(function () {
-        Route::get('/', 'indexUser')->name('indexUser');
-        Route::put('/', 'update')->name('update');
-    });
+        ->prefix('/profile')
+        ->as('profile.')
+        ->group(function () {
+            Route::get('/', 'indexUser')->name('indexUser');
+            Route::put('/', 'update')->name('update');
+        });
     Route::post('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
 });
 
 Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
-->prefix('/reset-password')
-->as('password.reset.')
-->group(function(){
-    Route::get('/edit', 'edit')->name('edit')->middleware('signed');
-    Route::put('/update', 'update')->name('update');
-    Route::get('/success', 'success')->name('success');
-});
-
-Route::controller(App\Http\Controllers\Post\PostController::class)
-    ->prefix('/posts')
-    ->as('post.')
+    ->prefix('/reset-password')
+    ->as('password.reset.')
     ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/detail/{id}', 'detail')->name('detail');
-        Route::get('/category/{id}', 'category')->name('category');
+        Route::get('/edit', 'edit')->name('edit')->middleware('signed');
+        Route::put('/update', 'update')->name('update');
+        Route::get('/success', 'success')->name('success');
     });
