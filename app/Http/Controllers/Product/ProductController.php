@@ -75,13 +75,36 @@ class ProductController extends Controller
             },
             'productVariations.attributeVariations'
         ]);
-        // dd($product->on_flash_sale);
         $randomProducts = $this->repository->getRelatedProducts($product->id);
         $product = new ProductEditResource($product);
         return view($this->view['product-detail'], [
             'product' => $product,
             'relatedProducts' => $randomProducts
         ]);
+    }
+
+    public function detailModal($id) {
+        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
+            'categories:id,name',
+            'reviews:rating,content,product_id',
+            'productAttributes' => function ($query) {
+                return $query->with(['attribute.variations', 'attributeVariations:id']);
+            },
+            'productVariations.attributeVariations'
+        ]);
+        $product = new ProductEditResource($product);
+        $avg_review_rate = 0;
+        $sum_customer_review = count($product->reviews) ? count($product->reviews) : 0;
+        foreach($product->reviews as $review) {
+            $avg_review_rate += $review->rating;
+        }
+        $avg_review_rate = $sum_customer_review != 0 ? $avg_review_rate /= $sum_customer_review : 0;
+        return (object) [
+            'product' => $product,
+            'avgReviewRate' => $avg_review_rate,
+            'sumCustomerReview' => $sum_customer_review,
+            'on_flash_sale' => true,
+        ];
     }
 
     public function findVariationByAttributeVariationIds(Request $request)

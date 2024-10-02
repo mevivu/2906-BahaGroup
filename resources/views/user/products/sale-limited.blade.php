@@ -7,7 +7,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                    <h3 class="modal-title">Xem nhanh: Cell phone Silver 1 </h3>
+                    <h3 class="modal-title" id="modal-title">Xem nhanh: Cell phone Silver </h3>
                     <span class="close">&times;</span>
                 </div>
                 <div class="modal-body row">
@@ -19,7 +19,7 @@
                                 <img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" alt="Product 3">
                                 <img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" alt="Product 4">
                             </div>
-                            <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                            <span class="badge badge-danger position-absolute top-0 end-0 m-3" id="badge-promotion-percent">50%</span>
                             <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                         </div>
                     </div>
@@ -28,15 +28,15 @@
                     <div class="col-md-7 mt-5 mb-5">
                         <div style="border-bottom: 1px solid #f5f5f5" class="row align-items-center">
                             <div class="col-md-8">
-                                <h3>Phụ kiện điện tử</h3>
+                                <h3 id="product_name_modal">Phụ kiện điện tử</h3>
                                 <div class="rating">
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span>100 khách hàng đánh giá</span>
-                                    <span class="ms-2 text-uppercase">Đã bán: 4</span>
+                                    <span style="color: gray" class="star">★</span>
+                                    <span style="color: gray" class="star">★</span>
+                                    <span style="color: gray" class="star">★</span>
+                                    <span style="color: gray" class="star">★</span>
+                                    <span style="color: gray" class="star">★</span>
+                                    <span>0 khách hàng đánh giá</span>
+                                    <span class="ms-2 text-uppercase">Đã bán: 0</span>
                                 </div>
                             </div>
                             <div class="col-md-4 text-end justify-content-between align-items-center">
@@ -46,12 +46,17 @@
                             </div>
                         </div>
                         <div class="row align-items-center ms-1 mt-3 mb-3">
+                            @if($on_flash_sale)
+                            @php
+                                $flash_sale = $products[0]->product->on_flash_sale->details->where('product_id','=', $products[0]->product->id)->first();
+                            @endphp
                             <div class="col-md-8 bg-default text-white text-center text-uppercase h-100">End in
-                                121 : 09 : 47 : 39
+                                <span id="countdown-flashsale-product">216:19:42:02</span>
                             </div>
+                            @endif
                             <div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold : 4/100</div>
                         </div>
-                        <p class="lead"><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
+                        <p class="lead"><del id="price_modal">3,990,000₫</del> <strong id="promotion_price_modal" class="text-red">2,990,000₫</strong></p>
                         <div class="row">
                             <ul style="list-style-type: disc;">
                                 <li>Multi port</li>
@@ -88,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span>Trạng thái: <span class="text-green">còn 96 Hàng</span></span>
+                        <span>Trạng thái: <span id="quantity_product_modal" class="text-green">còn 96 Hàng</span></span>
                         <div class="row mt-3">
                             <div class="col-md-3">
                                 <div class="input-group mt-2">
@@ -165,7 +170,7 @@
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
                                     </div>
                                     <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
+                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="showDetailProductModal(this, {{ $item->product->id}})" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -200,7 +205,7 @@
                                         <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
                                     </div>
                                     <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
+                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="showDetailProductModal(this, {{ $item->product->id}})" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>

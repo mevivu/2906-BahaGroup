@@ -4,7 +4,7 @@
     <div class="position-relative">
         <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-default" src="/Mevivu_Company/2906-BahaGroup/{{ $item->product->avatar }}" style="cursor: pointer;" alt="Product 3">
         <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-        <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
+        <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">{{ ceil(100 - ($item->product->promotion_price * 100 / $item->product->price)) }}%</span>
         <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
     </div>
     <div class="card-body">
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="text-center product-hover">
-            <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i></a>
+            <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i></a>
         </div>
     </div>
 </div>
