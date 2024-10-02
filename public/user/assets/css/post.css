@@ -91,3 +91,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+#post-detail .related-post-image {
+    width: 100%;
+    object-fit: cover;
+    height: 170px;
+}
