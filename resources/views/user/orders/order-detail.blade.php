@@ -12,24 +12,28 @@
                             <p><strong>Mã đơn hàng:</strong> {{ $instance->code }}</p>
                             <p><strong>Ngày đặt:</strong> {{ format_date($instance->created_at) }}</p>
                             <p><strong>Phương thức thanh toán:</strong>
-                                <span @class([
-                                    'badge',
-                                    App\Enums\Payment\PaymentMethod::from($instance->payment_method->value)->badge(),
-                                ])>{{ \App\Enums\Payment\PaymentMethod::getDescription($instance->payment_method->value) }}</span>
+                                <span
+                                    @class([
+                                        'badge',
+                                        App\Enums\Payment\PaymentMethod::from(
+                                            $instance->payment_method->value)->badge(),
+                                    ])>{{ \App\Enums\Payment\PaymentMethod::getDescription($instance->payment_method->value) }}</span>
                             </p>
-                            <p><strong>Địa chỉ giao hàng:</strong> {{ $instance->province->name }}, {{ $instance->district->name }}, {{ $instance->ward->name }}</p>
-                            <p><strong>Tổng hoá đơn:</strong> {{ format_price($instance->total) }}</p>
-                            @if($instance->discount_value)
+                            <p><strong>Địa chỉ giao hàng:</strong> {{ $instance->province->name }},
+                                {{ $instance->district->name }}, {{ $instance->ward->name }}</p>
+                            @if ($instance->discount_value)
                                 <p><strong>Mã giảm giá áp dụng:</strong> {{ $instance->discount->code }}</p>
                                 <p><strong>Giá trị giảm:</strong> {{ format_price($instance->discount_value) }}</p>
                             @endif
                             <p><strong>Trạng thái:</strong>
-                                <span @class([
-                                    'badge',
-                                    App\Enums\Order\OrderStatus::from($instance->status->value)->badge(),
-                                ])>{{ \App\Enums\Order\OrderStatus::getDescription($instance->status->value) }}</span>
+                                <span
+                                    @class([
+                                        'badge',
+                                        App\Enums\Order\OrderStatus::from($instance->status->value)->badge(),
+                                    ])>{{ \App\Enums\Order\OrderStatus::getDescription($instance->status->value) }}</span>
                             </p>
                             <p><strong>Ghi chú:</strong> {{ $instance->note }}</p>
+                            <p><strong>Tổng hoá đơn:</strong> {{ format_price($instance->total) }}</p>
                         </div>
 
                         <!-- Thông tin người dùng -->
@@ -67,17 +71,21 @@
                                 @foreach ($instance->details as $item)
                                     <tr class="bold-text">
                                         <td data-label="Sản phẩm">
-                                            <div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product_id]) }}';" style="cursor: pointer" class="align-items-center product-info row">
-                                                <div class="col-md-4 col-12"><img src="{{ asset($item->product->avatar) }}" class="img-fluid card-item-img"></div>
+                                            <div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product_id]) }}';"
+                                                style="cursor: pointer" class="align-items-center product-info row">
+                                                <div class="col-md-4 col-12"><img src="{{ asset($item->product->avatar) }}"
+                                                        class="img-fluid card-item-img"></div>
                                                 <div class="col-md-8 col-12">
                                                     <div class="product-name">{{ $item->product->name }}</div>
                                                     <div class="product-color">Xanh, 128GB</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="align-middle" data-label="Giá">{{ format_price($item->unit_price) }}</td>
+                                        <td class="align-middle" data-label="Giá">{{ format_price($item->unit_price) }}
+                                        </td>
                                         <td class="align-middle" data-label="Số lượng">{{ $item->qty }}</td>
-                                        <td class="align-middle text-center" data-label="Tổng">{{ format_price($item->unit_price * $item->qty) }}</td>
+                                        <td class="align-middle text-center" data-label="Tổng">
+                                            {{ format_price($item->unit_price * $item->qty) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -88,7 +96,3 @@
         </div>
     </div>
 @endsection
-
-
-
-

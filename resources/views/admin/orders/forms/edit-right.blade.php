@@ -49,8 +49,7 @@
                 <x-select name="order[discount_id]"
                     id="discount_id"
                     class="select2-bs5-ajax"
-                    data-url="{{ route('admin.search.select.discount') }}"
-                    :required="true">
+                    data-url="{{ route('admin.search.select.discount') }}">
                     <x-select-option :option="$order->discount->id" :value="$order->discount->id" :title="$order->discount->code.' - Tối thiểu: '.$order->discount->min_order_amount.'đ - Còn lại: '.$order->discount->max_usage.' - Giảm: '.$type"/>
                 </x-select>
             </div>
@@ -59,8 +58,7 @@
             <x-select name="order[discount_id]"
                 id="discount_id"
                 class="select2-bs5-ajax"
-                data-url="{{ route('admin.search.select.discount') }}"
-                :required="true">
+                data-url="{{ route('admin.search.select.discount') }}">
             </x-select>
         </div>
         @endif
