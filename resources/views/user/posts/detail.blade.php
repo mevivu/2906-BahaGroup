@@ -6,30 +6,34 @@
 </head>
 
 @section('content')
-<div class="container bg-white shadow rounded-2">
+<div id="post-detail" class="container">
     <div class="row">
-        @include('user.posts.category-bar')
         <div class="col-md-9">
-            <div class="card mb-4">
-                <img src="{{ $post->thumbnail }}" class="card-img-top" alt="{{ $post->title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $post->title }}</h5>
-                    <div class="card-text">{!! $post->content !!}</div>
-                    <a href="{{ route('user.post.index') }}" class="btn btn-primary">{{ __('Quay lại') }}</a>
-                </div>
-                <div class="card-footer text-muted">
-                    {{ __('Đăng vào') }} {{ \Carbon\Carbon::parse($post->posted_at)->format('d/m/Y H:i') }}
-                    <span class="float-end">
-                        {{ __('Danh mục') }}:
-                        @foreach ($post->categories as $category)
-                            @if ($category->status == '1')
-                                <a href="{{ route('user.post.category', ['id' => $category->id]) }}" class="badge bg-primary">{{ $category->name }}</a>
-                            @endif
-                        @endforeach
-                    </span>
+            <div class="post">
+                <h5 class="post-title">{{ $post->title }}</h5>
+                <div class="divider"></div>
+                <p class="post-date">Đăng vào {{ \Carbon\Carbon::parse($post->posted_at)->format('d/m/Y H:i') }}</p>
+                <img src="{{ asset($post->image) }}" class="post-image img-fluid" alt="{{ $post->title }}">
+                <div class="post-text">{!! $post->content !!}</div>
+            </div>
+            <div class="related-post-wrapper">
+                <h5 class="related-title">Bài viết liên quan</h5>
+                <div class="row">
+                    @foreach($relatedPosts as $relatedPost)
+                        <div class="col-md-4">
+                            <div class="related-post">
+                                <a
+                                    href="{{ route('user.post.detail', ['idPost' => $relatedPost->id, 'slugPost' => $relatedPost->slug]) }}">
+                                    <img src="{{ asset($relatedPost->image) }}" class="related-post-image img-fluid"
+                                        alt="{{ $relatedPost->title }}">
+                                    <p class="related-post-title">{{ $relatedPost->title }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
+        @include('user.posts.category-bar')
     </div>
-</div>
-@endsection
+    @endsection

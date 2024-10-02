@@ -1,6 +1,6 @@
 @php
-$categoryRepository = app()->make(abstract: App\Admin\Repositories\PostCategory\PostCategoryRepository::class);
-$categories = $categoryRepository->getFlatTree();
+    $categoryRepository = app()->make(abstract: App\Admin\Repositories\PostCategory\PostCategoryRepository::class);
+    $categories = $categoryRepository->getFlatTree();
 @endphp
 
 <div class="col-md-3">
@@ -10,7 +10,8 @@ $categories = $categoryRepository->getFlatTree();
         </a>
         @foreach ($categories as $category)
             @if ($category->status == '1')
-                <a href="{{ route('user.post.category', ['id' => $category->id]) }}" class="list-group-item list-group-item-action">
+                <a href="{{ route('user.post.category', ['idCategory' => $category->id, 'slugCategory' => $category->slug]) }}"
+                    class="list-group-item list-group-item-action">
                     {{ $category->name }}
                 </a>
             @endif
