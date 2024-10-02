@@ -160,10 +160,20 @@ class ProductController extends Controller
             ];
             array_push($flashSaleProducts, $products);
         }
+        $currentPage = request()->input('page', 1);
+        $productPerPage = 12;
+        $totalPages = ceil(count($flashSaleProducts) / $productPerPage);
+        $pagination = (object) [
+            'currentPage' => $currentPage,
+            'productPerPage' => $productPerPage,
+            'totalPages' => $totalPages,
+        ];
+        $flashSaleProducts = array_slice($flashSaleProducts, $productPerPage * ($currentPage - 1), $productPerPage);
         
         return view($this->view['sale-limited'], [
             'products' => $flashSaleProducts,
             'on_flash_sale' => $on_flash_sale,
+            'paginator' => $pagination,
         ]);
     }
 }

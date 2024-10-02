@@ -176,49 +176,22 @@
                             </div>
                         </div>
                         @endforeach
-                        <div class="col-6 col-md-3 mb-4">
-                            <div class="card border-0 hover-shadow">
-                                <div class="position-relative">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                                    <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
-                                    <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
-                                    <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title"><a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">Cell phone Silver</a></h6>
-                                    <div class="rating">
-                                        <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                    <span class="star">★</span>
-                                        <span>100</span>
-                                    </div>
-                                    <p><del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong></p>
-                                    <div class="progress d-flex align-items-center">
-                                        <div class="progress-icon">
-                                            <i class="fa fa-bolt"></i>
-                                        </div>
-                                        <div class="progress-text text-white fs-6">
-                                            Sold: 95/100
-                                        </div>
-                                        <div class="progress-bar" role="progressbar" style="width: 95%;background-color: #1c5639;">.</div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a style="cursor: pointer;" class="add-to-cart"><i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="showDetailProductModal(this, {{ $item->product->id}})" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="pagination">
+                    
+                    <div id="pagination" class="pagination">
+                        @if ($paginator->totalPages > 1)
                         <button class="pagination-btn prev" disabled><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
-                        <button class="pagination-btn">1</button>
-                        <button class="pagination-btn">2</button>
-                        <button class="pagination-btn active">3</button>
-                        <button class="pagination-btn">4</button>
-                        <button class="pagination-btn">5</button>
+                        @endif
+                        @php
+                            $start = $paginator->currentPage - 2 > 0 ? $paginator->currentPage - 2 : 1;
+                            $end = $paginator->currentPage + 2 <= $paginator->totalPages ? $paginator->currentPage + 2 : $paginator->totalPages;
+                        @endphp
+                        @for ($i = $start; $i <= $end; $i++)
+                        <button class="pagination-btn {{ $i == $paginator->currentPage ? 'active' : '' }}" data-page="{{ $i }}">{{ $i }}</button>
+                        @endfor
+                        @if ($paginator->totalPages > 1)
                         <button class="pagination-btn next"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                        @endif
                     </div>
                 </div>
             </div>
