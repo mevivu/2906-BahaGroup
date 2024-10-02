@@ -15,6 +15,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Models\Post;
+use App\Models\PostCategory;
 
 class PostController extends Controller
 {
@@ -25,16 +27,18 @@ class PostController extends Controller
     public function __construct(
         PostRepositoryInterface         $repository,
         PostCategoryRepositoryInterface $repositoryPostCategory,
-        PostServiceInterface            $service
+        PostServiceInterface            $service,
+        Post    $modelPost,
+        PostCategory $modelCategory,
     )
     {
 
         parent::__construct();
-
         $this->repository = $repository;
         $this->repositoryPostCategory = $repositoryPostCategory;
-
         $this->service = $service;
+        $this->model = $modelPost;
+        $this->modelCategory = $modelCategory;
 
     }
 
@@ -66,7 +70,8 @@ class PostController extends Controller
 
     public function create(): Factory|View|Application
     {
-        $categories = $this->repositoryPostCategory->getFlatTree();
+        $query = $this->modelCategory->query();
+        $categories = $this->modelCategory->scopePublished($query)->get();
         return view($this->view['create'], [
             'categories' => $categories,
             'status' => PostStatus::asSelectArray()
@@ -81,8 +86,8 @@ class PostController extends Controller
 
     public function edit($id): Factory|View|Application
     {
-        $categories = $this->repositoryPostCategory->getFlatTree();
-
+        $query = $this->modelCategory->query();
+        $categories = $this->modelCategory->scopePublished($query)->get();
         $post = $this->repository->findOrFailWithRelations($id);
         return view(
             $this->view['edit'],
@@ -99,7 +104,7 @@ class PostController extends Controller
     public function update(PostRequest $request): RedirectResponse
     {
         $response = $this->service->update($request);
-        return $this->handleUpdateResponse($response);
+        return $this->handleUpdateResponse($response, $this->route['edit']);
     }
 
     public function delete($id): RedirectResponse

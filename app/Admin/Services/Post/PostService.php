@@ -61,6 +61,7 @@ class PostService implements PostServiceInterface
     public function update(Request $request): object|bool
     {
         $data = $request->validated();
+        $data['posted_at'] = now();
         $categoriesId = $data['categories_id'] ?? [];
         unset($data['categories_id']);
         DB::beginTransaction();
