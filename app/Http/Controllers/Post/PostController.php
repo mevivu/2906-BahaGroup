@@ -75,7 +75,7 @@ class PostController extends Controller
         }
         $relatedPosts = $this->model->whereHas('categories', function ($query) use ($post) {
             $query->whereIn('category_id', $post->categories->pluck('id'));
-        })->where('id', '!=', $post->id)->limit(4)->get();
+        })->where('id', '!=', $post->id)->limit(3)->get();
         return view($this->view['detail'], [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
