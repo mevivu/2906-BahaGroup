@@ -36,4 +36,5 @@
         </div>
         @include('user.posts.category-bar')
     </div>
-    @endsection
+</div>
+@endsection

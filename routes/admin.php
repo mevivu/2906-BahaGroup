@@ -182,6 +182,9 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         ->group(function () {
             Route::group(['middleware' => ['permission:settingGeneral', 'auth:admin']], function () {
                 Route::get('/general', 'general')->name('general');
+                Route::get('/footer', 'footer')->name('footer');
+                Route::get('/contact', 'contact')->name('contact');
+                Route::get('/information', 'information')->name('information');
             });
             Route::put('/update', 'update')->name('update');
         });

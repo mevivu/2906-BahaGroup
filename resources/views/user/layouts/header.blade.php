@@ -54,7 +54,7 @@
                     </div>
                 @endif
                 <div class="position-relative">
-                    <i onclick="location.href='{{ route('user.cart.index') }}';" style="font-size: 2em;cursor: pointer;"
+                    <i onclick="location.href='{{ route('user.cart.index')}}';" style="font-size: 2em;cursor: pointer;"
                         class="fa fa-shopping-cart"></i>
                     <span id="cart-count"
                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -119,7 +119,7 @@
                 </div>
                 <div class="col-3 d-flex justify-content-center align-items-center cart">
                     <div class="position-relative">
-                        <i onclick="location.href='{{ route('user.cart.index') }}';"
+                        <i onclick="location.href='{{ route('user.cart.index')}}';"
                             style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
                         <span id="cart-count-mobile"
                             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
@@ -207,9 +207,8 @@
                                                 aria-expanded="false"
                                                 aria-controls="collapseExample-{{ $category->id }}"></i>
                                         </div>
-                                        @if (isset($category->children[0]))
-                                            <div class="submenu mega-menu collapse"
-                                                id="collapseExample-{{ $category->id }}"
+                                        @if(isset($category->children[0]))
+                                            <div class="submenu mega-menu collapse" id="collapseExample-{{ $category->id }}"
                                                 data-bs-parent="#menu-collapse">
                                                 @foreach ($category->children as $item)
                                                     <div class="mega-column">

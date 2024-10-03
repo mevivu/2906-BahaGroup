@@ -63,10 +63,14 @@
     text-transform: uppercase;
 }
 
-#post-detail .post-image {
+#post .post-image {
     width: 100%;
     object-fit: cover;
     height: 300px;
+}
+
+#post-detail .post-image {
+    width: 100%;
 }
 
 #post-detail .post-text {

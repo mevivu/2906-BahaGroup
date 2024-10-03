@@ -4,27 +4,39 @@
         <div class="row d-flex justify-content-center">
             <div class="col-lg-3 col-12 box ">
                 <h6><strong>Liên hệ</strong></h6>
-                <p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a style="color: red;" class="d-inline-block">08h00 - 17h30</a></p>
-                <p><i class="fa fa-phone text-red"></i> Bán hàng: <a style="color: red;">0359.777.777 (nhánh số 1)</a></p>
-                <p><i class="fa fa-phone text-red"></i> Office: <a style="color: red;">0359.777.777 (nhánh số 2)</a></p>
-                <p><i class="fa fa-phone text-red"></i> Bảo hành: <a style="color: red;">0359.777.777 (nhánh số 3)</a></p>
+                <p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a style="color: red;"
+                        class="d-inline-block">{{ $settingsFooter->where('setting_key', 'footer_open_time')->first()->plain_value }}</a>
+                </p>
+                <p><i class="fa fa-phone text-red"></i> Bán hàng: <a
+                        style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_shop_phone')->first()->plain_value }}</a>
+                </p>
+                <p><i class="fa fa-phone text-red"></i> Office: <a
+                        style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_office_phone')->first()->plain_value }}</a>
+                </p>
+                <p><i class="fa fa-phone text-red"></i> Bảo hành: <a
+                        style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_warranty_phone')->first()->plain_value }}</a>
+                </p>
                 <p>
                     <i class="fa fa-envelope text-red"></i> Hợp tác khiếu nại:
-                    <a style="color: #777777;" href="mailto:info@thebaha.global" style="color: red;"> info@bahagroup.vn</a>
+                    <a href="mailto:{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}"
+                        style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}</a>
                     <br>
                 </p>
-                <p><i class="fa-solid fa-location-dot text-red"></i> 77 Bùi Tá Hán, An Phú, Thành phố Thủ Đức</p>
-                <span style="color: #02734a;"><a style="color: #02734a;" href="tel:0359777777">(+84)
-                        0359-777-777</a></span>
+                <p><i class="fa fa-map-marker text-red"></i>
+                    {{ $settingsFooter->where('setting_key', 'footer_address')->first()->plain_value }}
+                </p>
+                <span style="color: #02734a;"><a style="color: #02734a;"
+                        href="tel:{{ $settingsFooter->where('setting_key', 'footer_phone')->first()->plain_value }}">(+84)
+                        {{ $settingsFooter->where('setting_key', 'footer_phone')->first()->plain_value }}</a></span>
             </div>
             <div class="col-lg-3 col-12 box">
                 <h6><strong>Thông tin ngân hàng</strong></h6>
                 <ul>
                     <li>
-                        <p>TECHCOMBANK: <a style="color: red;" class="d-inline-block">87.87.87.87.87 - CN Thủ Đức - CÔNG TY CP TẬP ĐOÀN BAHA</a></p>
+                        <p>{{ $settingsFooter->where('setting_key', 'footer_banking_1')->first()->plain_value }}</p>
                     </li>
                     <li>
-                        <p>BIDV: <a style="color: red;" class="d-inline-block">8696.777.777 - CN BẮC SÀI GÒN - CÔNG TY CP TẬP ĐOÀN BAHA</a></p>
+                        <p>{{ $settingsFooter->where('setting_key', 'footer_banking_2')->first()->plain_value }}</p>
                     </li>
                 </ul>
             </div>
@@ -41,14 +53,17 @@
             <div class="col-lg-3 col-12 box">
                 <h6><strong>Mạng xã hội</strong></h6>
                 <ul>
-                    <li><a target="none" href="https://www.facebook.com/people/BaHa-Group/61559205100698/"><img width="64" height="64"
-                                src="{{ asset('public/user/assets/images/facebook.png') }}"
+                    <li><a target="none"
+                            href="{{ $settingsFooter->where('setting_key', 'footer_social_1')->first()->plain_value }}"><img
+                                width="64" height="64" src="{{ asset('public/user/assets/images/facebook.png') }}"
                                 class="attachment-full size-full wp-image-6789" alt=""> Facebook</a></li>
-                    <li><a target="none" href="https://www.linkedin.com/company/baha-group-joint-stock-company/?viewAsMember=true"><img width="64" height="64"
-                                src="{{ asset('public/user/assets/images/linkedin.png') }}"
+                    <li><a target="none"
+                            href="{{ $settingsFooter->where('setting_key', 'footer_social_2')->first()->plain_value }}"><img
+                                width="64" height="64" src="{{ asset('public/user/assets/images/linkedin.png') }}"
                                 class="attachment-full size-full wp-image-6790" alt=""> Linkedin</a></li>
-                    <li><a target="none" href="https://www.tiktok.com/@baha_group_official"><img width="64" height="64"
-                                src="{{ asset('public/user/assets/images/tiktok.png') }}"
+                    <li><a target="none"
+                            href="{{ $settingsFooter->where('setting_key', 'footer_social_3')->first()->plain_value }}"><img
+                                width="64" height="64" src="{{ asset('public/user/assets/images/tiktok.png') }}"
                                 class="attachment-full size-full wp-image-6791" alt=""> Tiktok</a></li>
                 </ul>
             </div>
@@ -70,12 +85,12 @@
                 </div>
             @endforeach
         </div>
-        <div class="col-12 mb-5 mt-3 custom-line">
+        <div class="col-12 pb-3 mt-3 custom-line">
             <p><strong>Baha</strong> tự hào mang đến cho bạn một trải nghiệm mua sắm công nghệ tuyệt vời. Chúng tôi là
                 địa điểm tốt nhất để bạn khám phá và tìm hiểu về những xu hướng công nghệ mới nhất, cũng như tìm mua các
                 sản phẩm công nghệ hàng đầu.</p>
             <div style="color: #74818E" class="col-12 text-center">
-            © Copyright <strong style="color: #444444">Mevivu</strong> All Rights Reserved<br>
+                © Copyright <strong style="color: #444444">Mevivu</strong> All Rights Reserved<br>
                 Designed by <a style="color: #5FB3E4" href="https://thietkeweb.mevivu.com/">Mevivu</a>
             </div>
         </div>

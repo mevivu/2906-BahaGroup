@@ -1,9 +1,13 @@
 @extends('user.layouts.master')
-@section('title', __('Danh mục sản phẩm'))
+@section('title', __($title))
+
+<head>
+    <meta name="description" content="{{ $meta_desc }}">
+</head>
 
 @php
-$categoryRepository = app()->make(App\Admin\Repositories\Category\CategoryRepository::class);
-$categories = $categoryRepository->getFlatTree();
+    $categoryRepository = app()->make(App\Admin\Repositories\Category\CategoryRepository::class);
+    $categories = $categoryRepository->getFlatTree();
 @endphp
 
 @section('content')
@@ -17,10 +21,11 @@ $categories = $categoryRepository->getFlatTree();
                 <strong>Danh mục</strong>
             </h6>
             @foreach ($categories as $category)
-            <div class="d-flex align-items-center mb-1 fs-12">
-                <input name="category_ids[]" value="{{ $category->id }}" type="checkbox" id="category{{ $category->id }}" class="me-2">
-                <label for="category{{ $category->id }}" class="mb-0">{{ $category->name }}</label>
-            </div>
+                <div class="d-flex align-items-center mb-1 fs-12">
+                    <input name="category_ids[]" value="{{ $category->id }}" type="checkbox"
+                        id="category{{ $category->id }}" class="me-2">
+                    <label for="category{{ $category->id }}" class="mb-0">{{ $category->name }}</label>
+                </div>
             @endforeach
 
             <h6 class="text-uppercase mt-3">
@@ -52,8 +57,10 @@ $categories = $categoryRepository->getFlatTree();
                         <strong>Giá sản phẩm</strong>
                     </h6>
                     <div class="d-flex align-items-center mb-2">
-                        <input type="range" id="min-price" class="form-range me-2" min="0" max="1000000" value="1000" oninput="updatePrice()">
-                        <input type="range" id="max-price" class="form-range" min="0" max="1000000" value="9000" oninput="updatePrice()">
+                        <input type="range" id="min-price" class="form-range me-2" min="0" max="1000000" value="1000"
+                            oninput="updatePrice()">
+                        <input type="range" id="max-price" class="form-range" min="0" max="1000000" value="9000"
+                            oninput="updatePrice()">
                     </div>
                     <div class="d-flex justify-content-between">
                         <span id="min-price-value">1000₫</span>
@@ -72,7 +79,7 @@ $categories = $categoryRepository->getFlatTree();
                 <div class="col-md-6">
                     <h5>Phụ kiện điện tử</h5>
                     <p class="fs-12">
-                        Hiển thị tất cả 
+                        Hiển thị tất cả
                         <span class="text-success">15 kết quả</span>
                     </p>
                 </div>
@@ -89,8 +96,14 @@ $categories = $categoryRepository->getFlatTree();
                 <div class="col-6 col-md-3 mb-4">
                     <div class="card border-0 shadow hover-shadow">
                         <div class="position-relative">
-                            <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-default" src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" style="cursor: pointer;" alt="Product 3">
-                            <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
+                            <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';"
+                                class="card-img-top img-default"
+                                src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
+                                style="cursor: pointer;" alt="Product 3">
+                            <img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';"
+                                class="card-img-top img-hover"
+                                src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3"
+                                style="display: none;cursor: pointer;">
                             <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
                             <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                         </div>
@@ -113,7 +126,9 @@ $categories = $categoryRepository->getFlatTree();
                             </p>
                             <div class="text-center" style="height: 0px;">
                                 <a style="cursor: pointer;" class="add-to-cart">
-                                    <i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)" aria-hidden="true"></i>
+                                    <i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i
+                                        class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)"
+                                        aria-hidden="true"></i>
                                 </a>
                             </div>
                         </div>
@@ -122,7 +137,8 @@ $categories = $categoryRepository->getFlatTree();
                 </div>
             </div>
             <div class="pagination position-absolute w-100 bottom-0 mb-0">
-                <button class="pagination-btn prev" disabled><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                <button class="pagination-btn prev" disabled><i class="fa fa-chevron-left"
+                        aria-hidden="true"></i></button>
                 <button class="pagination-btn">1</button>
                 <button class="pagination-btn">2</button>
                 <button class="pagination-btn active">3</button>
