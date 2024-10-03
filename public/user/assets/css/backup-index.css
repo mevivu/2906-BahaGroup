@@ -4,12 +4,39 @@ body {
     font-size: 1em;
 }
 
-a {
-    text-decoration: none;
+input::placeholder {
+    font-size: 0.9em;
+}
+
+li {
+    list-style: none;
+}
+
+.nav {
+    flex-wrap: nowrap;
 }
 
 .fs-12 {
     font-size: 12px;
+}
+
+#header {
+    font-size: 15px;
+}
+
+#topbar-container {
+    height: 45px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #F0F0F0;
+}
+
+.top-bar-right .top-item {
+    cursor: pointer;
+}
+
+.top-bar-right .top-item:hover {
+    color: #1c5639;
 }
 
 .dropdown-item {
@@ -20,6 +47,15 @@ a {
 .dropdown-item:hover {
     background-color: white;
     color: #1c5639;
+}
+
+.button-search {
+    background-color: #1c5639 !important;
+}
+
+.button-search i {
+    color: white;
+    font-size: 24px;
 }
 
 
@@ -751,7 +787,7 @@ a {
 }
 
 .bg-default {
-    background-color: #1c5639 !important;
+    background-color: #1c5639;
 }
 
 .text-category {
