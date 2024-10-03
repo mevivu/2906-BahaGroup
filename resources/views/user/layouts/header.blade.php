@@ -23,8 +23,8 @@
                     <x-button class="btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">Tất cả</x-button>
                     <ul style="cursor: pointer" class="dropdown-menu search">
-                        <li class="dropdown-item selected"><x-link class="text-category"
-                                :href="route('user.product.indexUser')">Tất cả</x-link></li>
+                        <li class="dropdown-item selected"><x-link class="text-category" :href="route('user.product.indexUser')">Tất
+                                cả</x-link></li>
                         @foreach ($categories as $category)
                             <li class="dropdown-item selected"><x-link class="text-category"
                                     :href="route('user.product.indexUser', ['category_id' => $category->id])">{{ $category->name }}</x-link></li>
@@ -141,20 +141,23 @@
                 <div class="offcanvas-body">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="menu-tab" data-bs-toggle="tab" data-bs-target="#menu"
-                                type="button" role="tab" aria-controls="menu" aria-selected="true">
+                            <button class="nav-link active" id="menu-tab" data-bs-toggle="tab"
+                                data-bs-target="#menu" type="button" role="tab" aria-controls="menu"
+                                aria-selected="true">
                                 <i class="ti ti-list"></i> Menu
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="category-tab" data-bs-toggle="tab" data-bs-target="#category"
-                                type="button" role="tab" aria-controls="category" aria-selected="false">
+                            <button class="nav-link" id="category-tab" data-bs-toggle="tab"
+                                data-bs-target="#category" type="button" role="tab" aria-controls="category"
+                                aria-selected="false">
                                 <i class="ti ti-list"></i> Danh mục
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="menu" role="tabpanel" aria-labelledby="menu-tab">
+                        <div class="tab-pane fade show active" id="menu" role="tabpanel"
+                            aria-labelledby="menu-tab">
                             <ul class="nav">
                                 <li class="nav-item">
                                     <x-link :href="route('user.index')">Trang chủ</x-link>
@@ -209,13 +212,17 @@
                                                 data-bs-parent="#menu-collapse">
                                                 @foreach ($category->children as $item)
                                                     <div class="mega-column">
-                                                        <x-link class="text-black" :href="route('user.product.indexUser', ['category_id' => $item->id])">
+                                                        <x-link class="text-black" :href="route('user.product.indexUser', [
+                                                            'category_id' => $item->id,
+                                                        ])">
                                                             <h3>{{ $item->name }}</h3>
                                                         </x-link>
                                                         @foreach ($item->children as $children)
                                                             <ul class="sub-category">
                                                                 <li>
-                                                                    <x-link class="text-black" :href="route('user.product.indexUser', ['category->id' => $children->id])">
+                                                                    <x-link class="text-black" :href="route('user.product.indexUser', [
+                                                                        'category->id' => $children->id,
+                                                                    ])">
                                                                         {{ $children->name }}
                                                                     </x-link>
                                                                 </li>

@@ -53,8 +53,7 @@ class ProductController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function indexUser()
@@ -120,5 +119,15 @@ class ProductController extends Controller
         $title = $settingsGeneral->where('setting_key', 'sale_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'sale_meta_desc')->first()->plain_value;
         return view($this->view['sale-limited'], compact('title', 'meta_desc'));
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $data = $request->input('key');
+        $products = $this->repository->searchAllLimit($data);
+        return response()->json([
+            'status' => true,
+            'data' => $products
+        ]);
     }
 }

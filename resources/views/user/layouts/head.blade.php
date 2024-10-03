@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png"
     href="{{ asset($settingsGeneral->where('setting_key', 'site_logo_tab')->first()->plain_value) }}" />
 <!-- CSS files -->
-<link href="{{ asset('public/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('public/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet"type="text/css">
 <link rel="stylesheet" href="{{ asset('public/user/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/index.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/tabler/plugins/tabler-icon/webfont/tabler-icons.min.css') }}">
@@ -30,6 +30,26 @@
     href="{{ asset('/public/libs/datatables/plugins/responsive/css/responsive.bootstrap5.min.css') }}">
 
 <link href="{{ asset('public/user/assets/css/index.css') }}" rel="stylesheet">
+<style>
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: .255em;
+        vertical-align: .255em;
+        content: none !important;
+        border-top: .3em solid;
+        border-right: .3em solid transparent;
+        border-bottom: 0;
+        border-left: .3em solid transparent;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        width: 636px;
+        cursor: pointer;
+        max-height: 520.8px;
+        overflow-y: scroll
+    }
+</style>
 @if (Route::currentRouteName() != 'user.order.indexUser')
     <style>
         @media (max-width: 768px) {
