@@ -85,7 +85,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="col-12 mb-5 mt-3 custom-line">
+        <div class="col-12 pb-3 mt-3 custom-line">
             <p><strong>Baha</strong> tự hào mang đến cho bạn một trải nghiệm mua sắm công nghệ tuyệt vời. Chúng tôi là
                 địa điểm tốt nhất để bạn khám phá và tìm hiểu về những xu hướng công nghệ mới nhất, cũng như tìm mua các
                 sản phẩm công nghệ hàng đầu.</p>
