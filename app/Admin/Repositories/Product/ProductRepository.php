@@ -119,6 +119,35 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         $this->instance = $this->instance->orderBy($column, $sort);
         return $this->instance;
     }
+    public function getMinMaxPromotionPrices($relations = ['productVariations']): array
+    {
+        $this->instance = $this->loadRelations($this->model, $relations);
+
+        $minProductPrice = $this->instance->min('promotion_price');
+        $maxProductPrice = $this->instance->max('promotion_price');
+        // dd($this->instance);
+
+        return [
+            'min_product_price' => $minProductPrice,
+            'max_product_price' => $maxProductPrice,
+        ];
+    }
+
+    public function getProductsWithRelations(array $relations = ['categories', 'productVariations'], $limit = 8)
+    {
+        $this->getQueryBuilderOrderBy();
+        $this->instance = $this->instance->with($relations);
+        $this->instance = $this->instance->withAggregate('productVariations', 'MIN(promotion_price) as min_promotion_price');
+        $this->instance = $this->instance->withAggregate('productVariations', 'MAX(promotion_price) as max_promotion_price');
+
+        if ($limit) {
+            $this->instance = $this->instance->limit($limit);
+        }
+
+        $this->instance = $this->instance->get();
+        return $this->instance;
+    }
+
     public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'sku', 'name', 'price', 'promotion_price'], $limit = 10)
     {
         $this->instance = $this->model->with('productVariations')->select($select);

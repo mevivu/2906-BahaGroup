@@ -22,6 +22,7 @@ class ProductController extends Controller
     protected AttributeRepositoryInterface $repositoryAttribute;
     protected DiscountRepositoryInterface $discountRepository;
 
+
     public function __construct(
         ProductRepositoryInterface   $repository,
         DiscountRepositoryInterface  $discountRepository,
@@ -53,11 +54,19 @@ class ProductController extends Controller
 
     public function indexUser()
     {
-        // $categories = $this->repositoryCategory->getFlatTree();
-        // $categories = $categories->map(function ($category) {
-        //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
-        // });
-        return view($this->view['indexUser']);
+        $categories = $this->repositoryCategory->getFlatTree();
+        $colors = $this->repositoryAttribute->findOrFailWithVariations(1);
+        $sizes = $this->repositoryAttribute->findOrFailWithVariations(2);
+        $products = $this->repository->getMinMaxPromotionPrices();
+        $productItems = $this->repository->getProductsWithRelations();
+        // dd($productItems);
+        return view($this->view['indexUser'], [
+            'categories' => $categories,
+            'colors' => $colors,
+            'sizes' => $sizes,
+            'products' => $products,
+            'productItems' => $productItems
+        ]);
     }
 
     public function detail($id)
