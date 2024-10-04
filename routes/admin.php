@@ -184,6 +184,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
                 Route::get('/general', 'general')->name('general');
                 Route::get('/footer', 'footer')->name('footer');
                 Route::get('/contact', 'contact')->name('contact');
+                Route::get('/slider', 'slider')->name('slider');
                 Route::get('/information', 'information')->name('information');
             });
             Route::put('/update', 'update')->name('update');

@@ -85,7 +85,7 @@
 												<!-- Categories Menu -->
 												<div style="cursor: pointer; margin-left: -16px" onclick="showTabContent()"
 																class="col-3 d-flex align-items-center widget d-none d-xl-flex">
-																<h6 class="d-flex align-items-center m-0" style="height: 45px;">
+																<h6 class="d-flex align-items-center m-0 text-start" style="height: 45px;">
 																				<i class="ti ti-list px-2"></i>Tất cả danh mục
 																</h6><br>
 																<ul id="menu-1-TQYyg" class="nav-menu"></ul>

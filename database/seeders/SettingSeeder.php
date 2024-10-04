@@ -692,6 +692,104 @@ class SettingSeeder extends Seeder
                 'type_input' => SettingTypeInput::Text,
                 'group' => 6
             ],
+            [
+                'setting_key' => 'slider_text_1',
+                'setting_name' => 'Nội dung slider 1',
+                'plain_value' => 'LAPTOP',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_11',
+                'setting_name' => 'Nội dung phụ slider 1',
+                'plain_value' => 'Chất lượng & Cấu hình cao',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_12',
+                'setting_name' => 'Nội dung phụ slider 1 (2)',
+                'plain_value' => 'Đa dạng mẫu mã',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_image_1',
+                'setting_name' => 'Ảnh slider 1',
+                'plain_value' => '/userfiles/images/img-slider-01-home2.png',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_text_2',
+                'setting_name' => 'Nội dung slider 2',
+                'plain_value' => 'GHẾ',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_21',
+                'setting_name' => 'Nội dung phụ slider 2',
+                'plain_value' => 'Ghế Velvet xịn thiết kế Fashion',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_22',
+                'setting_name' => 'Nội dung phụ slider 2 (2)',
+                'plain_value' => 'Chất liệu cao cấp',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_image_2',
+                'setting_name' => 'Ảnh slider 2',
+                'plain_value' => '/userfiles/images/img-slider-02-home2.png',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_text_3',
+                'setting_name' => 'Nội dung slider 3',
+                'plain_value' => 'TAI NGHE',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_31',
+                'setting_name' => 'Nội dung phụ slider 3',
+                'plain_value' => 'Tai nghe Apple Headphone MATRIX',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'sub_text_32',
+                'setting_name' => 'Nội dung phụ slider 3 (2)',
+                'plain_value' => 'Chất lượng âm thanh vượt trội',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_image_3',
+                'setting_name' => 'Ảnh slider 3',
+                'plain_value' => '/userfiles/images/img-slider-03-home2.png',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_image_4',
+                'setting_name' => 'Ảnh dưới slider 1',
+                'plain_value' => '/userfiles/images/banner-home2-01.jpg',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 7
+            ],
+            [
+                'setting_key' => 'slider_image_5',
+                'setting_name' => 'Ảnh dưới slider 2',
+                'plain_value' => '/userfiles/images/banner-home2-02222.jpg',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 7
+            ],
         ]);
     }
 }
