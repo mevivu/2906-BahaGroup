@@ -10,6 +10,7 @@ use App\Enums\Order\OrderType;
 use App\Enums\Post\PostStatus;
 use App\Enums\PriorityStatus;
 use App\Enums\Product\{ProductInStock, ProductManagerStock, ProductStatus, ProductType, ProductVariationAction};
+use App\Enums\Slider\SliderStatus;
 use App\Enums\User\{Gender, UserVip, UserRoles};
 
 return [
@@ -21,6 +22,10 @@ return [
     DefaultActiveStatus::class => [
         DefaultActiveStatus::Active->value => 'Có',
         DefaultActiveStatus::UnActive->value => 'Không',
+    ],
+    SliderStatus::class => [
+        SliderStatus::Active => 'Đang hoạt động',
+        SliderStatus::UnActive => 'Ngưng hoạt động',
     ],
     PostStatus::class => [
         PostStatus::Draft->value => 'Bản nháp',
