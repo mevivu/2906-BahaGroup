@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                <h5 class="modal-title">Cell phone Silver</h5>
+                <h5 class="modal-title" id="modal-title">Cell phone Silver</h5>
                 <span class="close">
                     <i class="ti ti-x"></i>
                 </span>
@@ -17,7 +17,7 @@
                             <img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" alt="Product 3">
                             <img src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg" alt="Product 4">
                         </div>
-                        <span class="badge badge-danger position-absolute top-0 end-0 m-3">50%</span>
+                        <span class="badge badge-danger position-absolute top-0 end-0 m-3" id="badge-promotion-percent">50%</span>
                         <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
                     </div>
                 </div>
@@ -28,13 +28,13 @@
                         <div class="col-md-8">
                             <h5>Phụ kiện điện tử</h5>
                             <div class="rating fs-12">
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span class="star" style="color: #ffa200;">★</span>
-                                <span>100 khách hàng đánh giá</span>
-                                <span><strong> Đã bán:</strong> 4</span>
+                                <span style="color: gray" class="star">★</span>
+                                <span style="color: gray" class="star">★</span>
+                                <span style="color: gray" class="star">★</span>
+                                <span style="color: gray" class="star">★</span>
+                                <span style="color: gray" class="star">★</span>
+                                <span>0 khách hàng đánh giá</span>
+                                <span class="ms-2 text-uppercase">Đã bán: 0</span>
                             </div>
                         </div>
                         <div class="col-md-4 text-end justify-content-between align-items-center">
@@ -48,13 +48,13 @@
                         <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
                             role="progressbar" aria-label="Animated striped example"
                             aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">
-                            <span class="text-white">End in 121 : 09 : 47 : 39</span>
+                            <span style="color: #fff" id="countdown-flashsale-product-modal">216:19:42:02</span>
                         </div>
                     </div>
 
                     <p class="lead mb-1">
-                        <del>3,990,000₫</del>
-                        <strong class="text-red fw-bold">2,990,000₫</strong>
+                        <del id="price_modal">3,990,000₫</del>
+                        <strong id="promotion_price_modal" class="text-red fw-bold">2,990,000₫</strong>
                     </p>
 
                     <p class="fs-12 mb-1">Multi port <br> Fast file transfer <br>Portable in design</p>
@@ -84,7 +84,7 @@
 
                     <p class="fs-12 mb-1">
                         <span class="fw-bold">Tạng thái: </span>
-                        <span class="text-green">còn 96 Hàng</span>
+                        <span id="quantity_product_modal" class="text-green">còn 96 Hàng</span>
                     </p>
 
                     <div class="row">
