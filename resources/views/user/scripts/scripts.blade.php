@@ -39,5 +39,6 @@
 								}
 				}
 </script>
+@include('user.scripts.search-scripts')
 
 @stack('custom-js')

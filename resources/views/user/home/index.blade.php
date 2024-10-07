@@ -22,7 +22,3 @@
 								@include('user.home.container-product-categories-right-image')
 				</div>
 @endsection
-
-@push('custom-js')
-				@include('user.home.scripts.scripts')
-@endpush

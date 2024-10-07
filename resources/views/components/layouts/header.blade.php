@@ -33,7 +33,8 @@
 																				</ul>
 																				<input type="text" class="form-control" id="search-input"
 																								placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
-																				<x-button type="submit" class="bg-default"><i class="ti ti-search fs-4 text-white"></i></x-button>
+																				<x-button id="search-button" type="submit" class="bg-default"><i
+																												class="ti ti-search fs-4 text-white"></i></x-button>
 																</div>
 																<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="menu-1">
 																				<li>
