@@ -17,6 +17,13 @@ class FlashSaleRepository extends EloquentRepository implements FlashSaleReposit
         return $detail;
     }
 
+    public function getFlashSaleId_ValidDay(){
+        $current_day = date('Y-m-d H:i:s');
+        $flashSale = FlashSale::where('start_time', '<=', $current_day)->where('end_time', '>=', $current_day)->get();
+        $id = $flashSale[0]->id;
+        return $id;
+    }
+
     public function deleteDetail($id)
     {
         $detail = FlashSaleDetail::find($id);
