@@ -80,7 +80,8 @@
 																																								        : format_price($item->product->promotion_price * $item->qty)) }}
 																																				</td>
 																																				<td class="delete-cell align-middle" style="font-size: 1.5em;"><i
-																																												class="fa fa-trash text-danger"></i></td>
+																																												data-id="{{ $item->id }}" style="cursor: pointer"
+																																												onclick="removeCart(this)" class="fa fa-trash text-danger"></i></td>
 																																</tr>
 																												@endforeach
 																								</tbody>
@@ -95,20 +96,11 @@
 																												style="width: {{ ($total / $object) * 100 >= 100 ? '100' : round(($total / $object) * 100) }}%; background-color: #1C5639;">
 																												.</div>
 																				</div>
-																				@if ($total < $object)
-																								<p class="mt-3 text-center">Chi thêm
-																												<strong style="color: #1C5639">{{ format_price($object - $total) }}</strong> để được
-																												<strong>MIỄN PHÍ VẬN CHUYỂN!</strong><br>
-																												Thêm nhiều sản phẩm hơn vào giỏ hàng của bạn và nhận giao hàng miễn phí cho đơn hàng từ<br>
-																												<strong style="color: #1C5639">3,000,000₫</strong>
-																								</p>
-																				@else
-																								<p class="mt-3 text-center">
-																								<p class="mt-3 text-center">Bạn đã chi
-																												<strong style="color: #1C5639">{{ format_price($total) }}</strong>
-																												<br>
-																												Bạn đã nhận ưu đãi <strong>MIỄN PHÍ VẬN CHUYỂN!</strong> giao hàng miễn phí cho đơn hàng<br>
-																				@endif
+																				<p class="mt-3 text-center">Bạn đã chi
+																								<strong id="total-spend" class="text-default">{{ format_price($total) }}</strong>
+																								Chúng tôi sẽ <strong>MIỄN PHÍ VẬN CHUYỂN!</strong> giao hàng miễn phí cho đơn hàng từ<br>
+																								<strong class="text-default">3,000,000₫</strong>
+																				</p>
 																</div>
 
 																<div class="col-md-4 mb-3 mt-3">
@@ -146,7 +138,7 @@
 																												</div>
 																								</div>
 																				</div>
-																				<a href="{{ route('user.payment.payment') }}" class="btn btn-default w-100"><strong>Tiến hành thanh
+																				<a onclick="handleCheckOut()" class="btn btn-default w-100"><strong>Tiến hành thanh
 																												toán</strong></a>
 																</div>
 												</div>

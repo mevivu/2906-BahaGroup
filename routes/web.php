@@ -23,13 +23,6 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
     });
 
 Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
-    ->prefix('/payment')
-    ->as('payment.')
-    ->group(function () {
-        Route::get('/', 'payment')->name('payment');
-    });
-
-Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
     ->prefix('/cart')
     ->as('cart.')
     ->group(function () {
@@ -39,7 +32,8 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/apply', 'applyDiscountCode')->name('applyCode');
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
-        Route::delete('/remove/{id}', 'remove')->name('remove');
+        Route::delete('/remove/{id?}', 'delete')->name('remove');
+        Route::get('/checkout', 'checkout')->name('checkout');
     });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)
