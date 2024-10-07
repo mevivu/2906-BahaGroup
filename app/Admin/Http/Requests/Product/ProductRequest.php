@@ -14,7 +14,7 @@ class ProductRequest extends BaseRequest
     public function methodGet()
     {
         return [
-
+            'id' => ['required', 'exists:App\Models\Product,id'],
         ];
     }
     /**

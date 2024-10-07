@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Admin\Http\Requests\Product\ProductRequest;
 use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
@@ -15,8 +16,6 @@ use App\Traits\ResponseController;
 use Illuminate\Http\Request;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
-use Maatwebsite\Excel\Concerns\ToArray;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class ProductController extends Controller
 {
@@ -53,6 +52,7 @@ class ProductController extends Controller
             'indexUser' => 'user.products.index',
             'sale-limited' => 'user.products.sale-limited',
             'product-detail' => 'user.products.product-detail',
+            'product-modal' => 'components.quickview',
         ];
     }
 
@@ -63,11 +63,6 @@ class ProductController extends Controller
 
     public function indexUser()
     {
-        // $categories = $this->repositoryCategory->getFlatTree();
-        // $categories = $categories->map(function ($category) {
-        //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
-        // });
-
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'product_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'product_meta_desc')->first()->plain_value;
@@ -148,65 +143,20 @@ class ProductController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'sale_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'sale_meta_desc')->first()->plain_value;
-        $flash_sale_id = $this->flashSaleRepository->getFlashSaleId_ValidDay();
-        $flashSaleProducts = [];
-        $on_flash_sale = false;
-
-        $flash_sale = $this->flashSaleRepository->getFlashSaleInfo($flash_sale_id);
-        if ($flash_sale != null) {
-            if (strtotime($flash_sale->end_time) < strtotime(date('Y-m-d H:i:s'))) {
-                $on_flash_sale = false;
-            } else {
-                $flashSaleProduct_Rows = $this->flashSaleRepository->getAllFlashSaleProducts_Rows($flash_sale_id);
-
-                foreach ($flashSaleProduct_Rows as $item) {
-                    $on_flash_sale = true;
-                    // Get All Flash Sale Products
-                    $product = $this->repository->loadRelations($this->repository->findOrFail($item->product_id), [
-                        'categories:id,name',
-                        'reviews:rating,content,product_id',
-                        'productAttributes' => function ($query) {
-                            return $query->with(['attribute.variations', 'attributeVariations:id']);
-                        },
-                        'productVariations.attributeVariations'
-                    ]);
-                    $product = new ProductEditResource($product);
-                    // Rating calculation
-                    $avg_review_rate = 0;
-                    $sum_customer_review = count($product->reviews) ? count($product->reviews) : 0;
-                    foreach ($product->reviews as $review) {
-                        $avg_review_rate += $review->rating;
-                    }
-                    $avg_review_rate = $sum_customer_review != 0 ? $avg_review_rate /= $sum_customer_review : 0;
-
-                    $products = (object)[
-                        'product' => $product,
-                        'in_stock' => $item->qty,
-                        'sold' => $item->sold = $item->sold ? $item->sold : 0,
-                        'avgReviewRate' => $avg_review_rate,
-                        'sumCustomerReview' => $sum_customer_review,
-                    ];
-                    array_push($flashSaleProducts, $products);
-                }
-            }
-        }
-
-        $currentPage = request()->input('page', 1);
-        $productPerPage = 12;
-        $totalPages = ceil(count($flashSaleProducts) / $productPerPage);
-        $pagination = (object) [
-            'currentPage' => $currentPage,
-            'productPerPage' => $productPerPage,
-            'totalPages' => $totalPages,
-        ];
-        $flashSaleProducts = array_slice($flashSaleProducts, $productPerPage * ($currentPage - 1), $productPerPage);
+        $flashSale = $this->flashSaleRepository->getFlashSaleId_ValidDay();
 
         return view($this->view['sale-limited'], [
-            'products' => $flashSaleProducts,
-            'on_flash_sale' => $on_flash_sale,
-            'paginator' => $pagination,
+            'flashSale' => $flashSale,
             'title' => $title,
             'meta_desc' => $meta_desc,
+        ]);
+    }
+
+    public function renderModalProduct($id)
+    {
+        $product = $this->repository->findOrFail($id);
+        return view($this->view['product-modal'], [
+            'productModal' => $product,
         ]);
     }
 

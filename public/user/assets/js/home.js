@@ -8,9 +8,8 @@ function showTabContent() {
     }
 }
 
-function openModal(button) {
-    const productId = button.getAttribute('data-product-id');
-    const modalId = `quickViewProductModal${productId}`;
+function openModal() {
+    const modalId = `quickViewProductModal`;
     const modal = document.getElementById(modalId);
     modal.style.display = 'block';
     const closeBtn = modal.querySelector('.close');
@@ -18,6 +17,7 @@ function openModal(button) {
         modal.style.display = 'none';
     });
 }
+
 
 document.querySelectorAll('.color-btn-filter').forEach(button => {
     button.addEventListener('click', function() {

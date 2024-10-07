@@ -17,6 +17,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
         Route::get('/search', 'searchProduct')->name('search');

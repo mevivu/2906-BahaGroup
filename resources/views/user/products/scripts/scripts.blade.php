@@ -2,7 +2,7 @@
 				$(document).ready(function() {
 								function updateCountdown() {
 												const startTime = new Date();
-												const endTime = new Date('{{ $products[0]->product->on_flash_sale->end_time ?? 0 }}');
+												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
 
 												const diffInMs = endTime - startTime;
 												const diffInHours = Math.floor(diffInMs / 3600000);
@@ -11,11 +11,9 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
-												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
-												document.getElementById('countdown-flashsale-product-modal').textContent = formattedTime;
 								}
-								const endTime = '{{ $products[0]->product->on_flash_sale->end_time ?? 0 }}';
+								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
 								if (endTime != 0) {
 												updateCountdown();
 												const countdownInterval = setInterval(updateCountdown, 1000);
@@ -159,6 +157,22 @@
 								var input = document.getElementById('filter-input-detail');
 								if (input.value > 1) {
 												input.value = parseInt(input.value) - 1;
+								}
+				}
+
+				function showDetailProductModal(modal, product_id) {
+								if (product_id) {
+												$.ajax({
+																type: "GET",
+																url: '{{ route('user.product.render') }}' + `/${product_id}`,
+																success: function(response) {
+																				$("#resultQuickViewRequest").html(response);
+																				openModal(modal);
+																},
+																error: function(response) {
+																				handleAjaxError(response);
+																}
+												});
 								}
 				}
 </script>

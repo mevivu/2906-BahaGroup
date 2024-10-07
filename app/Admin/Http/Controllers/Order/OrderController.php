@@ -7,7 +7,6 @@ use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\Order\OrderServiceInterface;
 use App\Admin\DataTables\Order\OrderDataTable;
 use App\Admin\DataTables\Order\UserOrderDataTable;
-use App\Admin\DataTables\User\UserDataTable;
 use App\Enums\Order\OrderStatus;
 use App\Admin\Http\Requests\Order\OrderRequest;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;

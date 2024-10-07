@@ -6,7 +6,7 @@
 
 @section('content')
 				<div class="d-flex align-items-center container bg-white">
-								<div class="container">
+								<div class="container gap-64">
 												<div class="row">
 																<div class="col-md-8 mb-3 mt-3">
 																				<table class="table-center table text-center">

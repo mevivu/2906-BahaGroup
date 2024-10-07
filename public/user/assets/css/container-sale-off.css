@@ -46,44 +46,44 @@
     object-fit: cover;
 }
 
-#productCarousel-1 .row ,
-#productCarousel-2 .row ,
+#productCarousel-1 .row,
+#productCarousel-2 .row,
 #productCarousel-3 .row,
-#productCarousel-4 .row ,
-#productCarousel-5 .row ,
-#productCarousel-6 .row ,
-#productCarousel-7 .row {
+#productCarousel-4 .row,
+#productCarousel-5 .row,
+#productCarousel-6 .row,
+#productCarouselSaleOff .row {
     justify-content: space-evenly;
 }
 
-#productCarousel-1 .carousel-item ,
-#productCarousel-2 .carousel-item ,
-#productCarousel-3 .carousel-item ,
-#productCarousel-4 .carousel-item ,
-#productCarousel-5 .carousel-item ,
-#productCarousel-6 .carousel-item ,
-#productCarousel-7 .carousel-item{
+#productCarousel-1 .carousel-item,
+#productCarousel-2 .carousel-item,
+#productCarousel-3 .carousel-item,
+#productCarousel-4 .carousel-item,
+#productCarousel-5 .carousel-item,
+#productCarousel-6 .carousel-item,
+#productCarouselSaleOff .carousel-item {
     padding: 20px 0;
 }
 
-#productCarousel-1 .carousel-item .progress ,
-#productCarousel-2 .carousel-item .progress ,
-#productCarousel-3 .carousel-item .progress ,
-#productCarousel-4 .carousel-item .progress ,
-#productCarousel-5 .carousel-item .progress ,
-#productCarousel-6 .carousel-item .progress ,
-#productCarousel-7 .carousel-item .progress{
+#productCarousel-1 .carousel-item .progress,
+#productCarousel-2 .carousel-item .progress,
+#productCarousel-3 .carousel-item .progress,
+#productCarousel-4 .carousel-item .progress,
+#productCarousel-5 .carousel-item .progress,
+#productCarousel-6 .carousel-item .progress,
+#productCarouselSaleOff .carousel-item .progress {
     border-radius: 1.25rem;
     position: relative;
 }
 
-#productCarousel-1 .carousel-item .tb-sold ,
-#productCarousel-2 .carousel-item .tb-sold ,
-#productCarousel-3 .carousel-item .tb-sold ,
-#productCarousel-4 .carousel-item .tb-sold ,
-#productCarousel-5 .carousel-item .tb-sold ,
+#productCarousel-1 .carousel-item .tb-sold,
+#productCarousel-2 .carousel-item .tb-sold,
+#productCarousel-3 .carousel-item .tb-sold,
+#productCarousel-4 .carousel-item .tb-sold,
+#productCarousel-5 .carousel-item .tb-sold,
 #productCarousel-6 .carousel-item .tb-sold,
-#productCarousel-7 .carousel-item .tb-sold{
+#productCarouselSaleOff .carousel-item .tb-sold {
     position: absolute;
     right: 40%;
     color: black;
@@ -91,13 +91,12 @@
 }
 
 #productCarousel-1 .carousel-item .progress-bar,
-#productCarousel-2 .carousel-item .progress-bar ,
-#productCarousel-3 .carousel-item .progress-bar ,
+#productCarousel-2 .carousel-item .progress-bar,
+#productCarousel-3 .carousel-item .progress-bar,
 #productCarousel-4 .carousel-item .progress-bar,
-#productCarousel-5 .carousel-item .progress-bar ,
-#productCarousel-6 .carousel-item .progress-bar, 
-#productCarousel-7 .carousel-item .progress-bar
-{
+#productCarousel-5 .carousel-item .progress-bar,
+#productCarousel-6 .carousel-item .progress-bar,
+#productCarouselSaleOff .carousel-item .progress-bar {
     background-color: #1c5639;
 }
 

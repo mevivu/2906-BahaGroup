@@ -35,7 +35,8 @@
 								<div class="product-hover text-center">
 												<a style="cursor: pointer;" class="add-to-cart">
 																<i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
-																				onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
+																				data-product-id="1" onclick="showDetailProductModal(this, {{ $item->product->id }})"
+																				aria-hidden="true"></i>
 												</a>
 								</div>
 				</div>
