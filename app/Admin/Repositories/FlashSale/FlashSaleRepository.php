@@ -12,6 +12,11 @@ class FlashSaleRepository extends EloquentRepository implements FlashSaleReposit
         return FlashSale::class;
     }
 
+    public function getFlashSaleInfo($id) {
+        $detail = FlashSale::find($id);
+        return $detail;
+    }
+
     public function deleteDetail($id)
     {
         $detail = FlashSaleDetail::find($id);

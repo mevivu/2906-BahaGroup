@@ -13,6 +13,7 @@
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
                 console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
+												document.getElementById('countdown-flashsale-product-modal').textContent = formattedTime;
 								}
 								const endTime = '{{ $products[0]->product->on_flash_sale->end_time ?? 0 }}';
 								if (endTime != 0) {

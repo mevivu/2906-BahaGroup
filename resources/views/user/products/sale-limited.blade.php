@@ -51,7 +51,7 @@
                                 $flash_sale = $products[0]->product->on_flash_sale->details->where('product_id','=', $products[0]->product->id)->first();
                             @endphp
                             <div class="col-md-8 bg-default text-white text-center text-uppercase h-100">End in
-                                <span id="countdown-flashsale-product">216:19:42:02</span>
+                                <span id="countdown-flashsale-product-modal">216:19:42:02</span>
                             </div>
                             @endif
                             <div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold : 4/100</div>

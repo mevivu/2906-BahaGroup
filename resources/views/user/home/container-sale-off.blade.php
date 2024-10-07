@@ -1,15 +1,15 @@
+@if($on_flash_sale)
 <div class="container shadow rounded-3">
     <div class="row">
         <div class="col-12 header-box d-flex align-items-center shadow-sm bg-white rounded-top">
             <h5 class="mb-0">Sản phẩm ưu đãi</h5>
-            @if($on_flash_sale)
+            
             @php
                 $flash_sale = $products[0]->product->on_flash_sale->details->where('product_id','=', $products[0]->product->id)->first();
             @endphp
             <div class="timer rounded-3 shadow-sm">
                 <p class="mt-1"><span id="countdown-flashsale-product">216:19:42:02</span></p>
             </div>
-            @endif
         </div>
         <div class="col-12">
             <div id="productCarousel-7" class="carousel slide">
@@ -122,3 +122,4 @@
     }
 </script>
 @endpush
+@endif

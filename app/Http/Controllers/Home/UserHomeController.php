@@ -31,28 +31,38 @@ class UserHomeController extends Controller
     {
         // params: flash_sale_id
         $flash_sale_id = 2;
-        $flashSaleProduct_Rows = $this->flashSaleRepository->getAllFlashSaleProducts_Rows($flash_sale_id);
         $flashSaleProducts = [];
         $on_flash_sale = false;
+        
+        $flash_sale = $this->flashSaleRepository->getFlashSaleInfo($flash_sale_id);
+        if ($flash_sale != null) {
+            if (strtotime($flash_sale->end_time) < strtotime(date('Y-m-d H:i:s'))){
+                $on_flash_sale = false;
+            }
+            else {
+                $flashSaleProduct_Rows = $this->flashSaleRepository->getAllFlashSaleProducts_Rows($flash_sale_id);
 
-        foreach ($flashSaleProduct_Rows as $item) {
-            $on_flash_sale = true;
-            // Get All Flash Sale Products
-            $product = $this->repository->loadRelations($this->repository->findOrFail($item->product_id), [
-                'categories:id,name',
-                'productAttributes' => function ($query) {
-                    return $query->with(['attribute.variations', 'attributeVariations:id']);
-                },
-                'productVariations.attributeVariations'
-            ]);
-            $product = new ProductEditResource($product);
-            $products = (object)[
-                'product' => $product,
-                'in_stock' => $item->qty,
-                'sold' => $item->sold = $item->sold ? $item->sold : 0,
-            ];
-            array_push($flashSaleProducts, $products);
+                foreach ($flashSaleProduct_Rows as $item) {
+                    $on_flash_sale = true;
+                    // Get All Flash Sale Products
+                    $product = $this->repository->loadRelations($this->repository->findOrFail($item->product_id), [
+                        'categories:id,name',
+                        'productAttributes' => function ($query) {
+                            return $query->with(['attribute.variations', 'attributeVariations:id']);
+                        },
+                        'productVariations.attributeVariations'
+                    ]);
+                    $product = new ProductEditResource($product);
+                    $products = (object)[
+                        'product' => $product,
+                        'in_stock' => $item->qty,
+                        'sold' => $item->sold = $item->sold ? $item->sold : 0,
+                    ];
+                    array_push($flashSaleProducts, $products);
+                }
+            }
         }
+        
 
         return view($this->view['index'], [
             'products' => $flashSaleProducts,
