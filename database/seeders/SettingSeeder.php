@@ -790,6 +790,13 @@ class SettingSeeder extends Seeder
                 'type_input' => SettingTypeInput::Image,
                 'group' => 7
             ],
+            [
+                'setting_key' => 'object_discount',
+                'setting_name' => 'Mục tiêu để được miễn phí ship',
+                'plain_value' => '3000000',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 1
+            ],
         ]);
     }
 }
