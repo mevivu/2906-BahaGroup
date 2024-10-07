@@ -3,7 +3,7 @@
 <div class="card border-0 hover-shadow shadow-sm">
     <div class="position-relative">
         <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-default" src="{{ asset($item->product->avatar) }}" style="cursor: pointer;" alt="Product 3">
-        <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3" style="display: none;cursor: pointer;">
+        <img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';" class="card-img-top img-hover" src="{{ asset($item->product->gallery[0]) }}" alt="Product 3" style="display: none;cursor: pointer;">
         <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">{{ $item->product->price != 0 ? ceil(100 - ($item->product->promotion_price * 100 / $item->product->price)) . '%' : ''}}</span>
         <span class="badge badge-featured position-absolute top-0 start-0 m-3">Nổi bật</span>
     </div>
