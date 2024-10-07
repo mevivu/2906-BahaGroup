@@ -30,6 +30,8 @@ class ProductCategoryDataTable extends BaseDataTable
             'editlink' => 'admin.categories.datatable.editlink',
             'avatar' => 'admin.categories.datatable.avatar',
             'is_active' => 'admin.categories.datatable.is_active',
+            'icon' => 'admin.categories.datatable.icon',
+            'products' => 'admin.categories.datatable.products',
         ];
     }
 
@@ -55,6 +57,8 @@ class ProductCategoryDataTable extends BaseDataTable
             'name' => $this->view['editlink'],
             'avatar' => $this->view['avatar'],
             'is_active' => $this->view['is_active'],
+            'icon' => $this->view['icon'],
+            'products' => $this->view['products'],
             'created_at' => '{{ format_date($created_at) }}',
         ];
     }
@@ -91,12 +95,12 @@ class ProductCategoryDataTable extends BaseDataTable
     }
     protected function setCustomRawColumns()
     {
-        $this->customRawColumns = ['name', 'avatar', 'is_active', 'icon', 'action'];
+        $this->customRawColumns = ['name', 'avatar', 'is_active', 'icon', 'products', 'action'];
     }
 
     protected function setColumnSearch()
     {
-        $this->columnAllSearch = [0, 2, 3, 4];
+        $this->columnAllSearch = [0, 2];
         $this->columnSearchDate = [3];
 
         $this->columnSearchSelect = [

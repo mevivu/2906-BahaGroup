@@ -551,6 +551,11 @@ return [
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
+        'products' => [
+            'title' => 'Danh sách sản phẩm',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
         'action' => [
             'title' => 'Thao tác',
             'orderable' => false,
