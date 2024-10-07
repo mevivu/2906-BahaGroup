@@ -119,9 +119,9 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         $this->instance = $this->instance->orderBy($column, $sort);
         return $this->instance;
     }
-    public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'name', 'price'], $limit = 10)
+    public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'sku', 'name', 'price', 'promotion_price'], $limit = 10)
     {
-        $this->instance = $this->model->select($select);
+        $this->instance = $this->model->with('productVariations')->select($select);
         $this->getQueryBuilderFindByKey($keySearch);
 
         foreach ($meta as $key => $value) {

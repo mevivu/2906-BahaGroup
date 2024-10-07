@@ -11,7 +11,7 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
-                console.log(formattedTime);
+												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 												document.getElementById('countdown-flashsale-product-modal').textContent = formattedTime;
 								}
@@ -40,7 +40,7 @@
 
 																$.ajax({
 																				type: "GET",
-																				url: '{{ route("user.product.findVariationByAttributeVariationIds") }}',
+																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
 																				data: {
 																								attribute_variation_ids: hiddenAttributeValues,
 																								product_id: $('input[name="hidden_product_id"]').val()
@@ -78,7 +78,7 @@
 
 												$.ajax({
 																type: "POST",
-																url: '{{ route("user.cart.store") }}',
+																url: '{{ route('user.cart.store') }}',
 																data: {
 																				product_id: productId,
 																				product_variation_id: productVariationId,
@@ -88,8 +88,20 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
+																				Swal.fire({
+																								icon: 'success',
+																								title: 'Thành công',
+																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+																								showConfirmButton: true
+																				});
 																},
 																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Thất bại',
+																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
+																								showConfirmButton: true
+																				});
 																				handleAjaxError(response);
 																}
 												});

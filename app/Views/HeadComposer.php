@@ -2,16 +2,14 @@
 
 namespace App\Views;
 
-use Illuminate\View\Component;
 use App\Admin\Traits\GetConfig;
-
+use Illuminate\View\View;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
 
-class FloatingContact extends Component
+class HeadComposer
 {
     use GetConfig;
-
     protected SettingRepositoryInterface $settingRepository;
 
     public function __construct(SettingRepositoryInterface $settingRepository)
@@ -19,9 +17,9 @@ class FloatingContact extends Component
         $this->settingRepository = $settingRepository;
     }
 
-    public function render()
+    public function compose(View $view)
     {
-        $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
-        return view('components.floating-contact', compact('settingsContact'));
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $view->with('settingsGeneral', $settingsGeneral);
     }
 }

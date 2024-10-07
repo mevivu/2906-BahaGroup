@@ -13,6 +13,9 @@ use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
+
+use App\Admin\Repositories\Setting\SettingRepositoryInterface;
+use App\Enums\Setting\SettingGroup;
 use Maatwebsite\Excel\Concerns\ToArray;
 use PhpParser\Node\Expr\Cast\Object_;
 
@@ -24,6 +27,7 @@ class ProductController extends Controller
     protected CategoryRepositoryInterface $repositoryCategory;
     protected AttributeRepositoryInterface $repositoryAttribute;
     protected DiscountRepositoryInterface $discountRepository;
+    protected SettingRepositoryInterface $settingRepository;
 
     public function __construct(
         ProductRepositoryInterface   $repository,
@@ -31,7 +35,8 @@ class ProductController extends Controller
         DiscountRepositoryInterface  $discountRepository,
         CategoryRepositoryInterface  $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
-        ProductServiceInterface      $service
+        SettingRepositoryInterface $settingRepository,
+        ProductServiceInterface $service
     ) {
         parent::__construct();
         $this->repository = $repository;
@@ -39,6 +44,7 @@ class ProductController extends Controller
         $this->repositoryCategory = $repositoryCategory;
         $this->repositoryAttribute = $repositoryAttribute;
         $this->discountRepository = $discountRepository;
+        $this->settingRepository = $settingRepository;
         $this->service = $service;
     }
 
@@ -53,8 +59,7 @@ class ProductController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function indexUser()
@@ -63,7 +68,11 @@ class ProductController extends Controller
         // $categories = $categories->map(function ($category) {
         //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
         // });
-        return view($this->view['indexUser']);
+
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'product_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'product_meta_desc')->first()->plain_value;
+        return view($this->view['indexUser'], compact('title', 'meta_desc'));
     }
 
     public function detail($id)
@@ -123,19 +132,22 @@ class ProductController extends Controller
 
         if ($matchingProductVariation) {
             return response()->json([
-               'status' => true,
+                'status' => true,
                 'data' => new ProductVariationResource($matchingProductVariation)
             ]);
         } else {
             return response()->json([
-               'status' => false,
-               'message' => __('Không tìm thấy sản phẩm phù hợp.')
+                'status' => false,
+                'message' => __('Không tìm thấy sản phẩm phù hợp.')
             ], 400);
         }
     }
 
     public function saleLimited()
     {
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'sale_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'sale_meta_desc')->first()->plain_value;
         // params: flash_sale_id
         $flash_sale_id = 2;
         $flashSaleProducts = [];
@@ -180,10 +192,21 @@ class ProductController extends Controller
         ];
         $flashSaleProducts = array_slice($flashSaleProducts, $productPerPage * ($currentPage - 1), $productPerPage);
         
+        // return view($this->view['sale-limited'], compact('title', 'meta_desc'));
         return view($this->view['sale-limited'], [
             'products' => $flashSaleProducts,
             'on_flash_sale' => $on_flash_sale,
             'paginator' => $pagination,
+        ]);
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $data = $request->input('key');
+        $products = $this->repository->searchAllLimit($data);
+        return response()->json([
+            'status' => true,
+            'data' => $products
         ]);
     }
 }

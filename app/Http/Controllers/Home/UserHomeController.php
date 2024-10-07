@@ -6,18 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
+use App\Admin\Repositories\Setting\SettingRepositoryInterface;
+use App\Enums\Setting\SettingGroup;
 
 class UserHomeController extends Controller
 {
+    protected SettingRepositoryInterface $settingRepository;
     protected FlashSaleRepositoryInterface $flashSaleRepository;
     public function __construct(
         ProductRepositoryInterface   $repository,
         FlashSaleRepositoryInterface $flashSaleRepository,
+        SettingRepositoryInterface $settingRepository,
         )
     {
         parent::__construct();
         $this->repository = $repository;
         $this->flashSaleRepository = $flashSaleRepository;
+        $this->settingRepository = $settingRepository;
     }
     public function getView()
     {
@@ -29,6 +34,9 @@ class UserHomeController extends Controller
     }
     public function index()
     {
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;
         // params: flash_sale_id
         $flash_sale_id = 2;
         $flashSaleProducts = [];
@@ -63,7 +71,7 @@ class UserHomeController extends Controller
             }
         }
         
-
+        // return view($this->view['index'], compact('title', 'meta_desc'));
         return view($this->view['index'], [
             'products' => $flashSaleProducts,
             'on_flash_sale' => $on_flash_sale,
@@ -72,11 +80,22 @@ class UserHomeController extends Controller
 
     public function information()
     {
-        return view($this->view['information']);
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'information_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'information_meta_desc')->first()->plain_value;
+
+        $settingsInformation = $this->settingRepository->getByGroup([SettingGroup::Information]);
+        return view($this->view['information'], compact('title', 'meta_desc', 'settingsInformation'));
     }
 
     public function contact()
     {
-        return view($this->view['contact']);
+        $settings = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settings->where('setting_key', 'contact_title')->first()->plain_value;
+        $meta_desc = $settings->where('setting_key', 'contact_meta_desc')->first()->plain_value;
+
+        $settingsFooter = $this->settingRepository->getByGroup([SettingGroup::Footer]);
+        $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
+        return view($this->view['contact'], compact('title', 'meta_desc', 'settingsContact', 'settingsFooter'));
     }
 }

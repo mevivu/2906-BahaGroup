@@ -1,5 +1,9 @@
 @extends('user.layouts.master')
-@section('title', __('Khuyến mãi giới hạn'))
+@section('title', __($title))
+
+<head>
+    <meta name="description" content="{{ $meta_desc }}">
+</head>
 
 @section('content')
     <div id="quickViewProductModal1" class="modal">

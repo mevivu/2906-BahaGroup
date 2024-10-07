@@ -12,5 +12,5 @@ use BenSampo\Enum\Contracts\LocalizedEnum;
 final class SliderStatus extends Enum implements LocalizedEnum
 {
     const Active = 1;
-    const Inactive = 2;
+    const UnActive = 2;
 }

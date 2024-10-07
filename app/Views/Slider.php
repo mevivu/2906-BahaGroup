@@ -2,13 +2,14 @@
 
 namespace App\Views;
 
+use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\View\Component;
 use App\Admin\Traits\GetConfig;
 
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
 
-class FloatingContact extends Component
+class Slider extends Component
 {
     use GetConfig;
 
@@ -21,7 +22,7 @@ class FloatingContact extends Component
 
     public function render()
     {
-        $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
-        return view('components.floating-contact', compact('settingsContact'));
+        $settingsSlider = $this->settingRepository->getByGroup([SettingGroup::Slider]);
+        return view('components.slider', compact('settingsSlider'));
     }
 }

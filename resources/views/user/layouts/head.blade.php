@@ -1,15 +1,16 @@
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <meta name="X-TOKEN" content="{{ csrf_token() }}">
 <meta name="url-home" content="{{ url('/') }}">
 <meta name="currency" content="{{ config('custom.currency') }}">
 <meta name="position_currency" content="{{ config('custom.format.position_currency') }}">
-<title>@yield('title') - Baha Office</title>
-<link rel="icon" type="image/png" href="{{ asset('public/user/assets/images/icon.png') }}" />
+<title>@yield('title') - {{ $settingsGeneral->where('setting_key', 'site_name')->first()->plain_value }}</title>
+<link rel="icon" type="image/png"
+    href="{{ asset($settingsGeneral->where('setting_key', 'site_logo_tab')->first()->plain_value) }}" />
 <!-- CSS files -->
 <link href="{{ asset('public/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet"type="text/css">
-<link rel="stylesheet" href="{{ asset('public/user/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}" >
+<link rel="stylesheet" href="{{ asset('public/user/assets/bootstrap-5.3.3-dist/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/index.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/tabler/plugins/tabler-icon/webfont/tabler-icons.min.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/content.css') }}">
@@ -18,15 +19,37 @@
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/footer.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/product-category.css') }}">
 <link rel="stylesheet" href="{{ asset('public/user/assets/css/container-categories-right-image.css') }}">
+<link rel="stylesheet" href="{{ asset('public/user/assets/css/post.css') }}">
 <link rel="stylesheet" href="{{ asset('public/libs/fontawesome6/css/all.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('public/user/assets/fotorama-4.6.4/fotorama.css') }}">
 
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ asset('/public/libs/datatables/plugins/bs5/css/dataTables.bootstrap5.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/public/libs/datatables/plugins/buttons/css/buttons.bootstrap5.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/public/libs/datatables/plugins/responsive/css/responsive.bootstrap5.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('/public/libs/datatables/plugins/responsive/css/responsive.bootstrap5.min.css') }}">
 
 <link href="{{ asset('public/user/assets/css/index.css') }}" rel="stylesheet">
+<style>
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: .255em;
+        vertical-align: .255em;
+        content: none !important;
+        border-top: .3em solid;
+        border-right: .3em solid transparent;
+        border-bottom: 0;
+        border-left: .3em solid transparent;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        width: 636px;
+        cursor: pointer;
+        max-height: 520.8px;
+        overflow-y: scroll
+    }
+</style>
 @if (Route::currentRouteName() != 'user.order.indexUser')
     <style>
         @media (max-width: 768px) {
