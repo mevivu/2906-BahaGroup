@@ -11,8 +11,8 @@ use App\Enums\Setting\SettingGroup;
 
 class UserHomeController extends Controller
 {
-    protected FlashSaleRepositoryInterface $flashSaleRepository;
     protected SettingRepositoryInterface $settingRepository;
+    protected FlashSaleRepositoryInterface $flashSaleRepository;
     public function __construct(
         ProductRepositoryInterface   $repository,
         SettingRepositoryInterface $settingRepository,
@@ -36,7 +36,7 @@ class UserHomeController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;
-        $flash_sale_id = 2;
+        $flash_sale_id = $this->flashSaleRepository->getFlashSaleId_ValidDay();
         $flashSaleProducts = [];
         $on_flash_sale = false;
 
@@ -52,23 +52,32 @@ class UserHomeController extends Controller
                     // Get All Flash Sale Products
                     $product = $this->repository->loadRelations($this->repository->findOrFail($item->product_id), [
                         'categories:id,name',
+                        'reviews:rating,content,product_id',
                         'productAttributes' => function ($query) {
                             return $query->with(['attribute.variations', 'attributeVariations:id']);
                         },
                         'productVariations.attributeVariations'
                     ]);
                     $product = new ProductEditResource($product);
+                    // Rating calculation
+                    $avg_review_rate = 0;
+                    $sum_customer_review = count($product->reviews) ? count($product->reviews) : 0;
+                    foreach ($product->reviews as $review) {
+                        $avg_review_rate += $review->rating;
+                    }
+                    $avg_review_rate = $sum_customer_review != 0 ? $avg_review_rate /= $sum_customer_review : 0;
+
                     $products = (object)[
                         'product' => $product,
                         'in_stock' => $item->qty,
                         'sold' => $item->sold = $item->sold ? $item->sold : 0,
+                        'avgReviewRate' => $avg_review_rate,
+                        'sumCustomerReview' => $sum_customer_review,
                     ];
                     array_push($flashSaleProducts, $products);
                 }
             }
         }
-
-
         return view($this->view['index'], [
             'products' => $flashSaleProducts,
             'on_flash_sale' => $on_flash_sale,
