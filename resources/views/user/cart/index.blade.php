@@ -1,14 +1,10 @@
-@extends("user.layouts.master")
+@extends('user.layouts.master')
 
-@section("title", __("Giỏ hàng"))
+@section('title', __('Giỏ hàng'))
 
-@include("user.cart.scripts.scripts")
+@include('user.cart.scripts.scripts')
 
-@php
-				$object = 3000000;
-@endphp
-
-@section("content")
+@section('content')
 				<div class="d-flex align-items-center container bg-white">
 								<div class="container">
 												<div class="row">
@@ -90,12 +86,13 @@
 																								</tbody>
 																				</table>
 																				<div class="progress d-flex align-items-center">
-																								<div style="font-size: 16px; color: {{ ($total / $object) * 100 >= 50 ? "#ffffff" : "#000000" }}"
+																								<div style="font-size: 16px; color: {{ ($total / $object) * 100 >= 50 ? '#ffffff' : '#000000' }}"
 																												class="progress-text">
-																												<strong>{{ ($total / $object) * 100 >= 100 ? "100%" : round(($total / $object) * 100) }}</strong>
+																												<strong
+																																class="progress-percent">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}</strong>
 																								</div>
 																								<div class="progress-bar" role="progressbar"
-																												style="width: {{ ($total / $object) * 100 >= 100 ? "100" : round(($total / $object) * 100) }}%; background-color: #1C5639;">
+																												style="width: {{ ($total / $object) * 100 >= 100 ? '100' : round(($total / $object) * 100) }}%; background-color: #1C5639;">
 																												.</div>
 																				</div>
 																				@if ($total < $object)
@@ -119,9 +116,10 @@
 																								<div class="card-body">
 																												<h5>Áp dụng mã giảm giá</h5>
 																												<div class="input-group">
-																																<input id="code" type="text" class="form-control" placeholder="Nhập mã giảm giá">
-																																<button id="apply_code" class="btn btn-default" type="button">Áp dụng</button>
-																																<input type="hidden" id="applied_code">
+																																<x-input id="discount_code" type="text" class="form-control"
+																																				placeholder="Nhập mã giảm giá" />
+																																<button onclick="applyDiscountCode()" class="btn btn-default" type="button">Áp
+																																				dụng</button>
 																												</div>
 																								</div>
 																				</div>
@@ -129,11 +127,13 @@
 																								<div class="card-body">
 																												<div class="d-flex justify-content-between">
 																																<h6 class="card-title">Tạm tính</h6>
-																																<p class="card-text text-default"><strong id="totalOrder">{{ format_price($total) }}</strong></p>
+																																<p class="card-text text-default"><strong
+																																								id="totalOrder">{{ format_price($total) }}</strong></p>
 																												</div>
 																												<div class="d-flex justify-content-between">
 																																<h6 class="card-title">Giảm giá</h6>
-																																<p class="card-text text-default"><strong id="discountValue">{{ format_price($discount_value) }}</strong></p>
+																																<p class="card-text text-default"><strong
+																																								id="discountValue">{{ format_price($discount_value) }}</strong></p>
 																												</div>
 																												<div class="d-flex justify-content-between">
 																																<h6 class="card-title">Giao hàng</h6>
@@ -141,7 +141,8 @@
 																												</div>
 																												<div class="d-flex justify-content-between border-top border-1">
 																																<h6 class="card-title mt-3">Tổng tiền</h6>
-																																<p class="card-text text-default mt-3"><strong id="totalAfterDiscount">{{ format_price($total - $discount_value) }}</strong></p>
+																																<p class="card-text text-default mt-3"><strong
+																																								id="totalAfterDiscount">{{ format_price($total - $discount_value) }}</strong></p>
 																												</div>
 																								</div>
 																				</div>

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Http\Controllers\Setting;
+
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
@@ -40,6 +41,12 @@ class SettingController extends Controller
     public function contact()
     {
         $settings = $this->repository->getByGroup([SettingGroup::Contact]);
+        return view($this->view['general'], compact('settings'));
+    }
+
+    public function slider()
+    {
+        $settings = $this->repository->getByGroup([SettingGroup::Slider]);
         return view($this->view['general'], compact('settings'));
     }
 

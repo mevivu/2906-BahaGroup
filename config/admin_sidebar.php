@@ -167,15 +167,15 @@ return [
         'icon' => '<i class="ti ti-article"></i>',
         'roles' => [],
         'permissions' =>
-            [
-                'createPost',
-                'viewPost',
-                'updatePost',
-                'deletePost',
-                'viewPostCategory',
-                'createPostCategory',
-                'updatePostCategory'
-            ],
+        [
+            'createPost',
+            'viewPost',
+            'updatePost',
+            'deletePost',
+            'viewPostCategory',
+            'createPostCategory',
+            'updatePostCategory'
+        ],
         'sub' => [
             [
                 'title' => 'Thêm bài viết',
@@ -233,6 +233,13 @@ return [
             [
                 'title' => 'Chung',
                 'routeName' => 'admin.setting.general',
+                'icon' => '<i class="ti ti-tool"></i>',
+                'roles' => [],
+                'permissions' => ['settingGeneral'],
+            ],
+            [
+                'title' => 'Slider',
+                'routeName' => 'admin.setting.slider',
                 'icon' => '<i class="ti ti-tool"></i>',
                 'roles' => [],
                 'permissions' => ['settingGeneral'],

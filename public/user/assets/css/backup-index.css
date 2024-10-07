@@ -4,16 +4,39 @@ body {
     font-size: 1em;
 }
 
-a {
-    text-decoration: none;
+input::placeholder {
+    font-size: 0.9em;
 }
 
 li {
     list-style: none;
 }
 
+.nav {
+    flex-wrap: nowrap;
+}
+
 .fs-12 {
     font-size: 12px;
+}
+
+#header {
+    font-size: 15px;
+}
+
+#topbar-container {
+    height: 45px;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #F0F0F0;
+}
+
+.top-bar-right .top-item {
+    cursor: pointer;
+}
+
+.top-bar-right .top-item:hover {
+    color: #1c5639;
 }
 
 .dropdown-item {
@@ -26,9 +49,40 @@ li {
     color: #1c5639;
 }
 
+.button-search {
+    background-color: #1c5639 !important;
+}
+
+.button-search i {
+    color: white;
+    font-size: 24px;
+}
+
+
+.main-3 i {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.main-3 span {
+    background-color: #1c5639;
+    color: white;
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
 .widget {
     background-color: #000000;
     color: white;
+}
+
+.widget h6 {
+    text-align: left;
+}
+
+.widget h6 i {
+    font-size: 30px;
 }
 
 .nav-item {
@@ -38,6 +92,27 @@ li {
 
 .nav-item a {
     color: white;
+    text-decoration: none;
+}
+
+.search-icon-rep {
+    display: none !important;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+}
+
+.search-cart {
+    width: 100%;
+}
+
+.ti-shopping-cart {
+    font-size: large;
 }
 
 #slide-show {
@@ -46,14 +121,15 @@ li {
     z-index: 4;
 }
 
+.btn-carousel-slider {
+    width: 96px !important;
+}
+
 
 @media (max-width: 1199px) {
-
-    #top-bar,
-    #top-header {
+    #top-bar, #top-header {
         display: none !important;
     }
-
     .badge-danger {
         font-size: 0.5em !important;
     }
@@ -253,39 +329,26 @@ li {
     }
 }
 
+/* Ẩn các cột không cần thiết trên màn hình nhỏ */
 @media (max-width: 768px) {
-    .filter-icon {
-        display: block;
-    }
-
-    .category-filter {
-        display: none;
-    }
-
     .section-gap-default {
         margin-top: 72em !important;
     }
-
     .flex-section {
         top: 27em !important;
     }
-
     .tab-btn {
         font-size: 0.8em !important;
     }
-
     #allBtn {
         display: none;
     }
-
-    #top-bar,
-    #top-header {
+    #top-bar, #top-header {
         display: none !important;
     }
 
     .add-to-cart {
-        display: none !important;
-        ;
+        display: none !important;;
     }
 
     .progress-text {
@@ -325,6 +388,10 @@ li {
         width: 100%;
         margin: 0.5em 0;
     }
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3E%3Cpath stroke="currentColor" stroke-width="2" d="M4 7h22M4 15h22M4 23h22" /%3E%3C/svg%3E');
 }
 
 
@@ -414,6 +481,10 @@ li {
     align-items: center;
 }
 
+.social-media h2 {
+    margin-right: auto;
+}
+
 .social-media ul {
     list-style: none;
     padding: 0;
@@ -427,6 +498,7 @@ li {
 
 .social-media ul li a img {
     width: 40px;
+    /* Điều chỉnh kích thước theo ý muốn */
     height: 40px;
 }
 
@@ -471,6 +543,10 @@ li {
 .btn-default:hover {
     background-color: #1c5639;
     color: #fff;
+}
+
+.info-title {
+    text-align: left;
 }
 
 .btn-outline-secondary {
@@ -534,7 +610,9 @@ li {
 .margin-information .col-md-4 {
     border-radius: 5px;
     flex: 1;
+    /* Đảm bảo các thẻ có cùng kích thước */
     margin: 0;
+    /* Loại bỏ khoảng cách mặc định */
 }
 
 .margin-information .col-md-4:first-child {
@@ -573,12 +651,14 @@ li {
 
 .custom-col {
     margin-left: 0.7rem;
+    /* Khoảng trống giữa các cột */
     border: 1px solid #3f3f3f;
     border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
     width: auto;
+    /* Đảm bảo nút co giãn theo kích thước text */
 }
 
 .custom-col:hover {
@@ -588,6 +668,38 @@ li {
 
 .bg-red {
     background-color: red;
+}
+
+.bg-blue {
+    background-color: blue;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
+.bg-orange {
+    background-color: orange;
+}
+
+.bg-purple {
+    background-color: purple;
+}
+
+.bg-pink {
+    background-color: pink;
+}
+
+.bg-brown {
+    background-color: brown;
+}
+
+.bg-gray {
+    background-color: gray;
 }
 
 .bg-black {
@@ -602,8 +714,80 @@ li {
     background-color: cyan;
 }
 
+.bg-magenta {
+    background-color: magenta;
+}
+
+.bg-lime {
+    background-color: lime;
+}
+
+.bg-maroon {
+    background-color: maroon;
+}
+
+.bg-navy {
+    background-color: navy;
+}
+
+.bg-olive {
+    background-color: olive;
+}
+
+.bg-teal {
+    background-color: teal;
+}
+
+.bg-aqua {
+    background-color: aqua;
+}
+
+.bg-silver {
+    background-color: silver;
+}
+
+.bg-gold {
+    background-color: gold;
+}
+
+.bg-beige {
+    background-color: beige;
+}
+
+.bg-coral {
+    background-color: coral;
+}
+
+.bg-crimson {
+    background-color: crimson;
+}
+
+.bg-indigo {
+    background-color: indigo;
+}
+
+.bg-khaki {
+    background-color: khaki;
+}
+
+.bg-lavender {
+    background-color: lavender;
+}
+
+.bg-mint {
+    background-color: mint;
+}
+
+.bg-plum {
+    background-color: plum;
+}
+
+.bg-salmon {
+    background-color: salmon;
+}
+
 .bg-default {
-    background-color: #1c5639 !important;
+    background-color: #1c5639;
 }
 
 .text-category {
@@ -618,8 +802,36 @@ li {
     color: red;
 }
 
+.text-blue {
+    color: blue;
+}
+
 .text-green {
     color: green;
+}
+
+.text-yellow {
+    color: yellow;
+}
+
+.text-orange {
+    color: orange;
+}
+
+.text-purple {
+    color: purple;
+}
+
+.text-pink {
+    color: pink;
+}
+
+.text-brown {
+    color: brown;
+}
+
+.text-gray {
+    color: gray;
 }
 
 .text-6 {
@@ -634,9 +846,86 @@ li {
     color: white;
 }
 
+.text-cyan {
+    color: cyan;
+}
+
+.text-magenta {
+    color: magenta;
+}
+
+.text-lime {
+    color: lime;
+}
+
+.text-maroon {
+    color: maroon;
+}
+
+.text-navy {
+    color: navy;
+}
+
+.text-olive {
+    color: olive;
+}
+
+.text-teal {
+    color: teal;
+}
+
+.text-aqua {
+    color: aqua;
+}
+
+.text-silver {
+    color: silver;
+}
+
+.text-gold {
+    color: gold;
+}
+
+.text-beige {
+    color: beige;
+}
+
+.text-coral {
+    color: coral;
+}
+
+.text-crimson {
+    color: crimson;
+}
+
+.text-indigo {
+    color: indigo;
+}
+
+.text-khaki {
+    color: khaki;
+}
+
+.text-lavender {
+    color: lavender;
+}
+
+.text-mint {
+    color: mint;
+}
+
+.text-plum {
+    color: plum;
+}
+
+.text-salmon {
+    color: salmon;
+}
+
 .text-default {
     color: #1c5639
 }
+
 
 .custom-list-item {
     border: none;
@@ -713,8 +1002,11 @@ li {
     width: 100%;
     height: auto;
     max-width: 500px;
+    /* Đảm bảo hình ảnh không vượt quá 500px */
     max-height: 500px;
+    /* Đảm bảo hình ảnh không vượt quá 500px */
     object-fit: cover;
+    /* Đảm bảo hình ảnh giữ tỷ lệ và không bị méo */
 }
 
 .container-80 {
@@ -725,8 +1017,11 @@ li {
     width: 100%;
     height: auto;
     max-width: 100px;
+    /* Đảm bảo hình ảnh không vượt quá 100px */
     max-height: 100px;
+    /* Đảm bảo hình ảnh không vượt quá 100px */
     object-fit: cover;
+    /* Đảm bảo hình ảnh giữ tỷ lệ và không bị méo */
 }
 
 .list-item-my-account {
@@ -747,16 +1042,19 @@ li {
     border: none !important;
 }
 
+/* Thêm đường viền bên phải cho các cột */
 .border-right {
     border-right: 1px solid #ddd;
 }
 
+/* Loại bỏ đường viền bên phải cho cột cuối cùng */
 @media (min-width: 768px) {
     .col-md-4:last-child {
         border-right: none;
     }
 }
 
+/* Tùy chỉnh ô checkbox */
 .form-check {
     border: 1px solid #ddd;
     padding: 10px;
@@ -771,6 +1069,7 @@ li {
     height: 20px;
     border-radius: 0;
     margin-right: 10px;
+    /* Add some space between the checkbox and the label */
 }
 
 .form-check-input:checked {
@@ -780,6 +1079,7 @@ li {
 
 .breadcrumb {
     margin-bottom: 0;
+    /* Đảm bảo không có khoảng cách giữa breadcrumb và phần dưới */
 }
 
 .breadcrumb-item+.breadcrumb-item::before {
@@ -810,8 +1110,11 @@ li {
 
 .hover-shadow:hover {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    /* Thêm shadow khi hover */
     transform: translateY(-1em);
+    /* Nâng card lên khi hover */
     transition: all 0.3s ease;
+    /* Thêm hiệu ứng chuyển đổi mượt mà */
 }
 
 .card.hover-shadow:hover .add-to-cart {
@@ -832,22 +1135,38 @@ li {
     border-right: 1px solid #f4f4f4;
 }
 
+/* Style the filter icon */
 .filter-icon {
     display: none;
+    /* Hide by default */
+}
+
+@media (max-width: 767px) {
+    .filter-icon {
+        display: block;
+    }
+
+    .category-filter {
+        display: none;
+    }
 }
 
 .fotorama {
     width: 100%;
+    /* Đảm bảo Fotorama chiếm toàn bộ chiều rộng của cột */
 }
 
 .fotorama__wrap {
     width: 100% !important;
+    /* Đảm bảo phần tử bên trong Fotorama chiếm toàn bộ chiều rộng */
 }
 
 .fotorama img {
     width: 100%;
     height: auto;
+    /* Đảm bảo ảnh duy trì tỷ lệ khung hình */
     object-fit: cover;
+    /* Đảm bảo ảnh không bị vỡ */
 }
 
 .w-16 {
@@ -960,27 +1279,42 @@ td[data-label="Tổng"] {
     background-repeat: no-repeat;
 }
 
+/* Back to top button */
 #backToTopBtn {
     display: none;
+    /* Ẩn nút mặc định */
     position: fixed;
+    /* Vị trí cố định */
     bottom: 20px;
+    /* Cách đáy trang 20px */
     left: 30px;
+    /* Cách phải trang 30px */
     z-index: 999;
+    /* Đảm bảo nút không bị che khuất */
     border: none;
+    /* Loại bỏ viền */
     outline: none;
+    /* Loại bỏ viền ngoài */
     background-color: transparent;
+    /* Nền trong suốt */
     cursor: pointer;
+    /* Con trỏ chuột khi hover */
     padding: 10px;
+    /* Khoảng cách bên trong nút */
     border-radius: 50%;
+    /* Bo tròn góc */
 }
 
 #backToTopBtn img {
     width: 24px;
+    /* Chiều rộng icon */
     height: 24px;
+    /* Chiều cao icon */
 }
 
 #backToTopBtn:hover {
     background-color: #1c1c1c;
+    /* Màu nền khi hover */
 }
 
 #side-bar {
@@ -1156,19 +1490,9 @@ td[data-label="Tổng"] {
 }
 
 
-.product_view .modal-dialog {
-    max-width: 800px;
-    width: 100%;
-}
-
-.pre-cost {
-    text-decoration: line-through;
-    color: #a5a5a5;
-}
-
-.space-ten {
-    padding: 10px 0;
-}
+.product_view .modal-dialog{max-width: 800px; width: 100%;}
+        .pre-cost{text-decoration: line-through; color: #a5a5a5;}
+        .space-ten{padding: 10px 0;}
 
 .close {
     position: absolute;
@@ -1312,48 +1636,34 @@ td[data-label="Tổng"] {
 
 /* datatable */
 
-table.dataTable>thead .sorting:before,
-table.dataTable>thead .sorting_asc:before,
-table.dataTable>thead .sorting_desc:before,
-table.dataTable>thead .sorting_asc_disabled:before,
-table.dataTable>thead .sorting_desc_disabled:before {
+table.dataTable>thead .sorting:before, table.dataTable>thead .sorting_asc:before, table.dataTable>thead .sorting_desc:before, table.dataTable>thead .sorting_asc_disabled:before, table.dataTable>thead .sorting_desc_disabled:before{
     content: "\f30c";
     font-family: 'Font Awesome 5 free';
 }
-
-table.dataTable>thead .sorting:after,
-table.dataTable>thead .sorting_asc:after,
-table.dataTable>thead .sorting_desc:after,
-table.dataTable>thead .sorting_asc_disabled:after,
-table.dataTable>thead .sorting_desc_disabled:after {
+table.dataTable>thead .sorting:after, table.dataTable>thead .sorting_asc:after, table.dataTable>thead .sorting_desc:after, table.dataTable>thead .sorting_asc_disabled:after, table.dataTable>thead .sorting_desc_disabled:after{
     content: "\f309";
     font-family: 'Font Awesome 5 free';
 }
-
-.dt-buttons {
+.dt-buttons{
     width: 100%;
     margin-bottom: 20px;
 }
-
-.dt-buttons button.btn {
+.dt-buttons button.btn{
     width: fit-content;
     flex: unset;
 }
-
-.dataTables_length {
+.dataTables_length{
     float: left;
 }
-
-div.dataTables_wrapper div.dataTables_processing {
+div.dataTables_wrapper div.dataTables_processing{
     z-index: 9;
 }
-
-.dataTables_filter {
+.dataTables_filter{
     opacity: 0;
 }
 
 .card-title {
-    max-width: 150px;
+    max-width: 150px; /* Điều chỉnh giá trị này để phù hợp với độ dài "Cell phone Silver" */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1361,8 +1671,4 @@ div.dataTables_wrapper div.dataTables_processing {
 
 .offcanvas-body {
     padding: 0 !important;
-}
-
-.box-image img {
-    max-height: 206px;
 }
