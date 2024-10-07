@@ -36,7 +36,6 @@ class UserHomeController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;
-        return view($this->view['index'], compact('title', 'meta_desc'));
         $flash_sale_id = 2;
         $flashSaleProducts = [];
         $on_flash_sale = false;
