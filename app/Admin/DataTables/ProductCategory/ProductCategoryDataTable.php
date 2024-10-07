@@ -17,13 +17,14 @@ class ProductCategoryDataTable extends BaseDataTable
 
     public function __construct(
         CategoryRepositoryInterface $repository
-    ){
+    ) {
         parent::__construct();
 
         $this->repository = $repository;
     }
 
-    public function setView(){
+    public function setView()
+    {
         $this->view = [
             'action' => 'admin.categories.datatable.action',
             'editlink' => 'admin.categories.datatable.editlink',
@@ -43,7 +44,7 @@ class ProductCategoryDataTable extends BaseDataTable
     public function query()
     {
         $query = $this->repository->getQueryBuilderOrderBy();
-//        $query = $this->filterIsActive($query);
+        //        $query = $this->filterIsActive($query);
         return $query;
     }
 
@@ -80,20 +81,22 @@ class ProductCategoryDataTable extends BaseDataTable
         return 'Category_' . date('YmdHis');
     }
 
-    protected function filterIsActive($query){
+    protected function filterIsActive($query)
+    {
         $value = request('columns.2.search.value');
-        if ($value !== null){
+        if ($value !== null) {
             $query = $query->where('is_active', 0);
         }
         return $query;
     }
-    protected function setCustomRawColumns(){
-        $this->customRawColumns = ['name', 'avatar', 'is_active', 'action'];
+    protected function setCustomRawColumns()
+    {
+        $this->customRawColumns = ['name', 'avatar', 'is_active', 'icon', 'action'];
     }
 
     protected function setColumnSearch()
     {
-        $this->columnAllSearch = [0, 2, 3];
+        $this->columnAllSearch = [0, 2, 3, 4];
         $this->columnSearchDate = [3];
 
         $this->columnSearchSelect = [
