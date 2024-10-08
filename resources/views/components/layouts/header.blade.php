@@ -58,7 +58,7 @@
 																												<a class="dropdown-item" href="{{ route('user.order.indexUser') }}">Đơn hàng</a>
 																												<a class="dropdown-item" href="{{ route('user.profile.indexUser') }}">Tài khoản</a>
 																												<a class="dropdown-item" href="{{ route('user.password.indexUser') }}">Mật khẩu</a>
-																												<a href="#" class="dropdown-item" data-bs-toggle="modal"
+																												<a id="showModal" href="#" class="dropdown-item" data-bs-toggle="modal"
 																																data-bs-target="#modalLogout">{{ __('Đăng xuất') }}</a>
 																								</div>
 																				</div>
