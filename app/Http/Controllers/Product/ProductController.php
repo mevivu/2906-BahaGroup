@@ -52,20 +52,29 @@ class ProductController extends Controller
         return [];
     }
 
-    public function indexUser()
+    public function indexUser(Request $request)
     {
         $categories = $this->repositoryCategory->getFlatTree();
         $colors = $this->repositoryAttribute->findOrFailWithVariations(1);
         $sizes = $this->repositoryAttribute->findOrFailWithVariations(2);
-        $products = $this->repository->getMinMaxPromotionPrices();
-        $productItems = $this->repository->getProductsWithRelations();
-        // dd($productItems);
+        $minMax = $this->repository->getMinMaxPromotionPrices();
+
+        $filter = [
+            'min_product_price' => $request->input('min_product_price'),
+            'max_product_price' => $request->input('max_product_price'),
+            'category_id' => $request->input('category_ids'),
+            'color_id' => $request->input('color_ids'),
+            'size_id' => $request->input('size_ids')
+        ];
+
+        $products = $this->repository->getProductsWithRelations(filterData: $filter, desc: $request->input('sort'));
+
         return view($this->view['indexUser'], [
             'categories' => $categories,
             'colors' => $colors,
             'sizes' => $sizes,
-            'products' => $products,
-            'productItems' => $productItems
+            'minMax' => $minMax,
+            'products' => $products
         ]);
     }
 

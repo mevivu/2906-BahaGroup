@@ -133,18 +133,38 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         ];
     }
 
-    public function getProductsWithRelations(array $relations = ['categories', 'productVariations'], $limit = 8)
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc')
     {
-        $this->getQueryBuilderOrderBy();
         $this->instance = $this->instance->with($relations);
-        $this->instance = $this->instance->withAggregate('productVariations', 'MIN(promotion_price) as min_promotion_price');
-        $this->instance = $this->instance->withAggregate('productVariations', 'MAX(promotion_price) as max_promotion_price');
 
-        if ($limit) {
-            $this->instance = $this->instance->limit($limit);
+        if (isset($filterData['min_product_price'])) {
+            $this->instance = $this->instance->where('promotion_price', '>=', $filterData['min_product_price']);
         }
 
-        $this->instance = $this->instance->get();
+        if (isset($filterData['max_product_price'])) {
+            $this->instance = $this->instance->where('promotion_price', '<=', $filterData['max_product_price']);
+        }
+
+        if (isset($filterData['category_id'])) {
+            $this->instance = $this->instance->whereHas('categories', function ($query) use ($filterData) {
+                $query->where('id', $filterData['category_id']);
+            });
+        }
+
+        if (isset($filterData['color_id'])) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+                $query->where('attribute_variation_id', $filterData['color_id']);
+            });
+        }
+
+        if (isset($filterData['size_id'])) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+                $query->where('attribute_variation_id', $filterData['size_id']);
+            });
+        }
+
+        $desc = in_array(strtolower($desc), ['asc', 'desc']) ? strtolower($desc) : 'desc';
+        $this->instance = $this->instance->orderBy('price', $desc)->paginate(8);
         return $this->instance;
     }
 
