@@ -27,6 +27,7 @@ class ProductController extends Controller
     protected DiscountRepositoryInterface $discountRepository;
     protected SettingRepositoryInterface $settingRepository;
 
+
     public function __construct(
         ProductRepositoryInterface   $repository,
         FlashSaleRepositoryInterface $flashSaleRepository,
@@ -61,12 +62,35 @@ class ProductController extends Controller
         return [];
     }
 
-    public function indexUser()
+    public function indexUser(Request $request)
     {
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'product_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'product_meta_desc')->first()->plain_value;
-        return view($this->view['indexUser'], compact('title', 'meta_desc'));
+        $categories = $this->repositoryCategory->getFlatTree();
+        $colors = $this->repositoryAttribute->findOrFailWithVariations(1);
+        $sizes = $this->repositoryAttribute->findOrFailWithVariations(2);
+        $minMax = $this->repository->getMinMaxPromotionPrices();
+
+        $filter = [
+            'min_product_price' => $request->input('min_product_price'),
+            'max_product_price' => $request->input('max_product_price'),
+            'category_id' => $request->input('category_ids'),
+            'color_id' => $request->input('color_ids'),
+            'size_id' => $request->input('size_ids')
+        ];
+
+        $products = $this->repository->getProductsWithRelations(filterData: $filter, desc: $request->input('sort'));
+
+        return view($this->view['indexUser'], [
+            'categories' => $categories,
+            'colors' => $colors,
+            'sizes' => $sizes,
+            'minMax' => $minMax,
+            'products' => $products,
+            'title' => $title,
+            'meta_desc' => $meta_desc,
+        ]);
     }
 
     public function detail($id)

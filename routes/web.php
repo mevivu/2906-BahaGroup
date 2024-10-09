@@ -92,7 +92,6 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::put('/update', 'update')->name('update');
         Route::get('/success', 'success')->name('success');
     });
-
 Route::controller(App\Http\Controllers\Post\PostController::class)
     ->prefix('/posts')
     ->as('post.')

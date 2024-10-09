@@ -3,7 +3,6 @@
 								function updateCountdown() {
 												const startTime = new Date();
 												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
-
 												const diffInMs = endTime - startTime;
 												const diffInHours = Math.floor(diffInMs / 3600000);
 												const diffInMinutes = Math.floor((diffInMs % 3600000) / 60000);
@@ -11,6 +10,7 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
@@ -35,7 +35,6 @@
 												});
 												const hasEmpty = hiddenAttributeValues.some(value => value === '');
 												if (!hasEmpty) {
-
 																$.ajax({
 																				type: "GET",
 																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
@@ -73,7 +72,6 @@
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
 												console.log(productId, productVariationId, qty);
-
 												$.ajax({
 																type: "POST",
 																url: '{{ route('user.cart.store') }}',
