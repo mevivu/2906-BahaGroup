@@ -546,6 +546,16 @@ return [
             'addClass' => 'align-middle text-center',
             'visible' => false
         ],
+        'icon' => [
+            'title' => 'Icon',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'products' => [
+            'title' => 'Danh sách sản phẩm',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
         'action' => [
             'title' => 'Thao tác',
             'orderable' => false,
@@ -913,7 +923,7 @@ return [
             'addClass' => 'text-center align-middle',
             'visible' => false
         ],
-//        'action' => [
+        //        'action' => [
 //            'title' => 'Thao tác',
 //            'orderable' => false,
 //            'exportable' => false,

@@ -13,22 +13,28 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Admin\DataTables\Product\ProductDataTable;
+use App\Admin\Repositories\Product\ProductRepositoryInterface;
 
 class ProductCategoryController extends Controller
 {
     use ResponseController;
 
+    protected $productRepository;
+
     public function __construct(
         CategoryRepositoryInterface $repository,
-        CategoryServiceInterface    $service
-    )
-    {
+        CategoryServiceInterface $service,
+        ProductRepositoryInterface $productRepository,
+    ) {
 
         parent::__construct();
 
         $this->repository = $repository;
 
         $this->service = $service;
+
+        $this->productRepository = $productRepository;
 
     }
 
@@ -37,7 +43,8 @@ class ProductCategoryController extends Controller
         return [
             'index' => 'admin.categories.index',
             'create' => 'admin.categories.create',
-            'edit' => 'admin.categories.edit'
+            'edit' => 'admin.categories.edit',
+            'product' => 'admin.categories.product',
         ];
     }
 
@@ -47,7 +54,8 @@ class ProductCategoryController extends Controller
             'index' => 'admin.category.index',
             'create' => 'admin.category.create',
             'edit' => 'admin.category.edit',
-            'delete' => 'admin.category.delete'
+            'delete' => 'admin.category.delete',
+            'product' => 'admin.category.product',
         ];
     }
 
@@ -85,11 +93,42 @@ class ProductCategoryController extends Controller
         $categories = $this->repository->getFlatTreeNotInNode([$id]);
         $instance = $this->repository->findOrFail($id);
         return view(
-            $this->view['edit'], [
+            $this->view['edit'],
+            [
                 'category' => $instance,
                 'categories' => $categories
             ]
         );
+    }
+
+    public function product($id, ProductDataTable $dataTable)
+    {
+        $inStock = [1 => __('Còn hàng'), 0 => __('Hết hàng')];
+        $isUserDiscount = [1 => __('Có'), 0 => __('Không')];
+
+        $categories = $this->repository->getFlatTree();
+        $categories = $categories->map(function ($category) {
+            return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
+        });
+
+        $category = $this->repository->findOrFail($id);
+
+        $productIds = $this->productRepository->getQueryBuilderOrderBy()->whereHas('categories', function ($query) use ($id) {
+            $query->where('categories.id', $id);
+        })->get()->pluck('id')->toArray();
+
+        if ($productIds) {
+            $dataTable = new ProductDataTable($this->productRepository, $this->repository, $productIds);
+        } else {
+            $dataTable = new ProductDataTable($this->productRepository, $this->repository, [-1]);
+        }
+
+        return $dataTable->render($this->view['product'], [
+            'in_stock' => $inStock,
+            'is_user_discount' => $isUserDiscount,
+            'categories' => $categories,
+            'category' => $category
+        ]);
     }
 
     public function update(ProductCategoryRequest $request): RedirectResponse

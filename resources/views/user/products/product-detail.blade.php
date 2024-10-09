@@ -150,7 +150,6 @@
 																																								ngay</strong></button></div>
 																								</div>
 																				@endif
-
 																				<div style="border-top: 1px solid #f5f5f5" class="row mt-5">
 																								<p class="mt-2">SKU: {{ $product->sku }}</p>
 																								<p>Danh mục:
@@ -222,7 +221,65 @@
 																																				<div class="row">
 																																								@foreach ($relatedProducts->take(4) as $relatedProduct)
 																																												<div class="col-6 col-md-3 mb-4">
-																																																<x-cardproduct :item="$relatedProduct" />
+																																																<<<<<<< HEAD <x-cardproduct :item="$relatedProduct" />
+																																																=======
+																																																<div class="card hover-shadow border-0">
+																																																				<div class="position-relative">
+																																																								<img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';"
+																																																												class="card-img-top img-default"
+																																																												src="{{ asset($relatedProduct->avatar) }}"
+																																																												style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
+																																																								<img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';"
+																																																												class="card-img-top img-hover"
+																																																												src="{{ asset($relatedProduct->gallery[0]) }}"
+																																																												alt="{{ $relatedProduct->name }}"
+																																																												style="display: none;cursor: pointer;">
+																																																								@if (!isset($relatedProduct->productVariations[0]))
+																																																												<span
+																																																																class="badge badge-danger position-absolute end-0 top-0 m-3">{{ round(100 - ($relatedProduct->promotion_price / $relatedProduct->price) * 100) }}%</span>
+																																																								@else
+																																																												<span
+																																																																class="badge badge-danger position-absolute end-0 top-0 m-3">{{ round(100 - ($relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price) * 100) }}%</span>
+																																																								@endif
+																																																								@if ($relatedProduct->is_featured)
+																																																												<span
+																																																																class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi
+																																																																bật</span>
+																																																								@endif
+																																																				</div>
+																																																				<div class="card-body">
+																																																								<h6 class="card-title"><a class="text-black"
+																																																																href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a>
+																																																								</h6>
+																																																								<div class="rating">
+																																																												@for ($i = 1; $i <= 5; $i++)
+																																																																<span class="star"
+																																																																				style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
+																																																												@endfor
+																																																												<span>{{ $relatedProduct->reviews->count() }}</span>
+																																																								</div>
+																																																								@if (!isset($relatedProduct->productVariations[0]))
+																																																												<p><del>{{ format_price($relatedProduct->price) }}</del>
+																																																																<strong
+																																																																				class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong>
+																																																												</p>
+																																																								@else
+																																																												<p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del>
+																																																																<strong id="productVariationPromotionPrice"
+																																																																				class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong>
+																																																												</p>
+																																																								@endif
+																																																								<div class="text-center">
+																																																												<a style="cursor: pointer;" class="add-to-cart"><i
+																																																																				class="fa fa-shopping-cart w-50"
+																																																																				aria-hidden="true"></i><i
+																																																																				class="fa fa-arrows-alt w-50"
+																																																																				data-product-id="{{ $relatedProduct->id }}"
+																																																																				onclick="openModal(this)" aria-hidden="true"></i></a>
+																																																								</div>
+																																																				</div>
+																																																</div>
+																																																>>>>>>> e4ac32e311ea1efb8ea0d6203347c5c8cc9d4fb3
 																																												</div>
 																																								@endforeach
 																																				</div>
@@ -234,7 +291,65 @@
 																																				<div class="row">
 																																								@foreach ($relatedProducts->skip(4)->take(4) as $relatedProduct)
 																																												<div class="col-6 col-md-3 mb-4">
-																																																<x-cardproduct :item="$relatedProduct" />
+																																																<<<<<<< HEAD <x-cardproduct :item="$relatedProduct" />
+																																																=======
+																																																<div class="card hover-shadow border-0">
+																																																				<div class="position-relative">
+																																																								<img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';"
+																																																												class="card-img-top img-default"
+																																																												src="{{ asset($relatedProduct->avatar) }}"
+																																																												style="cursor: pointer;" alt="{{ $relatedProduct->name }}">
+																																																								<img onclick="location.href='{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}';"
+																																																												class="card-img-top img-hover"
+																																																												src="{{ asset($relatedProduct->gallery[0]) }}"
+																																																												alt="{{ $relatedProduct->name }}"
+																																																												style="display: none;cursor: pointer;">
+																																																								@if (!isset($relatedProduct->productVariations[0]))
+																																																												<span
+																																																																class="badge badge-danger position-absolute end-0 top-0 m-3">{{ round(100 - ($relatedProduct->promotion_price / $relatedProduct->price) * 100) }}%</span>
+																																																								@else
+																																																												<span
+																																																																class="badge badge-danger position-absolute end-0 top-0 m-3">{{ round(100 - ($relatedProduct->productVariations[0]->promotion_price / $relatedProduct->productVariations[0]->price) * 100) }}%</span>
+																																																								@endif
+																																																								@if ($relatedProduct->is_featured)
+																																																												<span
+																																																																class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi
+																																																																bật</span>
+																																																								@endif
+																																																				</div>
+																																																				<div class="card-body">
+																																																								<h6 class="card-title"><a class="text-black"
+																																																																href="{{ route('user.product.detail', ['id' => $relatedProduct->id]) }}">{{ $relatedProduct->name }}</a>
+																																																								</h6>
+																																																								<div class="rating">
+																																																												@for ($i = 1; $i <= 5; $i++)
+																																																																<span class="star"
+																																																																				style="color: {{ $i <= $relatedProduct->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
+																																																												@endfor
+																																																												<span>{{ $relatedProduct->reviews->count() }}</span>
+																																																								</div>
+																																																								@if (!isset($relatedProduct->productVariations[0]))
+																																																												<p><del>{{ format_price($relatedProduct->price) }}</del>
+																																																																<strong
+																																																																				class="text-red">{{ format_price($relatedProduct->promotion_price) }}</strong>
+																																																												</p>
+																																																								@else
+																																																												<p><del>{{ format_price($relatedProduct->productVariations[0]->price) }}</del>
+																																																																<strong id="productVariationPromotionPrice"
+																																																																				class="text-red">{{ format_price($relatedProduct->productVariations[0]->promotion_price) }}</strong>
+																																																												</p>
+																																																								@endif
+																																																								<div class="text-center">
+																																																												<a style="cursor: pointer;" class="add-to-cart"><i
+																																																																				class="fa fa-shopping-cart w-50"
+																																																																				aria-hidden="true"></i><i
+																																																																				class="fa fa-arrows-alt w-50"
+																																																																				data-product-id="{{ $relatedProduct->id }}"
+																																																																				onclick="openModal(this)" aria-hidden="true"></i></a>
+																																																								</div>
+																																																				</div>
+																																																</div>
+																																																>>>>>>> e4ac32e311ea1efb8ea0d6203347c5c8cc9d4fb3
 																																												</div>
 																																								@endforeach
 																																				</div>

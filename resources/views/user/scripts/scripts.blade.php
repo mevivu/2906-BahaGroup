@@ -32,7 +32,6 @@
 												if (typeof initEndMap === 'function') {
 																initEndMap();
 												}
-
 								} catch (error) {
 												handleAjaxError();
 												window.location.reload();

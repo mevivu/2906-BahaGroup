@@ -8,19 +8,18 @@ use App\Admin\Repositories\Product\ProductRepositoryInterface;
 
 class ProductDataTable extends BaseDataTable
 {
-
-
     protected $nameTable = 'productTable';
     protected CategoryRepositoryInterface $repoCat;
-
-
+    protected $productIds;
     public function __construct(
         ProductRepositoryInterface $repository,
         CategoryRepositoryInterface $repoCat,
+        $productIds = [],
     ) {
         $this->repository = $repository;
         $this->repoCat = $repoCat;
         parent::__construct();
+        $this->productIds = $productIds;
     }
 
     public function setView(): void
@@ -52,7 +51,13 @@ class ProductDataTable extends BaseDataTable
 
     public function query()
     {
-        return $this->repository->getQueryBuilderWithRelations();
+        $query = $this->repository->getQueryBuilderWithRelations();
+
+        if (!empty($this->productIds)) {
+            $query->whereIn('id', $this->productIds);
+        }
+
+        return $query;
     }
 
     protected function setCustomColumns(): void

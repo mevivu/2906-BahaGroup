@@ -6,8 +6,9 @@
 </head>
 
 @section('content')
+				<x-quickview />
 				<div id="content" class="container-fluid d-flex justify-content-center align-items-center">
-								<x-slider />
+								@include('user.home.slider')
 				</div>
 				<div id="container-category" class="position-relative d-flex mt-3">
 								@include('user.home.container-categories')
