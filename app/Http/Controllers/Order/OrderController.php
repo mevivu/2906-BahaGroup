@@ -7,25 +7,41 @@ use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\Order\OrderServiceInterface;
 use App\Admin\DataTables\Order\UserOrderDataTable;
 use App\Admin\Traits\AuthService;
+use App\Repositories\User\UserRepositoryInterface;
 use App\Traits\ResponseController;
+use Illuminate\Http\Request;
+use App\Admin\Repositories\Review\ReviewRepositoryInterface;
+use App\Admin\Repositories\Product\ProductRepositoryInterface;
+use App\Enums\Order\OrderReview;
 
 class OrderController extends Controller
 {
     use ResponseController, AuthService;
 
+    protected ReviewRepositoryInterface $reviewRepository;
+    protected UserRepositoryInterface $userRepository;
+    protected ProductRepositoryInterface $productRepository;
+
     public function __construct(
         OrderRepositoryInterface $repository,
-        OrderServiceInterface $service
+        OrderServiceInterface $service,
+        ReviewRepositoryInterface $reviewRepository,
+        UserRepositoryInterface $userRepository,
+        ProductRepositoryInterface $productRepository,
     ) {
         parent::__construct();
         $this->repository = $repository;
         $this->service = $service;
+        $this->reviewRepository = $reviewRepository;
+        $this->userRepository = $userRepository;
+        $this->productRepository = $productRepository;
     }
     public function getView(): array
     {
         return [
             'indexUser' => 'user.orders.index',
             'detail' => 'user.orders.order-detail',
+            'review' => 'user.orders.review',
         ];
     }
 
@@ -38,6 +54,70 @@ class OrderController extends Controller
     public function indexUser(UserOrderDataTable $dataTable)
     {
         return $dataTable->render($this->view['indexUser'], []);
+    }
+
+    public function review($id, Request $request)
+    {
+        $ordersDetail = $this->repository->findOrFailWithRelations($id)->details;
+        $productIds = $ordersDetail->pluck('product_id')->toArray();
+
+        $reviewedProducts = [];
+        foreach ($productIds as $productId) {
+            $data = [
+                'user_id' => auth()->id(),
+                'rating' => $request->query('rating'),
+                'content' => $request->query('review'),
+                'product_id' => $productId,
+                'order_id' => $id,
+            ];
+            $this->reviewRepository->create($data);
+            $reviewedProducts[] = $productId;
+        }
+
+        if (!empty($reviewedProducts)) {
+            $this->repository->update($id, [
+                'is_reviewed' => OrderReview::Reviewed->value,
+            ]);
+
+            return back()->with([
+                'success' => __('Đánh giá đơn hàng thành công'),
+            ]);
+        }
+        return back()->with('error', __('Đánh giá đơn hàng thất bại'));
+    }
+
+    public function review_detail($id)
+    {
+        $reviews = $this->reviewRepository->getQueryBuilder()
+            ->where('order_id', $id)
+            ->get();
+
+        $productIds = $reviews->pluck('product_id')->toArray();
+        $products = $this->productRepository->getQueryBuilder()
+            ->whereIn('id', $productIds)
+            ->get();
+
+        $user = $this->userRepository->findOrFail(auth()->id());
+
+        $combinedArray = [];
+        foreach ($reviews as $index => $review) {
+            $combinedArray[] = [
+                'product_name' => $products[$index]->name,
+                'review_content' => $review->content,
+                'review_rating' => $review->rating,
+                'review_created_at' => $review->created_at->format('d-m-Y'),
+            ];
+        }
+
+        $response = [
+            'reviewsDetail' => $combinedArray,
+            'user' => [
+                'avatar' => asset($user->avatar),
+                'fullname' => $user->fullname,
+            ],
+        ];
+
+        return response()->json(['response' => $response]);
     }
 
     public function detail($id)

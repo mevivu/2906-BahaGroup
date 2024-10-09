@@ -19,10 +19,12 @@ class Review extends Model
         'rating',
         // ID sản phẩm
         'product_id',
+        // ID hóa đơn
+        'order_id',
         //Nội dung đánh giá
         'content',
         //Trạng thái
-        'status'
+        'status',
     ];
 
     public function user(): BelongsTo
@@ -33,5 +35,8 @@ class Review extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
-
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
 }
