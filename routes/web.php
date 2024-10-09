@@ -48,6 +48,9 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
         Route::post('/', 'loginUser')->name('loginUser');
+        Route::post('/register', 'signinUser')->name('register');
+        Route::get('/oauth-verification', 'oauth')->name('oauth');
+        Route::post('/oauth-verification', 'oauthChange')->name('oauthChange');
     });
 
 Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
