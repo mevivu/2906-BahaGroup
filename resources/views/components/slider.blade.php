@@ -12,11 +12,8 @@
 																																</h3>
 																																<p>{{ $settingsSlider->where('setting_key', 'sub_text_12')->first()->plain_value }}
 																																</p>
-																																<<<<<<< HEAD <p><button onclick="location.href='{{ route('user.product.indexUser') }}'"
+																																<p><button onclick="location.href='{{ route('user.product.indexUser') }}'"
 																																								type="button" class="btn">Mua ngay</button></p>
-																																				=======
-																																				<p><button type="button" class="btn">Mua ngay</button></p>
-																																				>>>>>>> e4ac32e311ea1efb8ea0d6203347c5c8cc9d4fb3
 																												</div>
 																												<div
 																																class="image-box d-flex justify-content-center align-items-center position-relative col-7">
@@ -60,13 +57,9 @@
 																																<h3>{{ $settingsSlider->where('setting_key', 'sub_text_31')->first()->plain_value }}
 																																</h3>
 																																<p>{{ $settingsSlider->where('setting_key', 'sub_text_32')->first()->plain_value }}
-																																				<<<<<<< HEAD <p><button
-																																												onclick="location.href='{{ route('user.product.indexUser') }}'"
-																																												type="button" class="btn">Mua ngay</button>
+																																<p><button onclick="location.href='{{ route('user.product.indexUser') }}'"
+																																								type="button" class="btn">Mua ngay</button>
 																																</p>
-																																=======
-																																<p><button type="button" class="btn">Mua ngay</button></p>
-																																>>>>>>> e4ac32e311ea1efb8ea0d6203347c5c8cc9d4fb3
 																												</div>
 																												<div
 																																class="image-box d-flex justify-content-center align-items-center position-relative col-7">
