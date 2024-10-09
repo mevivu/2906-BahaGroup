@@ -17,18 +17,21 @@ class ProductCategoryDataTable extends BaseDataTable
 
     public function __construct(
         CategoryRepositoryInterface $repository
-    ){
+    ) {
         parent::__construct();
 
         $this->repository = $repository;
     }
 
-    public function setView(){
+    public function setView()
+    {
         $this->view = [
             'action' => 'admin.categories.datatable.action',
             'editlink' => 'admin.categories.datatable.editlink',
             'avatar' => 'admin.categories.datatable.avatar',
             'is_active' => 'admin.categories.datatable.is_active',
+            'icon' => 'admin.categories.datatable.icon',
+            'products' => 'admin.categories.datatable.products',
         ];
     }
 
@@ -43,7 +46,7 @@ class ProductCategoryDataTable extends BaseDataTable
     public function query()
     {
         $query = $this->repository->getQueryBuilderOrderBy();
-//        $query = $this->filterIsActive($query);
+        //        $query = $this->filterIsActive($query);
         return $query;
     }
 
@@ -54,6 +57,8 @@ class ProductCategoryDataTable extends BaseDataTable
             'name' => $this->view['editlink'],
             'avatar' => $this->view['avatar'],
             'is_active' => $this->view['is_active'],
+            'icon' => $this->view['icon'],
+            'products' => $this->view['products'],
             'created_at' => '{{ format_date($created_at) }}',
         ];
     }
@@ -80,20 +85,22 @@ class ProductCategoryDataTable extends BaseDataTable
         return 'Category_' . date('YmdHis');
     }
 
-    protected function filterIsActive($query){
+    protected function filterIsActive($query)
+    {
         $value = request('columns.2.search.value');
-        if ($value !== null){
+        if ($value !== null) {
             $query = $query->where('is_active', 0);
         }
         return $query;
     }
-    protected function setCustomRawColumns(){
-        $this->customRawColumns = ['name', 'avatar', 'is_active', 'action'];
+    protected function setCustomRawColumns()
+    {
+        $this->customRawColumns = ['name', 'avatar', 'is_active', 'icon', 'products', 'action'];
     }
 
     protected function setColumnSearch()
     {
-        $this->columnAllSearch = [0, 2, 3];
+        $this->columnAllSearch = [0, 2];
         $this->columnSearchDate = [3];
 
         $this->columnSearchSelect = [

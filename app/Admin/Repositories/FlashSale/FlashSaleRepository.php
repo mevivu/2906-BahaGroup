@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Repositories\FlashSale;
+
 use App\Admin\Repositories\EloquentRepository;
 use App\Models\FlashSale;
 use App\Models\FlashSaleDetail;
@@ -12,6 +13,19 @@ class FlashSaleRepository extends EloquentRepository implements FlashSaleReposit
         return FlashSale::class;
     }
 
+    public function getFlashSaleInfo($id)
+    {
+        $detail = FlashSale::find($id);
+        return $detail;
+    }
+
+    public function getFlashSaleId_ValidDay()
+    {
+        $current_day = date('Y-m-d H:i:s');
+        $flashSale = FlashSale::where('start_time', '<=', $current_day)->where('end_time', '>=', $current_day)->first();
+        return $flashSale;
+    }
+
     public function deleteDetail($id)
     {
         $detail = FlashSaleDetail::find($id);
@@ -20,5 +34,14 @@ class FlashSaleRepository extends EloquentRepository implements FlashSaleReposit
             return true;
         }
         return false;
+    }
+
+    public function getAllFlashSaleProducts_Rows($flash_sale_id)
+    {
+        // dd($flash_sale_id);
+        $detail = FlashSaleDetail::where('flash_sale_id', $flash_sale_id)->get();
+        if ($detail) {
+            return $detail;
+        }
     }
 }

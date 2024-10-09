@@ -27,16 +27,16 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>
@@ -46,16 +46,16 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>
@@ -80,16 +80,16 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>
@@ -99,16 +99,16 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>
@@ -135,16 +135,16 @@
                                     <div class="row">
 
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>
@@ -154,16 +154,16 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                         <div class="col-6 col-md-3 mb-4">
-                                            <x-cardproduct />
+                                            <x-card />
                                         </div>
                                     </div>
                                 </div>

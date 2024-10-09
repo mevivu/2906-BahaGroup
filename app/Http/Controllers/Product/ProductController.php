@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Admin\Http\Requests\Product\ProductRequest;
 use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
@@ -9,10 +10,10 @@ use App\Admin\Services\Product\ProductServiceInterface;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
+use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
-
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
 
@@ -20,21 +21,24 @@ class ProductController extends Controller
 {
     use ResponseController;
 
+    protected FlashSaleRepositoryInterface $flashSaleRepository;
     protected CategoryRepositoryInterface $repositoryCategory;
     protected AttributeRepositoryInterface $repositoryAttribute;
     protected DiscountRepositoryInterface $discountRepository;
     protected SettingRepositoryInterface $settingRepository;
 
     public function __construct(
-        ProductRepositoryInterface $repository,
-        DiscountRepositoryInterface $discountRepository,
-        CategoryRepositoryInterface $repositoryCategory,
+        ProductRepositoryInterface   $repository,
+        FlashSaleRepositoryInterface $flashSaleRepository,
+        DiscountRepositoryInterface  $discountRepository,
+        CategoryRepositoryInterface  $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
         SettingRepositoryInterface $settingRepository,
         ProductServiceInterface $service
     ) {
         parent::__construct();
         $this->repository = $repository;
+        $this->flashSaleRepository = $flashSaleRepository;
         $this->repositoryCategory = $repositoryCategory;
         $this->repositoryAttribute = $repositoryAttribute;
         $this->discountRepository = $discountRepository;
@@ -48,6 +52,7 @@ class ProductController extends Controller
             'indexUser' => 'user.products.index',
             'sale-limited' => 'user.products.sale-limited',
             'product-detail' => 'user.products.product-detail',
+            'product-modal' => 'components.quickview',
         ];
     }
 
@@ -58,11 +63,6 @@ class ProductController extends Controller
 
     public function indexUser()
     {
-        // $categories = $this->repositoryCategory->getFlatTree();
-        // $categories = $categories->map(function ($category) {
-        //     return [$category->id => generate_text_depth_tree($category->depth) . $category->name];
-        // });
-
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'product_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'product_meta_desc')->first()->plain_value;
@@ -84,6 +84,31 @@ class ProductController extends Controller
             'product' => $product,
             'relatedProducts' => $randomProducts
         ]);
+    }
+
+    public function detailModal($id)
+    {
+        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
+            'categories:id,name',
+            'reviews:rating,content,product_id',
+            'productAttributes' => function ($query) {
+                return $query->with(['attribute.variations', 'attributeVariations:id']);
+            },
+            'productVariations.attributeVariations'
+        ]);
+        $product = new ProductEditResource($product);
+        $avg_review_rate = 0;
+        $sum_customer_review = count($product->reviews) ? count($product->reviews) : 0;
+        foreach ($product->reviews as $review) {
+            $avg_review_rate += $review->rating;
+        }
+        $avg_review_rate = $sum_customer_review != 0 ? $avg_review_rate /= $sum_customer_review : 0;
+        return (object) [
+            'product' => $product,
+            'avgReviewRate' => $avg_review_rate,
+            'sumCustomerReview' => $sum_customer_review,
+            'on_flash_sale' => true,
+        ];
     }
 
     public function findVariationByAttributeVariationIds(Request $request)
@@ -118,7 +143,21 @@ class ProductController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'sale_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'sale_meta_desc')->first()->plain_value;
-        return view($this->view['sale-limited'], compact('title', 'meta_desc'));
+        $flashSale = $this->flashSaleRepository->getFlashSaleId_ValidDay();
+
+        return view($this->view['sale-limited'], [
+            'flashSale' => $flashSale,
+            'title' => $title,
+            'meta_desc' => $meta_desc,
+        ]);
+    }
+
+    public function renderModalProduct($id)
+    {
+        $product = $this->repository->findOrFail($id);
+        return view($this->view['product-modal'], [
+            'productModal' => $product,
+        ]);
     }
 
     public function searchProduct(Request $request)

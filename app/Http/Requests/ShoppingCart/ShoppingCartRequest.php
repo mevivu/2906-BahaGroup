@@ -19,16 +19,4 @@ class ShoppingCartRequest extends BaseRequest
             'qty' => ['required', 'integer', 'min:1'],
         ];
     }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    protected function methodDelete()
-    {
-        return [
-            'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
-        ];
-    }
 }

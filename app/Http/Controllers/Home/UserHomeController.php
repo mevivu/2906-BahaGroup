@@ -3,17 +3,24 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Admin\Http\Resources\Product\ProductEditResource;
+use App\Admin\Repositories\Product\ProductRepositoryInterface;
+use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
 
 class UserHomeController extends Controller
 {
-
     protected SettingRepositoryInterface $settingRepository;
+    protected FlashSaleRepositoryInterface $flashSaleRepository;
     public function __construct(
-        SettingRepositoryInterface $settingRepository
+        ProductRepositoryInterface   $repository,
+        SettingRepositoryInterface $settingRepository,
+        FlashSaleRepositoryInterface $flashSaleRepository,
     ) {
         parent::__construct();
+        $this->repository = $repository;
+        $this->flashSaleRepository = $flashSaleRepository;
         $this->settingRepository = $settingRepository;
     }
     public function getView()
@@ -29,7 +36,12 @@ class UserHomeController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;
-        return view($this->view['index'], compact('title', 'meta_desc'));
+        $flashSale = $this->flashSaleRepository->getFlashSaleId_ValidDay();
+        return view($this->view['index'], [
+            'flashSale' => $flashSale,
+            'title' => $title,
+            'meta_desc' => $meta_desc,
+        ]);
     }
 
     public function information()

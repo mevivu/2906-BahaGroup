@@ -16,6 +16,9 @@
 				function updateText(response) {
 								$('#cart-count-mobile').text(response.data.count);
 								$('#cart-count').text(response.data.count);
+								$('#total-spend').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN').replace(
+																'.', ',') +
+												'đ');
 								$('#totalOrder').text(response.data.total.toLocaleString('vi-VN').replace('.', ',') + 'đ');
 								$('#discountValue').text(response.data.discount_value.toLocaleString('vi-VN').replace('.', ',') + 'đ');
 								$('#totalAfterDiscount').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN').replace(
@@ -142,6 +145,62 @@
 												}
 								});
 								updateProductTotal(id);
+				}
+
+				function removeCart(button) {
+								var id = $(button).data('id');
+								const row = button.closest('tr');
+								if (row) {
+												Swal.fire({
+																title: "Bạn có chắc chắn muốn thực hiện?",
+																icon: "info",
+																showCancelButton: true,
+																confirmButtonColor: "#7FC84E",
+																cancelButtonColor: "#FA4F26",
+																confirmButtonText: "Chắc chắn!",
+																cancelButtonText: "Quay lại!"
+												}).then((result) => {
+																if (result.isConfirmed) {
+																				row.remove();
+																				$.ajax({
+																								type: "DELETE",
+																								url: '{{ route('user.cart.remove') }}' + `/${id}`,
+																								data: {
+																												_token: '{{ csrf_token() }}'
+																								},
+																								success: function(response) {
+																												updateText(response);
+																												$('#discount_code').val('');
+																								},
+																								error: function(response) {
+																												if (response.status == 400) {
+																																Swal.fire({
+																																				icon: 'warning',
+																																				title: 'Lưu ý',
+																																				text: `${response.responseJSON.data.message}`,
+																																				showConfirmButton: true
+																																});
+																																updateText(response.responseJSON);
+																												} else {
+																																handleAjaxError(response);
+																												}
+																								}
+																				});
+																				updateProductTotal(id);
+																}
+												});
+								}
+				}
+
+
+				function handleCheckOut() {
+								var discount_value = $(`#discountValue`).text();
+								var code = $(`#discount_code`).val();
+								if (code && discount_value != '0đ') {
+												window.location.href = '{{ route('user.cart.checkout') }}' + '?code=' + code;
+								} else {
+												window.location.href = '{{ route('user.cart.checkout') }}';
+								}
 				}
 
 				function isEnoughQuantityCart(input) {

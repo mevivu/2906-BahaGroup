@@ -17,15 +17,10 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
+        Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
         Route::get('/search', 'searchProduct')->name('search');
-    });
-
-Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
-    ->prefix('/payment')
-    ->as('payment.')
-    ->group(function () {
-        Route::get('/', 'payment')->name('payment');
     });
 
 Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
@@ -38,7 +33,8 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/apply', 'applyDiscountCode')->name('applyCode');
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
-        Route::delete('/remove/{id}', 'remove')->name('remove');
+        Route::delete('/remove/{id?}', 'delete')->name('remove');
+        Route::get('/checkout', 'checkout')->name('checkout');
     });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)

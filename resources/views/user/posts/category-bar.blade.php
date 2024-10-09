@@ -4,17 +4,21 @@
 @endphp
 
 <div class="col-md-3">
-    <div class="list-group">
-        <a href="{{ route('user.post.index') }}" class="list-group-item list-group-item-action">
-            {{ __('Tất cả') }}
-        </a>
-        @foreach ($categories as $category)
-            @if ($category->status == '1')
-                <a href="{{ route('user.post.category', ['idCategory' => $category->id, 'slugCategory' => $category->slug]) }}"
-                    class="list-group-item list-group-item-action">
-                    {{ $category->name }}
-                </a>
-            @endif
-        @endforeach
+    <div id="category-bar">
+        <h5 class="category-bar-title">Chuyên mục</h5>
+        <div class="divider"></div>
+        <div class="category-list">
+            <a class="category-item" href="{{ route('user.post.index') }}" class="">
+                {{ __('Tất cả') }}
+            </a>
+            @foreach ($categories as $category)
+                @if ($category->status == '1')
+                    <a href="{{ route('user.post.category', ['idCategory' => $category->id, 'slugCategory' => $category->slug]) }}"
+                        class="category-item">
+                        {{ $category->name }}
+                    </a>
+                @endif
+            @endforeach
+        </div>
     </div>
 </div>

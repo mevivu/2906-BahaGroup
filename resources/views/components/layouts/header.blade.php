@@ -33,7 +33,8 @@
 																				</ul>
 																				<input type="text" class="form-control" id="search-input"
 																								placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
-																				<x-button type="submit" class="bg-default"><i class="ti ti-search fs-4 text-white"></i></x-button>
+																				<x-button id="search-button" type="submit" class="bg-default"><i
+																												class="ti ti-search fs-4 text-white"></i></x-button>
 																</div>
 																<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" id="menu-1">
 																				<li>
@@ -57,7 +58,7 @@
 																												<a class="dropdown-item" href="{{ route('user.order.indexUser') }}">Đơn hàng</a>
 																												<a class="dropdown-item" href="{{ route('user.profile.indexUser') }}">Tài khoản</a>
 																												<a class="dropdown-item" href="{{ route('user.password.indexUser') }}">Mật khẩu</a>
-																												<a href="#" class="dropdown-item" data-bs-toggle="modal"
+																												<a id="showModal" href="#" class="dropdown-item" data-bs-toggle="modal"
 																																data-bs-target="#modalLogout">{{ __('Đăng xuất') }}</a>
 																								</div>
 																				</div>

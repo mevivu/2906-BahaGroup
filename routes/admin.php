@@ -347,6 +347,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             Route::group(['middleware' => ['permission:viewProductCategory', 'auth:admin']], function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/sua/{id}', 'edit')->name('edit');
+                Route::get('/{id}/products', 'product')->name('product');
             });
 
             Route::group(['middleware' => ['permission:updateProductCategory', 'auth:admin']], function () {
