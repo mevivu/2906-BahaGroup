@@ -71,12 +71,13 @@
 																				updateText(response);
 																},
 																error: function(response) {
-																				if (response.status == 400) {
-																								msgError(`${response.responseJSON.message}`)
-																								$('#discountValue').text('0đ');
-																				} else {
-																								handleAjaxError(response);
-																				}
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
+																				$('#discountValue').text('0đ');
 																}
 												});
 												updateProductTotal(id);
@@ -96,12 +97,13 @@
 																updateText(response);
 												},
 												error: function(response) {
-																if (response.status == 400) {
-																				msgError(`${response.responseJSON.message}`)
-																				$('#discountValue').text('0đ');
-																} else {
-																				handleAjaxError(response);
-																}
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																$('#discountValue').text('0đ');
 												}
 								});
 				}
@@ -130,17 +132,13 @@
 																updateText(response);
 												},
 												error: function(response) {
-																if (response.status == 400) {
-																				Swal.fire({
-																								icon: 'warning',
-																								title: 'Lưu ý',
-																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
-																				});
-																				updateText(response.responseJSON);
-																} else {
-																				handleAjaxError(response);
-																}
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																updateText(response.responseJSON);
 												}
 								});
 								updateProductTotal(id);
@@ -172,17 +170,13 @@
 																												$('#discount_code').val('');
 																								},
 																								error: function(response) {
-																												if (response.status == 400) {
-																																Swal.fire({
-																																				icon: 'warning',
-																																				title: 'Lưu ý',
-																																				text: `${response.responseJSON.message}`,
-																																				showConfirmButton: true
-																																});
-																																updateText(response.responseJSON);
-																												} else {
-																																handleAjaxError(response);
-																												}
+																												Swal.fire({
+																																icon: 'warning',
+																																title: 'Lưu ý',
+																																text: `${response.responseJSON.message}`,
+																																showConfirmButton: true
+																												});
+																												updateText(response.responseJSON);
 																								}
 																				});
 																				updateProductTotal(id);
@@ -247,12 +241,13 @@
 																updateText(response);
 												},
 												error: function(response) {
-																if (response.status == 400) {
-																				msgError(`${response.responseJSON.message}`)
-																				$('#discountValue').text('0đ');
-																} else {
-																				handleAjaxError(response);
-																}
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																$('#discountValue').text('0đ');
 												}
 								});
 								updateProductTotal(id);

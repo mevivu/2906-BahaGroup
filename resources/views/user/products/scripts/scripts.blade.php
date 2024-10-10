@@ -62,7 +62,12 @@
 																								}
 																				},
 																				error: function(response) {
-																								handleAjaxError(response);
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: `${response.responseJSON.message}`,
+																												showConfirmButton: true
+																								});
 																				}
 																})
 												}
@@ -94,11 +99,10 @@
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
-																								title: 'Thất bại',
-																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
-																				handleAjaxError(response);
 																}
 												});
 								});
@@ -212,7 +216,12 @@
 																				openModal(modal);
 																},
 																error: function(response) {
-																				handleAjaxError(response);
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
 																}
 												});
 								}
