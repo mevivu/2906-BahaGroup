@@ -5,6 +5,7 @@
 @include('user.cart.scripts.scripts')
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex align-items-center container bg-white">
 								<div class="container gap-64">
 												<div class="row">
@@ -81,20 +82,18 @@
 																																				</td>
 																																				<td class="delete-cell align-middle" style="font-size: 1.5em;"><i
 																																												data-id="{{ $item->id }}" style="cursor: pointer"
-																																												onclick="removeCart(this)" class="fa fa-trash text-danger"></i></td>
+																																												onclick="removeCart(this)" class="ti ti-trash-x text-danger"></i></td>
 																																</tr>
 																												@endforeach
 																								</tbody>
 																				</table>
-																				<div class="progress d-flex align-items-center">
-																								<div style="font-size: 16px; color: {{ ($total / $object) * 100 >= 50 ? '#ffffff' : '#000000' }}"
-																												class="progress-text">
-																												<strong
-																																class="progress-percent">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}</strong>
+																				<div class="progress-container">
+																								<div style="width: {{ ($total / $object) * 100 >= 100 ? '100' : round(($total / $object) * 100) }}%"
+																												class="progress-bar" id="progressBar"></div>
+																								<div class="progress-content">
+																												<span
+																																id="progressText">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}%</span>
 																								</div>
-																								<div class="progress-bar" role="progressbar"
-																												style="width: {{ ($total / $object) * 100 >= 100 ? '100' : round(($total / $object) * 100) }}%; background-color: #1C5639;">
-																												.</div>
 																				</div>
 																				<p class="mt-3 text-center">Bạn đã chi
 																								<strong id="total-spend" class="text-default">{{ format_price($total) }}</strong>

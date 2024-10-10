@@ -6,6 +6,7 @@
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container gap-64">
 												<div class="row">
@@ -19,9 +20,9 @@
 																				</div>
 																</div>
 																<div class="col-12">
-																				<div class="row no-gutters">
+																				<div class="row">
 																								@foreach ($flashSale->details as $item)
-																												<div class="col-6 col-md-3">
+																												<div class="col-6 col-md-3 mb-4">
 																																<x-cardflash :item="$item" />
 																												</div>
 																								@endforeach

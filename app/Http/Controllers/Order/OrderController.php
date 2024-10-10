@@ -31,20 +31,22 @@ class OrderController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function indexUser(UserOrderDataTable $dataTable)
     {
-        return $dataTable->render($this->view['indexUser'], []);
+        return $dataTable->render($this->view['indexUser'], [
+            'breadcrumbs' =>  $this->crums->add(__('Danh sách đơn hàng'))->getBreadcrumbs()
+        ]);
     }
 
     public function detail($id)
     {
         $instance = $this->repository->findOrFail($id);
         return view($this->view['detail'], [
-            'instance' => $instance
+            'instance' => $instance,
+            'breadcrumbs' =>  $this->crums->add(__('Dach sách đơn hàng'), route('user.order.indexUser'))->add(__('Chi tiết đơn hàng'))->getBreadcrumbs()
         ]);
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ShoppingCart;
 
-use App\Admin\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
@@ -106,10 +106,12 @@ class ShoppingCartController extends Controller
                 'shoppingCart' => $user->shopping_cart,
                 'total' => $this->calculageTotal($user),
                 'discount_value' => 0,
-                'object' => $object[0]->plain_value
+                'object' => $object[0]->plain_value,
+                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
             ]);
         }
         return view($this->view['index'], [
+            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs(),
             'total' => 0,
             'shoppingCart' => [],
             'discount_value' => 0
@@ -136,13 +138,15 @@ class ShoppingCartController extends Controller
                 'user' => $user,
                 'total' => $this->calculageTotal($user),
                 'shoppingCart' => $user->shopping_cart,
-                'discount_value' => 0
+                'discount_value' => 0,
+                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
             ]);
         }
         return view($this->view['payment'], [
             'shoppingCart' => [],
             'total' => 0,
-            'discount_value' => 0
+            'discount_value' => 0,
+            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
         ]);
     }
 

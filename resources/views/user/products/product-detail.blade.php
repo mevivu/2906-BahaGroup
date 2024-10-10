@@ -2,6 +2,7 @@
 @section('title', __('Chi tiết sản phẩm'))
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row">

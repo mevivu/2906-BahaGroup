@@ -3,14 +3,13 @@
 								let percentage = (total / object) * 100;
 								percentage = percentage >= 100 ? 100 : Math.round(percentage);
 
-								const progressText = document.querySelector('.progress-text');
-								progressText.style.color = percentage >= 50 ? '#ffffff' : '#000000';
+								const progressBar = document.getElementById('progressBar');
+								const progressText = document.getElementById('progressText');
 
-								const progressPercent = document.querySelector('.progress-percent');
-								progressPercent.textContent = `${percentage}%`;
-
-								const progressBar = document.querySelector('.progress-bar');
 								progressBar.style.width = `${percentage}%`;
+
+								progressText.textContent = `${percentage}%`;
+								progressText.style.color = percentage >= 50 ? '#ffffff' : '#000000';
 				}
 
 				function updateText(response) {

@@ -21,16 +21,6 @@
 												<div class="col-6 d-flex justify-content-center align-items-center dropdown">
 																<div class="input-group dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"
 																				data-bs-target="#menu-1">
-																				<x-button class="btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-																								aria-expanded="false" data-bs-target="#menu-2">Tất cả</x-button>
-																				<ul style="cursor: pointer" class="dropdown-menu search" id="menu-2">
-																								<li class="dropdown-item selected"><x-link class="text-category" :href="route('user.product.indexUser')">Tất
-																																cả</x-link></li>
-																								@foreach ($categories as $category)
-																												<li class="dropdown-item selected"><x-link class="text-category"
-																																				:href="route('user.product.indexUser', ['category_id' => $category->id])">{{ $category->name }}</x-link></li>
-																								@endforeach
-																				</ul>
 																				<input type="text" class="form-control" id="search-input"
 																								placeholder="Nhập từ khóa bạn muốn tìm kiếm..." aria-label="Text input with dropdown button">
 																				<x-button id="search-button" type="submit" class="bg-default"><i
@@ -247,21 +237,6 @@
 								</div>
 				</div>
 </div>
-
-@if (!Route::is('user.index'))
-				<div class="container">
-								<div class="breadcrumb-container pb-3 pt-3">
-												<ol class="breadcrumb">
-																<li class="breadcrumb-item">
-																				<x-link :href="route('user.index')">Trang chủ</x-link>
-																</li>
-																<li class="breadcrumb-item active" aria-current="page">
-																				@yield('title')
-																</li>
-												</ol>
-								</div>
-				</div>
-@endif
 
 <button onclick="topFunction()" id="backToTopBtn" title="Go to top">
 				<img src="{{ asset('public/user/assets/images/up-arrow.png') }}" alt="Back to Top"
