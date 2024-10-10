@@ -47,6 +47,9 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
+        Route::post('/forgot-password', 'forgotPasswordSend')->name('forgotPasswordSend');
+        Route::get('/reset-password', 'resetPassword')->name('resetPassword');
+        Route::put('/reset-password', 'changePassword')->name('changePassword');
         Route::post('/', 'loginUser')->name('loginUser');
         Route::post('/register', 'signinUser')->name('register');
         Route::get('/oauth-verification', 'oauth')->name('oauth');

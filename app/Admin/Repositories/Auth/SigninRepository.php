@@ -37,4 +37,11 @@ class SigninRepository extends EloquentRepository implements SigninRepositoryInt
 
         return $this->instance;
     }
+
+    public function findByToken(string $token)
+    {
+        $this->instance = $this->model->where(['token_get_password' => $token])->first();
+
+        return $this->instance;
+    }
 }

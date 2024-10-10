@@ -42,6 +42,8 @@ class User extends Authenticatable implements JWTSubject
         'device_token',
         'notification_preference',
         'oauth',
+        'token_get_password',
+        'token_expiration',
     ];
 
     /**

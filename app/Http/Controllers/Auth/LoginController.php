@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Admin\Http\Requests\Auth\LoginRequest;
 use App\Admin\Http\Requests\Auth\OauthReqest;
 use App\Admin\Http\Requests\Auth\RegisterRequest;
 use App\Admin\Repositories\Auth\SigninRepositoryInterface;
 use App\Admin\Services\Auth\SigninServiceInterface;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -31,6 +33,7 @@ class LoginController extends Controller
     {
         return [
             'indexUser' => 'user.auth.login',
+            'forgot-password' => 'user.auth.forgot-password',
         ];
     }
 
@@ -45,6 +48,27 @@ class LoginController extends Controller
         return view($this->view['forgot-password']);
     }
 
+    public function forgotPasswordSend(ForgotPasswordRequest $request)
+    {
+        $this->login = $request->validated();
+        return $this->service->forgotPassword($this->login);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $token = $request->query('token_get_password');
+        if ($this->service->checkToken($token) === true) {
+            return view('user.auth.change-forgot', compact('token'));
+        }
+
+        return redirect()->route('user.auth.indexUser')->with('error', __('Token đã hết hạn'));
+    }
+
+    public function changePassword(ForgotPasswordRequest $request)
+    {
+        $data = $request->all();
+        return $this->service->changePassword($data);
+    }
     public function loginUser(LoginRequest $request)
     {
         $this->login = $request->validated();
