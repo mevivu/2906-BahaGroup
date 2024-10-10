@@ -65,12 +65,20 @@ class ReviewController extends Controller
         $instance = $this->repository->findOrFail($id);
         return view($this->view['edit'], compact('instance'));
     }
-    public function update(ReviewRequest $request): RedirectResponse
+    public function update(ReviewRequest $request)
     {
-        $response = $this->service->update($request);
-        if ($response) {
+        $review = $this->repository->find($request->id);
+
+        if (!$review) {
+            return back()->with('error', __('Review not found.'));
+        }
+
+        $review->fill($request->validated());
+
+        if ($review->save()) {
             return back()->with('success', __('notifySuccess'));
         }
+
         return back()->with('error', __('notifyFail'));
     }
 

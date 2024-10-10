@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->unsignedTinyInteger('rating');
             $table->text('content');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('order_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
