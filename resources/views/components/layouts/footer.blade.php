@@ -4,22 +4,22 @@
 								<div class="row d-flex justify-content-center">
 												<div class="col-lg-3 col-12 box">
 																<h6><strong>Liên hệ</strong></h6>
-																<p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a style="color: red;"
+																<p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a class="text-red"
 																								class="d-inline-block">{{ $settingsFooter->where('setting_key', 'footer_open_time')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Bán hàng: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_shop_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_shop_phone')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Office: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_office_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_office_phone')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Bảo hành: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_warranty_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_warranty_phone')->first()->plain_value }}</a>
 																</p>
 																<p>
 																				<i class="fa fa-envelope text-red"></i> Hợp tác khiếu nại:
 																				<a href="mailto:{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}"
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}</a>
 																				<br>
 																</p>
 																<p><i class="fa fa-map-marker text-red"></i>

@@ -71,7 +71,7 @@
 
 <!-- Navbar -->
 <div id="navbar" class="">
-				<div class="d-flex align-items-center justify-content-center wrap-nav" style="background-color: #1c5639;">
+				<div class="d-flex align-items-center justify-content-center wrap-nav bg-default">
 								<div class="row container">
 												<!-- Categories Menu -->
 												<div style="cursor: pointer; margin-left: -16px" onclick="showTabContent()"
