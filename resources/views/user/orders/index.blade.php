@@ -1,6 +1,32 @@
 @extends('user.layouts.master')
 @section('title', __('Đơn hàng'))
 
+@push('custom-css')
+				<style>
+								.review_rating {
+												input {
+																display: none;
+
+																&:checked {
+																				&~label {
+																								color: #aaa;
+																				}
+																}
+												}
+
+												label {
+																color: orange;
+																font-size: 2rem;
+												}
+								}
+
+								h1 {
+												font-family: sans-serif;
+												color: #222;
+								}
+				</style>
+@endpush
+
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex justify-content-center align-items-center container bg-white">

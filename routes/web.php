@@ -63,6 +63,8 @@ Route::controller(App\Http\Controllers\Order\OrderController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/detail/{id}', 'detail')->name('detail');
         Route::get('/cancel/{id?}', 'cancel')->name('cancel');
+        Route::get('/review/{id?}', 'review')->name('review');
+        Route::get('/review/{id}/detail', 'review_detail')->name('review_detail');
     });
 
 Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::class)
