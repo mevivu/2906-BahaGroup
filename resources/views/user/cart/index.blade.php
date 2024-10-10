@@ -47,10 +47,10 @@
 																																				<td class="align-middle" data-label="Giá">
 																																								{{ $item->product_variation_id
 																																								    ? ($item->product->on_flash_sale
-																																								        ? format_price($item->productVariation->flash_sale_price)
+																																								        ? format_price($item->productVariation->flashsale_price)
 																																								        : format_price($item->productVariation->promotion_price))
 																																								    : ($item->product->on_flash_sale
-																																								        ? format_price($item->product->flash_sale_price)
+																																								        ? format_price($item->product->flashsale_price)
 																																								        : format_price($item->product->promotion_price)) }}
 																																				</td>
 																																				<td class="align-middle" data-label="Số lượng">
@@ -74,10 +74,10 @@
 																																				<td class="text-center align-middle" data-label="Tổng">
 																																								{{ $item->product_variation_id
 																																								    ? ($item->product->on_flash_sale
-																																								        ? format_price($item->productVariation->flash_sale_price * $item->qty)
+																																								        ? format_price($item->productVariation->flashsale_price * $item->qty)
 																																								        : format_price($item->productVariation->promotion_price * $item->qty))
 																																								    : ($item->product->on_flash_sale
-																																								        ? format_price($item->product->flash_sale_price * $item->qty)
+																																								        ? format_price($item->product->flashsale_price * $item->qty)
 																																								        : format_price($item->product->promotion_price * $item->qty)) }}
 																																				</td>
 																																				<td class="delete-cell align-middle" style="font-size: 1.5em;"><i

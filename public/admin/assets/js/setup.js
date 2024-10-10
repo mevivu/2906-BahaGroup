@@ -351,12 +351,6 @@ function endAjax(element, text){
     // $('.select2-selection__rendered').empty();
 }
 
-$(document).ready(function () {
-    $("form").submit(function(){
-        $(this).find("button[type='submit']").css("opacity", "0.5");
-        $(this).find("button[type='submit']").html('<span class="spinner-grow spinner-grow-sm"></span> Đang xử lý..');
-    });
-});
 $(document).on('click', '.add-image-ckfinder', function(e){
     selectImageCKFinder($(this).data('preview'), $(this).data('input'), $(this).data('type'));
 });

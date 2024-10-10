@@ -26,7 +26,7 @@
 																																<p><strong>Mã giảm giá áp dụng:</strong> {{ $instance->discount->code }}</p>
 																																<p><strong>Giá trị giảm:</strong> {{ format_price($instance->discount_value) }}</p>
 																												@endif
-																												<p><strong>Trạng thái:</strong>
+																												<p><strong>Trạng thái đơn hàng:</strong>
 																																<span
 																																				@class([
 																																								'badge',

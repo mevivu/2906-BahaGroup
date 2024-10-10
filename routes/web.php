@@ -35,6 +35,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/decreament', 'decreament')->name('decreament');
         Route::delete('/remove/{id?}', 'delete')->name('remove');
         Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)

@@ -49,9 +49,17 @@
 												</div>
 								</div>
 								<div class="product-hover text-center">
-												<a style="cursor: pointer;" class="add-to-cart-flash"><i class="fa fa-shopping-cart w-50"
-																				aria-hidden="true"></i><i class="fa fa-arrows-alt w-50" data-product-id="1"
-																				onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i></a>
+												<a style="cursor: pointer;" class="add-to-cart-flash">
+																@if ($item->product->type == \App\Enums\Product\ProductType::Simple)
+																				<i onclick="addToCart({{ $item->product->id }})" class="fa fa-shopping-cart w-50"
+																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																								onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i>
+																@else
+																				<i onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}'"
+																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																								onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i>
+																@endif
+												</a>
 								</div>
 				</div>
 </div>

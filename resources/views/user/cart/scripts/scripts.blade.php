@@ -72,7 +72,7 @@
 																},
 																error: function(response) {
 																				if (response.status == 400) {
-																								msgError(`${response.responseJSON.data.message}`)
+																								msgError(`${response.responseJSON.message}`)
 																								$('#discountValue').text('0đ');
 																				} else {
 																								handleAjaxError(response);
@@ -97,7 +97,7 @@
 												},
 												error: function(response) {
 																if (response.status == 400) {
-																				msgError(`${response.responseJSON.data.message}`)
+																				msgError(`${response.responseJSON.message}`)
 																				$('#discountValue').text('0đ');
 																} else {
 																				handleAjaxError(response);
@@ -134,7 +134,7 @@
 																				Swal.fire({
 																								icon: 'warning',
 																								title: 'Lưu ý',
-																								text: `${response.responseJSON.data.message}`,
+																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
 																				updateText(response.responseJSON);
@@ -176,7 +176,7 @@
 																																Swal.fire({
 																																				icon: 'warning',
 																																				title: 'Lưu ý',
-																																				text: `${response.responseJSON.data.message}`,
+																																				text: `${response.responseJSON.message}`,
 																																				showConfirmButton: true
 																																});
 																																updateText(response.responseJSON);
@@ -248,7 +248,7 @@
 												},
 												error: function(response) {
 																if (response.status == 400) {
-																				msgError(`${response.responseJSON.data.message}`)
+																				msgError(`${response.responseJSON.message}`)
 																				$('#discountValue').text('0đ');
 																} else {
 																				handleAjaxError(response);
