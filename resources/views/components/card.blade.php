@@ -17,7 +17,7 @@
      </div>
      <p>
          <del>3,990,000₫</del>
-         <strong class="text-red">2,990,000₫</strong>
+         <strong class="text-red float-end">2,990,000₫</strong>
      </p>
      <div class="text-center product-hover">
          <a style="cursor: pointer;" class="add-to-cart">
