@@ -21,7 +21,7 @@
 																</div>
 																<div class="col-12">
 																				<div class="row">
-																								@foreach ($flashSale->details as $item)
+																								@foreach ($products as $item)
 																												<div class="col-6 col-md-3 mb-4">
 																																<x-cardflash :item="$item" />
 																												</div>
@@ -29,7 +29,7 @@
 																				</div>
 
 																				<div class="pagination">
-																								<div class="pagination position-absolute w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																								<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
 																												<button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
 																																onclick="window.location='{{ $products->previousPageUrl() }}'">
 																																<i class="fa fa-chevron-left" aria-hidden="true"></i>
