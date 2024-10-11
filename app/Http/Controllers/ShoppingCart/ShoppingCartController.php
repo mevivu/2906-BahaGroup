@@ -76,6 +76,7 @@ class ShoppingCartController extends Controller
             'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs(),
             'total' => 0,
             'shoppingCart' => [],
+            'object' => $object[0]->plain_value,
             'discount_value' => 0
         ]);
     }
