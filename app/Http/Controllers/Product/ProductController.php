@@ -177,6 +177,7 @@ class ProductController extends Controller
         return view($this->view['sale-limited'], [
             'flashSale' => $flashSale,
             'title' => $title,
+            'products' => $flashSale->details()->paginate(2),
             'meta_desc' => $meta_desc,
             'breadcrumbs' => $this->homeCrums->add(__('Khuyến mãi giới hạn'))->getBreadcrumbs(),
         ]);
