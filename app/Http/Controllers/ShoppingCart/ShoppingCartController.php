@@ -17,6 +17,7 @@ use App\Http\Requests\ShoppingCart\ApplyDiscountCodeRequest;
 use App\Http\Requests\ShoppingCart\ChangeQtyRequest;
 use App\Http\Requests\ShoppingCart\CheckoutRequest;
 use App\Http\Requests\ShoppingCart\ShoppingCartRequest;
+use App\Models\ShoppingCart;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
 
@@ -84,16 +85,30 @@ class ShoppingCartController extends Controller
     public function checkout(Request $request)
     {
         $user = $this->getCurrentUser();
+
         if ($user) {
             $total = $this->service->calculageTotal($user);
+            $discountValue = 0;
+
             if ($request->input('code')) {
                 $discount = $this->discountRepository->findByField('code', $request->input('code'));
-                if ($total > $discount->min_order_amount && $discount->max_usage > 0) {
+
+                if ($discount && $total > $discount->min_order_amount && $discount->max_usage > 0) {
+                    $discountValue = $this->service->calculageDiscountValue($total, $discount);
+                }
+            }
+            if ($request->query('cart_id')) {
+                $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
+
+                if ($cartItem) {
+
+                    $total = $cartItem->price * $cartItem->quantity;
+
                     return view($this->view['payment'], [
                         'user' => $user,
-                        'total' => $this->service->calculageTotal($user),
-                        'shoppingCart' => $user->shopping_cart,
-                        'discount_value' => $this->service->calculageDiscountValue($total, $discount),
+                        'total' => $total,
+                        'shoppingCart' => [$cartItem],
+                        'discount_value' => $discountValue,
                         'payment_methods' => PaymentMethod::asSelectArray(),
                         'code' => $request->input('code') ?? null,
                         'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
@@ -102,9 +117,9 @@ class ShoppingCartController extends Controller
             }
             return view($this->view['payment'], [
                 'user' => $user,
-                'total' => $this->service->calculageTotal($user),
+                'total' => $total,
                 'shoppingCart' => $user->shopping_cart,
-                'discount_value' => 0,
+                'discount_value' => $discountValue,
                 'payment_methods' => PaymentMethod::asSelectArray(),
                 'code' => $request->input('code') ?? null,
                 'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
@@ -119,6 +134,7 @@ class ShoppingCartController extends Controller
             'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
         ]);
     }
+
 
     public function checkoutFinal(CheckoutRequest $request)
     {
@@ -152,6 +168,31 @@ class ShoppingCartController extends Controller
                 'status' => false,
             ], 400);
         }
+    }
+
+    public function buyNow(ShoppingCartRequest $request)
+    {
+        $result = $this->service->store($request);
+
+        if ($result === 1) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+            ], 400);
+        }
+        if ($result) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Mua hàng thành công!',
+                'data' => [
+                    'id' => $result->id // Trả về ID của giỏ hàng hoặc order để frontend redirect
+                ]
+            ], 200);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'Đã xảy ra lỗi trong quá trình mua hàng'
+        ], 500);
     }
 
     public function applyDiscountCode(ApplyDiscountCodeRequest $request)

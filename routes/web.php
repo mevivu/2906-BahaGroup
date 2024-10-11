@@ -34,6 +34,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
         Route::delete('/remove/{id?}', 'delete')->name('remove');
+        Route::post('/buy-now', 'buyNow')->name('buyNow');
         Route::get('/checkout', 'checkout')->name('checkout');
         Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
