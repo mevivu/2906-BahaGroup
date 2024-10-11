@@ -328,8 +328,4 @@ abstract class EloquentRepository implements EloquentRepositoryInterface
             }
         }
     }
-
-
-
-
 }
