@@ -150,4 +150,12 @@ class Product extends Model
             ->where('end_time', '>=', $now)
             ->where('qty', '>', 0)->first();
     }
+
+    public function isSimple()
+    {
+        if ($this->type == ProductType::Simple) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Admin\Services\Post;
 
 use App\Admin\Services\Post\PostServiceInterface;
-use  App\Admin\Repositories\Post\PostRepositoryInterface;
+use App\Admin\Repositories\Post\PostRepositoryInterface;
 use App\Api\V1\Support\UseLog;
 use App\Enums\FeaturedStatus;
 use App\Enums\Post\PostType;
@@ -61,6 +61,10 @@ class PostService implements PostServiceInterface
     public function update(Request $request): object|bool
     {
         $data = $request->validated();
+        $current = $this->repository->getQueryBuilderOrderBy('id')->where('id', $data['id'])->first();
+        if ($data['status'] == '1' && $current->status->value == '2') {
+            $data['posted_at'] = now();
+        }
         $categoriesId = $data['categories_id'] ?? [];
         unset($data['categories_id']);
         DB::beginTransaction();

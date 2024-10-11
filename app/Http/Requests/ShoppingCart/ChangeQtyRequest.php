@@ -10,7 +10,7 @@ class ChangeQtyRequest extends BaseRequest
     {
         return [
             'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
-            'code' => ['nullable', 'exists:App\Models\Discount,id'],
+            'code' => ['nullable', 'exists:App\Models\Discount,code'],
         ];
     }
 
@@ -19,7 +19,7 @@ class ChangeQtyRequest extends BaseRequest
         return [
             'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
             'qty' => ['required', 'integer', 'min:1'],
-            'code' => ['nullable', 'exists:App\Models\Discount,id'],
+            'code' => ['nullable', 'exists:App\Models\Discount,code'],
         ];
     }
 }

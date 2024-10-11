@@ -12,11 +12,11 @@ use App\Enums\Product\ProductType;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
-use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -141,7 +141,7 @@ class ProductController extends Controller
         return to_route($this->route['index'])->with('success', __('notifySuccess'));
     }
 
-    public function searchRenderProductAndVariationOrder(ProductRequest $request): Factory|View|Application
+    public function searchRenderProductAndVariationOrder(Request $request): Factory|View|Application
     {
         $products = $this->repository->getByColumnsWithRelationsLimit([
             'name' => $request->input('key')
@@ -149,7 +149,7 @@ class ProductController extends Controller
         return view($this->view['search_render_list'], compact('products'));
     }
 
-    public function searchRenderProductFlashSale(ProductRequest $request): Factory|View|Application
+    public function searchRenderProductFlashSale(Request $request): Factory|View|Application
     {
         $products = $this->repository->getAllByColumns([
             'name' => $request->input('key')

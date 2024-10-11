@@ -5,14 +5,23 @@ namespace App\Views;
 use Illuminate\View\Component;
 use App\Admin\Traits\GetConfig;
 
+use App\Admin\Repositories\Setting\SettingRepositoryInterface;
+use App\Enums\Setting\SettingGroup;
+
 class FloatingContact extends Component
 {
     use GetConfig;
 
-    public function __construct() {}
+    protected SettingRepositoryInterface $settingRepository;
+
+    public function __construct(SettingRepositoryInterface $settingRepository)
+    {
+        $this->settingRepository = $settingRepository;
+    }
 
     public function render()
     {
-        return view('components.floating-contact');
+        $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
+        return view('components.floating-contact', compact('settingsContact'));
     }
 }

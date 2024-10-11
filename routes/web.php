@@ -17,15 +17,10 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/sale-limited', 'saleLimited')->name('saleLimited');
         Route::get('/detail/{id}', 'detail')->name('detail');
+        Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
+        Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
         Route::get('/search', 'searchProduct')->name('search');
-    });
-
-Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
-    ->prefix('/payment')
-    ->as('payment.')
-    ->group(function () {
-        Route::get('/', 'payment')->name('payment');
     });
 
 Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
@@ -35,9 +30,12 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::get('/', 'index')->name('index');
         Route::post('/', 'store')->name('store');
         Route::put('/', 'update')->name('update');
+        Route::post('/apply', 'applyDiscountCode')->name('applyCode');
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
-        Route::delete('/remove/{id}', 'remove')->name('remove');
+        Route::delete('/remove/{id?}', 'delete')->name('remove');
+        Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)
@@ -72,6 +70,8 @@ Route::controller(App\Http\Controllers\Order\OrderController::class)
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/detail/{id}', 'detail')->name('detail');
         Route::get('/cancel/{id?}', 'cancel')->name('cancel');
+        Route::get('/review/{id?}', 'review')->name('review');
+        Route::get('/review/{id}/detail', 'review_detail')->name('review_detail');
     });
 
 Route::controller(App\Admin\Http\Controllers\Auth\ChangePasswordController::class)
@@ -100,4 +100,12 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::get('/edit', 'edit')->name('edit')->middleware('signed');
         Route::put('/update', 'update')->name('update');
         Route::get('/success', 'success')->name('success');
+    });
+Route::controller(App\Http\Controllers\Post\PostController::class)
+    ->prefix('/posts')
+    ->as('post.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/{idPost}-{slugPost}', 'detail')->name('detail');
+        Route::get('/category/{idCategory}-{slugCategory}', 'category')->name('category');
     });

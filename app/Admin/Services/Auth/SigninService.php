@@ -56,7 +56,7 @@ class SigninService implements SigninServiceInterface
             return redirect()->route('user.auth.indexUser')->with('success', __('Xác thực tài khoản thành công'));
         }
 
-        return back()->with('error', __('Mã Oauth xác thực tài khoản không đúng'));
+        return back()->with('error', __('Mã OTP xác thực tài khoản không đúng'));
     }
 
     public function forgotPassword(array $data = [])

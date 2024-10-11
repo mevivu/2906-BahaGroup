@@ -15,4 +15,8 @@ final class SettingGroup extends Enum implements LocalizedEnum
     const General = 1;
     const UserDiscount = 2;
     const UserUpgrade = 3;
+    const Footer = 4;
+    const Contact = 5;
+    const Information = 6;
+    const Slider = 7;
 }

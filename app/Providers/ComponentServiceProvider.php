@@ -29,5 +29,6 @@ class ComponentServiceProvider extends ServiceProvider
         Blade::component('modal-category', \App\Views\ModalCategory::class);
         Blade::component('footer', \App\Views\Footer::class);
         Blade::component('floating-contact', \App\Views\FloatingContact::class);
+        Blade::component('slider', \App\Views\Slider::class);
     }
 }

@@ -1,0 +1,135 @@
+#post .col-inner {
+    position: relative;
+}
+
+#post .badge {
+    position: absolute;
+    background-color: var(--bs-white);
+    color: var(--bs-black);
+    border: 1px solid var(--bs-black);
+    padding: 10px;
+    border-radius: 0;
+    font-size: 16px;
+    top: 12%;
+    left: -6px;
+    cursor: pointer;
+}
+
+#post .post-title {
+    width: 100%;
+    color: var(--bs-black);
+    font-size: 20px;
+    line-height: 1.3;
+    margin: 0;
+    padding-top: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#post .col-inner:hover .badge {
+    background-color: var(--bs-dark);
+    color: var(--bs-white);
+}
+
+#post .post-detail-btn {
+    display: block;
+    padding-top: 12px;
+    text-transform: uppercase;
+    color: var(--bs-teal);
+}
+
+#post .post-detail-btn:hover {
+    color: var(--bs-gray);
+}
+
+#post-detail .post-title {
+    font-size: 28px;
+    text-transform: uppercase;
+    color: var(--bs-black);
+}
+
+#post-detail .divider {
+    border-top: 3px solid var(--bs-gray-400);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 40px;
+    border-radius: 4px;
+}
+
+#post-detail .post-date {
+    color: var(--bs-gray);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+#post .post-image {
+    width: 100%;
+    object-fit: cover;
+    height: 300px;
+}
+
+#post-detail .post-image {
+    width: 100%;
+}
+
+#post-detail .post-text {
+    color: var(--bs-black);
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 20px;
+    text-align: justify;
+}
+
+#post-detail .related-title {
+    font-size: 20px;
+    color: var(--bs-black);
+    margin-bottom: 16px;
+}
+
+#post-detail .related-post-title {
+    font-size: 16px;
+    margin-top: 8px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#post-detail .related-post-image {
+    width: 100%;
+    object-fit: cover;
+    height: 170px;
+}
+
+#post-detail .post-detail-wrapper {
+    border-right: 1px solid var(--bs-gray-400);
+    padding-right: 20px;
+}
+
+#category-bar .category-bar-title {
+    font-size: 20px;
+    color: var(--bs-black);
+}
+
+#category-bar .category-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#category-bar .category-item {
+    display: block;
+    color: var(--bs-black);
+    font-size: 18px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--bs-gray-300);
+}
+
+#category-bar .category-item:last-child {
+    border-bottom: none;
+}
+
+#category-bar .category-item:hover {
+    color: var(--bs-green);
+}

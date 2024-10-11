@@ -16,19 +16,7 @@ class ShoppingCartRequest extends BaseRequest
         return [
             'product_id' => ['required', 'exists:App\Models\Product,id'],
             'product_variation_id' => ['nullable', 'exists:App\Models\ProductVariation,id'],
-            'qty' => ['required', 'integer', 'min:1']
-        ];
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    protected function methodDelete()
-    {
-        return [
-            'id' => ['required', 'exists:App\Models\ShoppingCart,id'],
+            'qty' => ['required', 'integer', 'min:1'],
         ];
     }
 }
