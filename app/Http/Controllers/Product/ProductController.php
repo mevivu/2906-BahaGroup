@@ -124,7 +124,11 @@ class ProductController extends Controller
 
     public function saleLimited()
     {
-        return view($this->view['sale-limited']);
+        $products = $this->repository->getFlashSaleProductsWithRelations();
+        // dd($products);
+        return view($this->view['sale-limited'], [
+            'products' => $products
+        ]);
     }
 
     public function searchProduct(Request $request)

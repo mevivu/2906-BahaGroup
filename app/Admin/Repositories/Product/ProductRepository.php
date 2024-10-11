@@ -168,6 +168,14 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         return $this->instance;
     }
 
+    public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations'])
+    {
+        $this->instance = $this->loadRelations($this->model, $relations);
+        $this->instance = $this->instance->where('is_active', 1)->orderBy('promotion_price', 'ASC')->paginate(8);
+
+        return $this->instance;
+    }
+
     public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'sku', 'name', 'price', 'promotion_price'], $limit = 10)
     {
         $this->instance = $this->model->with('productVariations')->select($select);
