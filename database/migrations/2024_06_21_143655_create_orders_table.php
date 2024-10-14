@@ -1,9 +1,8 @@
 <?php
 
 use App\Enums\DefaultStatus;
-use App\Enums\DeleteStatus;
+use App\Enums\Order\OrderReview;
 use App\Enums\Order\OrderStatus;
-use App\Enums\Order\OrderType;
 use App\Enums\Payment\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,6 +29,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->text('code')->unique();
             $table->tinyInteger('is_deleted')->default(DefaultStatus::Published->value);
+            $table->tinyInteger('is_review')->default(OrderReview::NotReviewed->value);
 
             $table->string('name_other')->nullable();
             $table->text('address_other')->nullable();

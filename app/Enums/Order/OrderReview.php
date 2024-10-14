@@ -8,6 +8,6 @@ enum OrderReview: int
 {
     use Enum;
 
-    case Not_Reviewed = 1;
+    case NotReviewed = 1;
     case Reviewed = 2;
 }

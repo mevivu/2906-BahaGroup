@@ -128,7 +128,7 @@ class ProductController extends Controller
         $orderIds = $this->orderRepository->getQueryBuilder()
             ->where('status', App\Enums\Order\OrderStatus::Completed->value)
             ->where('user_id', auth()->id())
-            ->where('is_reviewed', App\Enums\Order\OrderReview::Not_Reviewed->value)
+            ->where('is_reviewed', App\Enums\Order\OrderReview::NotReviewed->value)
             ->where('created_at', '>=', now()->subDays(14))
             ->pluck('id')->toArray();
         $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()

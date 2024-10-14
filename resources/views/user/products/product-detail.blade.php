@@ -198,19 +198,19 @@
 												</div>
 								</div>
 				</div>
-				<div class="justify-content-center align-items-center container">
+				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row bg-white">
-																<div class="col-12 ms-3 mt-4">
+																<div class="col-12 ms-2 mt-4">
 																				<h4>Mô tả sản phẩm</h4>
-																				<div>
+																				<div class="pe-3 text-justify">
 																								{!! $product->desc !!}
 																				</div>
 																</div>
 												</div>
 								</div>
 				</div>
-				<div class="justify-content-center align-items-center container">
+				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row bg-white">
 																<div class="col-12 ms-3 mt-3">
@@ -219,7 +219,7 @@
 												</div>
 								</div>
 				</div>
-				<div class="justify-content-center align-items-center container">
+				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row bg-white">
 																<div class="col-12 d-flex align-items-center">
@@ -240,7 +240,7 @@
 																																@for ($i = 5; $i > $review->rating; $i--)
 																																				<span style="color: gray" class="star">★</span>
 																																@endfor
-																																<p>{!! $review->content !!}</p>
+																																<p class="text-justify">{!! $review->content !!}</p>
 																												</div>
 																								</div>
 																				@endforeach
