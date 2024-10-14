@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Product;
 
+use App;
 use App\Admin\Http\Requests\Product\ProductRequest;
+use App\Admin\Repositories\Review\ReviewRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
@@ -16,6 +18,10 @@ use App\Traits\ResponseController;
 use Illuminate\Http\Request;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
+use App\Admin\Http\Requests\Review\ReviewRequest;
+use App\Admin\Services\Review\ReviewServiceInterface;
+use App\Admin\Repositories\Order\OrderRepositoryInterface;
+use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
 
 class ProductController extends Controller
 {
@@ -26,16 +32,22 @@ class ProductController extends Controller
     protected AttributeRepositoryInterface $repositoryAttribute;
     protected DiscountRepositoryInterface $discountRepository;
     protected SettingRepositoryInterface $settingRepository;
-
-
+    protected ReviewServiceInterface $reviewService;
+    protected ReviewRepositoryInterface $reviewRepository;
+    protected OrderRepositoryInterface $orderRepository;
+    protected OrderDetailRepositoryInterface $orderDetailRepository;
     public function __construct(
-        ProductRepositoryInterface   $repository,
+        ProductRepositoryInterface $repository,
         FlashSaleRepositoryInterface $flashSaleRepository,
-        DiscountRepositoryInterface  $discountRepository,
-        CategoryRepositoryInterface  $repositoryCategory,
+        DiscountRepositoryInterface $discountRepository,
+        CategoryRepositoryInterface $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
         SettingRepositoryInterface $settingRepository,
-        ProductServiceInterface $service
+        ProductServiceInterface $service,
+        ReviewServiceInterface $reviewService,
+        ReviewRepositoryInterface $reviewRepository,
+        OrderRepositoryInterface $orderRepository,
+        OrderDetailRepositoryInterface $orderDetailRepository,
     ) {
         parent::__construct();
         $this->repository = $repository;
@@ -45,6 +57,10 @@ class ProductController extends Controller
         $this->discountRepository = $discountRepository;
         $this->settingRepository = $settingRepository;
         $this->service = $service;
+        $this->reviewService = $reviewService;
+        $this->reviewRepository = $reviewRepository;
+        $this->orderRepository = $orderRepository;
+        $this->orderDetailRepository = $orderDetailRepository;
     }
 
     public function getView(): array
@@ -104,9 +120,29 @@ class ProductController extends Controller
         ]);
         $randomProducts = $this->repository->getRelatedProducts($product->id);
         $product = new ProductEditResource($product);
+        $is_reviewed = false;
+        $orderIds = $this->orderRepository->getQueryBuilder()
+            ->where('status', App\Enums\Order\OrderStatus::Completed->value)
+            ->where('user_id', auth()->id())
+            ->where('is_reviewed', App\Enums\Order\OrderReview::Not_Reviewed->value)
+            ->where('created_at', '>=', now()->subDays(14))
+            ->pluck('id')->toArray();
+        $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()
+            ->whereIn('order_id', $orderIds)
+            ->where('product_id', $id)
+            ->pluck('id')->toArray();
+        $reviews = $this->reviewRepository->getQueryBuilder()
+            ->whereIn('order_id', $orderIds)
+            ->where('product_id', $id)
+            ->get();
+        if (count($orderIds) > 0 && $reviews->count() == 0 && count($orderDetailIds) > 0) {
+            $is_reviewed = true;
+        }
         return view($this->view['product-detail'], [
             'product' => $product,
-            'relatedProducts' => $randomProducts
+            'relatedProducts' => $randomProducts,
+            'is_reviewed' => $is_reviewed,
+            'orderIds' => $orderIds,
         ]);
     }
 
@@ -192,5 +228,25 @@ class ProductController extends Controller
             'status' => true,
             'data' => $products
         ]);
+    }
+
+    public function review(ReviewRequest $request)
+    {
+        $instance = $this->reviewService->store($request);
+        $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()
+            ->where('order_id', $request->order_id)
+            ->pluck('id')->toArray();
+        $reviews = $this->reviewRepository->getQueryBuilder()
+            ->where('order_id', $request->order_id)
+            ->pluck('id')->toArray();
+        if (count($orderDetailIds) == 1) {
+            $this->orderRepository->update($request->order_id, ['is_reviewed' => App\Enums\Order\OrderReview::Reviewed->value]);
+        } else if (count($orderDetailIds) == count($reviews)) {
+            $this->orderRepository->update($request->order_id, ['is_reviewed' => App\Enums\Order\OrderReview::Reviewed->value]);
+        }
+        if ($instance) {
+            return back()->with('success', __('notifySuccess'));
+        }
+        return back()->with('error', __('notifyFail'));
     }
 }

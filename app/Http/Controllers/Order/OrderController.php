@@ -63,6 +63,14 @@ class OrderController extends Controller
 
         $reviewedProducts = [];
         foreach ($productIds as $productId) {
+            if (
+                $this->reviewRepository->getQueryBuilder()
+                    ->where('product_id', $productId)
+                    ->where('order_id', $id)->first()
+            ) {
+                continue;
+            }
+
             $data = [
                 'user_id' => auth()->id(),
                 'rating' => $request->query('rating'),
@@ -70,6 +78,7 @@ class OrderController extends Controller
                 'product_id' => $productId,
                 'order_id' => $id,
             ];
+
             $this->reviewRepository->create($data);
             $reviewedProducts[] = $productId;
         }
