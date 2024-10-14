@@ -1,6 +1,28 @@
 @extends('user.layouts.master')
 @section('title', __('Chi tiết sản phẩm'))
 
+@push('custom-css')
+				<style>
+								.review_rating input {
+												display: none;
+								}
+
+								.review_rating input:checked~label {
+												color: #aaa;
+								}
+
+								.review_rating label {
+												color: orange;
+												font-size: 2rem;
+								}
+
+								h1 {
+												font-family: sans-serif;
+												color: #222;
+								}
+				</style>
+@endpush
+
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
@@ -176,9 +198,9 @@
 												</div>
 								</div>
 				</div>
-				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
+				<div class="justify-content-center align-items-center container">
 								<div class="container">
-												<div class="row me-3 bg-white">
+												<div class="row bg-white">
 																<div class="col-12 ms-3 mt-4">
 																				<h4>Mô tả sản phẩm</h4>
 																				<div>
@@ -188,7 +210,16 @@
 												</div>
 								</div>
 				</div>
-				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
+				<div class="justify-content-center align-items-center container">
+								<div class="container">
+												<div class="row bg-white">
+																<div class="col-12 ms-3 mt-3">
+																				@include('user.products.review')
+																</div>
+												</div>
+								</div>
+				</div>
+				<div class="justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row bg-white">
 																<div class="col-12 d-flex align-items-center">

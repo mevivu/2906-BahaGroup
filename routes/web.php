@@ -21,6 +21,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
         Route::get('/search', 'searchProduct')->name('search');
+        Route::post('/detail/{id}/review', 'review')->name('review');
     });
 
 Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::class)
