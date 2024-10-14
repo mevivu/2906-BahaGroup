@@ -141,7 +141,7 @@ class ProductController extends Controller
         return to_route($this->route['index'])->with('success', __('notifySuccess'));
     }
 
-    public function searchRenderProductAndVariationOrder(ProductRequest $request): Factory|View|Application
+    public function searchRenderProductAndVariationOrder(Request $request): Factory|View|Application
     {
         $products = $this->repository->getByColumnsWithRelationsLimit([
             'name' => $request->input('key')

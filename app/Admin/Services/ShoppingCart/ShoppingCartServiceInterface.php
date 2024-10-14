@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Services\ShoppingCart;
+
 use Illuminate\Http\Request;
 
 interface ShoppingCartServiceInterface
@@ -29,6 +30,7 @@ interface ShoppingCartServiceInterface
      * @return boolean
      */
     public function delete($id);
-    public function deleteMultiple(Request $request);
-
+    public function checkout(Request $request);
+    public function calculateDiscountValue($total, $discount);
+    public function calculateTotal($shoppingCart);
 }

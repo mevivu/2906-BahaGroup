@@ -47,13 +47,14 @@ class OrderController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function indexUser(UserOrderDataTable $dataTable)
     {
-        return $dataTable->render($this->view['indexUser'], []);
+        return $dataTable->render($this->view['indexUser'], [
+            'breadcrumbs' =>  $this->crums->add(__('Danh sách đơn hàng'))->getBreadcrumbs()
+        ]);
     }
 
     public function review($id, Request $request)
@@ -133,15 +134,21 @@ class OrderController extends Controller
     {
         $instance = $this->repository->findOrFail($id);
         return view($this->view['detail'], [
-            'instance' => $instance
+            'instance' => $instance,
+            'breadcrumbs' =>  $this->crums->add(__('Dach sách đơn hàng'), route('user.order.indexUser'))->add(__('Chi tiết đơn hàng'))->getBreadcrumbs()
         ]);
     }
 
     public function cancel($id)
     {
         $result = $this->service->cancel($id);
+
         if ($result) {
-            return to_route($this->route['index'])->with('success', __('Từ chối đơn hàng thành công'));
+            if (auth('admin')->user()) {
+                return to_route('admin.order.index')->with('success', __('Từ chối đơn hàng thành công'));
+            } else {
+                return to_route('user.order.indexUser')->with('success', __('Hủy đơn hàng thành công'));
+            }
         }
         return to_route($this->route['index'])->with('error', __('Từ chối đơn hàng thất bại'));
     }

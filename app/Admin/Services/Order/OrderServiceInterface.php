@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Services\Order;
+
 use Illuminate\Http\Request;
 
 interface OrderServiceInterface
@@ -8,7 +9,7 @@ interface OrderServiceInterface
     public function addProduct(Request $request);
     public function calculateTotal(Request $request);
 
-     /**
+    /**
      * Tạo mới
      *
      * @var Illuminate\Http\Request $request

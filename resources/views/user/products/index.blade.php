@@ -1,18 +1,72 @@
 @extends('user.layouts.master')
 @section('title', __($title))
 
+<style>
+				.size-filter {
+								display: block;
+								position: relative;
+								margin-bottom: 12px;
+								cursor: pointer;
+								-webkit-user-select: none;
+								-moz-user-select: none;
+								-ms-user-select: none;
+				}
+
+				.size-filter input {
+								position: absolute;
+								opacity: 0;
+								cursor: pointer;
+								height: 0;
+								width: 0;
+				}
+
+				.checkmark {
+								position: absolute;
+								top: 0;
+								left: 0;
+								height: 25px;
+								width: 25px;
+								border-radius: 20%;
+								border: 2px solid black;
+				}
+
+				.checkmark:after {
+								content: "";
+								position: absolute;
+								display: none;
+				}
+
+				.size-filter #checkAll,
+				input:checked~.checkmark:after {
+								display: block;
+				}
+
+				.size-filter .checkmark:after {
+								left: 9px;
+								top: 5px;
+								width: 5px;
+								height: 10px;
+								border: solid #eee;
+								border-width: 0 3px 3px 0;
+								-webkit-transform: rotate(45deg);
+								-ms-transform: rotate(45deg);
+								transform: rotate(45deg);
+				}
+</style>
+
 <head>
 				<meta name="description" content="{{ $meta_desc }}">
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="rounded-2 container bg-white shadow">
 								<div class="row pb-3 pt-3">
 												<a style="cursor: pointer" class="filter-icon d-none text-default mt-3">
 																<i class="fa fa-filter me-2"></i> Lọc
 												</a>
 												<div class="col-md-2 category-filter" id="filter-container">
-																<form action="" method="get" class="filter-form" id="filter-form">
+																<x-form action="" method="get" class="filter-form" id="filter-form">
 																				<h6 class="text-uppercase">
 																								<strong>Danh mục</strong>
 																				</h6>
@@ -90,7 +144,7 @@
 																												<strong>Lọc</strong>
 																								</button>
 																				</div>
-																</form>
+																</x-form>
 												</div>
 												<!-- Main content -->
 												<div class="col-md-10 position-relative">
@@ -99,23 +153,22 @@
 																								<h5>Phụ kiện điện tử</h5>
 																								<p class="fs-12">
 																												Hiển thị tất cả
-																												<span class="text-success">15 kết quả</span>
+																												<span class="text-success">{{ $products->count() }} kết quả</span>
 																								</p>
 																				</div>
 																				<div class="col-md-6 text-end">
 																								<label for="sort" class="form-label fs-12">Sắp xếp theo:</label>
 																								<select id="sort" class="form-select d-inline-block fs-12 w-auto">
-																												<option value="popularity">Thứ tự mặc định</option>
-																												<option value="price-asc">Giá: Thấp đến Cao</option>
-																												<option value="price-desc">Giá: Cao đến Thấp</option>
+																												<option {{ $sort === null ? 'selected' : '' }} value="default">Thứ tự mặc định</option>
+																												<option {{ $sort === 'asc' ? 'selected' : '' }} value="price-asc">Giá: Thấp đến Cao</option>
+																												<option {{ $sort === 'desc' ? 'selected' : '' }} value="price-desc">Giá: Cao đến Thấp</option>
 																								</select>
 																				</div>
 																</div>
-																<div class="row no-gutters">
+																<div class="row">
 																				@foreach ($products as $item)
-																								<div class="col-6 col-md-3 mb-4">
-																												<x-product-items :product="$item" />
-																												<x-quickview />
+																								<div class="col-6 col-md-3 mb-4 shadow-lg">
+																												<x-cardproduct :item="$item" />
 																								</div>
 																				@endforeach
 																</div>
@@ -141,39 +194,8 @@
 												</div>
 								</div>
 				</div>
-				<script>
-								function updatePrice() {
-												var minPrice = document.getElementById('min-price').value;
-												var maxPrice = document.getElementById('max-price').value;
-												document.getElementById('min-price-value').textContent = minPrice + '₫';
-												document.getElementById('max-price-value').textContent = maxPrice + '₫';
-								}
-
-								const sort = document.getElementById('sort');
-								sort.addEventListener('change', function() {
-												if (this.value === 'popularity') {
-																window.location = '{{ route('user.product.indexUser') }}';
-												} else if (this.value === 'price-asc') {
-																window.location = '{{ route('user.product.indexUser') }}?sort=asc';
-												} else if (this.value === 'price-desc') {
-																window.location = '{{ route('user.product.indexUser') }}?sort=desc';
-												}
-								});
-
-								const filterByPriceCheckbox = document.getElementById('filter-by-price');
-								const minPriceInput = document.getElementById('min-price');
-								const maxPriceInput = document.getElementById('max-price');
-
-								filterByPriceCheckbox.addEventListener('change', () => {
-												if (filterByPriceCheckbox.checked) {
-																// Kích hoạt input range
-																minPriceInput.disabled = false;
-																maxPriceInput.disabled = false;
-												} else {
-																// Vô hiệu hóa input range
-																minPriceInput.disabled = true;
-																maxPriceInput.disabled = true;
-												}
-								});
-				</script>
 @endsection
+
+@push('custom-js')
+				@include('user.products.scripts.scripts')
+@endpush

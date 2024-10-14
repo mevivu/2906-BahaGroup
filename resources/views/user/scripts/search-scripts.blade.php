@@ -1,4 +1,71 @@
 <script>
+				function addToCart(id) {
+								$.ajax({
+												type: "POST",
+												url: '{{ route('user.cart.store') }}',
+												data: {
+																product_id: id,
+																qty: 1,
+																_token: '{{ csrf_token() }}'
+												},
+												success: function(response) {
+																$('#cart-count-mobile').text(response.data.count);
+																$('#cart-count').text(response.data.count);
+																Swal.fire({
+																				icon: 'success',
+																				title: 'Thành công',
+																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+																				showConfirmButton: true
+																});
+												},
+												error: function(response) {
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+												}
+								});
+				}
+
+				function buyNowModal(id) {
+								var productId = $('input[name="hidden_product_id_modal"]').val();
+								var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
+								var qty = $('#filter-input-detail-modal').val();
+								$.ajax({
+												type: "POST",
+												url: '{{ route('user.cart.buyNow') }}',
+												data: {
+																product_id: productId,
+																product_variation_id: productVariationId,
+																qty: qty,
+																_token: '{{ csrf_token() }}'
+												},
+												success: function(response) {
+																if (response.status) {
+																				window.location.href =
+																								'{{ route('user.cart.checkout') }}?cart_id=' + response.data.id;
+																} else {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: 'Không thể xử lý đơn hàng của bạn!',
+																								showConfirmButton: true
+																				});
+																}
+												},
+												error: function(response) {
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+												}
+								});
+				}
+
 				function debounce(func, wait) {
 								let timeout;
 								return function executedFunction(...args) {

@@ -35,7 +35,9 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/increament', 'increament')->name('increament');
         Route::post('/decreament', 'decreament')->name('decreament');
         Route::delete('/remove/{id?}', 'delete')->name('remove');
+        Route::post('/buy-now', 'buyNow')->name('buyNow');
         Route::get('/checkout', 'checkout')->name('checkout');
+        Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 
 Route::controller(App\Http\Controllers\Auth\LoginController::class)
@@ -45,7 +47,13 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
+        Route::post('/forgot-password', 'forgotPasswordSend')->name('forgotPasswordSend');
+        Route::get('/reset-password', 'resetPassword')->name('resetPassword');
+        Route::put('/reset-password', 'changePassword')->name('changePassword');
         Route::post('/', 'loginUser')->name('loginUser');
+        Route::post('/register', 'signinUser')->name('register');
+        Route::get('/oauth-verification', 'oauth')->name('oauth');
+        Route::post('/oauth-verification', 'oauthChange')->name('oauthChange');
     });
 
 Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
@@ -100,6 +108,6 @@ Route::controller(App\Http\Controllers\Post\PostController::class)
     ->as('post.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/{idPost}-{slugPost}', 'detail')->name('detail');
-        Route::get('/category/{idCategory}-{slugCategory}', 'category')->name('category');
+        Route::get('/{slugPost}', 'detail')->name('detail');
+        Route::get('/category/{slugCategory}', 'category')->name('category');
     });

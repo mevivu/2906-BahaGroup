@@ -37,5 +37,7 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
 
     public function getMinMaxPromotionPrices($relations = ['productVariations']);
 
-    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations'], $desc = 'desc');
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc');
+
+    public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations']);
 }

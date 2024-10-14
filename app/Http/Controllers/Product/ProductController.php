@@ -75,7 +75,9 @@ class ProductController extends Controller
 
     public function getRoute(): array
     {
-        return [];
+        return [
+            'home' => 'user.index'
+        ];
     }
 
     public function indexUser(Request $request)
@@ -84,8 +86,8 @@ class ProductController extends Controller
         $title = $settingsGeneral->where('setting_key', 'product_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'product_meta_desc')->first()->plain_value;
         $categories = $this->repositoryCategory->getFlatTree();
-        $colors = $this->repositoryAttribute->findOrFailWithVariations(1);
-        $sizes = $this->repositoryAttribute->findOrFailWithVariations(2);
+        $colors = $this->repositoryAttribute->findByField('slug', 'mau-sac');
+        $sizes = $this->repositoryAttribute->findByField('slug', 'kich-thuoc');
         $minMax = $this->repository->getMinMaxPromotionPrices();
 
         $filter = [
@@ -93,19 +95,21 @@ class ProductController extends Controller
             'max_product_price' => $request->input('max_product_price'),
             'category_id' => $request->input('category_ids'),
             'color_id' => $request->input('color_ids'),
-            'size_id' => $request->input('size_ids')
+            'size_id' => $request->input('size_ids'),
+            'limit' => 8
         ];
 
-        $products = $this->repository->getProductsWithRelations(filterData: $filter, desc: $request->input('sort'));
-
+        $products = $this->repository->getProductsWithRelations($filter, [], $request->input('sort'));
         return view($this->view['indexUser'], [
             'categories' => $categories,
             'colors' => $colors,
+            'sort' => $request->input('sort') ?? null,
             'sizes' => $sizes,
             'minMax' => $minMax,
             'products' => $products,
             'title' => $title,
             'meta_desc' => $meta_desc,
+            'breadcrumbs' => $this->crums->add(__('Sản phẩm'))->getBreadcrumbs(),
         ]);
     }
 
@@ -124,7 +128,7 @@ class ProductController extends Controller
         $orderIds = $this->orderRepository->getQueryBuilder()
             ->where('status', App\Enums\Order\OrderStatus::Completed->value)
             ->where('user_id', auth()->id())
-            ->where('is_reviewed', App\Enums\Order\OrderReview::Not_Reviewed->value)
+            ->where('is_reviewed', App\Enums\Order\OrderReview::NotReviewed->value)
             ->where('created_at', '>=', now()->subDays(14))
             ->pluck('id')->toArray();
         $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()
@@ -140,6 +144,7 @@ class ProductController extends Controller
         }
         return view($this->view['product-detail'], [
             'product' => $product,
+            'breadcrumbs' => $this->crums->add(__('Sản phẩm'), route('user.product.indexUser'))->add(__('Chi tiết sản phẩm'))->getBreadcrumbs(),
             'relatedProducts' => $randomProducts,
             'is_reviewed' => $is_reviewed,
             'orderIds' => $orderIds,
@@ -208,7 +213,9 @@ class ProductController extends Controller
         return view($this->view['sale-limited'], [
             'flashSale' => $flashSale,
             'title' => $title,
+            'products' => $flashSale->details()->paginate(8),
             'meta_desc' => $meta_desc,
+            'breadcrumbs' => $this->homeCrums->add(__('Khuyến mãi giới hạn'))->getBreadcrumbs(),
         ]);
     }
 

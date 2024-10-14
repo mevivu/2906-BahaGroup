@@ -601,6 +601,19 @@ li {
     background-color: red;
 }
 
+.bg-orange {
+    background-color: orange;
+}
+
+.bg-blue {
+    background-color: blue;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+
 .bg-black {
     background-color: black;
 }
@@ -626,7 +639,7 @@ li {
 }
 
 .text-red {
-    color: red;
+    color: red !important;
 }
 
 .text-green {
@@ -666,7 +679,7 @@ li {
 .add-to-cart {
     opacity: 0;
     position: relative;
-    top: -5.5em;
+    top: -5.2em;
     font-size: 1.5rem !important;
     color: black !important;
 }
@@ -674,7 +687,7 @@ li {
 .add-to-cart-flash {
     opacity: 0;
     position: relative;
-    top: -7em;
+    top: -6.5em;
     font-size: 1.5rem !important;
     color: black !important;
 }
@@ -829,7 +842,7 @@ li {
 
 .hover-shadow:hover {
     box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
-    transform: translateY(-1em);
+    transform: translateY(-0.5em);
     transition: all 0.3s ease;
 }
 
@@ -1104,20 +1117,10 @@ td[data-label="Tổng"] {
     margin-right: 5px;
 }
 
-.progress-icon {
-    position: absolute;
-    left: 0;
-    top: 0;
-}
-
 .progress-text {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.progress-bar {
-    color: #1c5639;
 }
 
 .pagination {
@@ -1278,7 +1281,7 @@ td[data-label="Tổng"] {
     position: relative;
     height: 50px;
     width: 50px;
-    background-color: #0a7cff;
+    background-color: #1C5639;
     border-radius: 50%;
     z-index: 2;
 }
@@ -1306,7 +1309,7 @@ td[data-label="Tổng"] {
     right: 10px;
     height: 30px;
     width: 30px;
-    background-color: #0a7cff;
+    background-color: #1c5639;
     border-radius: 50%;
     transition: all 0.3s ease;
 }
@@ -1394,4 +1397,120 @@ div.dataTables_wrapper div.dataTables_processing {
 
 .margin-flashsale {
     margin-left: 100px;
+}
+
+.progress-container {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 3px;
+    position: relative;
+}
+
+.progress-bar {
+    width: 0;
+    height: 24px;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 17px;
+    transition: width 1s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent);
+    background-size: 50px 50px;
+    animation: stripes 1s linear infinite;
+}
+
+@keyframes stripes {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 50px 0;
+    }
+}
+
+.progress-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.progress-icon {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    color: #FFA500;
+    font-size: 20px;
+}
+
+.flashsale-price {
+    display: inline-block;
+    padding: 5px 10px;
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    animation: flash 2s infinite;
+}
+
+.flashsale-price::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: lightning 3s infinite;
+}
+
+@keyframes flash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes lightning {
+    0% {
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(150%) rotate(45deg);
+    }
 }

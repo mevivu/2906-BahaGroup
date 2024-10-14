@@ -67,23 +67,34 @@
 																																				    ->first();
 																																@endphp
 																																<div class="row align-items-center mb-3 ms-1 mt-3">
-																																				<div class="col-md-8 bg-default h-100 text-center text-white">End in
+																																				<div class="col-md-8 bg-default h-100 text-center text-white">Kết thúc sau
 																																								<strong id="countdown-flashsale-product-modal"></strong>
 																																				</div>
-																																				<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold :
+																																				<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Đã bán :
 																																								{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}</div>
 																																</div>
 																												@endif
 
 																												@if (!isset($productModal->productVariations[0]))
-																																<p class="lead"><del>{{ format_price($productModal->price) }}</del> <strong
-																																								class="text-red">{{ format_price($productModal->promotion_price) }}</strong>
+																																<p class="lead">
+																																				<del>{{ format_price($productModal->price) }}</del>
+																																				<strong
+																																								class="text-red">{{ format_price($productModal->promotion_price) }}</strong><br>
+																																				@if (isset($productModal->on_flash_sale))
+																																								<span class="flashsale-price">FLASH SALE
+																																												- {{ format_price($productModal->flashsale_price) }}</span>
+																																				@endif
 																																</p>
 																												@else
-																																<p id="productDetailPrice" class="lead"><del
-																																								id="productVariationPriceModal">{{ format_price($productModal->productVariations[0]->price) }}</del>
-																																				<strong id="productVariationPromotionPriceModal"
-																																								class="text-red">{{ format_price($productModal->productVariations[0]->promotion_price) }}</strong>
+																																<p id="productDetailPrice" class="lead">
+																																				<del
+																																								id="productVariationPrice">{{ format_price($productModal->productVariations[0]->price) }}</del>
+																																				<strong id="productVariationPromotionPrice"
+																																								class="text-red">{{ format_price($productModal->productVariations[0]->promotion_price) }}</strong><br>
+																																				@if (isset($productModal->on_flash_sale))
+																																								<span class="flashsale-price">FLASH SALE -
+																																												{{ format_price($productModal->productVariations[0]->flashsale_price) }}</span>
+																																				@endif
 																																</p>
 																												@endif
 
@@ -140,7 +151,7 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal" disabled
+																																				<div class="col-md-3"><button onclick="buyNowModal()" disabled
 																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
@@ -164,7 +175,7 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal"
+																																				<div class="col-md-3"><button onclick="buyNowModal()"
 																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>

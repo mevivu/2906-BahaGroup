@@ -3,14 +3,13 @@
 								let percentage = (total / object) * 100;
 								percentage = percentage >= 100 ? 100 : Math.round(percentage);
 
-								const progressText = document.querySelector('.progress-text');
-								progressText.style.color = percentage >= 50 ? '#ffffff' : '#000000';
+								const progressBar = document.getElementById('progressBar');
+								const progressText = document.getElementById('progressText');
 
-								const progressPercent = document.querySelector('.progress-percent');
-								progressPercent.textContent = `${percentage}%`;
-
-								const progressBar = document.querySelector('.progress-bar');
 								progressBar.style.width = `${percentage}%`;
+
+								progressText.textContent = `${percentage}%`;
+								progressText.style.color = percentage >= 50 ? '#ffffff' : '#000000';
 				}
 
 				function updateText(response) {
@@ -43,6 +42,30 @@
 								}
 				}
 
+				function applyDiscountCode() {
+								var discount_code = $(`#discount_code`).val();
+								$.ajax({
+												type: "POST",
+												url: '{{ route('user.cart.applyCode') }}',
+												data: {
+																code: discount_code,
+																_token: '{{ csrf_token() }}'
+												},
+												success: function(response) {
+																updateText(response);
+												},
+												error: function(response) {
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																$('#discountValue').text('0đ');
+												}
+								});
+				}
+
 
 				function incrementCart(button) {
 								var id = $(button).data('id');
@@ -72,39 +95,17 @@
 																				updateText(response);
 																},
 																error: function(response) {
-																				if (response.status == 400) {
-																								msgError(`${response.responseJSON.data.message}`)
-																								$('#discountValue').text('0đ');
-																				} else {
-																								handleAjaxError(response);
-																				}
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
+																				$('#discountValue').text('0đ');
 																}
 												});
 												updateProductTotal(id);
 								}
-				}
-
-				function applyDiscountCode() {
-								var discount_code = $(`#discount_code`).val();
-								$.ajax({
-												type: "POST",
-												url: '{{ route('user.cart.applyCode') }}',
-												data: {
-																code: discount_code,
-																_token: '{{ csrf_token() }}'
-												},
-												success: function(response) {
-																updateText(response);
-												},
-												error: function(response) {
-																if (response.status == 400) {
-																				msgError(`${response.responseJSON.data.message}`)
-																				$('#discountValue').text('0đ');
-																} else {
-																				handleAjaxError(response);
-																}
-												}
-								});
 				}
 
 				function decrementCart(button) {
@@ -131,17 +132,13 @@
 																updateText(response);
 												},
 												error: function(response) {
-																if (response.status == 400) {
-																				Swal.fire({
-																								icon: 'warning',
-																								title: 'Lưu ý',
-																								text: `${response.responseJSON.data.message}`,
-																								showConfirmButton: true
-																				});
-																				updateText(response.responseJSON);
-																} else {
-																				handleAjaxError(response);
-																}
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																updateText(response.responseJSON);
 												}
 								});
 								updateProductTotal(id);
@@ -173,17 +170,13 @@
 																												$('#discount_code').val('');
 																								},
 																								error: function(response) {
-																												if (response.status == 400) {
-																																Swal.fire({
-																																				icon: 'warning',
-																																				title: 'Lưu ý',
-																																				text: `${response.responseJSON.data.message}`,
-																																				showConfirmButton: true
-																																});
-																																updateText(response.responseJSON);
-																												} else {
-																																handleAjaxError(response);
-																												}
+																												Swal.fire({
+																																icon: 'warning',
+																																title: 'Lưu ý',
+																																text: `${response.responseJSON.message}`,
+																																showConfirmButton: true
+																												});
+																												updateText(response.responseJSON);
 																								}
 																				});
 																				updateProductTotal(id);
@@ -248,12 +241,13 @@
 																updateText(response);
 												},
 												error: function(response) {
-																if (response.status == 400) {
-																				msgError(`${response.responseJSON.data.message}`)
-																				$('#discountValue').text('0đ');
-																} else {
-																				handleAjaxError(response);
-																}
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+																$('#discountValue').text('0đ');
 												}
 								});
 								updateProductTotal(id);

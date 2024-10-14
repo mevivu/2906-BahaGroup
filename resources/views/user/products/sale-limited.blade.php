@@ -6,6 +6,7 @@
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container gap-64">
 												<div class="row">
@@ -19,35 +20,34 @@
 																				</div>
 																</div>
 																<div class="col-12">
-																				<div class="row no-gutters">
-																								@foreach ($flashSale->details as $item)
-																												<div class="col-6 col-md-3">
+																				<div class="row">
+																								@foreach ($products as $item)
+																												<div class="col-6 col-md-3 mb-4">
 																																<x-cardflash :item="$item" />
 																												</div>
 																								@endforeach
 																				</div>
 
-																				{{-- <div id="pagination" class="pagination">
-																								@if ($paginator->totalPages > 1)
-																												<button class="pagination-btn prev" disabled><i class="fa fa-chevron-left"
-																																				aria-hidden="true"></i></button>
-																								@endif
-																								@php
-																												$start = $paginator->currentPage - 2 > 0 ? $paginator->currentPage - 2 : 1;
-																												$end =
-																												    $paginator->currentPage + 2 <= $paginator->totalPages
-																												        ? $paginator->currentPage + 2
-																												        : $paginator->totalPages;
-																								@endphp
-																								@for ($i = $start; $i <= $end; $i++)
-																												<button class="pagination-btn {{ $i == $paginator->currentPage ? 'active' : '' }}"
-																																data-page="{{ $i }}">{{ $i }}</button>
-																								@endfor
-																								@if ($paginator->totalPages > 1)
-																												<button class="pagination-btn next"><i class="fa fa-chevron-right"
-																																				aria-hidden="true"></i></button>
-																								@endif
-																				</div> --}}
+																				<div class="pagination">
+																								<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																												<button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
+																																onclick="window.location='{{ $products->previousPageUrl() }}'">
+																																<i class="fa fa-chevron-left" aria-hidden="true"></i>
+																												</button>
+
+																												@for ($i = 1; $i <= $products->lastPage(); $i++)
+																																<button class="pagination-btn @if ($i == $products->currentPage()) active @endif"
+																																				onclick="window.location='{{ $products->url($i) }}'">
+																																				{{ $i }}
+																																</button>
+																												@endfor
+
+																												<button class="pagination-btn next" @if (!$products->hasMorePages()) disabled @endif
+																																onclick="window.location='{{ $products->nextPageUrl() }}'">
+																																<i class="fa fa-chevron-right" aria-hidden="true"></i>
+																												</button>
+																								</div>
+																				</div>
 																</div>
 												</div>
 								</div>
