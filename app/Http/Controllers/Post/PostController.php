@@ -49,14 +49,13 @@ class PostController extends Controller
 
     public function getRoute(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function category($id, $slug)
     {
         $query = $this->model->query();
-        $posts = $this->model->scopeHasCategory($query, $id)->paginate(10);
+        $posts = $this->model->scopeHasCategory($query, $id)->paginate(4);
         $category = $this->categoryRepository->findOrFail($id);
         if ($category->slug !== $slug) {
             return abort(404);
@@ -64,12 +63,13 @@ class PostController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
-        return view($this->view['index'], compact('posts', 'title', 'meta_desc'));
+        $breadcrumbs = $this->homeCrums->add(__('Tin tức'))->getBreadcrumbs();
+        return view($this->view['index'], compact('posts', 'title', 'meta_desc', 'breadcrumbs'));
     }
 
-    public function detail($id, $slug)
+    public function detail($slug)
     {
-        $post = $this->repository->findOrFailWithRelations($id, ['categories']);
+        $post = $this->repository->findByField('slug', $slug);
         if ($post->slug !== $slug) {
             return abort(404);
         }
@@ -79,18 +79,20 @@ class PostController extends Controller
         return view($this->view['detail'], [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
+            'breadcrumbs' => $this->homeCrums->add(__('Tin tức'), route('user.post.index'))->add(__('Chi tiết bài viết'))->getBreadcrumbs()
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $query = $this->model->query();
         $posts = $this->model->scopePublished($query)
             ->orderByRaw('is_featured ASC, posted_at DESC')
-            ->paginate(10);
+            ->paginate(4);
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
-        return view($this->view['index'], compact('posts', 'title', 'meta_desc'));
+        $breadcrumbs = $this->homeCrums->add(__('Tin tức'))->getBreadcrumbs();
+        return view($this->view['index'], compact('posts', 'title', 'meta_desc', 'breadcrumbs'));
     }
 }

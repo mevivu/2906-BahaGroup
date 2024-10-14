@@ -6,6 +6,7 @@
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="post-detail" class="container">
 								<div class="row">
 												<div class="col-md-9">

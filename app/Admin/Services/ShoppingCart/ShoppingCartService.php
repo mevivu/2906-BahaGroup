@@ -82,6 +82,8 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
                     'qty' => $this->data['qty'],
                 ]);
+                DB::commit();
+                return $shoppingCart;
             } else {
                 if ($product->isSimple()) {
                     if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
@@ -96,9 +98,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     }
                 }
                 $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
+                DB::commit();
+                return $shoppingCart[0];
             }
-            DB::commit();
-            return $shoppingCart;
         } catch (Exception $e) {
             $this->logError('Failed to process shopping cart: ', $e);
             DB::rollBack();
@@ -170,22 +172,24 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['code'] = $this->createCodeOrder();
         $this->data['order']['user_id'] = $user->id;
-        $this->data['order']['total'] = $this->calculageTotal($user);
         $this->data['order']['user_id'] = $user->id;
         DB::beginTransaction();
         try {
-            $this->prepareData($user->shopping_cart);
+            $shopping_cart = $this->repository->findManyById($this->data['shopping_cart_id']);
+            $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
+            $this->prepareData($shopping_cart);
             if (isset($this->data['code'])) {
                 $discount = $this->discountRepository->findByField('code', $this->data['code']);
-                $this->data['order']['discount_value'] = $this->calculageDiscountValue($this->data['order']['total'], $discount);
+                $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
             }
             $order = $this->orderRepository->create($this->data['order']);
-            $this->handleDiscount($order, $discount);
             if (isset($this->data['code'])) {
                 $this->handleDiscount($order, $discount);
             }
             $this->storeOrderDetail($order->id, $this->orderDetails);
-            $user->shopping_cart()->delete();
+            $shopping_cart->each(function ($item) {
+                $item->delete();
+            });
             DB::commit();
             return $order;
         } catch (Exception $e) {
@@ -195,19 +199,29 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
     }
 
-    public function calculageTotal($user)
+    public function calculateTotal($shoppingCart)
     {
         $total = 0;
-        $shoppingCart = $user->shopping_cart;
-        foreach ($shoppingCart as $item) {
-            $total += $item->product_variation_id
-                ? ($item->product->on_flash_sale ? $item->productVariation->flashsale_price * $item->qty : $item->productVariation->promotion_price * $item->qty)
-                : ($item->product->on_flash_sale ? $item->product->flashsale_price * $item->qty : $item->product->promotion_price * $item->qty);
+
+        if (is_array($shoppingCart) || $shoppingCart instanceof \Traversable) {
+            foreach ($shoppingCart as $item) {
+                $total += $this->calculateItemTotal($item);
+            }
+        } else {
+            $total += $this->calculateItemTotal($shoppingCart);
         }
+
         return $total;
     }
 
-    public function calculageDiscountValue($total, $discount)
+    private function calculateItemTotal($item)
+    {
+        return $item->product_variation_id
+            ? ($item->product->on_flash_sale ? $item->productVariation->flashsale_price * $item->qty : $item->productVariation->promotion_price * $item->qty)
+            : ($item->product->on_flash_sale ? $item->product->flashsale_price * $item->qty : $item->product->promotion_price * $item->qty);
+    }
+
+    public function calculateDiscountValue($total, $discount)
     {
         $discountValue = 0;
         if ($discount->type == DiscountType::Percent) {

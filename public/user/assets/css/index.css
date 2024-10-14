@@ -1467,3 +1467,50 @@ div.dataTables_wrapper div.dataTables_processing {
     color: #FFA500;
     font-size: 20px;
 }
+
+.flashsale-price {
+    display: inline-block;
+    padding: 5px 10px;
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    animation: flash 2s infinite;
+}
+
+.flashsale-price::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: lightning 3s infinite;
+}
+
+@keyframes flash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes lightning {
+    0% {
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(150%) rotate(45deg);
+    }
+}

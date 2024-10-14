@@ -31,6 +31,6 @@ interface ShoppingCartServiceInterface
      */
     public function delete($id);
     public function checkout(Request $request);
-    public function calculageDiscountValue($total, $discount);
-    public function calculageTotal($user);
+    public function calculateDiscountValue($total, $discount);
+    public function calculateTotal($shoppingCart);
 }

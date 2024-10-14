@@ -133,8 +133,13 @@ class OrderController extends Controller
     public function cancel($id)
     {
         $result = $this->service->cancel($id);
+
         if ($result) {
-            return to_route($this->route['index'])->with('success', __('Từ chối đơn hàng thành công'));
+            if (auth('admin')->user()) {
+                return to_route('admin.order.index')->with('success', __('Từ chối đơn hàng thành công'));
+            } else {
+                return to_route('user.order.indexUser')->with('success', __('Hủy đơn hàng thành công'));
+            }
         }
         return to_route($this->route['index'])->with('error', __('Từ chối đơn hàng thất bại'));
     }

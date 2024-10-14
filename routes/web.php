@@ -107,6 +107,6 @@ Route::controller(App\Http\Controllers\Post\PostController::class)
     ->as('post.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('/{idPost}-{slugPost}', 'detail')->name('detail');
-        Route::get('/category/{idCategory}-{slugCategory}', 'category')->name('category');
+        Route::get('/{slugPost}', 'detail')->name('detail');
+        Route::get('/category/{slugCategory}', 'category')->name('category');
     });
