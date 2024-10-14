@@ -162,9 +162,22 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
                 $query->where('attribute_variation_id', $filterData['size_id']);
             });
         }
+        $desc = $desc ?? 'asc';
+        $this->instance = $this->instance->orderBy(function ($query) {
+            $query->selectRaw('CASE
+                WHEN type = 1 THEN promotion_price
+                WHEN type = 2 THEN (SELECT promotion_price FROM products_variations WHERE products_variations.product_id = products.id ORDER BY promotion_price ASC LIMIT 1)
+                ELSE promotion_price
+            END');
+        }, $desc)->paginate($filterData['limit']);
+        return $this->instance;
+    }
 
-        $desc = in_array(strtolower($desc), ['asc', 'desc']) ? strtolower($desc) : 'desc';
-        $this->instance = $this->instance->orderBy('price', $desc)->paginate(8);
+    public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations'])
+    {
+        $this->instance = $this->loadRelations($this->model, $relations);
+        $this->instance = $this->instance->where('is_active', 1)->orderBy('promotion_price', 'ASC')->paginate(8);
+
         return $this->instance;
     }
 

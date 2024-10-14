@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Auth;
 
-use App\Admin\Http\Controllers\BaseController;
+use App\Http\Controllers\BaseController;
 use App\Admin\Http\Requests\Auth\ChangePasswordRequest;
 
 class ChangePasswordController extends BaseController
@@ -23,7 +23,8 @@ class ChangePasswordController extends BaseController
 
     public function indexUser()
     {
-        return view($this->view['indexUser']);
+        $breadcrumbs = $this->crums->add(__('Đổi mật khẩu'))->getBreadcrumbs();
+        return view($this->view['indexUser'], compact('breadcrumbs'));
     }
 
     public function update(ChangePasswordRequest $request)

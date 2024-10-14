@@ -14,6 +14,7 @@ class ReviewRequest extends BaseRequest
             'product_id' => ['required', 'exists:App\Models\Product,id'],
             'rating' => ['required', 'numeric', 'min:1', 'max:5'],
             'content' => ['nullable'],
+            'order_id' => ['nullable'],
         ];
     }
 
@@ -24,12 +25,14 @@ class ReviewRequest extends BaseRequest
             'product_id' => ['required', 'exists:App\Models\Product,id'],
             'rating' => ['required', 'numeric', 'min:1', 'max:5'],
             'content' => ['nullable'],
+            'order_id' => ['nullable'],
         ];
     }
     protected function methodGet(): array
     {
         return [
             'product_id' => ['required', 'exists:App\Models\Product,id'],
+            'order_id' => ['nullable'],
             'rating' => ['nullable'],
             'per_page' => ['nullable', 'integer', 'min:1'],
         ];

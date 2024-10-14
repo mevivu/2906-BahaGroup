@@ -6,6 +6,7 @@
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex justify-content-center align-items-center container bg-white">
 								<div class="container gap-64">
 												<div class="row">

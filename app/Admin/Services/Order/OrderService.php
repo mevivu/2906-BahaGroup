@@ -22,10 +22,10 @@ class OrderService implements OrderServiceInterface
     protected $data;
     protected $orderDetails;
     protected $repository;
-    protected $repositoryOrderDetail;
     protected $repositoryUser;
     protected $repositoryProduct;
     protected $repositoryProductVariation;
+    protected $repositoryOrderDetail;
     protected $discountRepository;
     protected $discountApplicationRepository;
 
@@ -33,17 +33,17 @@ class OrderService implements OrderServiceInterface
         OrderRepositoryInterface $repository,
         OrderDetailRepositoryInterface $repositoryOrderDetail,
         DiscountRepositoryInterface $discountRepository,
-        UserRepositoryInterface $repositoryUser,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
+        UserRepositoryInterface $repositoryUser,
         ProductRepositoryInterface $repositoryProduct,
         ProductVariationRepositoryInterface $repositoryProductVariation,
     ) {
         $this->repository = $repository;
         $this->repositoryOrderDetail = $repositoryOrderDetail;
         $this->discountRepository = $discountRepository;
+        $this->discountApplicationRepository = $discountApplicationRepository;
         $this->repositoryUser = $repositoryUser;
         $this->repositoryProduct = $repositoryProduct;
-        $this->discountApplicationRepository = $discountApplicationRepository;
         $this->repositoryProductVariation = $repositoryProductVariation;
     }
 
@@ -128,7 +128,7 @@ class OrderService implements OrderServiceInterface
         DB::beginTransaction();
         try {
             $order = $this->repository->update($id, ['status' => OrderStatus::Cancelled]);
-            if($order->discount){
+            if ($order->discount) {
                 $discount = $this->discountRepository->findOrFail($order->discount->id);
                 $discount->max_usage = $discount->max_usage + 1;
                 $discount->save();

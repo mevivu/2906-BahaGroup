@@ -25,6 +25,7 @@ class BaseController extends Controller
     protected $route;
 
     protected Breadcrumb $crums;
+    protected Breadcrumb $homeCrums;
     public function __construct()
     {
 
@@ -32,7 +33,8 @@ class BaseController extends Controller
 
         $this->setRoute();
 
-        $this->crums = (new Breadcrumb())->add(__('Dashboard'), route('admin.dashboard'));
+        $this->crums = (new Breadcrumb())->add(__('Trang chủ'), route('user.index'));
+        $this->homeCrums = (new Breadcrumb());
     }
 
     public function getView()

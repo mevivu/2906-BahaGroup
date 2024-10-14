@@ -36,6 +36,8 @@ class ServiceServiceProvider extends ServiceProvider
         'App\Admin\Services\Review\ReviewServiceInterface' => 'App\Admin\Services\Review\ReviewService',
         'App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface' => 'App\Admin\Services\ShoppingCart\ShoppingCartService',
 
+        'App\Admin\Services\Auth\SigninServiceInterface' => 'App\Admin\Services\Auth\SigninService',
+
     ];
     /**
      * Register services.

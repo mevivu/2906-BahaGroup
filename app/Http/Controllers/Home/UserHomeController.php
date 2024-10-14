@@ -49,9 +49,10 @@ class UserHomeController extends Controller
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'information_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'information_meta_desc')->first()->plain_value;
+        $breadcrumbs = $this->homeCrums->add(__('Giới thiệu'))->getBreadcrumbs();
 
         $settingsInformation = $this->settingRepository->getByGroup([SettingGroup::Information]);
-        return view($this->view['information'], compact('title', 'meta_desc', 'settingsInformation'));
+        return view($this->view['information'], compact('title', 'meta_desc', 'settingsInformation', 'breadcrumbs'));
     }
 
     public function contact()
@@ -59,9 +60,10 @@ class UserHomeController extends Controller
         $settings = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settings->where('setting_key', 'contact_title')->first()->plain_value;
         $meta_desc = $settings->where('setting_key', 'contact_meta_desc')->first()->plain_value;
+        $breadcrumbs =  $this->homeCrums->add(__('Liên hệ'))->getBreadcrumbs();
 
         $settingsFooter = $this->settingRepository->getByGroup([SettingGroup::Footer]);
         $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
-        return view($this->view['contact'], compact('title', 'meta_desc', 'settingsContact', 'settingsFooter'));
+        return view($this->view['contact'], compact('title', 'meta_desc', 'settingsContact', 'settingsFooter', 'breadcrumbs'));
     }
 }

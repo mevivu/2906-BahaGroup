@@ -1,4 +1,34 @@
 <script>
+				function addToCart(id) {
+								$.ajax({
+												type: "POST",
+												url: '{{ route('user.cart.store') }}',
+												data: {
+																product_id: id,
+																qty: 1,
+																_token: '{{ csrf_token() }}'
+												},
+												success: function(response) {
+																$('#cart-count-mobile').text(response.data.count);
+																$('#cart-count').text(response.data.count);
+																Swal.fire({
+																				icon: 'success',
+																				title: 'Thành công',
+																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+																				showConfirmButton: true
+																});
+												},
+												error: function(response) {
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+												}
+								});
+				}
+
 				function debounce(func, wait) {
 								let timeout;
 								return function executedFunction(...args) {

@@ -2,7 +2,7 @@
 
 namespace App\Admin\Http\Controllers\Auth;
 
-use App\Admin\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 use App\Admin\Http\Requests\Auth\ProfileRequest;
 use App\Admin\Services\File\FileService;
 use App\Enums\User\Gender;
@@ -37,8 +37,9 @@ class ProfileController extends Controller
 
         $auth = auth('web')->user();
         $gender = Gender::asSelectArray();
+        $breadcrumbs = $this->crums->add(__('Tài khoản'))->getBreadcrumbs();
 
-        return view($this->view['indexUser'], compact('auth', 'gender'));
+        return view($this->view['indexUser'], compact('auth', 'gender', 'breadcrumbs'));
     }
 
     public function update(ProfileRequest $request)

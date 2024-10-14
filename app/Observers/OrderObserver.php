@@ -36,43 +36,43 @@ class OrderObserver
     {
         //
 
-        if($order->status == OrderStatus::Completed && !$order->checkEarningPoint()){
-            $orderDetails = $order->details()->get();
+        // if ($order->status == OrderStatus::Completed && !$order->checkEarningPoint()) {
+        //     $orderDetails = $order->details()->get();
 
-            $point = 0;
+        //     $point = 0;
 
-            foreach($orderDetails as $item){
-                if($item->detail['product']['is_earning_point']){
-                    $point += $item->qty;
-                }
-            }
-            DB::table('order_earning_point')->insert([
-                'order_id' => $order->id,
-                'user_id' => $order->user_id,
-                'point' => $point
-            ]);
-            if($point > 0){
-                $setting = $this->repositorySetting->getAll();
-                $user = $order->user;
-                $point = $user->sumEarningPoint();
-                if($point > 0){
-                    if($point >= $setting->getValueByKey('quantity_product_up_diamond')){
-                        $vip = UserVip::Diamond;
-                    }elseif($point >= $setting->getValueByKey('quantity_product_up_gold')){
-                        $vip = UserVip::Gold;
-                    }elseif($point >= $setting->getValueByKey('quantity_product_up_silver')){
-                        $vip = UserVip::Silver;
-                    }elseif($point >= $setting->getValueByKey('quantity_product_up_bronze')){
-                        $vip = UserVip::Bronze;
-                    }else{
-                        $vip = UserVip::Default;
-                    }
-                    $user->update([
-                        'vip' => $vip
-                    ]);
-                }
-            }
-        }
+        //     foreach ($orderDetails as $item) {
+        //         if ($item->detail['product']['is_earning_point']) {
+        //             $point += $item->qty;
+        //         }
+        //     }
+        //     DB::table('order_earning_point')->insert([
+        //         'order_id' => $order->id,
+        //         'user_id' => $order->user_id,
+        //         'point' => $point
+        //     ]);
+        //     if ($point > 0) {
+        //         $setting = $this->repositorySetting->getAll();
+        //         $user = $order->user;
+        //         $point = $user->sumEarningPoint();
+        //         if ($point > 0) {
+        //             if ($point >= $setting->getValueByKey('quantity_product_up_diamond')) {
+        //                 $vip = UserVip::Diamond;
+        //             } elseif ($point >= $setting->getValueByKey('quantity_product_up_gold')) {
+        //                 $vip = UserVip::Gold;
+        //             } elseif ($point >= $setting->getValueByKey('quantity_product_up_silver')) {
+        //                 $vip = UserVip::Silver;
+        //             } elseif ($point >= $setting->getValueByKey('quantity_product_up_bronze')) {
+        //                 $vip = UserVip::Bronze;
+        //             } else {
+        //                 $vip = UserVip::Default;
+        //             }
+        //             $user->update([
+        //                 'vip' => $vip
+        //             ]);
+        //         }
+        //     }
+        // }
     }
 
     /**

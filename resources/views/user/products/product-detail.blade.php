@@ -2,6 +2,7 @@
 @section('title', __('Chi tiết sản phẩm'))
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row">
@@ -61,7 +62,7 @@
 																																<strong id="countdown-flashsale-product"></strong>
 																												</div>
 																												<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold :
-																																{{ $flash_sale->sold ?? 0 . '/' . $flash_sale->qty }}</div>
+																																{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}</div>
 																								</div>
 																				@endif
 

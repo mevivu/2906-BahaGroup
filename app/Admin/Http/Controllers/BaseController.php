@@ -25,29 +25,33 @@ class BaseController extends Controller
     protected $route;
 
     protected Breadcrumb $crums;
-    public function __construct(){
+    public function __construct()
+    {
 
         $this->setView();
 
         $this->setRoute();
 
         $this->crums = (new Breadcrumb())->add(__('Dashboard'), route('admin.dashboard'));
-
     }
 
-    public function getView(){
+    public function getView()
+    {
         return $this->view ?? [];
     }
 
-    public function setView(){
+    public function setView()
+    {
         $this->view = $this->getView();
     }
 
-    public function getRoute(){
+    public function getRoute()
+    {
         return $this->route ?? [];
     }
 
-    public function setRoute(){
+    public function setRoute()
+    {
         $this->route = $this->getRoute();
     }
 }

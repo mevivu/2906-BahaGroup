@@ -62,7 +62,12 @@
 																								}
 																				},
 																				error: function(response) {
-																								handleAjaxError(response);
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: `${response.responseJSON.message}`,
+																												showConfirmButton: true
+																								});
 																				}
 																})
 												}
@@ -94,11 +99,10 @@
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
-																								title: 'Thất bại',
-																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
-																				handleAjaxError(response);
 																}
 												});
 								});
@@ -158,6 +162,50 @@
 								}
 				}
 
+				function updatePrice() {
+								var minPrice = document.getElementById('min-price').value;
+								var maxPrice = document.getElementById('max-price').value;
+								document.getElementById('min-price-value').textContent = minPrice + '₫';
+								document.getElementById('max-price-value').textContent = maxPrice + '₫';
+				}
+
+				const sort = document.getElementById('sort');
+				sort.addEventListener('change', function() {
+								const currentUrl = window.location.href;
+								const urlWithoutSort = currentUrl.replace(/(\?|&)sort=[^&]+/g, '');
+								if (this.value === 'default') {
+												window.location = `${urlWithoutSort}`;
+								} else if (this.value === 'price-asc') {
+												if (urlWithoutSort == '{{ route('user.product.indexUser') }}') {
+																window.location = `${urlWithoutSort}?sort=asc`;
+												} else {
+																window.location = `${urlWithoutSort}&sort=asc`;
+												}
+								} else if (this.value === 'price-desc') {
+												if (urlWithoutSort == '{{ route('user.product.indexUser') }}') {
+																window.location = `${urlWithoutSort}?sort=desc`;
+												} else {
+																window.location = `${urlWithoutSort}&sort=desc`;
+												}
+								}
+				});
+
+				const filterByPriceCheckbox = document.getElementById('filter-by-price');
+				const minPriceInput = document.getElementById('min-price');
+				const maxPriceInput = document.getElementById('max-price');
+
+				filterByPriceCheckbox.addEventListener('change', () => {
+								if (filterByPriceCheckbox.checked) {
+												// Kích hoạt input range
+												minPriceInput.disabled = false;
+												maxPriceInput.disabled = false;
+								} else {
+												// Vô hiệu hóa input range
+												minPriceInput.disabled = true;
+												maxPriceInput.disabled = true;
+								}
+				});
+
 				function showDetailProductModal(modal, product_id) {
 								if (product_id) {
 												$.ajax({
@@ -168,7 +216,12 @@
 																				openModal(modal);
 																},
 																error: function(response) {
-																				handleAjaxError(response);
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
 																}
 												});
 								}

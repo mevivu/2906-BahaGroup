@@ -27,16 +27,24 @@
 								@if ($item->type == \App\Enums\Product\ProductType::Simple)
 												<p><del>{{ format_price($item->price) }}</del> <strong
 																				class="text-red">{{ format_price($item->promotion_price) }}</strong></p>
+												<div class="product-hover text-center">
+																<a style="cursor: pointer;" class="add-to-cart">
+																				<i onclick="addToCart({{ $item->id }})" class="fa fa-shopping-cart w-50"
+																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																								onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
+																</a>
+												</div>
 								@else
 												<p><strong class="text-red">{{ format_price($item->productVariations()->min('promotion_price')) }}
 																				- {{ format_price($item->productVariations()->max('promotion_price')) }}</strong>
 												</p>
+												<div class="product-hover text-center">
+																<a style="cursor: pointer;" class="add-to-cart">
+																				<i onclick="location.href='{{ route('user.product.detail', ['id' => $item->id]) }}'"
+																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																								onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
+																</a>
+												</div>
 								@endif
-								<div class="product-hover text-center">
-												<a style="cursor: pointer;" class="add-to-cart">
-																<i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
-																				onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
-												</a>
-								</div>
 				</div>
 </div>

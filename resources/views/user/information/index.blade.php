@@ -6,6 +6,7 @@
 </head>
 
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="gap-64" style="width: 100%; position: relative;">
 								<div class="banner-information"
 												style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url('{{ asset('public/user/assets/images/bg-about-us.jpg') }}');">
