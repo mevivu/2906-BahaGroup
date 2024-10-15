@@ -20,7 +20,8 @@
 												'đ');
 								$('#totalOrder').text(response.data.total.toLocaleString('vi-VN').replace('.', ',') + 'đ');
 								$('#discountValue').text(response.data.discount_value.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-								$('#totalAfterDiscount').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN').replace(
+								$('#totalAfterDiscount').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN')
+												.replace(
 																'.', ',') +
 												'đ');
 								updateProgress(response.data.total, {{ $object }})

@@ -53,7 +53,6 @@
 																												$('input[name="hidden_quantity"]').val(response.data.qty);
 																												$('input[name="hidden_product_variation_id"]').val(response.data
 																																.id);
-
 																												$('#filter-input-detail').removeAttr('readonly');
 																												$('#btnAddToCart').removeAttr('disabled');
 																												$('#btnBuyNow').removeAttr('disabled');

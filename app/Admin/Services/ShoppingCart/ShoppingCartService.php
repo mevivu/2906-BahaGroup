@@ -82,8 +82,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
                     'qty' => $this->data['qty'],
                 ]);
-                DB::commit();
-                return $shoppingCart;
             } else {
                 if ($product->isSimple()) {
                     if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
@@ -98,9 +96,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     }
                 }
                 $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
-                DB::commit();
-                return $shoppingCart[0];
             }
+            DB::commit();
+            return $shoppingCart;
         } catch (Exception $e) {
             $this->logError('Failed to process shopping cart: ', $e);
             DB::rollBack();
@@ -244,6 +242,27 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             }
         }
         return $discountValue;
+    }
+
+    public function calculateTotalFromSession($cart)
+    {
+        $total = 0;
+        foreach ($cart as $item) {
+            $product = $this->productRepository->find($item['product_id']);
+
+            if ($item['product_variation_id']) {
+                $productVariation = $product->productVariations()->where('id', $item['product_variation_id'])->first();
+                $total += $product->on_flash_sale
+                    ? $productVariation->flashsale_price * $item['qty']
+                    : $productVariation->promotion_price * $item['qty'];
+            } else {
+                $total += $product->on_flash_sale
+                    ? $product->flashsale_price * $item['qty']
+                    : $product->promotion_price * $item['qty'];
+            }
+        }
+
+        return $total;
     }
 
     private function handleDiscount($order, $discount)
