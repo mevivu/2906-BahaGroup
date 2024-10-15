@@ -136,14 +136,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             }
             if (!$productExists) {
                 $cart[] = [
-                    'product_id' => $this->data['product_id'],
+                    'product_id' => intval($this->data['product_id']),
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
-                    'qty' => $this->data['qty'],
+                    'qty' => intval($this->data['qty']),
                 ];
             }
             session()->put('cart', $cart);
             session()->save();
-            return true;
+            return $cart;
         }
     }
 
@@ -249,6 +249,26 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         return $total;
     }
 
+    public function calculateTotalFromSession($cart)
+    {
+        $total = 0;
+        foreach ($cart as $item) {
+            $product = $this->productRepository->find($item['product_id']);
+
+            if ($item['product_variation_id']) {
+                $productVariation = $product->productVariations()->where('id', $item['product_variation_id'])->first();
+                $total += $product->on_flash_sale
+                    ? $productVariation->flashsale_price * $item['qty']
+                    : $productVariation->promotion_price * $item['qty'];
+            } else {
+                $total += $product->on_flash_sale
+                    ? $product->flashsale_price * $item['qty']
+                    : $product->promotion_price * $item['qty'];
+            }
+        }
+
+        return $total;
+    }
     public function calculageDiscountValue($total, $discount)
     {
         $discountValue = 0;

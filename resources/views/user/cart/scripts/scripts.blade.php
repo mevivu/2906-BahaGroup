@@ -1,43 +1,4 @@
 <script>
-    // Nếu là khách vãng lai, lấy giỏ hàng từ localStorage
-    $(document).ready(function() {
-        if (!isLoggedIn()) {
-            let guestCart = JSON.parse(localStorage.getItem('cart')) || [];
-            renderGuestCart(guestCart);
-        }
-    });
-
-    function renderGuestCart(cartItems) {
-        let cartContent = '';
-        cartItems.forEach(item => {
-            cartContent += `
-                    <tr class="bold-text">
-                        <td data-label="Sản phẩm">
-                            <div class="align-items-center product-info row">
-                                <div class="col-md-4 col-12">
-                                    <img src="${item.image}" class="img-fluid card-item-img">
-                                </div>
-                                <div class="col-md-8 col-12">
-                                    <div class="product-name">${item.name}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="align-middle" data-label="Giá">${formatPrice(item.price)}</td>
-                        <td class="align-middle" data-label="Số lượng">${item.qty}</td>
-                        <td class="text-center align-middle" data-label="Tổng">${formatPrice(item.qty * item.price)}</td>
-                        <td class="delete-cell align-middle">
-                            <i style="cursor: pointer" onclick="removeGuestCartItem('${item.id}')" class="ti ti-trash-x text-danger"></i>
-                        </td>
-                    </tr>`;
-        });
-        $('#cart-items').html(cartContent);
-    }
-
-    function isLoggedIn() {
-        // Giả sử có một cách nào đó để kiểm tra người dùng đăng nhập hay không
-        return Boolean('{{ Auth::check() }}');
-    }
-
     function updateProgress(total, object) {
         let percentage = (total / object) * 100;
         percentage = percentage >= 100 ? 100 : Math.round(percentage);

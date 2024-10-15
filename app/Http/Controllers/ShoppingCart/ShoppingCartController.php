@@ -60,13 +60,12 @@ class ShoppingCartController extends Controller
         return [];
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $user = $this->getCurrentUser();
         $object = $this->settingRepository->getBy(['setting_key' => 'object_discount']);
 
         if ($user) {
-            // Nếu người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
             return view($this->view['index'], [
                 'shoppingCart' => $user->shopping_cart,
                 'total' => $this->service->calculageTotal($user),
@@ -74,40 +73,25 @@ class ShoppingCartController extends Controller
                 'object' => $object[0]->plain_value,
                 'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
             ]);
+        } else {
+            $cart = session()->get('cart', []);
+            $shopping_cart = [];
+            foreach ($cart as $item) {
+                $shopping_cart[] = [
+                    'product_id' => $item['product_id'],
+                    'qty' => $item['qty'],
+                    'product_variation_id' => $item['product_variation_id'] ?? null,
+                    'product' => $this->repository->find($item['product_id']),
+                ];
+            }
+            return view($this->view['index'], [
+                'shoppingCart' => $shopping_cart,
+                'total' => $this->service->calculateTotalFromSession($cart),
+                'discount_value' => 0,
+                'object' => $object[0]->plain_value,
+                'breadcrumbs' => $this->crums->add(__('Giỏ này'))->getBreadcrumbs()
+            ]);
         }
-
-        // Xử lý giỏ hàng cho khách vãng lai (người chưa đăng nhập)
-        $guestCart = $request->input('guest_cart', []);
-
-        // Mảng để chứa chi tiết sản phẩm
-        $cartDetails = [];
-        $total = 0;
-
-        foreach ($guestCart as $item) {
-            $product = $this->repository->find($item['product_id']);
-            $productVariation = isset($item['product_variation_id'])
-                ? $this->productVariations()->find($item['product_variation_id'])
-                : null;
-
-            // Tính toán giá sản phẩm và tổng số lượng
-            $price = $productVariation ? $productVariation->price : $product->price;
-            $total += $price * $item['qty'];
-
-            $cartDetails[] = [
-                'product' => $product,
-                'variation' => $productVariation,
-                'qty' => $item['qty'],
-                'price' => $price,
-            ];
-        }
-
-        return view($this->view['index'], [
-            'shoppingCart' => $cartDetails,  // Giỏ hàng của khách vãng lai
-            'total' => $total,
-            'discount_value' => 0,
-            'object' => $object[0]->plain_value,
-            'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
-        ]);
     }
 
 
@@ -190,7 +174,6 @@ class ShoppingCartController extends Controller
 
             return response()->json([
                 'status' => true,
-                'user_login' => true,
                 'data' => [
                     'total' => $this->service->calculageTotal($user),
                     'count' => $user->shopping_cart()->sum('qty'),
@@ -206,7 +189,10 @@ class ShoppingCartController extends Controller
             }
             return response()->json([
                 'status' => true,
-                'message' => 'Thêm vào giỏ thành công',
+                'data' => [
+                    'total' =>  $this->service->calculateTotalFromSession($result),
+                    'count' => count($result),
+                ]
             ]);
         }
     }

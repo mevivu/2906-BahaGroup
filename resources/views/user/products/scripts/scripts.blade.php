@@ -90,7 +90,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Thành công',
-                            text: `${response.message}`,
+                            text: "Thêm vào giỏ hàng thành công!",
                             showConfirmButton: true
                         });
                     }
