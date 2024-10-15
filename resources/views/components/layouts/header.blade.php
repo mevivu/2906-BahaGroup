@@ -61,6 +61,15 @@
 																								style="left: 100% !important;">
 																								@if (auth('web')->user())
 																												{{ auth('web')->user()->shopping_cart()->sum('qty') }}
+																								@else
+																												@php
+																																$cart = session()->get('cart', []);
+																																$totalQuantity = 0;
+																																foreach ($cart as $item) {
+																																    $totalQuantity += $item['qty'];
+																																}
+																												@endphp
+																												{{ $totalQuantity }}
 																								@endif
 																				</span>
 																</div>
@@ -126,6 +135,15 @@
 																												style="left: 100% !important;">
 																												@if (auth('web')->user())
 																																{{ auth('web')->user()->shopping_cart()->sum('qty') }}
+																												@else
+																																@php
+																																				$cart = session()->get('cart', []);
+																																				$totalQuantity = 0;
+																																				foreach ($cart as $item) {
+																																				    $totalQuantity += $item['qty'];
+																																				}
+																																@endphp
+																																{{ $totalQuantity }}
 																												@endif
 																								</span>
 																				</div>

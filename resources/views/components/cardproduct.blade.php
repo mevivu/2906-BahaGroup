@@ -23,7 +23,11 @@
 																<span class="star" style="color: {{ $i <= $item->avg_rating ? '#ffa200' : '#ccc' }};">★</span>
 												@endfor
 												<span>{{ $item->reviews->count() }}</span>
-								</div>roduct-hover text-center">
+								</div>
+								@if ($item->type == \App\Enums\Product\ProductType::Simple)
+												<p class="text-price"><del>{{ format_price($item->price) }}</del> <strong
+																				class="text-red">{{ format_price($item->promotion_price) }}</strong></p>
+												<div class="product-hover text-center">
 																<a style="cursor: pointer;" class="add-to-cart">
 																				<i onclick="addToCart({{ $item->id }})" class="fa fa-shopping-cart w-50"
 																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
@@ -44,5 +48,4 @@
 												</div>
 								@endif
 				</div>
-
 </div>

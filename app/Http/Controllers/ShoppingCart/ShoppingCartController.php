@@ -160,7 +160,6 @@ class ShoppingCartController extends Controller
 
         if ($user !== null) {
             $result = $this->service->store($request);
-
             if ($result === 1) {
                 return response()->json([
                     'status' => false,
@@ -176,18 +175,23 @@ class ShoppingCartController extends Controller
                 ]
             ]);
         } else {
-            $result = $this->service->store($request);
+            $result = $this->service->storeNotLogin($request);
             if ($result === 1) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
                 ], 400);
             }
+            $cart = session()->get('cart', []);
+            $count = 0;
+            foreach ($cart as $item) {
+                $count += $item['qty'];
+            }
             return response()->json([
                 'status' => true,
                 'data' => [
                     'total' =>  $this->service->calculateTotalFromSession($result),
-                    'count' => count($result),
+                    'count' => $count,
                 ]
             ]);
         }
