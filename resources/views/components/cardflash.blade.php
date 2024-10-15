@@ -31,10 +31,11 @@
 												<span>{{ $item->product->reviews->count() }}</span>
 								</div>
 								@if ($item->product->type == \App\Enums\Product\ProductType::Simple)
-												<p><del>{{ format_price($item->product->price) }}</del> <strong
+												<p class="text-price"><del>{{ format_price($item->product->price) }}</del> <strong
 																				class="text-red">{{ format_price($item->product->promotion_price) }}</strong></p>
 								@else
-												<p><strong class="text-red">{{ format_price($item->product->productVariations()->min('promotion_price')) }}
+												<p class="text-price"><strong
+																				class="text-red">{{ format_price($item->product->productVariations()->min('promotion_price')) }}
 																				- {{ format_price($item->product->productVariations()->max('promotion_price')) }}</strong>
 												</p>
 								@endif

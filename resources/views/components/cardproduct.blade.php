@@ -25,7 +25,7 @@
 												<span>{{ $item->reviews->count() }}</span>
 								</div>
 								@if ($item->type == \App\Enums\Product\ProductType::Simple)
-												<p><del>{{ format_price($item->price) }}</del> <strong
+												<p class="text-price"><del>{{ format_price($item->price) }}</del> <strong
 																				class="text-red">{{ format_price($item->promotion_price) }}</strong></p>
 												<div class="product-hover text-center">
 																<a style="cursor: pointer;" class="add-to-cart">
@@ -35,7 +35,8 @@
 																</a>
 												</div>
 								@else
-												<p><strong class="text-red">{{ format_price($item->productVariations()->min('promotion_price')) }}
+												<p class="text-price"><strong
+																				class="text-red">{{ format_price($item->productVariations()->min('promotion_price')) }}
 																				- {{ format_price($item->productVariations()->max('promotion_price')) }}</strong>
 												</p>
 												<div class="product-hover text-center">

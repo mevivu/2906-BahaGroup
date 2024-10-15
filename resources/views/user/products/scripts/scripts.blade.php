@@ -73,10 +73,10 @@
 												}
 								});
 								$('#btnAddToCart').click(function(e) {
+												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
-												console.log(productId, productVariationId, qty);
 												$.ajax({
 																type: "POST",
 																url: '{{ route('user.cart.store') }}',
@@ -95,6 +95,7 @@
 																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
 																								showConfirmButton: true
 																				});
+																				$('#btnAddToCart').removeAttr('disabled');
 																},
 																error: function(response) {
 																				Swal.fire({
@@ -103,6 +104,7 @@
 																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
+																				$('#btnAddToCart').removeAttr('disabled');
 																}
 												});
 								});

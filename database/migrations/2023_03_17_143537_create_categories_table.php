@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Category\HomeSliderOption;
 use App\Enums\DefaultActiveStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -25,6 +26,8 @@ return new class extends Migration
             $table->text('icon')->nullable();
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(DefaultActiveStatus::Active->value);
+            $table->tinyInteger('is_home_slider_1')->default(HomeSliderOption::InActive->value);
+            $table->tinyInteger('is_home_slider_2')->default(HomeSliderOption::InActive->value);
             $table->timestamps();
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('SET NULL');
         });
@@ -37,7 +40,7 @@ return new class extends Migration
      */
     public function down()
     {
-		Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table) {
             // Drop foreign key constraint
             $table->dropForeign(['parent_id']);
         });

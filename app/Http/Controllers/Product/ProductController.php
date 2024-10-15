@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Product;
 
 use App;
-use App\Admin\Http\Requests\Product\ProductRequest;
 use App\Admin\Repositories\Review\ReviewRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;

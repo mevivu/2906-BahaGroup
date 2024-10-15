@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Admin\DataTables\Product\ProductDataTable;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
+use App\Enums\Category\HomeSliderOption;
 
 class ProductCategoryController extends Controller
 {
@@ -35,7 +36,6 @@ class ProductCategoryController extends Controller
         $this->service = $service;
 
         $this->productRepository = $productRepository;
-
     }
 
     public function getView(): array
@@ -72,7 +72,10 @@ class ProductCategoryController extends Controller
     public function create(): Factory|View|Application
     {
         $categories = $this->repository->getFlatTree();
-        return view($this->view['create'], ['categories' => $categories]);
+        return view($this->view['create'], [
+            'categories' => $categories,
+            'options' => HomeSliderOption::asSelectArray()
+        ]);
     }
 
     public function store(ProductCategoryRequest $request): RedirectResponse
@@ -81,8 +84,6 @@ class ProductCategoryController extends Controller
         $response = $this->service->store($request);
 
         return $this->handleResponse($response, $request, $this->route['index'], $this->route['edit']);
-
-
     }
 
     /**
@@ -96,7 +97,8 @@ class ProductCategoryController extends Controller
             $this->view['edit'],
             [
                 'category' => $instance,
-                'categories' => $categories
+                'categories' => $categories,
+                'options' => HomeSliderOption::asSelectArray()
             ]
         );
     }
@@ -137,7 +139,6 @@ class ProductCategoryController extends Controller
         $this->service->update($request);
 
         return back()->with('success', __('notifySuccess'));
-
     }
 
     public function delete($id): RedirectResponse
@@ -146,7 +147,5 @@ class ProductCategoryController extends Controller
         $response = $this->service->delete($id);
 
         return $this->handleDeleteResponse($response, $this->route['index']);
-
-
     }
 }

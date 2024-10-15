@@ -151,8 +151,8 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button onclick="buyNowModal()" disabled
-																																												class="btn btn-default w-100 mt-2"><strong>Mua
+																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
+																																												disabled class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
 																												@else
@@ -175,7 +175,7 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button onclick="buyNowModal()"
+																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
 																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
@@ -320,7 +320,8 @@
 																																<div class="col-md-4"><button class="btn btn-default-primary w-100 mt-2"><strong>Thêm
 																																												vào
 																																												giỏ</strong></button></div>
-																																<div class="col-md-3"><button class="btn btn-default w-100 mt-2"><strong>Mua
+																																<div class="col-md-3"><button id="btnBuyNowModal"
+																																								class="btn btn-default w-100 mt-2"><strong>Mua
 																																												ngay</strong></button></div>
 																												</div>
 																												<div style="border-top: 1px solid #f5f5f5" class="row mt-3">
@@ -387,7 +388,6 @@
 																hiddenAttributeModalValues.push(element.value);
 												});
 												const hasEmpty = hiddenAttributeModalValues.some(value => value === '');
-												console.log(hiddenAttributeModalValues);
 												if (!hasEmpty) {
 																$.ajax({
 																				type: "GET",
@@ -408,7 +408,6 @@
 																												$('input[name="hidden_product_variation_modal_id"]').val(response
 																																.data
 																																.id);
-
 																												$('#filter-input-detail-modal').removeAttr('readonly');
 																												$('#btnAddToCartModal').removeAttr('disabled');
 																												$('#btnBuyNowModal').removeAttr('disabled');
@@ -426,7 +425,6 @@
 												var productId = $('input[name="hidden_product_id_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
-												console.log(productId, productVariationId, qty);
 
 												$.ajax({
 																type: "POST",
