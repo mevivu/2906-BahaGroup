@@ -75,26 +75,25 @@
         $('#btnAddToCart').click(function(e) {
             var productId = $('input[name="hidden_product_id"]').val();
             var productVariationId = $('input[name="hidden_product_variation_id"]').val();
-            var qty = $('#filter-input-detail').val();
-            console.log(productId, productVariationId, qty);
+            var qty = parseInt($('#filter-input-detail').val());
             $.ajax({
                 type: "POST",
                 url: '{{ route('user.cart.store') }}',
                 data: {
                     product_id: productId,
-                    product_variation_id: productVariationId,
+                    product_variation_id: productVariationId ?? null,
                     qty: qty,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    $('#cart-count-mobile').text(response.data.count);
-                    $('#cart-count').text(response.data.count);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công',
-                        text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-                        showConfirmButton: true
-                    });
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thành công',
+                            text: `${response.message}`,
+                            showConfirmButton: true
+                        });
+                    }
                 },
                 error: function(response) {
                     Swal.fire({
@@ -106,6 +105,7 @@
                 }
             });
         });
+
         $('#btnBuyNow').click(function(e) {
             var productId = $('input[name="hidden_product_id"]').val();
             var productVariationId = $('input[name="hidden_product_variation_id"]').val();

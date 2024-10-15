@@ -55,56 +55,98 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function store(Request $request)
     {
         $this->data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $shoppingCart = $this->repository->getBy([
-                'user_id' => $this->getCurrentUserId(),
-                'product_id' => $this->data['product_id'],
-                'product_variation_id' => $this->data['product_variation_id'] ?? null, // Use null coalescing operator for optional product variation
-            ]);
-            $product = $this->productRepository->find($this->data['product_id']);
-            if (!isset($shoppingCart[0])) {
-                if ($product->isSimple()) {
-                    if ($product->qty < $this->data['qty']) {
-                        DB::rollBack();
-                        return 1;
-                    }
-                } else {
-                    $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
-                    if ($productVariation->qty < $this->data['qty']) {
-                        DB::rollBack();
-                        return 1;
-                    }
-                }
-                $shoppingCart = $this->repository->create([
+        if ($this->getCurrentUserId()) {
+            DB::beginTransaction();
+            try {
+                $shoppingCart = $this->repository->getBy([
                     'user_id' => $this->getCurrentUserId(),
                     'product_id' => $this->data['product_id'],
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
-                    'qty' => $this->data['qty'],
                 ]);
-            } else {
-                if ($product->isSimple()) {
-                    if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
-                        DB::rollBack();
-                        return 1;
+                $product = $this->productRepository->find($this->data['product_id']);
+                if (!isset($shoppingCart[0])) {
+                    if ($product->isSimple()) {
+                        if ($product->qty < $this->data['qty']) {
+                            DB::rollBack();
+                            return 1;
+                        }
+                    } else {
+                        $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                        if ($productVariation->qty < $this->data['qty']) {
+                            DB::rollBack();
+                            return 1;
+                        }
                     }
+                    $shoppingCart = $this->repository->create([
+                        'user_id' => $this->getCurrentUserId(),
+                        'product_id' => $this->data['product_id'],
+                        'product_variation_id' => $this->data['product_variation_id'] ?? null,
+                        'qty' => $this->data['qty'],
+                    ]);
                 } else {
-                    $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
-                    if ($productVariation->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
-                        DB::rollBack();
-                        return 1;
+                    if ($product->isSimple()) {
+                        if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                            DB::rollBack();
+                            return 1;
+                        }
+                    } else {
+                        $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                        if ($productVariation->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                            DB::rollBack();
+                            return 1;
+                        }
+                    }
+                    $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
+                }
+
+                DB::commit();
+                return $shoppingCart;
+            } catch (Exception $e) {
+                $this->logError('Failed to process shopping cart: ', $e);
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            $product = $this->productRepository->find($this->data['product_id']);
+            foreach ($cart as $item) {
+                if ($item['product_id'] == $this->data['product_id']) {
+                    if ($product->isSimple()) {
+                        if ($product->qty < intval($this->data['qty']) + $item['qty']) {
+                            return 1;
+                        }
+                    } else {
+                        $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                        if ($productVariation->qty < intval($this->data['qty']) + $item['qty']) {
+                            return 1;
+                        }
                     }
                 }
-                $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
             }
-            DB::commit();
-            return $shoppingCart;
-        } catch (Exception $e) {
-            $this->logError('Failed to process shopping cart: ', $e);
-            DB::rollBack();
-            return false;
+            $productExists = false;
+            foreach ($cart as &$item) {
+                if (
+                    $item['product_id'] == $this->data['product_id'] &&
+                    $item['product_variation_id'] == ($this->data['product_variation_id'] ?? null)
+                ) {
+                    $item['qty'] += $this->data['qty'];
+                    $productExists = true;
+                    break;
+                }
+            }
+            if (!$productExists) {
+                $cart[] = [
+                    'product_id' => $this->data['product_id'],
+                    'product_variation_id' => $this->data['product_variation_id'] ?? null,
+                    'qty' => $this->data['qty'],
+                ];
+            }
+            session()->put('cart', $cart);
+            session()->save();
+            return true;
         }
     }
+
 
     public function update(Request $request)
     {

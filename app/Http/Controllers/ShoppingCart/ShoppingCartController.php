@@ -60,27 +60,56 @@ class ShoppingCartController extends Controller
         return [];
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = $this->getCurrentUser();
         $object = $this->settingRepository->getBy(['setting_key' => 'object_discount']);
+
         if ($user) {
+            // Nếu người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
             return view($this->view['index'], [
                 'shoppingCart' => $user->shopping_cart,
                 'total' => $this->service->calculageTotal($user),
                 'discount_value' => 0,
                 'object' => $object[0]->plain_value,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
+                'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
             ]);
         }
+
+        // Xử lý giỏ hàng cho khách vãng lai (người chưa đăng nhập)
+        $guestCart = $request->input('guest_cart', []);
+
+        // Mảng để chứa chi tiết sản phẩm
+        $cartDetails = [];
+        $total = 0;
+
+        foreach ($guestCart as $item) {
+            $product = $this->repository->find($item['product_id']);
+            $productVariation = isset($item['product_variation_id'])
+                ? $this->productVariations()->find($item['product_variation_id'])
+                : null;
+
+            // Tính toán giá sản phẩm và tổng số lượng
+            $price = $productVariation ? $productVariation->price : $product->price;
+            $total += $price * $item['qty'];
+
+            $cartDetails[] = [
+                'product' => $product,
+                'variation' => $productVariation,
+                'qty' => $item['qty'],
+                'price' => $price,
+            ];
+        }
+
         return view($this->view['index'], [
-            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs(),
-            'total' => 0,
-            'shoppingCart' => [],
+            'shoppingCart' => $cartDetails,  // Giỏ hàng của khách vãng lai
+            'total' => $total,
+            'discount_value' => 0,
             'object' => $object[0]->plain_value,
-            'discount_value' => 0
+            'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
         ]);
     }
+
 
     public function checkout(Request $request)
     {
@@ -147,40 +176,56 @@ class ShoppingCartController extends Controller
 
     public function store(ShoppingCartRequest $request)
     {
-        $result = $this->service->store($request);
         $user = $this->getCurrentUser();
-        if ($result === 1) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
-            ], 400);
-        }
-        if ($result) {
+
+        if ($user !== null) {
+            $result = $this->service->store($request);
+
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
+
             return response()->json([
                 'status' => true,
+                'user_login' => true,
                 'data' => [
                     'total' => $this->service->calculageTotal($user),
                     'count' => $user->shopping_cart()->sum('qty'),
                 ]
             ]);
         } else {
+            $result = $this->service->store($request);
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
             return response()->json([
-                'status' => false,
-            ], 400);
+                'status' => true,
+                'message' => 'Thêm vào giỏ thành công',
+            ]);
         }
     }
 
+
+
     public function buyNow(ShoppingCartRequest $request)
     {
-        $result = $this->service->store($request);
+        $user = $this->getCurrentUser();
 
-        if ($result === 1) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
-            ], 400);
-        }
-        if ($result) {
+        if ($user) {
+            // Xử lý cho người dùng đã đăng nhập
+            $result = $this->service->store($request);
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
             return response()->json([
                 'status' => true,
                 'message' => 'Mua hàng thành công!',
@@ -188,12 +233,27 @@ class ShoppingCartController extends Controller
                     'id' => $result->id // Trả về ID của giỏ hàng hoặc order để frontend redirect
                 ]
             ], 200);
+        } else {
+            // Lưu giỏ hàng vào localStorage cho khách vãng lai
+            $cart = json_decode($request->input('cart'), true); // Lấy dữ liệu giỏ hàng từ frontend
+            if (!$cart) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Giỏ hàng rỗng',
+                ], 400);
+            }
+
+            // Xử lý logic mua ngay và trả về phản hồi cho frontend
+            return response()->json([
+                'status' => true,
+                'message' => 'Mua hàng thành công!',
+                'data' => [
+                    'cart' => $cart
+                ]
+            ]);
         }
-        return response()->json([
-            'status' => false,
-            'message' => 'Đã xảy ra lỗi trong quá trình mua hàng'
-        ], 500);
     }
+
 
     public function applyDiscountCode(ApplyDiscountCodeRequest $request)
     {
