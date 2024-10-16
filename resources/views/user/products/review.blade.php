@@ -1,7 +1,7 @@
 @if ($is_reviewed)
     <h4>Thông tin đánh giá</h4>
     <div class="card">
-        <form action="{{ route('user.product.review', ['id' => $product->id]) }}" method="POST">
+        <form action="{{ route('user.product.review', ['slug' => $product->slug]) }}" method="POST">
             @csrf
             <input type="hidden" name="user_id" id="user_id" value="{{ auth()->user()->id }}">
             <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">

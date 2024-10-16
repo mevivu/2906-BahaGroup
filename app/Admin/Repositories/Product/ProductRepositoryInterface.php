@@ -40,4 +40,5 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
     public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc');
 
     public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations']);
+    public function findOrFailBySlug($slug);
 }

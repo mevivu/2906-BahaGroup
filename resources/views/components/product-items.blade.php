@@ -1,10 +1,10 @@
 @props(['product'])
 <div class="card border-0 hover-shadow">
     <div class="position-relative">
-        <img onclick="location.href='{{ route('user.product.detail', ['id' => $product->id]) }}';"
+        <img onclick="location.href='{{ route('user.product.detail', ['slug' => $product->slug]) }}';"
             class="card-img-top img-default" src="/2906-BahaGroup/{{ $product->avatar }}" style="cursor: pointer;"
             alt="Product 3">
-        <img onclick="location.href='{{ route('user.product.detail', ['id' => $product->id]) }}';"
+        <img onclick="location.href='{{ route('user.product.detail', ['slug' => $product->slug]) }}';"
             class="card-img-top img-hover" src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg"
             alt="Product 3" style="display: none;cursor: pointer;">
         <span class="badge badge-danger position-absolute top-0 end-0 m-3 text-white">50%</span>
@@ -12,7 +12,7 @@
     </div>
     <div class="card-body shadow-sm">
         <h6 class="card-title mb-1">
-            <a class="text-black" href="{{ route('user.product.detail', ['id' => $product->id]) }}">
+            <a class="text-black" href="{{ route('user.product.detail', ['slug' => $product->slug]) }}">
                 {{ $product->name }}
             </a>
         </h6>
