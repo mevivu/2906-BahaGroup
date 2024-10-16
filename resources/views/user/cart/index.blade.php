@@ -2,8 +2,6 @@
 
 @section('title', __('Giỏ hàng'))
 
-{{-- @include('user.cart.scripts.scripts') --}}
-
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 

@@ -1,8 +1,8 @@
 <div class="card hover-shadow border-0">
 				<div class="position-relative">
-								<img onclick="location.href='{{ route('user.product.detail', ['id' => $item->id]) }}';"
+								<img onclick="location.href='{{ route('user.product.detail', ['slug' => $item->slug]) }}';"
 												class="card-img-top img-default" src="{{ asset($item->avatar) }}" style="cursor: pointer;" alt="Product 3">
-								<img onclick="location.href='{{ route('user.product.detail', ['id' => $item->id]) }}';"
+								<img onclick="location.href='{{ route('user.product.detail', ['slug' => $item->slug]) }}';"
 												class="card-img-top img-hover" src="{{ asset($item->gallery[0]) }}" alt="Product 3"
 												style="display: none;cursor: pointer;">
 								@if ($item->type == \App\Enums\Product\ProductType::Simple)
@@ -15,7 +15,7 @@
 								<span class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi bật</span>
 				</div>
 				<div class="card-body shadow-sm">
-								<h6 class="card-title mb-1"><x-link class="text-black" :href="route('user.product.detail', ['id' => $item->id])">
+								<h6 class="card-title mb-1"><x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->slug])">
 																{{ $item->name }}
 												</x-link></h6>
 								<div class="rating fs-12">
@@ -41,7 +41,7 @@
 												</p>
 												<div class="product-hover text-center">
 																<a style="cursor: pointer;" class="add-to-cart">
-																				<i onclick="location.href='{{ route('user.product.detail', ['id' => $item->id]) }}'"
+																				<i onclick="location.href='{{ route('user.product.detail', ['slug' => $item->slug]) }}'"
 																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
 																								onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
 																</a>

@@ -10,6 +10,7 @@ use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Admin\Services\Product\ProductServiceInterface;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
+use App\Admin\Repositories\AttributeVariation\AttributeVariationRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\ProductVariationResource;
@@ -21,6 +22,7 @@ use App\Admin\Http\Requests\Review\ReviewRequest;
 use App\Admin\Services\Review\ReviewServiceInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -29,30 +31,35 @@ class ProductController extends Controller
     protected FlashSaleRepositoryInterface $flashSaleRepository;
     protected CategoryRepositoryInterface $repositoryCategory;
     protected AttributeRepositoryInterface $repositoryAttribute;
+    protected AttributeVariationRepositoryInterface $repositoryAttributeVariation;
     protected DiscountRepositoryInterface $discountRepository;
     protected SettingRepositoryInterface $settingRepository;
     protected ReviewServiceInterface $reviewService;
     protected ReviewRepositoryInterface $reviewRepository;
     protected OrderRepositoryInterface $orderRepository;
     protected OrderDetailRepositoryInterface $orderDetailRepository;
+    protected Product $model;
     public function __construct(
         ProductRepositoryInterface $repository,
         FlashSaleRepositoryInterface $flashSaleRepository,
         DiscountRepositoryInterface $discountRepository,
         CategoryRepositoryInterface $repositoryCategory,
         AttributeRepositoryInterface $repositoryAttribute,
+        AttributeVariationRepositoryInterface $repositoryAttributeVariation,
         SettingRepositoryInterface $settingRepository,
         ProductServiceInterface $service,
         ReviewServiceInterface $reviewService,
         ReviewRepositoryInterface $reviewRepository,
         OrderRepositoryInterface $orderRepository,
         OrderDetailRepositoryInterface $orderDetailRepository,
+        Product $model,
     ) {
         parent::__construct();
         $this->repository = $repository;
         $this->flashSaleRepository = $flashSaleRepository;
         $this->repositoryCategory = $repositoryCategory;
         $this->repositoryAttribute = $repositoryAttribute;
+        $this->repositoryAttributeVariation = $repositoryAttributeVariation;
         $this->discountRepository = $discountRepository;
         $this->settingRepository = $settingRepository;
         $this->service = $service;
@@ -60,6 +67,7 @@ class ProductController extends Controller
         $this->reviewRepository = $reviewRepository;
         $this->orderRepository = $orderRepository;
         $this->orderDetailRepository = $orderDetailRepository;
+        $this->model = $model;
     }
 
     public function getView(): array
@@ -92,9 +100,9 @@ class ProductController extends Controller
         $filter = [
             'min_product_price' => $request->input('min_product_price'),
             'max_product_price' => $request->input('max_product_price'),
-            'category_id' => $request->input('category_ids'),
-            'color_id' => $request->input('color_ids'),
-            'size_id' => $request->input('size_ids'),
+            'category_slug' => $request->input('category_slugs'),
+            'color_slug' => $request->input('color_slugs'),
+            'size_slug' => $request->input('size_slugs'),
             'limit' => 8
         ];
 
@@ -112,9 +120,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function detail($id)
+    public function detail($slug)
     {
-        $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
+        $product = $this->repository->loadRelations($this->repository->findOrFailBySlug($slug), [
             'categories:id,name',
             'productAttributes' => function ($query) {
                 return $query->with(['attribute.variations', 'attributeVariations:id']);
@@ -132,18 +140,18 @@ class ProductController extends Controller
             ->pluck('id')->toArray();
         $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()
             ->whereIn('order_id', $orderIds)
-            ->where('product_id', $id)
+            ->where('product_id', $product->id)
             ->pluck('id')->toArray();
         $reviews = $this->reviewRepository->getQueryBuilder()
             ->whereIn('order_id', $orderIds)
-            ->where('product_id', $id)
+            ->where('product_id', $product->id)
             ->get();
         if (count($orderIds) > 0 && $reviews->count() == 0 && count($orderDetailIds) > 0) {
             $is_reviewed = true;
         }
         return view($this->view['product-detail'], [
             'product' => $product,
-            'breadcrumbs' => $this->crums->add(__('Sản phẩm'), route('user.product.indexUser'))->add(__('Chi tiết sản phẩm'))->getBreadcrumbs(),
+            'breadcrumbs' => $this->crums->add(__('Sản phẩm'), route('user.product.indexUser'))->add(__($product->name))->getBreadcrumbs(),
             'relatedProducts' => $randomProducts,
             'is_reviewed' => $is_reviewed,
             'orderIds' => $orderIds,
@@ -175,10 +183,13 @@ class ProductController extends Controller
         ];
     }
 
-    public function findVariationByAttributeVariationIds(Request $request)
+    public function findVariation(Request $request)
     {
         $id = $request->input('product_id');
-        $attributeVariationIds = $request->input('attribute_variation_ids');
+        $attributeVariations = $this->repositoryAttributeVariation->getQueryBuilder()
+            ->whereIn('slug', $request->input('attribute_variation_slugs'))
+            ->get();
+        $attributeVariationIds = $attributeVariations->pluck('id')->toArray();
         $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
             'productVariations.attributeVariations'
         ]);

@@ -21,15 +21,16 @@
 
 								$('.color-btn, .capacity-btn').click(function() {
 												var attributeName = $(this).data('attribute-name');
-												var attributeId = $(this).data('attribute-id');
-												var attributeVariationId = $(this).data('attribute-variation-id');
+												var attributeSlug = $(this).data('attribute-slug');
+												var attributeVariationSlug = $(this).data('attribute-variation-slug');
 												let hiddenAttributeValues = [];
 												const elements = document.querySelectorAll("#hiddenAttribute");
+												const productSlug = $('#slug').val();
 
-												$('#attribute_variation_name' + attributeId).text(attributeName);
+												$('#attribute_variation_name' + attributeSlug).text(attributeName);
 
-												$('input[name="attribute_variation_ids[' + attributeId + ']"]').val(attributeVariationId);
-
+												$('input[name="attribute_variation_slugs[' + attributeSlug + ']"]').val(
+												attributeVariationSlug);
 												elements.forEach(element => {
 																hiddenAttributeValues.push(element.value);
 												});
@@ -37,9 +38,10 @@
 												if (!hasEmpty) {
 																$.ajax({
 																				type: "GET",
-																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
+																				url: '{{ route('user.product.findVariation', ['slug' => 'productSlug']) }}'
+																								.replace('productSlug', productSlug),
 																				data: {
-																								attribute_variation_ids: hiddenAttributeValues,
+																								attribute_variation_slugs: hiddenAttributeValues,
 																								product_id: $('input[name="hidden_product_id"]').val()
 																				},
 																				success: function(response) {
@@ -53,6 +55,7 @@
 																												$('input[name="hidden_quantity"]').val(response.data.qty);
 																												$('input[name="hidden_product_variation_id"]').val(response.data
 																																.id);
+
 																												$('#filter-input-detail').removeAttr('readonly');
 																												$('#btnAddToCart').removeAttr('disabled');
 																												$('#btnBuyNow').removeAttr('disabled');
@@ -72,10 +75,10 @@
 												}
 								});
 								$('#btnAddToCart').click(function(e) {
-												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
+												console.log(productId, productVariationId, qty);
 												$.ajax({
 																type: "POST",
 																url: '{{ route('user.cart.store') }}',
@@ -94,7 +97,6 @@
 																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
 																								showConfirmButton: true
 																				});
-																				$('#btnAddToCart').removeAttr('disabled');
 																},
 																error: function(response) {
 																				Swal.fire({
@@ -103,7 +105,6 @@
 																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
-																				$('#btnAddToCart').removeAttr('disabled');
 																}
 												});
 								});
@@ -121,9 +122,11 @@
 																				_token: '{{ csrf_token() }}'
 																},
 																success: function(response) {
+																				// window.location.href = '{{ route('user.cart.checkout') }}';
 																				if (response.status) {
+																								// Redirect to the checkout page with the cart ID or order ID
 																								window.location.href =
-																												`{{ route('user.cart.checkout') }}?cart_id=${response.data.id}&qty=${response.data.qty}`;
+																												'{{ route('user.cart.checkout') }}?cart_id=' + response.data.id;
 																				} else {
 																								Swal.fire({
 																												icon: 'warning',

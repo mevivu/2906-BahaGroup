@@ -145,21 +145,21 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
             $this->instance = $this->instance->where('promotion_price', '<=', $filterData['max_product_price']);
         }
 
-        if (isset($filterData['category_id'])) {
+        if (isset($filterData['category_slug'])) {
             $this->instance = $this->instance->whereHas('categories', function ($query) use ($filterData) {
-                $query->where('id', $filterData['category_id']);
+                $query->where('slug', $filterData['category_slug']);
             });
         }
 
-        if (isset($filterData['color_id'])) {
+        if (isset($filterData['color_slug'])) {
             $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
-                $query->where('attribute_variation_id', $filterData['color_id']);
+                $query->where('slug', $filterData['color_slug']);
             });
         }
 
-        if (isset($filterData['size_id'])) {
+        if (isset($filterData['size_slug'])) {
             $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
-                $query->where('attribute_variation_id', $filterData['size_id']);
+                $query->where('slug', $filterData['size_slug']);
             });
         }
         $desc = $desc ?? 'asc';
@@ -199,5 +199,9 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
             return $query->where('name', 'LIKE', '%' . $key . '%')
                 ->orWhere('price', 'LIKE', '%' . $key . '%');
         });
+    }
+    public function findOrFailBySlug($slug)
+    {
+        return $this->model->where('slug', $slug)->firstOrFail();
     }
 }

@@ -7,6 +7,7 @@
 																								<a href="#" data-dismiss="modal" class="class pull-right"><span
 																																class="glyphicon glyphicon-remove"></span></a>
 																								<h5 class="modal-title" id="modal-title">{{ $productModal->name }}</h5>
+																								<input type="hidden" name="slug" id="slug" valu="{{ $productModal->slug }}">
 																								<span class="close">
 																												<i class="ti ti-x"></i>
 																								</span>
@@ -71,7 +72,8 @@
 																																								<strong id="countdown-flashsale-product-modal"></strong>
 																																				</div>
 																																				<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Đã bán :
-																																								{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}</div>
+																																								{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}
+																																				</div>
 																																</div>
 																												@endif
 
@@ -107,21 +109,21 @@
 																																				<div class="row">
 																																								<div class="col-md-12">
 																																												<span>{{ $item->attribute->name }}: <strong
-																																																				id="attribute_variation_name_modal{{ $item->attribute->id }}">Black</strong></span><br>
+																																																				id="attribute_variation_name_modal{{ $item->attribute->slug }}">Black</strong></span><br>
 																																												<x-input id="hiddenAttributeModal" type="hidden"
-																																																name="attribute_variation_modal_ids[{{ $item->attribute->id }}]" />
+																																																name="attribute_variation_modal_slugs[{{ $item->attribute->slug }}]" />
 																																												<div class="row me-3 mt-2">
 																																																@foreach ($item->attribute->variations as $attributeVariation)
 																																																				@if ($item->attribute->type == App\Enums\Attribute\AttributeType::Color)
 																																																								<a style="background-color: {{ $attributeVariation->meta_value['color'] }}"
 																																																												data-attribute-name="{{ $attributeVariation->name }}"
-																																																												data-attribute-id="{{ $item->attribute->id }}"
-																																																												data-attribute-variation-id="{{ $attributeVariation->id }}"
+																																																												data-attribute-slug="{{ $item->attribute->slug }}"
+																																																												data-attribute-variation-slug="{{ $attributeVariation->slug }}"
 																																																												class="col-2 custom-col btn btn-sm square-btn color-btn-modal mb-2 h-16 w-16"></a>
 																																																				@else
 																																																								<a data-attribute-name="{{ $attributeVariation->name }}"
-																																																												data-attribute-id="{{ $item->attribute->id }}"
-																																																												data-attribute-variation-id="{{ $attributeVariation->id }}"
+																																																												data-attribute-slug="{{ $item->attribute->slug }}"
+																																																												data-attribute-variation-slug="{{ $attributeVariation->slug }}"
 																																																												class="col-2 custom-col btn btn-sm square-btn capacity-btn-modal mb-2 w-5">
 																																																												<p class="me-2 ms-2 mt-3">{{ $attributeVariation->name }}
 																																																												</p>
@@ -151,8 +153,8 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
-																																												disabled class="btn btn-default w-100 mt-2"><strong>Mua
+																																				<div class="col-md-3"><button onclick="buyNowModal()" disabled
+																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
 																												@else
@@ -175,7 +177,7 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
+																																				<div class="col-md-3"><button onclick="buyNowModal()"
 																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
@@ -320,8 +322,7 @@
 																																<div class="col-md-4"><button class="btn btn-default-primary w-100 mt-2"><strong>Thêm
 																																												vào
 																																												giỏ</strong></button></div>
-																																<div class="col-md-3"><button id="btnBuyNowModal"
-																																								class="btn btn-default w-100 mt-2"><strong>Mua
+																																<div class="col-md-3"><button class="btn btn-default w-100 mt-2"><strong>Mua
 																																												ngay</strong></button></div>
 																												</div>
 																												<div style="border-top: 1px solid #f5f5f5" class="row mt-3">
@@ -374,26 +375,29 @@
 
 								$('.color-btn-modal, .capacity-btn-modal').click(function() {
 												var attributeName = $(this).data('attribute-name');
-												var attributeId = $(this).data('attribute-id');
-												var attributeVariationId = $(this).data('attribute-variation-id');
+												var attributeSlug = $(this).data('attribute-slug');
+												var attributeVariationSlug = $(this).data('attribute-variation-slug');
 												let hiddenAttributeModalValues = [];
 												const elements = document.querySelectorAll("#hiddenAttributeModal");
+												const productSlug = $('#slug').val();
 
-												$('#attribute_variation_name_modal' + attributeId).text(attributeName);
+												$('#attribute_variation_name_modal' + attributeSlug).text(attributeName);
 
-												$('input[name="attribute_variation_modal_ids[' + attributeId + ']"]').val(
-																attributeVariationId);
+												$('input[name="attribute_variation_modal_slugs[' + attributeSlug + ']"]').val(
+																attributeVariationSlug);
 
 												elements.forEach(element => {
 																hiddenAttributeModalValues.push(element.value);
 												});
 												const hasEmpty = hiddenAttributeModalValues.some(value => value === '');
+												console.log(hiddenAttributeModalValues);
 												if (!hasEmpty) {
 																$.ajax({
 																				type: "GET",
-																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
+																				url: '{{ route('user.product.findVariation', ['slug' => 'productSlug']) }}'
+																								.replace('productSlug', productSlug),
 																				data: {
-																								attribute_variation_ids: hiddenAttributeModalValues,
+																								attribute_variation_slugs: hiddenAttributeModalValues,
 																								product_id: $('input[name="hidden_product_id_modal"]').val()
 																				},
 																				success: function(response) {
@@ -408,6 +412,7 @@
 																												$('input[name="hidden_product_variation_modal_id"]').val(response
 																																.data
 																																.id);
+
 																												$('#filter-input-detail-modal').removeAttr('readonly');
 																												$('#btnAddToCartModal').removeAttr('disabled');
 																												$('#btnBuyNowModal').removeAttr('disabled');
@@ -425,6 +430,7 @@
 												var productId = $('input[name="hidden_product_id_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
+												console.log(productId, productVariationId, qty);
 
 												$.ajax({
 																type: "POST",

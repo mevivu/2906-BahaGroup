@@ -13,6 +13,7 @@ use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderStatus;
+use App\Enums\Order\OrderReview;
 use App\Enums\Product\ProductType;
 use App\Traits\UseLog;
 use Exception;
@@ -211,6 +212,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $this->getCurrentUser();
         $isBuyNow = false;
         $this->data['order']['status'] = OrderStatus::Pending->value;
+        $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
         $this->data['order']['user_id'] = $user->id;
         $this->data['order']['user_id'] = $user->id;
@@ -287,7 +289,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             }
         } else {
             if ($total >= $discount->min_order_amount) {
-                $discountValue =  $discount->discount_value;
+                $discountValue = $discount->discount_value;
             } else {
                 return response()->json([
                     'status' => false,
