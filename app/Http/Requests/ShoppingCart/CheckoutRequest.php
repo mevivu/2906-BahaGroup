@@ -16,7 +16,11 @@ class CheckoutRequest extends BaseRequest
     protected function methodPost()
     {
         return [
+            'shopping_cart_id' => ['required'],
+            'qty' => ['required'],
             'code' => ['nullable', 'exists:App\Models\Discount,code'],
+            'shopping_cart_id' => ['required'],
+            'shopping_cart_id.*' => ['required', 'exists:App\Models\ShoppingCart,id'],
             'order.payment_method' => ['required', new Enum(PaymentMethod::class)],
             'order.email' => ['required'],
             'order.province_id' => ['required', 'exists:App\Models\Province,id'],
@@ -26,7 +30,7 @@ class CheckoutRequest extends BaseRequest
             'order.address' => ['required'],
             'order.phone' => ['required'],
             'order.note' => ['nullable'],
-            'order.fullname_other' => ['nullable'],
+            'order.name_other' => ['nullable'],
             'order.address_other' => ['nullable'],
             'order.phone_other' => ['nullable'],
             'order.note_other' => ['nullable'],

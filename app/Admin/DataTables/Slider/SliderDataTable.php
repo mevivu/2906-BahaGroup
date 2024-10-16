@@ -22,13 +22,14 @@ class SliderDataTable extends BaseDataTable
 
     public function __construct(
         SliderRepositoryInterface $repository
-    ){
+    ) {
         parent::__construct();
 
         $this->repository = $repository;
     }
 
-    public function setView(){
+    public function setView()
+    {
         $this->view = [
             'action' => 'admin.sliders.datatable.action',
             'editlink' => 'admin.sliders.datatable.editlink',
@@ -61,7 +62,7 @@ class SliderDataTable extends BaseDataTable
     protected function setCustomEditColumns()
     {
         $this->customEditColumns = [
-            'item' => $this->view['items'],
+            'items' => $this->view['items'],
             'status' => $this->view['status'],
             'name' => $this->view['editlink'],
             'created_at' => '{{ date("d-m-Y", strtotime($created_at)) }}',
@@ -80,10 +81,12 @@ class SliderDataTable extends BaseDataTable
         return 'slider_' . date('YmdHis');
     }
 
-    protected function addColumnAction(){
+    protected function addColumnAction()
+    {
         $this->instanceDataTable = $this->instanceDataTable->addColumn('action', $this->view['action']);
     }
-    protected function setCustomRawColumns(){
+    protected function setCustomRawColumns()
+    {
         $this->customRawColumns = ['name', 'status', 'items', 'action'];
     }
 

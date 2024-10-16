@@ -1,197 +1,66 @@
 <div id="product-category" class="rounded-3 container shadow">
 				<div class="row">
 								<div class="col-12 header-box d-flex align-items-center nav-tabs-wrapper rounded-top bg-white shadow-sm">
-												<h5 class="mb-0">Thiết bị công nghệ hàng đầu</h5>
+												<h5 class="mb-0">{{ $settingsGeneral->where('setting_key', 'title_home_slider_1')->first()->plain_value }}
+												</h5>
 												<nav>
 																<div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
-																				<button class="nav-link tab-btn" id="nav-sport-tab" data-bs-toggle="tab" data-bs-target="#nav-sport"
-																								type="button" role="tab" aria-controls="nav-sport" aria-selected="false">Sports &
-																								Travel</button>
-																				<button class="nav-link tab-btn" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv"
-																								type="button" role="tab" aria-controls="nav-tv" aria-selected="false">TV & Home
-																								Appliances</button>
-																				<button class="nav-link tab-btn" id="nav-tv-tab" data-bs-toggle="tab" data-bs-target="#nav-tv"
-																								type="button" role="tab" aria-controls="nav-tv" aria-selected="false">TV & Home
-																								Appliances</button>
-																				<button class="nav-link tab-btn active" id="nav-home-tab" data-bs-toggle="tab"
-																								data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-																								aria-selected="true">Home & Kitchen</button>
+																				@foreach ($homeSliderCategory1 as $category1)
+																								<button class="nav-link tab-btn {{ $loop->first ? 'active' : '' }}" data-bs-toggle="tab"
+																												data-bs-target="#nav-home-category1-{{ $category1->id }}" type="button" role="tab"
+																												aria-controls="nav-sport" aria-selected="false">{{ $category1->name }}</button>
+																				@endforeach
 																				<button id="allBtn" class="nav-link"
 																								onclick="location.href='{{ route('user.product.indexUser') }}';" type="button" role="tab"
-																								aria-controls="nav-home" aria-selected="true">Tất cả</button>
+																								aria-selected="true">Tất cả</button>
 																</div>
 												</nav>
 								</div>
 								<div class="col-12 col-md-2 p-0">
 												<a href="#" class="banner-img">
-																<img loading="lazy" decoding="async" src="{{ asset('public/user/assets/images/banner-home2-04.jpg') }}"
-																				class="d-none d-xl-inline-block" alt="">
+																<img class="img-fluid" loading="lazy" decoding="async"
+																				src="{{ asset($settingsGeneral->where('setting_key', 'image_home_slider_1')->first()->plain_value) }}"
+																				class="d-none d-xl-inline-block" alt="" width="220">
 												</a>
 								</div>
 								<div class="col-12 col-md-10">
 												<div class="tab-content" id="nav-tabContent">
-																<div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-																				<div id="productCarousel-1" class="carousel slide">
-																								<div class="carousel-inner">
-																												<!-- Slide 1 -->
-																												<div class="carousel-item active">
-																																<div class="container">
-																																				<div class="row">
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																				</div>
-																																</div>
-																												</div>
-																												<!-- Slide 2 -->
-																												<div class="carousel-item">
-																																<div class="container">
-																																				<div class="row">
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
+																@foreach ($homeSliderCategory1 as $category1)
+																				<div id="nav-home-category1-{{ $category1->id }}"
+																								class="tab-pane fade show {{ $loop->first ? 'active' : '' }}" role="tabpanel"
+																								aria-labelledby="nav-home-tab">
+																								<div id="productCarousel-1-{{ $category1->id }}" class="product-carousel-home carousel slide">
+																												<div class="carousel-inner">
+																																@php
+																																				$chunks = array_chunk($category1->products->all(), 4);
+																																@endphp
+																																@foreach ($chunks as $index => $chunk)
+																																				<div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+																																								<div class="container">
+																																												<div class="row">
+																																																@foreach ($chunk as $product)
+																																																				<div class="col-md-3 mb-4">
+																																																								<x-cardproduct :item="$product" />
+																																																				</div>
+																																																@endforeach
+																																												</div>
 																																								</div>
 																																				</div>
-																																</div>
+																																@endforeach
 																												</div>
+																												@if (count($chunks) > 1)
+																																<button class="carousel-control-prev left-btn-slider" type="button"
+																																				data-bs-target="#productCarousel-1-{{ $category1->id }}" data-bs-slide="prev">
+																																				<i class="fa fa-chevron-left" aria-hidden="true"></i>
+																																</button>
+																																<button class="carousel-control-next right-btn-slider" type="button"
+																																				data-bs-target="#productCarousel-1-{{ $category1->id }}" data-bs-slide="next">
+																																				<i class="fa fa-chevron-right" aria-hidden="true"></i>
+																																</button>
+																												@endif
 																								</div>
-																								<!-- Điều khiển carousel -->
-																								<button class="carousel-control-prev left-btn-slider" type="button"
-																												data-bs-target="#productCarousel-1" data-bs-slide="prev">
-																												<i class="fa fa-chevron-left" aria-hidden="true"></i>
-																								</button>
-																								<button class="carousel-control-next right-btn-slider" type="button"
-																												data-bs-target="#productCarousel-1" data-bs-slide="next">
-																												<i class="fa fa-chevron-right" aria-hidden="true"></i>
-																								</button>
 																				</div>
-																</div>
-																<div class="tab-pane fade" id="nav-sport" role="tabpanel" aria-labelledby="nav-sport-tab">
-																				<div id="productCarousel-2" class="carousel slide">
-																								<div class="carousel-inner">
-																												<!-- Slide 1 -->
-																												<div class="carousel-item active">
-																																<div class="container">
-																																				<div class="row">
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																				</div>
-																																</div>
-																												</div>
-																												<!-- Slide 2 -->
-																												<div class="carousel-item">
-																																<div class="container">
-																																				<div class="row">
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																				</div>
-																																</div>
-																												</div>
-																												<!-- Thêm nhiều slide khác ở đây nếu cần -->
-																								</div>
-																								<!-- Điều khiển carousel -->
-																								<button class="carousel-control-prev left-btn-slider" type="button"
-																												data-bs-target="#productCarousel-2" data-bs-slide="prev">
-																												<i class="fa fa-chevron-left" aria-hidden="true"></i>
-																								</button>
-																								<button class="carousel-control-next right-btn-slider" type="button"
-																												data-bs-target="#productCarousel-2" data-bs-slide="next">
-																												<i class="fa fa-chevron-right" aria-hidden="true"></i>
-																								</button>
-																				</div>
-																</div>
-																<div class="tab-pane fade" id="nav-tv" role="tabpanel" aria-labelledby="nav-tv-tab">
-																				<div id="productCarousel-3" class="carousel slide">
-																								<div class="carousel-inner">
-																												<!-- Slide 1 -->
-																												<div class="carousel-item active">
-																																<div class="container">
-																																				<div class="row">
-
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																				</div>
-																																</div>
-																												</div>
-																												<!-- Slide 2 -->
-																												<div class="carousel-item">
-																																<div class="container">
-																																				<div class="row">
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																								<div class="col-6 col-md-3 mb-4">
-																																												<x-card />
-																																								</div>
-																																				</div>
-																																</div>
-																												</div>
-																												<!-- Thêm nhiều slide khác ở đây nếu cần -->
-																								</div>
-																								<!-- Điều khiển carousel -->
-																								<button class="carousel-control-prev left-btn-slider" type="button"
-																												data-bs-target="#productCarousel-3" data-bs-slide="prev">
-																												<i class="fa fa-chevron-left" aria-hidden="true"></i>
-																								</button>
-																								<button class="carousel-control-next right-btn-slider" type="button"
-																												data-bs-target="#productCarousel-3" data-bs-slide="next">
-																												<i class="fa fa-chevron-right" aria-hidden="true"></i>
-																								</button>
-																				</div>
-																</div>
+																@endforeach
 												</div>
 								</div>
 				</div>

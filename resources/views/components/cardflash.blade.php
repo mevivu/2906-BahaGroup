@@ -2,10 +2,10 @@
 </style>
 <div class="card hover-shadow border-0 shadow-sm">
 				<div class="position-relative">
-								<img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';"
+								<img onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}';"
 												class="card-img-top img-default" src="{{ asset($item->product->avatar) }}" style="cursor: pointer;"
 												alt="Product 3">
-								<img onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';"
+								<img onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}';"
 												class="card-img-top img-hover" src="{{ asset($item->product->gallery[0]) }}" alt="Product 3"
 												style="display: none;cursor: pointer;">
 								@if ($item->product->type == \App\Enums\Product\ProductType::Simple)
@@ -19,7 +19,7 @@
 				</div>
 				<div class="card-body">
 								<h6 class="card-title">
-												<x-link class="text-black" :href="route('user.product.detail', ['id' => $item->product->id])">
+												<x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->product->slug])">
 																{{ $item->product->name }}
 												</x-link>
 								</h6>
@@ -31,10 +31,11 @@
 												<span>{{ $item->product->reviews->count() }}</span>
 								</div>
 								@if ($item->product->type == \App\Enums\Product\ProductType::Simple)
-												<p><del>{{ format_price($item->product->price) }}</del> <strong
+												<p class="text-price"><del>{{ format_price($item->product->price) }}</del> <strong
 																				class="text-red">{{ format_price($item->product->promotion_price) }}</strong></p>
 								@else
-												<p><strong class="text-red">{{ format_price($item->product->productVariations()->min('promotion_price')) }}
+												<p class="text-price"><strong
+																				class="text-red">{{ format_price($item->product->productVariations()->min('promotion_price')) }}
 																				- {{ format_price($item->product->productVariations()->max('promotion_price')) }}</strong>
 												</p>
 								@endif
@@ -55,7 +56,7 @@
 																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
 																								onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i>
 																@else
-																				<i onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}'"
+																				<i onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}'"
 																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
 																								onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i>
 																@endif

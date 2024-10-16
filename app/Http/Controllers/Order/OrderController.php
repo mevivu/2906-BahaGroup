@@ -64,6 +64,14 @@ class OrderController extends Controller
 
         $reviewedProducts = [];
         foreach ($productIds as $productId) {
+            if (
+                $this->reviewRepository->getQueryBuilder()
+                    ->where('product_id', $productId)
+                    ->where('order_id', $id)->first()
+            ) {
+                continue;
+            }
+
             $data = [
                 'user_id' => auth()->id(),
                 'rating' => $request->query('rating'),
@@ -71,6 +79,7 @@ class OrderController extends Controller
                 'product_id' => $productId,
                 'order_id' => $id,
             ];
+
             $this->reviewRepository->create($data);
             $reviewedProducts[] = $productId;
         }
@@ -133,8 +142,13 @@ class OrderController extends Controller
     public function cancel($id)
     {
         $result = $this->service->cancel($id);
+
         if ($result) {
-            return to_route($this->route['index'])->with('success', __('Từ chối đơn hàng thành công'));
+            if (auth('admin')->user()) {
+                return to_route('admin.order.index')->with('success', __('Từ chối đơn hàng thành công'));
+            } else {
+                return to_route('user.order.indexUser')->with('success', __('Hủy đơn hàng thành công'));
+            }
         }
         return to_route($this->route['index'])->with('error', __('Từ chối đơn hàng thất bại'));
     }

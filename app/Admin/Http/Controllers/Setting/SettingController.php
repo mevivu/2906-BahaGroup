@@ -44,12 +44,6 @@ class SettingController extends Controller
         return view($this->view['general'], compact('settings'));
     }
 
-    public function slider()
-    {
-        $settings = $this->repository->getByGroup([SettingGroup::Slider]);
-        return view($this->view['general'], compact('settings'));
-    }
-
     public function information()
     {
         $settings = $this->repository->getByGroup([SettingGroup::Information]);

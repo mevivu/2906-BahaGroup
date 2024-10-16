@@ -2,27 +2,29 @@
 
 namespace App\Views;
 
-use App\Admin\Repositories\Category\CategoryRepositoryInterface;
+use App\Admin\Repositories\Setting\SettingRepositoryInterface;
+use App\Admin\Repositories\Slider\SliderRepositoryInterface;
 use Illuminate\View\Component;
 use App\Admin\Traits\GetConfig;
-
-use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Setting\SettingGroup;
 
 class Slider extends Component
 {
     use GetConfig;
 
+    protected SliderRepositoryInterface $sliderRepository;
     protected SettingRepositoryInterface $settingRepository;
 
-    public function __construct(SettingRepositoryInterface $settingRepository)
+    public function __construct(SliderRepositoryInterface $sliderRepository, SettingRepositoryInterface $settingRepository)
     {
+        $this->sliderRepository = $sliderRepository;
         $this->settingRepository = $settingRepository;
     }
 
     public function render()
     {
-        $settingsSlider = $this->settingRepository->getByGroup([SettingGroup::Slider]);
-        return view('components.slider', compact('settingsSlider'));
+        $slider = $this->sliderRepository->findByField('plain_key', 'home');
+        $settingsSlider = $this->settingRepository->getByGroup([SettingGroup::General]);
+        return view('components.slider', compact('slider', 'settingsSlider'));
     }
 }

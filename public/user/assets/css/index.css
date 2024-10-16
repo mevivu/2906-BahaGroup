@@ -262,6 +262,10 @@ li {
         align-items: center;
     }
 
+    .text-price {
+        font-size: 12px !important;
+    }
+
     cart .filter-icon {
         display: block;
     }
@@ -1466,4 +1470,102 @@ div.dataTables_wrapper div.dataTables_processing {
     top: 8px;
     color: #FFA500;
     font-size: 20px;
+}
+
+.flashsale-price {
+    display: inline-block;
+    padding: 5px 10px;
+    background: linear-gradient(45deg, #ff6b6b, #feca57);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    animation: flash 2s infinite;
+}
+
+.flashsale-price::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: lightning 3s infinite;
+}
+
+@keyframes flash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes lightning {
+    0% {
+        transform: translateX(-50%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(150%) rotate(45deg);
+    }
+}
+
+.size-filter {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.size-filter input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border-radius: 20%;
+    border: 2px solid black;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.size-filter #checkAll,
+input:checked~.checkmark:after {
+    display: block;
+}
+
+.size-filter .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid #eee;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

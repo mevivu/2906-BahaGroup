@@ -12,7 +12,7 @@
 																												@foreach ($category->children as $item)
 																																<div class="mega-column">
 																																				<x-link class="text-black" :href="route('user.product.indexUser', ['category_ids[]' => $item->id])">
-																																								<h3>{{ $item->name }}</h3>
+																																								<h3><i class="{{ $item->icon }} me-2"></i>{{ $item->name }}</h3>
 																																				</x-link>
 																																				@foreach ($item->children as $children)
 																																								<ul class="sub-category">
@@ -20,7 +20,7 @@
 																																																<x-link class="text-black" :href="route('user.product.indexUser', [
 																																																    'category_ids[]' => $children->id,
 																																																])">
-																																																				{{ $children->name }}
+																																																				<i class="{{ $children->icon }} me-2"></i>{{ $children->name }}
 																																																</x-link>
 																																												</li>
 																																								</ul>

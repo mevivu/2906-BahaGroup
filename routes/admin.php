@@ -184,7 +184,6 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
                 Route::get('/general', 'general')->name('general');
                 Route::get('/footer', 'footer')->name('footer');
                 Route::get('/contact', 'contact')->name('contact');
-                Route::get('/slider', 'slider')->name('slider');
                 Route::get('/information', 'information')->name('information');
             });
             Route::put('/update', 'update')->name('update');
@@ -412,9 +411,6 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         Route::prefix('/select')->as('select.')->group(function () {
             Route::get('/user', [App\Admin\Http\Controllers\User\UserSearchSelectController::class, 'selectSearch'])->name('user');
             Route::get('/product', [App\Admin\Http\Controllers\Product\ProductSearchSelectController::class, 'selectSearch'])->name('product');
-            Route::get('/province', [App\Admin\Http\Controllers\Province\ProvinceSearchSelectController::class, 'selectSearch'])->name('province');
-            Route::get('/district', [App\Admin\Http\Controllers\District\DistrictSearchSelectController::class, 'selectSearch'])->name('district');
-            Route::get('/ward', [App\Admin\Http\Controllers\Ward\WardSearchSelectController::class, 'selectSearch'])->name('ward');
             Route::get('/discount', [App\Admin\Http\Controllers\Discount\DiscountSearchSelectController::class, 'selectSearch'])->name('discount');
         });
         Route::get('/render-product-and-variation', [App\Admin\Http\Controllers\Product\ProductController::class, 'searchRenderProductAndVariationOrder'])->name('render_product_and_variation');
@@ -422,4 +418,12 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
     });
 
     Route::post('/logout', [App\Admin\Http\Controllers\Auth\LogoutController::class, 'logout'])->name('logout');
+});
+
+Route::prefix('/search')->as('search.')->group(function () {
+    Route::prefix('/select')->as('select.')->group(function () {
+        Route::get('/province', [App\Admin\Http\Controllers\Province\ProvinceSearchSelectController::class, 'selectSearch'])->name('province');
+        Route::get('/district', [App\Admin\Http\Controllers\District\DistrictSearchSelectController::class, 'selectSearch'])->name('district');
+        Route::get('/ward', [App\Admin\Http\Controllers\Ward\WardSearchSelectController::class, 'selectSearch'])->name('ward');
+    });
 });

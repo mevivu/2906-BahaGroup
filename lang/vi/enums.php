@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Category\HomeSliderOption;
 use App\Enums\DefaultActiveStatus;
 use App\Enums\DefaultStatus;
 use App\Enums\Discount\DiscountType;
@@ -22,6 +23,10 @@ return [
     DefaultActiveStatus::class => [
         DefaultActiveStatus::Active->value => 'Có',
         DefaultActiveStatus::UnActive->value => 'Không',
+    ],
+    HomeSliderOption::class => [
+        HomeSliderOption::Active->value => 'Có',
+        HomeSliderOption::InActive->value => 'Không',
     ],
     SliderStatus::class => [
         SliderStatus::Active => 'Đang hoạt động',

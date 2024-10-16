@@ -30,7 +30,8 @@
 																				<p class="me-3 ms-3">
 																								{{ $settingsInformation->where('setting_key', 'infor_card_content_1')->first()->plain_value }}
 																				</p>
-																				<a class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
+																				<a onclick="location.href='{{ route('user.product.saleLimited') }}'"
+																								class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
 																</div>
 																<div class="col-4 col-md-12 col-12 mb-3 bg-white shadow">
 																				<div style="margin-top: 2rem;"></div>
@@ -42,7 +43,8 @@
 																				<p class="me-3 ms-3">
 																								{{ $settingsInformation->where('setting_key', 'infor_card_content_2')->first()->plain_value }}
 																				</p>
-																				<a class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
+																				<a onclick="location.href='{{ route('user.product.saleLimited') }}'"
+																								class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
 																</div>
 																<div class="col-4 col-md-12 col-12 mb-3 bg-white shadow">
 																				<div style="margin-top: 2rem;"></div>
@@ -54,7 +56,8 @@
 																				<p class="me-3 ms-3">
 																								{{ $settingsInformation->where('setting_key', 'infor_card_content_3')->first()->plain_value }}
 																				</p>
-																				<a class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
+																				<a onclick="location.href='{{ route('user.product.saleLimited') }}'"
+																								class="btn btn-default mb-4 me-3 ms-3">Xem thêm</a>
 																</div>
 												</div>
 								</div>
