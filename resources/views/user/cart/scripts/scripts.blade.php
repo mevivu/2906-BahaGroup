@@ -43,10 +43,10 @@
 				}
 
 				function incrementCart(button) {
+								$(button).prop('disabled', true);
 								var id = $(button).data('id');
 								var input = $(`#quantity-input` + id);
 								var hiddenValue = $(`input[name="hidden_product_qty${id}"]`);
-								var code = $(`#discount_code`).val();
 
 								if (input.val() == hiddenValue.val()) {
 												Swal.fire({
@@ -63,20 +63,20 @@
 																url: '{{ route('user.cart.increament') }}',
 																data: {
 																				id: id,
-																				code: code,
 																				_token: '{{ csrf_token() }}'
 																},
 																success: function(response) {
 																				updateText(response);
+																				$(button).prop('disabled', false);
 																},
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: false
 																				});
-																				$('#discountValue').text('0đ');
+																				$(button).prop('disabled', true);
 																}
 												});
 												updateProductTotal(id);
@@ -84,10 +84,10 @@
 				}
 
 				function decrementCart(button) {
+								$(button).prop('disabled', true);
 								var id = $(button).data('id');
 								var input = $(`#quantity-input` + id);
 								var currentValue = parseInt(input.val());
-								var code = $(`#discount_code`).val();
 								if (currentValue == 1) {
 												const row = button.closest('tr');
 												if (row) {
@@ -100,11 +100,11 @@
 												url: '{{ route('user.cart.decreament') }}',
 												data: {
 																id: id,
-																code: code,
 																_token: '{{ csrf_token() }}'
 												},
 												success: function(response) {
 																updateText(response);
+																$(button).prop('disabled', false);
 												},
 												error: function(response) {
 																Swal.fire({
@@ -114,6 +114,7 @@
 																				showConfirmButton: true
 																});
 																updateText(response.responseJSON);
+																$(button).prop('disabled', false);
 												}
 								});
 								updateProductTotal(id);
@@ -142,7 +143,6 @@
 																								},
 																								success: function(response) {
 																												updateText(response);
-																												$('#discount_code').val('');
 																								},
 																								error: function(response) {
 																												Swal.fire({
@@ -191,14 +191,12 @@
 												input.value = 1;
 								}
 								var qty = parseInt($(input).val());
-								var discount_code = $(`#discount_code`).val();
 								$.ajax({
 												type: "PUT",
 												url: '{{ route('user.cart.update') }}',
 												data: {
 																id: id,
 																qty: qty,
-																code: discount_code,
 																_token: '{{ csrf_token() }}',
 												},
 												success: function(response) {
@@ -211,7 +209,7 @@
 																				text: `${response.responseJSON.message}`,
 																				showConfirmButton: true
 																});
-																$('#discountValue').text('0đ');
+																input.value = 1;
 												}
 								});
 								updateProductTotal(id);

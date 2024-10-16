@@ -89,7 +89,6 @@
 																																				</tr>
 																																@endforeach
 																												@else
-																																<!-- Dành cho người dùng không đăng nhập -->
 																																@foreach ($shoppingCart as $item)
 																																				<tr class="bold-text">
 																																								<td data-label="Sản phẩm">
@@ -103,7 +102,7 @@
 																																																								{{ $item['product']->name }}</div>
 																																																				@if ($item['product_variation_id'])
 																																																								<div class="product-color">
-																																																												@foreach ($item['product_id']->productVariations()->where('id', $item['product_variation_id'])->first()->attributeVariations as $attributeVariation)
+																																																												@foreach ($item['product']->productVariations()->where('id', $item['product_variation_id'])->first()->attributeVariations as $attributeVariation)
 																																																																{{ $attributeVariation->name }}
 																																																																@if (!$loop->last)
 																																																																				,
@@ -131,19 +130,19 @@
 																																								<td class="align-middle" data-label="Số lượng">
 																																												<div class="d-flex align-items-center justify-content-center">
 																																																@if ($item['product_variation_id'])
-																																																				<x-input type="hidden" name="hidden_product_qty{{ $item['product'] }}"
+																																																				<x-input type="hidden" name="hidden_product_qty{{ $item['id'] }}"
 																																																								:value="$item['product']->qty" />
 																																																@else
-																																																				<x-input type="hidden" name="hidden_product_qty{{ $item['product'] }}"
+																																																				<x-input type="hidden" name="hidden_product_qty{{ $item['id'] }}"
 																																																								:value="$item['product']->qty" />
 																																																@endif
-																																																<button data-id="{{ $item['product'] }}" class="btn btn-default"
+																																																<button data-id="{{ $item['id'] }}" class="btn btn-default"
 																																																				type="button" onclick="decrementCart(this)">-</button>
-																																																<input data-id="{{ $item['product'] }}" onblur="isEnoughQuantityCart(this)"
-																																																				id="quantity-input{{ $item['product_id'] }}"
+																																																<input data-id="{{ $item['id'] }}" onblur="isEnoughQuantityCart(this)"
+																																																				id="quantity-input{{ $item['id'] }}"
 																																																				class="form-control mx-2 text-center" value="{{ $item['qty'] }}"
 																																																				min="1" style="width: 60px;">
-																																																<button data-id="{{ $item['product_id'] }}" class="btn btn-default"
+																																																<button data-id="{{ $item['id'] }}" class="btn btn-default"
 																																																				type="button" onclick="incrementCart(this)">+</button>
 																																												</div>
 																																								</td>
@@ -161,7 +160,7 @@
 																																												        : format_price($item['product']->promotion_price * $item['qty'])) }}
 																																								</td>
 																																								<td class="delete-cell align-middle" style="font-size: 1.5em;">
-																																												<i data-id="{{ $item['product'] }}" style="cursor: pointer"
+																																												<i data-id="{{ $item['id'] }}" style="cursor: pointer"
 																																																onclick="removeCart(this)" class="ti ti-trash-x text-danger"></i>
 																																								</td>
 																																				</tr>
@@ -171,6 +170,19 @@
 
 																								</tbody>
 																				</table>
+																				<div class="progress-container">
+																								<div style="width: {{ ($total / $object) * 100 >= 100 ? '100' : round(($total / $object) * 100) }}%"
+																												class="progress-bar" id="progressBar"></div>
+																								<div class="progress-content">
+																												<span
+																																id="progressText">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}%</span>
+																								</div>
+																				</div>
+																				<p class="mt-3 text-center">Bạn đã chi
+																								<strong id="total-spend" class="text-default">{{ format_price($total) }}</strong>
+																								Chúng tôi sẽ <strong>MIỄN PHÍ VẬN CHUYỂN!</strong> giao hàng miễn phí cho đơn hàng từ<br>
+																								<strong class="text-default">3,000,000₫</strong>
+																				</p>
 																</div>
 
 																<div class="col-md-4 mb-3 mt-3">
