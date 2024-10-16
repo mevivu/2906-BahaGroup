@@ -166,11 +166,9 @@
 @push('custom-js')
 				<script>
 								function updateText(response) {
-												$('#totalOrder').text(response.data.total.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-												$('#discountValue').text(response.data.discount_value.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-												$('#totalAfterDiscount').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN').replace(
-																				'.', ',') +
-																'đ');
+												$('#totalOrder').text(formatPrice(response.data.total));
+												$('#discountValue').text(formatPrice(response.data.discount_value));
+												$('#totalAfterDiscount').text(formatPrice((response.data.total - response.data.discount_value)));
 								}
 
 								function getUrlParameter(name) {

@@ -15,14 +15,9 @@
 				function updateText(response) {
 								$('#cart-count-mobile').text(response.data.count);
 								$('#cart-count').text(response.data.count);
-								$('#total-spend').text((response.data.total).toLocaleString('vi-VN').replace(
-																'.', ',') +
-												'đ');
-								$('#totalOrder').text(response.data.total.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-								$('#totalAfterDiscount').text((response.data.total).toLocaleString('vi-VN')
-												.replace(
-																'.', ',') +
-												'đ');
+								$('#total-spend').text(formatPrice(response.data.total))
+								$('#totalOrder').text(formatPrice(response.data.total));
+								$('#totalAfterDiscount').text(formatPrice(response.data.total));
 								updateProgress(response.data.total, {{ $object }})
 				}
 
@@ -37,7 +32,7 @@
 												const price = parseFloat(priceElement.textContent.replace(/[^0-9.-]+/g,
 																""));
 												const newTotal = price * quantity;
-												const formattedPrice = newTotal.toLocaleString('vi-VN').replace('.', ',') + 'đ'
+												const formattedPrice = formatPrice(newTotal);
 												totalElement.textContent = formattedPrice;
 								}
 				}
