@@ -16,6 +16,8 @@ class CheckoutRequest extends BaseRequest
     protected function methodPost()
     {
         return [
+            'shopping_cart_id' => ['required'],
+            'qty' => ['required'],
             'code' => ['nullable', 'exists:App\Models\Discount,code'],
             'shopping_cart_id' => ['required'],
             'shopping_cart_id.*' => ['required', 'exists:App\Models\ShoppingCart,id'],

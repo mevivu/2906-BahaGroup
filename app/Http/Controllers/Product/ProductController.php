@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Product;
 
 use App;
-use App\Admin\Http\Requests\Product\ProductRequest;
 use App\Admin\Repositories\Review\ReviewRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Admin\Http\Resources\Product\ProductEditResource;
@@ -184,13 +183,10 @@ class ProductController extends Controller
         ];
     }
 
-    public function findVariation(Request $request)
+    public function findVariationByAttributeVariationIds(Request $request)
     {
         $id = $request->input('product_id');
-        $attributeVariations = $this->repositoryAttributeVariation->getQueryBuilder()
-            ->whereIn('slug', $request->input('attribute_variation_slugs'))
-            ->get();
-        $attributeVariationIds = $attributeVariations->pluck('id')->toArray();
+        $attributeVariationIds = $request->input('attribute_variation_ids');
         $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
             'productVariations.attributeVariations'
         ]);

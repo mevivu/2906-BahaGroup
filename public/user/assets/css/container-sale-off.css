@@ -100,8 +100,18 @@
     background-color: #1c5639;
 }
 
+
 #productCarousel .product-card:hover {}
 
 .product-hover {
     height: 0px;
+}
+
+
+.product-carousel-home .row {
+    justify-content: space-evenly;
+}
+
+.product-carousel-home .carousel-item {
+    padding: 20px 0;
 }

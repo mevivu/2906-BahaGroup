@@ -15,6 +15,9 @@ class SliderItemRequest extends BaseRequest
     {
         return [
             'title' => ['required', 'string'],
+            'sub_title_1' => ['nullable', 'string'],
+            'sub_title_2' => ['nullable', 'string'],
+            'btn_link' => ['nullable', 'string'],
             'slider_id' => ['required', 'exists:App\Models\Slider,id'],
             'link' => ['nullable'],
             'position' => ['required', 'integer'],
@@ -29,6 +32,9 @@ class SliderItemRequest extends BaseRequest
             'id' => ['required', 'exists:App\Models\SliderItem,id'],
             'slider_id' => ['required', 'exists:App\Models\Slider,id'],
             'title' => ['required', 'string'],
+            'sub_title_1' => ['nullable', 'string'],
+            'sub_title_2' => ['nullable', 'string'],
+            'btn_link' => ['nullable', 'string'],
             'link' => ['nullable'],
             'position' => ['required', 'integer'],
             'image' => ['required'],

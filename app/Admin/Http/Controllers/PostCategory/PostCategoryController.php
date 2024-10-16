@@ -22,15 +22,13 @@ class PostCategoryController extends Controller
     public function __construct(
         PostCategoryRepositoryInterface $repository,
         PostCategoryServiceInterface    $service
-    )
-    {
+    ) {
 
         parent::__construct();
 
         $this->repository = $repository;
 
         $this->service = $service;
-
     }
 
     public function getView(): array
@@ -92,7 +90,6 @@ class PostCategoryController extends Controller
                 'status' => PostCategoryStatus::asSelectArray()
             ],
         );
-
     }
 
     public function update(PostCategoryRequest $request): RedirectResponse
@@ -101,7 +98,6 @@ class PostCategoryController extends Controller
         $response = $this->service->update($request);
 
         return $this->handleUpdateResponse($response, $this->route['edit']);
-
     }
 
     public function delete($id): RedirectResponse
@@ -110,6 +106,5 @@ class PostCategoryController extends Controller
         $this->service->delete($id);
 
         return to_route($this->route['index'])->with('success', __('notifySuccess'));
-
     }
 }

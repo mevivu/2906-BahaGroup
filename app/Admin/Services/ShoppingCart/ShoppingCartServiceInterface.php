@@ -30,7 +30,9 @@ interface ShoppingCartServiceInterface
      * @return boolean
      */
     public function delete($id);
+    public function storeNotLogin(Request $request);
     public function checkout(Request $request);
     public function calculateDiscountValue($total, $discount);
     public function calculateTotal($shoppingCart);
+    public function calculateTotalFromSession($cart);
 }

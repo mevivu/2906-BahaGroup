@@ -19,7 +19,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
         Route::get('/{slug}', 'detail')->name('detail');
         Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
-        Route::get('/options/{slug}', 'findVariation')->name('findVariation');
+        Route::get('/find/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
         Route::get('/tim-kiem', 'searchProduct')->name('search');
         Route::post('/{slug}/danh-gia', 'review')->name('review');
     });

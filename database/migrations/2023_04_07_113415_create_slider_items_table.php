@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('slider_id');
             $table->string('title');
+            $table->string('sub_title_1');
+            $table->string('sub_title_2');
+            $table->string('btn_link');
             $table->text('link');
             $table->tinyInteger('position');
             $table->text('image');
@@ -33,7 +36,7 @@ return new class extends Migration
      */
     public function down()
     {
-		Schema::table('slider_items', function (Blueprint $table) {
+        Schema::table('slider_items', function (Blueprint $table) {
             // Drop foreign key constraint
             $table->dropForeign(['slider_id']);
         });

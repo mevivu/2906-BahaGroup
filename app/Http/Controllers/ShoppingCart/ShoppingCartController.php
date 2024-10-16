@@ -61,62 +61,62 @@ class ShoppingCartController extends Controller
     {
         $user = $this->getCurrentUser();
         $object = $this->settingRepository->getBy(['setting_key' => 'object_discount']);
+
         if ($user) {
             return view($this->view['index'], [
                 'shoppingCart' => $user->shopping_cart,
                 'total' => $this->service->calculateTotal($user->shopping_cart),
-                'discount_value' => 0,
                 'object' => $object[0]->plain_value,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
+                'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
+            ]);
+        } else {
+            $cart = session()->get('cart', []);
+            $shopping_cart = [];
+            foreach ($cart as $item) {
+                $shopping_cart[] = [
+                    'product_id' => $item['product_id'],
+                    'qty' => $item['qty'],
+                    'product_variation_id' => $item['product_variation_id'] ?? null,
+                    'product' => $this->repository->find($item['product_id']),
+                ];
+            }
+            return view($this->view['index'], [
+                'shoppingCart' => $shopping_cart,
+                'total' => $this->service->calculateTotalFromSession($cart),
+                'object' => $object[0]->plain_value,
+                'breadcrumbs' => $this->crums->add(__('Giỏ này'))->getBreadcrumbs()
             ]);
         }
-        return view($this->view['index'], [
-            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs(),
-            'total' => 0,
-            'shoppingCart' => [],
-            'object' => $object[0]->plain_value,
-            'discount_value' => 0
-        ]);
     }
+
 
     public function checkout(Request $request)
     {
         $user = $this->getCurrentUser();
 
         if ($user) {
-            $total = $this->service->calculateTotal($user->shopping_cart);
-            $discountValue = 0;
-
-            if ($request->input('code')) {
-                $discount = $this->discountRepository->findByField('code', $request->input('code'));
-
-                if ($discount && $total > $discount->min_order_amount && $discount->max_usage > 0) {
-                    $discountValue = $this->service->calculateDiscountValue($total, $discount);
-                }
-            }
             if ($request->query('cart_id')) {
                 $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
-
                 if ($cartItem) {
-
+                    $cartItem['qty'] = $request->input('qty');
                     $total = $this->service->calculateTotal($cartItem);
-
                     return view($this->view['payment'], [
                         'user' => $user,
                         'total' => $total,
+                        'isBuyNow' => true,
                         'shoppingCart' => [$cartItem],
-                        'discount_value' => $discountValue,
                         'payment_methods' => PaymentMethod::asSelectArray(),
                         'code' => $request->input('code') ?? null,
                         'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
                     ]);
                 }
             }
+            $total = $this->service->calculateTotal($user->shopping_cart);
             return view($this->view['payment'], [
                 'user' => $user,
                 'total' => $total,
+                'isBuyNow' => false,
                 'shoppingCart' => $user->shopping_cart,
-                'discount_value' => $discountValue,
                 'payment_methods' => PaymentMethod::asSelectArray(),
                 'code' => $request->input('code') ?? null,
                 'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
@@ -125,7 +125,7 @@ class ShoppingCartController extends Controller
         return view($this->view['payment'], [
             'shoppingCart' => [],
             'total' => 0,
-            'discount_value' => 0,
+            'isBuyNow' => true,
             'payment_methods' => PaymentMethod::asSelectArray(),
             'code' => $request->input('code') ?? null,
             'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
@@ -143,15 +143,16 @@ class ShoppingCartController extends Controller
 
     public function store(ShoppingCartRequest $request)
     {
-        $result = $this->service->store($request);
         $user = $this->getCurrentUser();
-        if ($result === 1) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
-            ], 400);
-        }
-        if ($result) {
+        if ($user) {
+            $result = $this->service->store($request);
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
+
             return response()->json([
                 'status' => true,
                 'data' => [
@@ -160,72 +161,109 @@ class ShoppingCartController extends Controller
                 ]
             ]);
         } else {
+            $result = $this->service->storeNotLogin($request);
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
+            $cart = session()->get('cart', []);
+            $count = 0;
+            foreach ($cart as $item) {
+                $count += $item['qty'];
+            }
             return response()->json([
-                'status' => false,
-            ], 400);
+                'status' => true,
+                'data' => [
+                    'total' =>  $this->service->calculateTotalFromSession($result),
+                    'count' => $count,
+                ]
+            ]);
         }
     }
 
+
+
     public function buyNow(ShoppingCartRequest $request)
     {
-        $result = $this->service->store($request);
+        $user = $this->getCurrentUser();
 
-        if ($result === 1) {
+        if ($user) {
+            $result = $this->service->store($request);
+            if ($result === 1) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
+                ], 400);
+            }
             return response()->json([
-                'status' => false,
-                'message' => 'Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa',
-            ], 400);
-        }
-        if ($result) {
+                'status' => true,
+                'data' => [
+                    'id' => $result[0]->id,
+                    'qty' => $request->input('qty')
+                ]
+            ], 200);
+        } else {
+            // Lưu giỏ hàng vào localStorage cho khách vãng lai
+            $cart = json_decode($request->input('cart'), true); // Lấy dữ liệu giỏ hàng từ frontend
+            if (!$cart) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Giỏ hàng rỗng',
+                ], 400);
+            }
+
+            // Xử lý logic mua ngay và trả về phản hồi cho frontend
             return response()->json([
                 'status' => true,
                 'message' => 'Mua hàng thành công!',
                 'data' => [
-                    'id' => $result->id // Trả về ID của giỏ hàng hoặc order để frontend redirect
+                    'cart' => $cart
                 ]
-            ], 200);
+            ]);
         }
-        return response()->json([
-            'status' => false,
-            'message' => 'Đã xảy ra lỗi trong quá trình mua hàng'
-        ], 500);
     }
+
 
     public function applyDiscountCode(ApplyDiscountCodeRequest $request)
     {
         $user = $this->getCurrentUser();
-        $total = $this->service->calculateTotal($user->shopping_cart);
-        $discount = $this->discountRepository->findByField('code', $request->input('code'));
-        if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
-            return response()->json([
-                'status' => false,
-                'data' => [
-                    'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
-                        . $total . ', giá trị đơn hàng đủ điều kiện: '
-                        . $discount->min_order_amount . '.',
-                    'total' => $total,
-                    'count' => $user->shopping_cart()->sum('qty'),
-                    'discount_value' => 0
-                ]
-            ], 400);
-        }
-        return response()->json([
-            'status' => true,
-            'data' => [
-                'total' => $total,
-                'count' => $user->shopping_cart()->sum('qty'),
-                'discount_value' => $this->service->calculateDiscountValue($total, $discount)
-            ]
-        ]);
-    }
-
-    public function increament(ChangeQtyRequest $request)
-    {
-        $result = $this->service->increament($request);
-        if ($result) {
-            $user = $this->getCurrentUser();
-            $total = $this->service->calculateTotal($user->shopping_cart);
-            if ($request->input('code')) {
+        if ($user) {
+            if ($request->input('cart_id')) {
+                $shoppingCart = $user->shopping_cart()->where('id', $request->input('cart_id'))->first();
+                if ($shoppingCart) {
+                    $shoppingCart['qty'] = $request->input('qty');
+                    $total = $this->service->calculateTotal($shoppingCart);
+                    $discount = $this->discountRepository->findByField('code', $request->input('code'));
+                    if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
+                        return response()->json([
+                            'status' => false,
+                            'data' => [
+                                'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
+                                    . $total . ', giá trị đơn hàng đủ điều kiện: '
+                                    . $discount->min_order_amount . '.',
+                                'total' => $total,
+                                'discount_value' => 0
+                            ]
+                        ], 400);
+                    }
+                    return response()->json([
+                        'status' => true,
+                        'data' => [
+                            'total' => $total,
+                            'discount_value' => $this->service->calculateDiscountValue($total, $discount)
+                        ]
+                    ]);
+                }
+                return response()->json([
+                    'status' => false,
+                    'data' => [
+                        'message' => 'Giỏ hàng không tồn tại!',
+                    ]
+                ], 400);
+            } else {
+                $total = $this->service->calculateTotal($user->shopping_cart);
                 $discount = $this->discountRepository->findByField('code', $request->input('code'));
                 if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
                     return response()->json([
@@ -235,7 +273,6 @@ class ShoppingCartController extends Controller
                                 . $total . ', giá trị đơn hàng đủ điều kiện: '
                                 . $discount->min_order_amount . '.',
                             'total' => $total,
-                            'count' => $user->shopping_cart()->sum('qty'),
                             'discount_value' => 0
                         ]
                     ], 400);
@@ -244,20 +281,26 @@ class ShoppingCartController extends Controller
                     'status' => true,
                     'data' => [
                         'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
                         'discount_value' => $this->service->calculateDiscountValue($total, $discount)
                     ]
                 ]);
-            } else {
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
-                        'discount_value' => 0
-                    ]
-                ]);
             }
+        }
+    }
+
+    public function increament(ChangeQtyRequest $request)
+    {
+        $result = $this->service->increament($request);
+        if ($result) {
+            $user = $this->getCurrentUser();
+            $total = $this->service->calculateTotal($user->shopping_cart);
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'total' => $total,
+                    'count' => $user->shopping_cart()->sum('qty'),
+                ]
+            ]);
         } else {
             return response()->json([
                 'status' => false,
@@ -271,39 +314,13 @@ class ShoppingCartController extends Controller
         if ($result) {
             $user = $this->getCurrentUser();
             $total = $this->service->calculateTotal($user->shopping_cart);
-            if ($request->input('code')) {
-                $discount = $this->discountRepository->findByField('code', $request->input('code'));
-                if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
-                    return response()->json([
-                        'status' => false,
-                        'data' => [
-                            'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
-                                . $total . ', giá trị đơn hàng đủ điều kiện: '
-                                . $discount->min_order_amount . '.',
-                            'total' => $total,
-                            'count' => $user->shopping_cart()->sum('qty'),
-                            'discount_value' => 0
-                        ]
-                    ], 400);
-                }
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
-                        'discount_value' => $this->service->calculateDiscountValue($total, $discount)
-                    ]
-                ]);
-            } else {
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
-                        'discount_value' => 0
-                    ]
-                ]);
-            }
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'total' => $total,
+                    'count' => $user->shopping_cart()->sum('qty'),
+                ]
+            ]);
         } else {
             return response()->json([
                 'status' => false,
@@ -317,39 +334,13 @@ class ShoppingCartController extends Controller
         if ($result) {
             $user = $this->getCurrentUser();
             $total = $this->service->calculateTotal($user->shopping_cart);
-            if ($request->input('code')) {
-                $discount = $this->discountRepository->findByField('code', $request->input('code'));
-                if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
-                    return response()->json([
-                        'status' => false,
-                        'data' => [
-                            'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
-                                . $total . ', giá trị đơn hàng đủ điều kiện: '
-                                . $discount->min_order_amount . '.',
-                            'total' => $total,
-                            'count' => $user->shopping_cart()->sum('qty'),
-                            'discount_value' => 0
-                        ]
-                    ], 400);
-                }
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
-                        'discount_value' => $this->service->calculateDiscountValue($total, $discount)
-                    ]
-                ]);
-            } else {
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'total' => $total,
-                        'count' => $user->shopping_cart()->sum('qty'),
-                        'discount_value' => 0
-                    ]
-                ]);
-            }
+            return response()->json([
+                'status' => true,
+                'data' => [
+                    'total' => $total,
+                    'count' => $user->shopping_cart()->sum('qty'),
+                ]
+            ]);
         } else {
             return response()->json([
                 'status' => false,
@@ -371,7 +362,6 @@ class ShoppingCartController extends Controller
                 'data' => [
                     'total' => $total,
                     'count' => $user->shopping_cart()->sum('qty'),
-                    'discount_value' => 0
                 ]
             ]);
         } else {

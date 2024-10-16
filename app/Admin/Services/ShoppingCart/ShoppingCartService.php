@@ -61,7 +61,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             $shoppingCart = $this->repository->getBy([
                 'user_id' => $this->getCurrentUserId(),
                 'product_id' => $this->data['product_id'],
-                'product_variation_id' => $this->data['product_variation_id'] ?? null, // Use null coalescing operator for optional product variation
+                'product_variation_id' => $this->data['product_variation_id'] ?? null,
             ]);
             $product = $this->productRepository->find($this->data['product_id']);
             if (!isset($shoppingCart[0])) {
@@ -83,8 +83,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
                     'qty' => $this->data['qty'],
                 ]);
-                DB::commit();
-                return $shoppingCart;
             } else {
                 if ($product->isSimple()) {
                     if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
@@ -99,14 +97,56 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     }
                 }
                 $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
-                DB::commit();
-                return $shoppingCart[0];
             }
+            DB::commit();
+            return $shoppingCart;
         } catch (Exception $e) {
             $this->logError('Failed to process shopping cart: ', $e);
             DB::rollBack();
             return false;
         }
+    }
+
+    public function storeNotLogin(Request $request)
+    {
+        $this->data = $request->validated();
+        $cart = session()->get('cart', []);
+        $product = $this->productRepository->find($this->data['product_id']);
+        foreach ($cart as $item) {
+            if ($item['product_id'] == $this->data['product_id']) {
+                if ($product->isSimple()) {
+                    if ($product->qty < intval($this->data['qty']) + $item['qty']) {
+                        return 1;
+                    }
+                } else {
+                    $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                    if ($productVariation->qty < intval($this->data['qty']) + $item['qty']) {
+                        return 1;
+                    }
+                }
+            }
+        }
+        $productExists = false;
+        foreach ($cart as &$item) {
+            if (
+                $item['product_id'] == $this->data['product_id'] &&
+                $item['product_variation_id'] == ($this->data['product_variation_id'] ?? null)
+            ) {
+                $item['qty'] += $this->data['qty'];
+                $productExists = true;
+                break;
+            }
+        }
+        if (!$productExists) {
+            $cart[] = [
+                'product_id' => intval($this->data['product_id']),
+                'product_variation_id' => $this->data['product_variation_id'] ?? null,
+                'qty' => intval($this->data['qty']),
+            ];
+        }
+        session()->put('cart', $cart);
+        session()->save();
+        return $cart;
     }
 
     public function update(Request $request)
@@ -170,6 +210,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $this->data = $request->validated();
         $user = $this->getCurrentUser();
+        $isBuyNow = false;
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
@@ -178,6 +219,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         DB::beginTransaction();
         try {
             $shopping_cart = $this->repository->findManyById($this->data['shopping_cart_id']);
+            foreach ($shopping_cart as $item) {
+                if ($item['qty'] != $this->data['qty'][$item->id]) {
+                    $item['qty'] = $this->data['qty'][$item->id];
+                    $isBuyNow = true;
+                }
+            }
             $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
             $this->prepareData($shopping_cart);
             if (isset($this->data['code'])) {
@@ -189,8 +236,13 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 $this->handleDiscount($order, $discount);
             }
             $this->storeOrderDetail($order->id, $this->orderDetails);
-            $shopping_cart->each(function ($item) {
-                $item->delete();
+            $shopping_cart->each(function ($item) use ($isBuyNow) {
+                if (!$isBuyNow) {
+                    $item->delete();
+                } else {
+                    $instance = $this->repository->find($item->id);
+                    $instance->update(['qty' => $instance->qty - $item->qty]);
+                }
             });
             DB::commit();
             return $order;
@@ -246,6 +298,27 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             }
         }
         return $discountValue;
+    }
+
+    public function calculateTotalFromSession($cart)
+    {
+        $total = 0;
+        foreach ($cart as $item) {
+            $product = $this->productRepository->find($item['product_id']);
+
+            if ($item['product_variation_id']) {
+                $productVariation = $product->productVariations()->where('id', $item['product_variation_id'])->first();
+                $total += $product->on_flash_sale
+                    ? $productVariation->flashsale_price * $item['qty']
+                    : $productVariation->promotion_price * $item['qty'];
+            } else {
+                $total += $product->on_flash_sale
+                    ? $product->flashsale_price * $item['qty']
+                    : $product->promotion_price * $item['qty'];
+            }
+        }
+
+        return $total;
     }
 
     private function handleDiscount($order, $discount)

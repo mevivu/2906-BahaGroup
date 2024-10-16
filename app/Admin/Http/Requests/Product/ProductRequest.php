@@ -30,9 +30,10 @@ class ProductRequest extends BaseRequest
             'categories_id' => ['nullable', 'array'],
             'categories_id.*' => ['nullable', 'exists:App\Models\Category,id'],
             'product.avatar' => ['required'],
-            'product.price' => ['nullable', 'numeric'],
             'product.qty' => ['nullable', 'numeric'],
+            'product.price' => ['nullable', 'numeric'],
             'product.promotion_price' => ['nullable', 'numeric'],
+            'product.flashsale_price' => ['nullable', 'numeric'],
             'product.type' => ['nullable', new Enum(ProductType::class)],
             'product.in_stock' => ['required', new Enum(ProductInStock::class)],
             'product.is_active' => ['required', new Enum(ProductStatus::class)],
@@ -61,6 +62,8 @@ class ProductRequest extends BaseRequest
                 $this->validate['products_variations.qty.*'] = ['required', 'numeric'];
                 $this->validate['products_variations.promotion_price'] = ['nullable', 'array'];
                 $this->validate['products_variations.promotion_price.*'] = ['nullable', 'numeric'];
+                $this->validate['products_variations.flashsale_price'] = ['nullable', 'array'];
+                $this->validate['products_variations.flashsale_price.*'] = ['nullable', 'numeric'];
             }
         }
         return $this->validate;
@@ -78,6 +81,7 @@ class ProductRequest extends BaseRequest
             'product.qty' => ['nullable', 'numeric'],
             'product.price' => ['nullable', 'numeric'],
             'product.promotion_price' => ['nullable', 'numeric'],
+            'product.flashsale_price' => ['nullable', 'numeric'],
             'product.type' => ['nullable', new Enum(ProductType::class)],
             'product.in_stock' => ['required', new Enum(ProductInStock::class)],
             'product.is_active' => ['required', new Enum(ProductStatus::class)],
@@ -106,6 +110,8 @@ class ProductRequest extends BaseRequest
                 $this->validate['products_variations.qty.*'] = ['required', 'numeric'];
                 $this->validate['products_variations.promotion_price'] = ['nullable', 'array'];
                 $this->validate['products_variations.promotion_price.*'] = ['nullable', 'numeric'];
+                $this->validate['products_variations.flashsale_price'] = ['nullable', 'array'];
+                $this->validate['products_variations.flashsale_price.*'] = ['nullable', 'numeric'];
             }
         }
         return $this->validate;
