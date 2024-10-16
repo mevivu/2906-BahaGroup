@@ -25,7 +25,7 @@
 																																@foreach ($shoppingCart as $item)
 																																				<tr class="bold-text">
 																																								<td data-label="Sản phẩm">
-																																												<div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product_id]) }}';"
+																																												<div onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}';"
 																																																style="cursor: pointer" class="align-items-center product-info row">
 																																																<div class="col-md-4 col-12"><img
 																																																								src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
@@ -93,7 +93,7 @@
 																																@foreach ($shoppingCart as $item)
 																																				<tr class="bold-text">
 																																								<td data-label="Sản phẩm">
-																																												<div onclick="location.href='{{ route('user.product.detail', ['id' => $item['product_id']]) }}';"
+																																												<div onclick="location.href='{{ route('user.product.detail', ['slug' => $item['product']['slug']]) }}';"
 																																																style="cursor: pointer" class="align-items-center product-info row">
 																																																<div class="col-md-4 col-12"><img
 																																																								src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
