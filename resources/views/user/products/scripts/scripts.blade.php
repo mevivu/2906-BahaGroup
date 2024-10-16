@@ -121,11 +121,9 @@
 																				_token: '{{ csrf_token() }}'
 																},
 																success: function(response) {
-																				// window.location.href = '{{ route('user.cart.checkout') }}';
 																				if (response.status) {
-																								// Redirect to the checkout page with the cart ID or order ID
 																								window.location.href =
-																												'{{ route('user.cart.checkout') }}?cart_id=' + response.data.id;
+																												`{{ route('user.cart.checkout') }}?cart_id=${response.data.id}&qty=${response.data.qty}`;
 																				} else {
 																								Swal.fire({
 																												icon: 'warning',

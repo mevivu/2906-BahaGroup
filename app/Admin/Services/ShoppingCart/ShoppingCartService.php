@@ -55,57 +55,54 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function store(Request $request)
     {
         $this->data = $request->validated();
-        if ($this->getCurrentUserId()) {
-            DB::beginTransaction();
-            try {
-                $shoppingCart = $this->repository->getBy([
+        DB::beginTransaction();
+        try {
+            $shoppingCart = $this->repository->getBy([
+                'user_id' => $this->getCurrentUserId(),
+                'product_id' => $this->data['product_id'],
+                'product_variation_id' => $this->data['product_variation_id'] ?? null,
+            ]);
+            $product = $this->productRepository->find($this->data['product_id']);
+            if (!isset($shoppingCart[0])) {
+                if ($product->isSimple()) {
+                    if ($product->qty < $this->data['qty']) {
+                        DB::rollBack();
+                        return 1;
+                    }
+                } else {
+                    $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                    if ($productVariation->qty < $this->data['qty']) {
+                        DB::rollBack();
+                        return 1;
+                    }
+                }
+                $shoppingCart = $this->repository->create([
                     'user_id' => $this->getCurrentUserId(),
                     'product_id' => $this->data['product_id'],
                     'product_variation_id' => $this->data['product_variation_id'] ?? null,
+                    'qty' => $this->data['qty'],
                 ]);
-                $product = $this->productRepository->find($this->data['product_id']);
-                if (!isset($shoppingCart[0])) {
-                    if ($product->isSimple()) {
-                        if ($product->qty < $this->data['qty']) {
-                            DB::rollBack();
-                            return 1;
-                        }
-                    } else {
-                        $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
-                        if ($productVariation->qty < $this->data['qty']) {
-                            DB::rollBack();
-                            return 1;
-                        }
+            } else {
+                if ($product->isSimple()) {
+                    if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                        DB::rollBack();
+                        return 1;
                     }
-                    $shoppingCart = $this->repository->create([
-                        'user_id' => $this->getCurrentUserId(),
-                        'product_id' => $this->data['product_id'],
-                        'product_variation_id' => $this->data['product_variation_id'] ?? null,
-                        'qty' => $this->data['qty'],
-                    ]);
                 } else {
-                    if ($product->isSimple()) {
-                        if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
-                            DB::rollBack();
-                            return 1;
-                        }
-                    } else {
-                        $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
-                        if ($productVariation->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
-                            DB::rollBack();
-                            return 1;
-                        }
+                    $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
+                    if ($productVariation->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                        DB::rollBack();
+                        return 1;
                     }
-                    $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
                 }
-
-                DB::commit();
-                return $shoppingCart;
-            } catch (Exception $e) {
-                $this->logError('Failed to process shopping cart: ', $e);
-                DB::rollBack();
-                return false;
+                $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
             }
+            DB::commit();
+            return $shoppingCart;
+        } catch (Exception $e) {
+            $this->logError('Failed to process shopping cart: ', $e);
+            DB::rollBack();
+            return false;
         }
     }
 
@@ -212,6 +209,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $this->data = $request->validated();
         $user = $this->getCurrentUser();
+        $isBuyNow = false;
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['code'] = $this->createCodeOrder();
         $this->data['order']['user_id'] = $user->id;
@@ -219,6 +217,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         DB::beginTransaction();
         try {
             $shopping_cart = $this->repository->findManyById($this->data['shopping_cart_id']);
+            foreach ($shopping_cart as $item) {
+                if ($item['qty'] != $this->data['qty'][$item->id]) {
+                    $item['qty'] = $this->data['qty'][$item->id];
+                    $isBuyNow = true;
+                }
+            }
             $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
             $this->prepareData($shopping_cart);
             if (isset($this->data['code'])) {
@@ -230,8 +234,13 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 $this->handleDiscount($order, $discount);
             }
             $this->storeOrderDetail($order->id, $this->orderDetails);
-            $shopping_cart->each(function ($item) {
-                $item->delete();
+            $shopping_cart->each(function ($item) use ($isBuyNow) {
+                if (!$isBuyNow) {
+                    $item->delete();
+                } else {
+                    $instance = $this->repository->find($item->id);
+                    $instance->update(['qty' => $instance->qty - $item->qty]);
+                }
             });
             DB::commit();
             return $order;

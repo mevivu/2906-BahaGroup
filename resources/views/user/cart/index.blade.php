@@ -178,26 +178,10 @@
 																<div class="col-md-4 mb-3 mt-3">
 																				<div class="card mb-3">
 																								<div class="card-body">
-																												<h5>Áp dụng mã giảm giá</h5>
-																												<div class="input-group">
-																																<x-input id="discount_code" type="text" class="form-control"
-																																				placeholder="Nhập mã giảm giá" />
-																																<button onclick="applyDiscountCode()" class="btn btn-default" type="button">Áp
-																																				dụng</button>
-																												</div>
-																								</div>
-																				</div>
-																				<div class="card mb-3">
-																								<div class="card-body">
 																												<div class="d-flex justify-content-between">
 																																<h6 class="card-title">Tạm tính</h6>
 																																<p class="card-text text-default"><strong
 																																								id="totalOrder">{{ format_price($total) }}</strong></p>
-																												</div>
-																												<div class="d-flex justify-content-between">
-																																<h6 class="card-title">Giảm giá</h6>
-																																<p class="card-text text-default"><strong
-																																								id="discountValue">{{ format_price($discount_value) }}</strong></p>
 																												</div>
 																												<div class="d-flex justify-content-between">
 																																<h6 class="card-title">Giao hàng</h6>
@@ -206,11 +190,11 @@
 																												<div class="d-flex justify-content-between border-top border-1">
 																																<h6 class="card-title mt-3">Tổng tiền</h6>
 																																<p class="card-text text-default mt-3"><strong
-																																								id="totalAfterDiscount">{{ format_price($total - $discount_value) }}</strong></p>
+																																								id="totalAfterDiscount">{{ format_price($total) }}</strong></p>
 																												</div>
 																								</div>
 																				</div>
-																				<a onclick="handleCheckOut()" class="btn btn-default w-100"><strong>Tiến hành thanh
+																				<a href="{{ route('user.cart.checkout') }}" class="btn btn-default w-100"><strong>Tiến hành thanh
 																												toán</strong></a>
 																</div>
 												</div>

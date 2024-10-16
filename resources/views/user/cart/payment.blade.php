@@ -9,11 +9,8 @@
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex justify-content-center align-items-center container bg-white">
-								<div class="container">
+								<div class="container gap-64">
 												<x-form id="formCheckout" :action="route('user.cart.checkoutFinal')" type="post" :validate="true">
-																@if (isset($code))
-																				<x-input :value="$code" type="hidden" name="code" />
-																@endif
 																<div class="row">
 																				<div class="col-md-6 col-12 mt-3">
 																								<h4>Thông tin thanh toán</h4>
@@ -41,14 +38,11 @@
 																				<div class="col-md-6 col-12 mt-3">
 																								<h4>Đơn đặt hàng</h4>
 																								<div class="card mb-3">
-																												<div class="card-body">
-																																<h5>Áp dụng mã giảm giá</h5>
-																																<div class="input-group">
-																																				<x-input id="discount_code" type="text" class="form-control"
-																																								placeholder="Nhập mã giảm giá" />
-																																				<button onclick="applyDiscountCode()" class="btn btn-default" type="button">Áp
-																																								dụng</button>
-																																</div>
+																												<div class="input-group">
+																																<x-input id="discount_code" name="code" type="text" class="form-control"
+																																				placeholder="Nhập mã giảm giá" />
+																																<button onclick="applyDiscountCode()" class="btn btn-default" type="button">Áp
+																																				dụng</button>
 																												</div>
 																								</div>
 																								<div class="mt-4">
@@ -62,6 +56,7 @@
 																																<tbody>
 																																				@foreach ($shoppingCart as $item)
 																																								<x-input :value="$item->id" type="hidden" name="shopping_cart_id[]" />
+																																								<x-input :value="$item->qty" type="hidden" name="qty[{{ $item->id }}]" />
 																																								<tr class="bold-text">
 																																												<td data-label="Sản phẩm">
 																																																<div onclick="location.href='{{ route('user.product.detail', ['id' => $item->product->id]) }}';"
@@ -103,13 +98,12 @@
 																												<div class="col-6 text-start">Tạm tính</div>
 																												<div class="col-6 text-end"><strong id="totalOrder">{{ format_price($total) }}</strong></div>
 																												<div class="col-6 text-start">Giảm giá</div>
-																												<div class="col-6 text-end"><strong
-																																				id="discountValue">{{ format_price($discount_value) }}</strong></div>
+																												<div class="col-6 text-end"><strong id="discountValue">0đ</strong></div>
 																												<div class="col-6 border-bottom pb-1 text-start">Giao hàng</div>
 																												<div class="col-6 border-bottom pb-1 text-end">Giao hàng miễn phí</div>
 																												<div class="col-6 mt-1 text-start">Tổng</div>
 																												<div class="col-6 mb-3 mt-1 text-end">
-																																<strong id="totalAfterDiscount">{{ format_price($total - $discount_value) }}</strong>
+																																<strong id="totalAfterDiscount">{{ format_price($total) }}</strong>
 																												</div>
 																								</div>
 																								<h4>Phương thức thanh toán</h4>
@@ -179,29 +173,69 @@
 																'đ');
 								}
 
+								function getUrlParameter(name) {
+												name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+												var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+												var results = regex.exec(location.search);
+												return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+								}
+
 								function applyDiscountCode() {
 												var discount_code = $(`#discount_code`).val();
-												$.ajax({
-																type: "POST",
-																url: '{{ route('user.cart.applyCode') }}',
-																data: {
-																				code: discount_code,
-																				_token: '{{ csrf_token() }}'
-																},
-																success: function(response) {
-																				updateText(response);
-																},
-																error: function(response) {
-																				Swal.fire({
-																								icon: 'warning',
-																								title: 'Lưu ý',
-																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
-																				});
-																				$('#discountValue').text('0đ');
-																}
-												});
+												var isBuyNow = {{ $isBuyNow ? 'true' : 'false' }};
+
+												if (isBuyNow) {
+																var cart_id = getUrlParameter('cart_id');
+																var qty = getUrlParameter('qty');
+																$.ajax({
+																				type: "POST",
+																				url: '{{ route('user.cart.applyCode') }}',
+																				data: {
+																								code: discount_code,
+																								cart_id: cart_id,
+																								qty: qty,
+																								_token: '{{ csrf_token() }}'
+																				},
+																				success: function(response) {
+																								updateText(response);
+																				},
+																				error: function(response) {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: `${response.responseJSON.message}`,
+																												showConfirmButton: true
+																								});
+																								$('#discountValue').text('0đ');
+																				}
+																});
+												} else {
+																$.ajax({
+																				type: "POST",
+																				url: '{{ route('user.cart.applyCode') }}',
+																				data: {
+																								code: discount_code,
+																								_token: '{{ csrf_token() }}'
+																				},
+																				success: function(response) {
+																								updateText(response);
+																				},
+																				error: function(response) {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: `${response.responseJSON.message}`,
+																												showConfirmButton: true
+																								});
+																								$('#discountValue').text('0đ');
+																				}
+																});
+												}
+
+
+
 								}
+
 								$(document).ready(function(e) {
 												select2LoadData($('#province_id').data('url'), '#province_id');
 

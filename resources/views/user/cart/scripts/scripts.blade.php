@@ -15,12 +15,11 @@
 				function updateText(response) {
 								$('#cart-count-mobile').text(response.data.count);
 								$('#cart-count').text(response.data.count);
-								$('#total-spend').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN').replace(
+								$('#total-spend').text((response.data.total).toLocaleString('vi-VN').replace(
 																'.', ',') +
 												'đ');
 								$('#totalOrder').text(response.data.total.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-								$('#discountValue').text(response.data.discount_value.toLocaleString('vi-VN').replace('.', ',') + 'đ');
-								$('#totalAfterDiscount').text((response.data.total - response.data.discount_value).toLocaleString('vi-VN')
+								$('#totalAfterDiscount').text((response.data.total).toLocaleString('vi-VN')
 												.replace(
 																'.', ',') +
 												'đ');
@@ -42,31 +41,6 @@
 												totalElement.textContent = formattedPrice;
 								}
 				}
-
-				function applyDiscountCode() {
-								var discount_code = $(`#discount_code`).val();
-								$.ajax({
-												type: "POST",
-												url: '{{ route('user.cart.applyCode') }}',
-												data: {
-																code: discount_code,
-																_token: '{{ csrf_token() }}'
-												},
-												success: function(response) {
-																updateText(response);
-												},
-												error: function(response) {
-																Swal.fire({
-																				icon: 'warning',
-																				title: 'Lưu ý',
-																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true
-																});
-																$('#discountValue').text('0đ');
-												}
-								});
-				}
-
 
 				function incrementCart(button) {
 								var id = $(button).data('id');
@@ -183,17 +157,6 @@
 																				updateProductTotal(id);
 																}
 												});
-								}
-				}
-
-
-				function handleCheckOut() {
-								var discount_value = $(`#discountValue`).text();
-								var code = $(`#discount_code`).val();
-								if (code && discount_value != '0đ') {
-												window.location.href = '{{ route('user.cart.checkout') }}' + '?code=' + code;
-								} else {
-												window.location.href = '{{ route('user.cart.checkout') }}';
 								}
 				}
 
