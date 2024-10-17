@@ -1,5 +1,54 @@
 <script>
 				$(document).ready(function() {
+								function addChip(slug, name, type) {
+												let chipID = type + '-' + slug;
+												$('#filter-chips-container').append(`
+												<div class="col col-sm col-md col-lg my-1" id="${chipID}">
+																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
+																				<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
+																</button>
+												</div>
+        `);
+								}
+
+								function removeChip(slug, type) {
+												let chipID = type + '-' + slug;
+												$('#' + chipID).remove();
+								}
+
+								$('.category-checkbox:checked, input[name="color_slugs[]"]:checked, input[name="size_slugs[]"]:checked')
+												.each(function() {
+																let slug = $(this).val();
+																let name = $(this).next('label').text() || $(this).closest('label').find('.checkmark').attr(
+																				'title');
+																let type = $(this).attr('name').split('_')[0];
+
+																addChip(slug, name, type);
+												});
+
+								$('input[name="category_slugs[]"], input[name="color_slugs[]"], input[name="size_slugs[]"]').on(
+												'change',
+												function() {
+																let slug = $(this).val();
+																let name = $(this).next('label').text() || $(this).closest('label').find('.checkmark').attr(
+																				'title');
+																let type = $(this).attr('name').split('_')[0];
+
+																if ($(this).is(':checked')) {
+																				addChip(slug, name, type);
+																} else {
+																				removeChip(slug, type);
+																}
+												});
+
+								$(document).on('click', '.remove-chip', function() {
+												let slug = $(this).data('slug');
+												let type = $(this).data('type');
+												$(`input[name="${type}_slugs[]"][value="${slug}"]`).prop('checked',
+																false);
+												removeChip(slug, type);
+								});
+
 								function updateCountdown() {
 												const startTime = new Date();
 												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
@@ -10,6 +59,7 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
