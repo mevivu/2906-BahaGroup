@@ -211,10 +211,11 @@ class OrderController extends Controller
                 }
             }
         }
+        $surCharge = $request->input('order.surcharge', 0);
         return response()->json([
             'status' => 200,
             'message' => __('notifySuccess'),
-            'data' => view($this->view['total'], compact('total', 'discountValue', 'totalAfterDiscount'))->render()
+            'data' => view($this->view['total'], compact('total', 'discountValue', 'totalAfterDiscount', 'surCharge'))->render()
         ], 200);
     }
 }

@@ -17,17 +17,16 @@ class OrderDataTable extends BaseDataTable
 
     public function __construct(
         OrderRepositoryInterface $repository
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->repository = $repository;
     }
     protected function setColumnSearch()
     {
-        $this->columnAllSearch = [0, 1, 2, 3, 4, 5];
+        $this->columnAllSearch = [0, 1, 2, 3, 4, 5, 6, 7];
 
-        $this->columnSearchDate = [5];
+        $this->columnSearchDate = [7];
 
         $this->columnSearchSelect = [
             [
@@ -57,6 +56,8 @@ class OrderDataTable extends BaseDataTable
             'id' => $this->view['editlink'],
             'status' => $this->view['status'],
             'total' => '{{ format_price($total) }}',
+            'surcharge' => '{{ format_price($surcharge) }}',
+            'discount_value' => '{{ format_price($discount_value) }}',
             'payment_method' => '{{ App\Enums\Payment\PaymentMethod::getDescription($payment_method) }}',
             'user' => $this->view['user'],
             'created_at' => '{{ format_datetime($created_at) }}',

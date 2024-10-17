@@ -79,7 +79,7 @@ return [
     OrderStatus::class => [
         OrderStatus::Pending->value => 'Chờ xác nhận',
         OrderStatus::Confirmed->value => ' Đã xác nhận',
-        OrderStatus::Completed->value => 'Hoàn thành',
+        // OrderStatus::Completed->value => 'Hoàn thành',
         OrderStatus::Cancelled->value => 'Hủy bỏ',
     ],
     OrderType::class => [

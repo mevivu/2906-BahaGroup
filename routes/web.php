@@ -51,7 +51,7 @@ Route::controller(App\Http\Controllers\Auth\LoginController::class)
         Route::get('/reset-password', 'resetPassword')->name('resetPassword');
         Route::put('/reset-password', 'changePassword')->name('changePassword');
         Route::post('/', 'loginUser')->name('loginUser');
-        Route::post('/register', 'signinUser')->name('register');
+        Route::post('/register', 'register')->name('register');
         Route::get('/oauth-verification', 'oauth')->name('oauth');
         Route::post('/oauth-verification', 'oauthChange')->name('oauthChange');
     });

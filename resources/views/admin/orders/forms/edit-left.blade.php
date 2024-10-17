@@ -4,6 +4,7 @@
 												<h2 class="mb-0">{{ __('Thông tin đơn hàng') . ' #' . $order->code }}</h2>
 								</div>
 								<x-input type="hidden" :value="$order->user_id" id="orderUserId" />
+								<x-input type="hidden" name="order[surcharge]" :value="$order->surcharge" />
 								<div class="row card-body">
 												<div class="col-12 col-md-6">
 																<h3>{{ __('Thông tin chung') }}</h3>
