@@ -62,3 +62,8 @@ function decrement() {
         input.value = parseInt(input.value) - 1;
     }
 }
+
+function formatPrice(price) {
+    const formattedPrice = new Intl.NumberFormat('vi-VN').format(price);
+    return `${formattedPrice}đ`;
+}

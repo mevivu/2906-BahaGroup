@@ -121,15 +121,28 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
     }
     public function getMinMaxPromotionPrices($relations = ['productVariations']): array
     {
-        $this->instance = $this->loadRelations($this->model, $relations);
+        $this->getQueryBuilder();
+        $this->instance = $this->instance->with($relations);
+        $products = $this->instance->get();
 
-        $minProductPrice = $this->instance->min('promotion_price');
-        $maxProductPrice = $this->instance->max('promotion_price');
-        // dd($this->instance);
+        $allPrices = collect();
+
+        foreach ($products as $product) {
+            // Thêm giá của sản phẩm chính
+            $allPrices->push($product->promotion_price);
+
+            // Thêm giá của các biến thể sản phẩm
+            if ($product->productVariations) {
+                $allPrices = $allPrices->concat($product->productVariations->pluck('promotion_price'));
+            }
+        }
+
+        // Lọc bỏ các giá trị null hoặc 0 (nếu cần)
+        $allPrices = $allPrices->filter();
 
         return [
-            'min_product_price' => $minProductPrice,
-            'max_product_price' => $maxProductPrice,
+            'min_product_price' => $allPrices->min(),
+            'max_product_price' => $allPrices->max(),
         ];
     }
 
@@ -138,11 +151,21 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         $this->instance = $this->instance->with($relations);
 
         if (isset($filterData['min_product_price'])) {
-            $this->instance = $this->instance->where('promotion_price', '>=', $filterData['min_product_price']);
+            $this->instance = $this->instance->where(function ($query) use ($filterData) {
+                $query->where('promotion_price', '>=', $filterData['min_product_price'])
+                    ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
+                        $subQuery->where('promotion_price', '>=', $filterData['min_product_price']);
+                    });
+            });
         }
 
         if (isset($filterData['max_product_price'])) {
-            $this->instance = $this->instance->where('promotion_price', '<=', $filterData['max_product_price']);
+            $this->instance = $this->instance->where(function ($query) use ($filterData) {
+                $query->where('promotion_price', '<=', $filterData['min_product_price'])
+                    ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
+                        $subQuery->where('promotion_price', '<=', $filterData['min_product_price']);
+                    });
+            });
         }
 
         if (isset($filterData['category_slug'])) {

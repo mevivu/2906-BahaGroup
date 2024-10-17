@@ -1,4 +1,4 @@
-@if (auth('web'))
+@if (auth('web')->user())
 				<div class="mb-3">
 								<label for="order[fullName]" class="form-label">Họ và tên</label>
 								<x-input readonly :value="$user->fullname" type="text" class="form-control" name="order[fullname]"
@@ -29,12 +29,14 @@
 				</div>
 @else
 				<div class="mb-3">
-								<label for="order[fullName]" class="form-label">Họ và tên</label>
-								<x-input type="text" class="form-control" name="order[fullName]" placeholder="Nhập họ và tên" />
+								<label for="order[fullname]" class="form-label">Họ và tên</label>
+								<x-input type="text" class="form-control" name="order[fullname]" placeholder="Nhập họ và tên"
+												:required="true" />
 				</div>
 				<div class="mb-3">
 								<label for="order[address]" class="form-label">Địa chỉ</label>
-								<x-input type="text" class="form-control" name="order[address]" placeholder="Nhập địa chỉ" />
+								<x-input type="text" class="form-control" name="order[address]" placeholder="Nhập địa chỉ"
+												:required="true" />
 				</div>
 				<div class="mb-3">
 								<label for="order[phone]" class="form-label">Số điện thoại</label>

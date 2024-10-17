@@ -10,7 +10,6 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
-												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
@@ -202,8 +201,8 @@
 				function updatePrice() {
 								var minPrice = document.getElementById('min-price').value;
 								var maxPrice = document.getElementById('max-price').value;
-								document.getElementById('min-price-value').textContent = minPrice + '₫';
-								document.getElementById('max-price-value').textContent = maxPrice + '₫';
+								document.getElementById('min-price-value').textContent = formatPrice(minPrice);
+								document.getElementById('max-price-value').textContent = formatPrice(maxPrice);
 				}
 
 				const sort = document.getElementById('sort');

@@ -8,7 +8,8 @@ use Illuminate\Validation\Rules\Enum;
 
 class OrderRequest extends BaseRequest
 {
-    public function methodPost(){
+    public function methodPost()
+    {
         return [
             'order.user_id' => ['required', 'exists:App\Models\User,id'],
             'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
@@ -20,10 +21,6 @@ class OrderRequest extends BaseRequest
             'order.total' => ['nullable'],
             'order.payment_method' => ['nullable'],
             'order.discount_value' => ['nullable'],
-            // 'order.name_other' => ['nullable'],
-            // 'order.phone_other' => ['nullable'],
-            // 'order.address_other' => ['nullable'],
-            // 'order.note_other' => ['nullable'],
             'order_detail.product_id' => ['required', 'array'],
             'order_detail.product_id.*' => ['required', 'exists:App\Models\Product,id'],
             'order_detail.product_variation_id' => ['required', 'array'],
@@ -47,8 +44,10 @@ class OrderRequest extends BaseRequest
             'order.district_id' => ['required', 'exists:App\Models\District,id'],
             'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             'order.status' => ['required', new Enum(OrderStatus::class)],
-            'order.user_id' => ['required', 'exists:App\Models\User,id'],
+            'order.user_id' => ['nullable', 'exists:App\Models\User,id'],
             'order.note' => ['nullable'],
+            'order.fullname' => ['nullable'],
+            'order.phone' => ['nullable'],
             'order.total' => ['nullable'],
             'order.payment_method' => ['nullable'],
             'order.discount_value' => ['nullable'],
@@ -66,27 +65,26 @@ class OrderRequest extends BaseRequest
         ];
     }
 
-    protected function methodGet(){
-        if($this->routeIs('admin.order.render_info_shipping')){
+    protected function methodGet()
+    {
+        if ($this->routeIs('admin.order.render_info_shipping')) {
             return [
                 'user_id' => ['required', 'exists:App\Models\User,id']
             ];
-        }elseif($this->routeIs('admin.order.add_product')){
+        } elseif ($this->routeIs('admin.order.add_product')) {
             return [
                 'product_id' => ['required', 'exists:App\Models\Product,id'],
                 'product_variation_id' => ['nullable', 'exists:App\Models\ProductVariation,id'],
             ];
-        }elseif($this->routeIs('admin.order.calculate_total_before_save_order')){
+        } elseif ($this->routeIs('admin.order.calculate_total_before_save_order')) {
             return [
-                'order.user_id' => ['required', 'exists:App\Models\User,id'],
+                'order.user_id' => ['nullable', 'exists:App\Models\User,id'],
                 'order_detail.product_id.*' => ['required', 'exists:App\Models\Product,id'],
                 'order_detail.product_variation_id.*' => ['required'],
                 'order_detail.product_qty.*' => ['required', 'integer', 'min:1'],
                 'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             ];
         }
-        return [
-
-        ];
+        return [];
     }
 }
