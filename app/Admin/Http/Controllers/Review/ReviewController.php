@@ -85,6 +85,9 @@ class ReviewController extends Controller
     public function delete($id): RedirectResponse
     {
         $response = $this->service->delete($id);
-        return $this->handleDeleteResponse($response, $this->route['index']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 }

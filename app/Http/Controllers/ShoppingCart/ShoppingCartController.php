@@ -148,6 +148,9 @@ class ShoppingCartController extends Controller
     public function checkoutFinal(CheckoutRequest $request)
     {
         $result = $this->service->checkout($request);
+        if ($result === 1) {
+            return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
+        }
         if ($result) {
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
@@ -189,7 +192,6 @@ class ShoppingCartController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => [
-                    'total' =>  $this->service->calculateTotalFromSession($result),
                     'count' => $count,
                 ]
             ]);
@@ -302,6 +304,8 @@ class ShoppingCartController extends Controller
             });
             if ($request->input('cart_id')) {
                 if ($cartCollection) {
+                    $cartCollection = $cartCollection->firstWhere('id', $request->input('cart_id'));
+                    $cartCollection->qty = $request->input('qty');
                     $total = $this->service->calculateTotal($cartCollection);
                     $discount = $this->discountRepository->findByField('code', $request->input('code'));
                     if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {

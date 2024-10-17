@@ -35,7 +35,6 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Admin\Repositories\Ward\WardRepositoryInterface' => 'App\Admin\Repositories\Ward\WardRepository',
         'App\Admin\Repositories\Review\ReviewRepositoryInterface' => 'App\Admin\Repositories\Review\ReviewRepository',
         'App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface' => 'App\Admin\Repositories\ShoppingCart\ShoppingCartRepository',
-        'App\Admin\Repositories\Auth\SigninRepositoryInterface' => 'App\Admin\Repositories\Auth\SigninRepository',
     ];
     /**
      * Register services.

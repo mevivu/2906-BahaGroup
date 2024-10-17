@@ -82,8 +82,10 @@ class ProductCategoryController extends Controller
     {
 
         $response = $this->service->store($request);
-
-        return $this->handleResponse($response, $request, $this->route['index'], $this->route['edit']);
+        if ($response) {
+            return to_route($this->route['edit'], $response->id);
+        }
+        return back()->with('error', __('notifyFail'));
     }
 
     /**
@@ -136,16 +138,20 @@ class ProductCategoryController extends Controller
     public function update(ProductCategoryRequest $request): RedirectResponse
     {
 
-        $this->service->update($request);
-
-        return back()->with('success', __('notifySuccess'));
+        $response = $this->service->update($request);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 
     public function delete($id): RedirectResponse
     {
 
         $response = $this->service->delete($id);
-
-        return $this->handleDeleteResponse($response, $this->route['index']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 }

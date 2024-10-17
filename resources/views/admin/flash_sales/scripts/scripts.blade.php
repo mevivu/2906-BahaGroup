@@ -59,7 +59,6 @@
 
     $(document).on('click', '.remove-item-product', function(e){
         var id = $(this).data('id'), that = this;
-        console.log(id);
         Swal.fire({
             icon: 'warning',
             title: 'Cảnh báo',
