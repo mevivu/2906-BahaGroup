@@ -20,11 +20,10 @@ use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariation
 use App\Admin\Traits\AuthService;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Payment\PaymentMethod;
-use App\Traits\ResponseController;
 
 class OrderController extends Controller
 {
-    use ResponseController, AuthService;
+    use AuthService;
     protected UserRepositoryInterface $repositoryUser;
     protected ProductRepositoryInterface $repositoryProduct;
     protected DiscountRepositoryInterface $discountRepository;
@@ -130,7 +129,10 @@ class OrderController extends Controller
     public function delete($id): RedirectResponse
     {
         $response = $this->service->delete($id);
-        return $this->handleDeleteResponse($response, $this->route['index']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 
     public function renderInfoShipping(OrderRequest $request): Factory|View|Application
@@ -147,6 +149,9 @@ class OrderController extends Controller
     public function confirm($id)
     {
         $result = $this->service->confirm($id);
+        if ($result === 1) {
+            return to_route($this->route['index'])->with('error', __('Đơn hàng chứa sản phẩm không còn flash sale -> cần hủy'));
+        }
         if ($result !== true && $result !== false) {
             return to_route($this->route['index'])->with('error', __('Không đủ sản phẩm: ' . $result));
         }

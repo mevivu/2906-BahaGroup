@@ -379,7 +379,6 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
                 Route::delete('/xoa/{id}', 'delete')->name('delete');
             });
         });
-        // Route::get('/select-search', [AdminSearchController::class, 'selectSearch'])->name('selectsearch');
     });
 
     //ckfinder

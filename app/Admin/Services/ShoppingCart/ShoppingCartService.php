@@ -288,6 +288,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $this->getCurrentUser();
         $isBuyNow = false;
         $discount = null;
+        $isNotify = false;
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
@@ -315,6 +316,15 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     $this->handleDiscount($order, $discount);
                 }
                 $this->storeOrderDetail($order->id, $this->orderDetails);
+                foreach ($order->details as $detail) {
+                    if ($detail->product->on_flash_sale) {
+                        $flashSaleDetail = $detail->product->on_flash_sale->details()->firstWhere('product_id', $detail->product_id);
+                        $remainFlashSaleQty = $flashSaleDetail->qty - $flashSaleDetail->sold;
+                        if ($remainFlashSaleQty < $detail->qty) {
+                            $isNotify = true;
+                        }
+                    }
+                }
                 $shopping_cart->each(function ($item) use ($isBuyNow) {
                     if (!$isBuyNow) {
                         $item->delete();
@@ -324,7 +334,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     }
                 });
                 DB::commit();
-                return $order;
+                if ($isNotify) {
+                    return 1;
+                }
             } else {
                 $cart = session()->get('cart', []);
                 $cartCollection = collect($cart)->map(function ($item) {
@@ -350,6 +362,15 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     $this->handleDiscount($order, $discount);
                 }
                 $this->storeOrderDetail($order->id, $this->orderDetails);
+                foreach ($order->details as $detail) {
+                    if ($detail->product->on_flash_sale) {
+                        $flashSaleDetail = $detail->product->on_flash_sale->details()->firstWhere('product_id', $detail->product_id);
+                        $remainFlashSaleQty = $flashSaleDetail->qty - $flashSaleDetail->sold;
+                        if ($remainFlashSaleQty < $detail->qty) {
+                            $isNotify = true;
+                        }
+                    }
+                }
                 if ($isBuyNow) {
                     foreach ($cart as $key => &$item) {
                         if ($item['id'] == $cartCollection[0]->id) {
@@ -367,8 +388,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     session()->save();
                 }
                 DB::commit();
-                return $order;
+                if ($isNotify) {
+                    return 1;
+                }
             }
+            return true;
         } catch (Exception $e) {
             $this->logError('Failed to process checkout: ', $e);
             DB::rollBack();

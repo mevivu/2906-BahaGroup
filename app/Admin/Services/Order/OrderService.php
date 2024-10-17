@@ -10,6 +10,7 @@ use App\Admin\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
 use App\Admin\Traits\Setup;
+use App\Enums\Discount\DiscountType;
 use App\Enums\Product\ProductType;
 use App\Enums\Order\{OrderStatus};
 use App\Traits\UseLog;
@@ -90,26 +91,24 @@ class OrderService implements OrderServiceInterface
             $order = $this->repository->findOrFail($id);
             foreach ($order->details as $detail) {
                 if ($detail->product_variation_id) {
-                    $productVariation = $this->repositoryProductVariation->findOrFail($detail->product_variation_id);
-                    if ($productVariation->qty >= $detail->qty) {
+                    if ($detail->productVariation->qty >= $detail->qty) {
                         $this->repositoryProductVariation->update(
                             $detail->product_variation_id,
-                            ['qty' => $productVariation->qty - $detail->qty]
+                            ['qty' => $detail->productVariation->qty - $detail->qty]
                         );
                     } else {
                         DB::rollBack();
-                        return $productVariation->product->name;
+                        return $detail->productVariation->product->name;
                     }
                 } else {
-                    $product = $this->repositoryProduct->findOrFail($detail->product_id);
-                    if ($product->qty >= $detail->qty) {
+                    if ($detail->product->qty >= $detail->qty) {
                         $this->repositoryProduct->update(
                             $detail->product_id,
-                            ['qty' => $product->qty - $detail->qty]
+                            ['qty' => $detail->product->qty - $detail->qty]
                         );
                     } else {
                         DB::rollBack();
-                        return $product->name;
+                        return $detail->product->name;
                     }
                 }
                 if ($detail->product->on_flash_sale) {
@@ -122,23 +121,34 @@ class OrderService implements OrderServiceInterface
                         if ($remainFlashSaleQty > 0) {
                             $flashSaleDetail->update(['sold' => $flashSaleDetail->qty]);
                             $surcharge = ($detail->product->promotion_price - $detail->unit_price) * ($detail->qty - $remainFlashSaleQty);
-                            $order = $detail->order;
                             $order->surcharge = ($order->surcharge ?? 0) + $surcharge;
-                            $order->total += $surcharge;
+                            if ($order->discount) {
+                                if ($order->discount->type != DiscountType::Money->value) {
+                                    $surcharge = $surcharge - $surcharge * $order->discount->discount_value / 100;
+                                }
+                            }
+                            $note = "Áp dụng flash sale cho " . $remainFlashSaleQty . " sản phẩm " . $detail->product->name . ". " . ($detail->qty - $remainFlashSaleQty) . " sản phẩm còn lại được tính giá thường. " .
+                                "Phụ thu: " . format_price($surcharge) . " đã được thêm vào tổng đơn hàng.";
+                            $order->note = ($order->note ? $order->note . "\n\n" : '') . $note;
+                            $order->total = $order->total + $surcharge;
                             $order->save();
-
-                            // Ghi chú về việc áp dụng flash sale và phụ thu
-                            $note = "Áp dụng flash sale cho " . $remainFlashSaleQty . " sản phẩm. " .
-                                ($detail->qty - $remainFlashSaleQty) . " sản phẩm còn lại được tính giá thường. " .
-                                "Phụ thu: " . number_format($surcharge, 2) . " đã được thêm vào tổng đơn hàng.";
-                            $detail->notes = ($detail->notes ? $detail->notes . "\n" : '') . $note;
-                            $detail->save();
-                        } else {
+                        }
+                    }
+                } else {
+                    if ($detail->productVariation) {
+                        if ($detail->unit_price == $detail->productVariation->flashsale_price) {
+                            DB::rollBack();
+                            return 1;
+                        }
+                    } else {
+                        if ($detail->unit_price == $detail->product->flashsale_price) {
+                            DB::rollBack();
+                            return 1;
                         }
                     }
                 }
             }
-            $order->update($id, ['status' => OrderStatus::Confirmed]);
+            $order->update(['status' => OrderStatus::Confirmed]);
             DB::commit();
             return true;
         } catch (Exception $e) {

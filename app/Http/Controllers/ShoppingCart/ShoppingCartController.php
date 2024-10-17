@@ -148,6 +148,9 @@ class ShoppingCartController extends Controller
     public function checkoutFinal(CheckoutRequest $request)
     {
         $result = $this->service->checkout($request);
+        if ($result === 1) {
+            return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
+        }
         if ($result) {
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
