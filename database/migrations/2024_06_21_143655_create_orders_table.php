@@ -24,8 +24,11 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('avatar')->nullable();
             $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('fullname')->nullable();
             $table->double('discount_value')->default(0);
             $table->double('total');
+            $table->double('surcharge')->default(0);
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);
             $table->text('note')->nullable();
             $table->text('code')->unique();

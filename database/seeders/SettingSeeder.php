@@ -219,7 +219,7 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'footer_phone',
                 'setting_name' => 'Số điện thoại',
-                'plain_value' => '0359-777-777',
+                'plain_value' => '0359777777',
                 'type_input' => SettingTypeInput::Phone,
                 'group' => 4
             ],
@@ -318,7 +318,7 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'contact_phone',
                 'setting_name' => 'Phone',
-                'plain_value' => '0359-777-777',
+                'plain_value' => '0359777777',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 5
             ],

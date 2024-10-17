@@ -112,8 +112,33 @@ class OrderService implements OrderServiceInterface
                         return $product->name;
                     }
                 }
+                if ($detail->product->on_flash_sale) {
+                    $flashSaleDetail = $detail->product->on_flash_sale->details()->firstWhere('product_id', $detail->product_id);
+                    $remainFlashSaleQty = $flashSaleDetail->qty - $flashSaleDetail->sold;
+
+                    if ($remainFlashSaleQty >= $detail->qty) {
+                        $flashSaleDetail->update(['sold' => $flashSaleDetail->sold + $detail->qty]);
+                    } else {
+                        if ($remainFlashSaleQty > 0) {
+                            $flashSaleDetail->update(['sold' => $flashSaleDetail->qty]);
+                            $surcharge = ($detail->product->promotion_price - $detail->unit_price) * ($detail->qty - $remainFlashSaleQty);
+                            $order = $detail->order;
+                            $order->surcharge = ($order->surcharge ?? 0) + $surcharge;
+                            $order->total += $surcharge;
+                            $order->save();
+
+                            // Ghi chú về việc áp dụng flash sale và phụ thu
+                            $note = "Áp dụng flash sale cho " . $remainFlashSaleQty . " sản phẩm. " .
+                                ($detail->qty - $remainFlashSaleQty) . " sản phẩm còn lại được tính giá thường. " .
+                                "Phụ thu: " . number_format($surcharge, 2) . " đã được thêm vào tổng đơn hàng.";
+                            $detail->notes = ($detail->notes ? $detail->notes . "\n" : '') . $note;
+                            $detail->save();
+                        } else {
+                        }
+                    }
+                }
             }
-            $this->repository->update($id, ['status' => OrderStatus::Confirmed]);
+            $order->update($id, ['status' => OrderStatus::Confirmed]);
             DB::commit();
             return true;
         } catch (Exception $e) {
@@ -160,7 +185,7 @@ class OrderService implements OrderServiceInterface
         foreach ($this->data['order_detail']['product_id'] as $key => $value) {
             $product = $products->firstWhere('id', $value);
             if ($product->type == ProductType::Simple) {
-                $unitPrice = $product->promotion_price ?: $product->price;
+                $unitPrice = $product->on_flash_sale ? $product->flashsale_price : $product->promotion_price;
             } else {
                 $product = $product->load(['productVariation' => function ($query) use ($key) {
                     $query->with('attributeVariations')->where('id', $this->data['order_detail']['product_variation_id'][$key]);

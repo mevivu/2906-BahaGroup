@@ -27,8 +27,14 @@ class Order extends Model
         'address',
         /** Email */
         'email',
+        /** Tên khách hàng */
+        'fullname',
+        /** Số điện thoại khách hàng */
+        'phone',
         /** Tổng tiền của đơn hàng */
         'total',
+        /** Phụ thu */
+        'surcharge',
         /** Trạng thái của đơn hàng */
         'status',
         /** Ghi chú cho đơn hàng */

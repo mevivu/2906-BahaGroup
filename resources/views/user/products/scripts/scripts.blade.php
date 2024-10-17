@@ -10,7 +10,6 @@
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
 																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
-												console.log(formattedTime);
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';

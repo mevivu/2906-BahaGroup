@@ -469,7 +469,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         foreach ($cartItems as $item) {
             $product = $this->productRepository->find($item->product->id);
             if ($product->type == ProductType::Simple) {
-                $unitPrice = $product->promotion_price ?: $product->price;
+                $unitPrice = $product->on_flash_sale ? $product->flashsale_price : $product->promotion_price;
             } else {
                 $instance = $product->productVariation()->where('id', $item->product_variation_id)->first();
                 $unitPrice = $instance->product->on_flash_sale ? $instance->flashsale_price : $instance->promotion_price;

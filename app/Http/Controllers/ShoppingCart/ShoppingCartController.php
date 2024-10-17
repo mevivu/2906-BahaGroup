@@ -189,7 +189,6 @@ class ShoppingCartController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => [
-                    'total' =>  $this->service->calculateTotalFromSession($result),
                     'count' => $count,
                 ]
             ]);
@@ -302,6 +301,8 @@ class ShoppingCartController extends Controller
             });
             if ($request->input('cart_id')) {
                 if ($cartCollection) {
+                    $cartCollection = $cartCollection->firstWhere('id', $request->input('cart_id'));
+                    $cartCollection->qty = $request->input('qty');
                     $total = $this->service->calculateTotal($cartCollection);
                     $discount = $this->discountRepository->findByField('code', $request->input('code'));
                     if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
