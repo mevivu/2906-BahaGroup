@@ -19,10 +19,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->tinyInteger('payment_method')->default(PaymentMethod::Online->value);
             $table->text('address')->nullable();
             $table->text('avatar')->nullable();
+            $table->string('email')->nullable();
             $table->double('discount_value')->default(0);
             $table->double('total');
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);

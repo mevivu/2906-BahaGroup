@@ -202,8 +202,8 @@
 				function updatePrice() {
 								var minPrice = document.getElementById('min-price').value;
 								var maxPrice = document.getElementById('max-price').value;
-								document.getElementById('min-price-value').textContent = minPrice + '₫';
-								document.getElementById('max-price-value').textContent = maxPrice + '₫';
+								document.getElementById('min-price-value').textContent = formatPrice(minPrice);
+								document.getElementById('max-price-value').textContent = formatPrice(maxPrice);
 				}
 
 				const sort = document.getElementById('sort');

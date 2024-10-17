@@ -1,4 +1,18 @@
 <div class="col-md-2 col-12 mb-2">
+				@if (Route::is('user.profile.indexUser'))
+								<section class="modal-profile-header position-relative" style="text-align: -webkit-center;">
+												<div class="modal-cover-photo">
+																<div id="previewCover">
+																				<img id="myImg" src="{{ asset($auth->avatar ?? 'public/assets/images/default-avatar.png') }}"
+																								class="w-100" alt="">
+																</div>
+																<label for="coverInp">
+																				<div class="tool-edit-cover"><i class="ti ti-camera"></i></div>
+																</label>
+																<input accept="image/*" style="display: none" type='file' id="coverInp" name="avatar" />
+												</div>
+								</section>
+				@endif
 				<ul class="list-group">
 								<li
 												class="list-group-item {{ Route::is('user.order.indexUser') || Route::is('user.order.detail') ? 'bg-default text-white' : '' }}">
@@ -19,3 +33,5 @@
 																class="text-6" data-bs-toggle="modal" data-bs-target="#modalLogout">ĐĂNG XUẤT</x-link></li>
 				</ul>
 </div>
+
+@include('user.scripts.upload-image')

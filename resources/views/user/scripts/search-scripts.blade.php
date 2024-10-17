@@ -1,117 +1,80 @@
 <script>
-	function addToCart(id) {
-		$.ajax({
-			type: "POST",
-			url: '{{ route('user.cart.store') }}',
-			data: {
-				product_id: id,
-				qty: 1,
-				_token: '{{ csrf_token() }}'
-			},
-			success: function (response) {
-				$('#cart-count-mobile').text(response.data.count);
-				$('#cart-count').text(response.data.count);
-				Swal.fire({
-					icon: 'success',
-					title: 'Thành công',
-					text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-					showConfirmButton: true
-				});
-			},
-			error: function (response) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'Lưu ý',
-					text: `${response.responseJSON.message}`,
-					showConfirmButton: true
-				});
-			}
-		});
-	}
-
-	function buyNowModal(id) {
-		var productId = $('input[name="hidden_product_id_modal"]').val();
-		var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
-		var qty = $('#filter-input-detail-modal').val();
-		$.ajax({
-			type: "POST",
-			url: '{{ route('user.cart.buyNow') }}',
-			data: {
-				product_id: productId,
-				product_variation_id: productVariationId,
-				qty: qty,
-				_token: '{{ csrf_token() }}'
-			},
-			success: function (response) {
-				if (response.status) {
-					window.location.href =
-						'{{ route('user.cart.checkout') }}?cart_id=' + response.data.id;
-				} else {
-					Swal.fire({
-						icon: 'warning',
-						title: 'Lưu ý',
-						text: 'Không thể xử lý đơn hàng của bạn!',
-						showConfirmButton: true
-					});
+				function addToCart(id) {
+								$.ajax({
+												type: "POST",
+												url: '{{ route('user.cart.store') }}',
+												data: {
+																product_id: id,
+																qty: 1,
+																_token: '{{ csrf_token() }}'
+												},
+												success: function(response) {
+																$('#cart-count-mobile').text(response.data.count);
+																$('#cart-count').text(response.data.count);
+																Swal.fire({
+																				icon: 'success',
+																				title: 'Thành công',
+																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+																				showConfirmButton: true
+																});
+												},
+												error: function(response) {
+																Swal.fire({
+																				icon: 'warning',
+																				title: 'Lưu ý',
+																				text: `${response.responseJSON.message}`,
+																				showConfirmButton: true
+																});
+												}
+								});
 				}
-			},
-			error: function (response) {
-				Swal.fire({
-					icon: 'warning',
-					title: 'Lưu ý',
-					text: `${response.responseJSON.message}`,
-					showConfirmButton: true
-				});
-			}
-		});
-	}
 
-	function debounce(func, wait) {
-		let timeout;
-		return function executedFunction(...args) {
-			const later = () => {
-				clearTimeout(timeout);
-				func(...args);
-			};
-			clearTimeout(timeout);
-			timeout = setTimeout(later, wait);
-		};
-	}
+				function debounce(func, wait) {
+								let timeout;
+								return function executedFunction(...args) {
+												const later = () => {
+																clearTimeout(timeout);
+																func(...args);
+												};
+												clearTimeout(timeout);
+												timeout = setTimeout(later, wait);
+								};
+				}
 
-	$(document).ready(function () {
-		const searchInput = $('#search-input');
-		const searchButton = $('#search-button');
-		const menu = $('#menu-1');
+				$(document).ready(function() {
+								const searchInput = $('#search-input');
+								const searchButton = $('#search-button');
+								const menu = $('#menu-1');
 
-		$('body').append(
-			'<div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999;"><div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div></div>'
-		);
+								$('body').append(
+												'<div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999;"><div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div></div>'
+								);
 
-		function showLoading() {
-			$('#loading-overlay').fadeIn(300);
-			searchButton.prop('disabled', true).addClass('disabled');
-		}
+								function showLoading() {
+												$('#loading-overlay').fadeIn(300);
+												searchButton.prop('disabled', true).addClass('disabled');
+								}
 
-		function hideLoading() {
-			$('#loading-overlay').fadeOut(300);
-			searchButton.prop('disabled', false).removeClass('disabled');
-		}
+								function hideLoading() {
+												$('#loading-overlay').fadeOut(300);
+												searchButton.prop('disabled', false).removeClass('disabled');
+								}
 
-		const debouncedSearch = debounce(function () {
-			const key = searchInput.val();
-			if (key.length >= 3) {
-				showLoading();
-				$.ajax({
-					type: "GET",
-					url: "{{ route('user.product.search') }}",
-					data: {
-						key
-					},
-					success: function (response) {
-						menu.html('');
-						if (response.data.length == 0) {
-							$('#menu-1').html('');
-							$('#menu-1').append(`
+								const debouncedSearch = debounce(function() {
+												const key = searchInput.val();
+												if (key.length >= 3) {
+																showLoading();
+																$.ajax({
+																				type: "GET",
+																				url: "{{ route('user.product.search') }}",
+																				data: {
+																								key
+																				},
+																				success: function(response) {
+																								menu.html('');
+																								if (response.data.length == 0) {
+																												$('#menu-1').html('');
+																												$('#menu-1').append(`
                    <li>
                        <a class="dropdown-item p-0" href="#">
                            <div class="card border-0">
@@ -130,37 +93,37 @@
                        </a>
                    </li>
                `);
-							$('#menu-1').append(`
+																												$('#menu-1').append(`
                             <li>
                                 <a class="dropdown-item p-2 text-center" href="{{ route('user.product.indexUser') }}">
                                     <strong>Xem tất cả sản phẩm tại đây</strong>
                                 </a>
                             </li>
                         `);
-							hideLoading();
-							return;
-						}
+																												hideLoading();
+																												return;
+																								}
 
-						$('#menu-1').html('');
-						$('#menu-1').append(``);
-						$.each(response.data, function (index, value) {
-							let minPromotionPrice = null;
-							let maxPromotionPrice = null;
+																								$('#menu-1').html('');
+																								$('#menu-1').append(``);
+																								$.each(response.data, function(index, value) {
+																												let minPromotionPrice = null;
+																												let maxPromotionPrice = null;
 
-							if (value.product_variations && value.product_variations
-								.length >
-								0) {
-								let prices = value.product_variations
-									.map(variation => variation.promotion_price)
-									.filter(price => price !== null);
+																												if (value.product_variations && value.product_variations
+																																.length >
+																																0) {
+																																let prices = value.product_variations
+																																				.map(variation => variation.promotion_price)
+																																				.filter(price => price !== null);
 
-								if (prices.length > 0) {
-									minPromotionPrice = Math.min(...prices);
-									maxPromotionPrice = Math.max(...prices);
-								}
-							}
+																																if (prices.length > 0) {
+																																				minPromotionPrice = Math.min(...prices);
+																																				maxPromotionPrice = Math.max(...prices);
+																																}
+																												}
 
-							$('#menu-1').append(`
+																												$('#menu-1').append(`
                    <li>
                        <a class="dropdown-item p-0" href="/2906-BahaGroup/products/detail/${value.id}">
                            <div class="card border-0">
@@ -182,14 +145,14 @@
                                                </div>
                                                <div class="col-6 text-truncate text-end">
                                                    ${value.price != null && value.promotion_price != null
-									? `<span class="card-text">
+																																																																																																																																																? `<span class="card-text">
                                                        <del class="text-muted">${number_format(value.price)}₫</del>
                                                        ${value.promotion_price ? number_format(value.promotion_price).toString() + '₫' : ''}
                                                        </span>`
-									: ''}
+																																																																																																																																																: ''}
                                                    ${minPromotionPrice !== null && maxPromotionPrice !== null
-									? `<span class="card-text text-red">${number_format(minPromotionPrice)}₫ - ${number_format(maxPromotionPrice)}₫</span>`
-									: ''}
+																																																																																																																																																? `<span class="card-text text-red">${number_format(minPromotionPrice)}₫ - ${number_format(maxPromotionPrice)}₫</span>`
+																																																																																																																																																: ''}
                                                </div>
                                            </div>
                                        </div>
@@ -199,46 +162,46 @@
                        </a>
                    </li>
                `);
-						});
-						menu.append(`
+																								});
+																								menu.append(`
                             <li>
                                 <a class="dropdown-item p-2 text-center" href="{{ route('user.product.indexUser') }}">
                                     <strong>Xem tất cả sản phẩm tại đây</strong>
                                 </a>
                             </li>
                         `);
-						hideLoading();
-					},
-					error: function (response) {
-						menu.html('');
-						menu.append(`
+																								hideLoading();
+																				},
+																				error: function(response) {
+																								menu.html('');
+																								menu.append(`
                         <li>
                             <p class="dropdown-item">
                                 Đã có lỗi xảy ra...
                             </p>
                         </li>
                     `);
-						handleAjaxError(response);
-						hideLoading();
-					}
-				});
-			} else {
-				menu.html('');
-				menu.append(`
+																								handleAjaxError(response);
+																								hideLoading();
+																				}
+																});
+												} else {
+																menu.html('');
+																menu.append(`
                 <li>
                     <p class="dropdown-item">
                         Phải nhập ít nhất 3 ký tự
                     </p>
                 </li>
             `);
-			}
-		}, 500);
+												}
+								}, 500);
 
-		searchInput.on('input', debouncedSearch);
+								searchInput.on('input', debouncedSearch);
 
-		searchButton.on('click', function (e) {
-			e.preventDefault();
-			debouncedSearch();
-		});
-	});
+								searchButton.on('click', function(e) {
+												e.preventDefault();
+												debouncedSearch();
+								});
+				});
 </script>

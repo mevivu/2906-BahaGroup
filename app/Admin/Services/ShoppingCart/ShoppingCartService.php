@@ -62,9 +62,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 'user_id' => $this->getCurrentUserId(),
                 'product_id' => $this->data['product_id'],
                 'product_variation_id' => $this->data['product_variation_id'] ?? null,
-            ]);
+            ])->first();
             $product = $this->productRepository->find($this->data['product_id']);
-            if (!isset($shoppingCart[0])) {
+            if (!$shoppingCart) {
                 if ($product->isSimple()) {
                     if ($product->qty < $this->data['qty']) {
                         DB::rollBack();
@@ -85,18 +85,18 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 ]);
             } else {
                 if ($product->isSimple()) {
-                    if ($product->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                    if ($product->qty < ($shoppingCart->qty + $this->data['qty'])) {
                         DB::rollBack();
                         return 1;
                     }
                 } else {
                     $productVariation = $product->productVariations()->where('id', $this->data['product_variation_id'])->first();
-                    if ($productVariation->qty < ($shoppingCart[0]->qty + $this->data['qty'])) {
+                    if ($productVariation->qty < ($shoppingCart->qty + $this->data['qty'])) {
                         DB::rollBack();
                         return 1;
                     }
                 }
-                $shoppingCart[0]->update(['qty' => $shoppingCart[0]->qty + $this->data['qty']]);
+                $shoppingCart->update(['qty' => $shoppingCart->qty + $this->data['qty']]);
             }
             DB::commit();
             return $shoppingCart;
@@ -111,6 +111,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $this->data = $request->validated();
         $cart = session()->get('cart', []);
+        $currentCartItem = null;
         $product = $this->productRepository->find($this->data['product_id']);
         foreach ($cart as $item) {
             if ($item['product_id'] == $this->data['product_id']) {
@@ -132,6 +133,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 $item['product_id'] == $this->data['product_id'] &&
                 $item['product_variation_id'] == ($this->data['product_variation_id'] ?? null)
             ) {
+                $currentCartItem = $item;
                 $item['qty'] += $this->data['qty'];
                 $productExists = true;
                 break;
@@ -139,71 +141,145 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         }
         if (!$productExists) {
             $cart[] = [
-                'product_id' => intval($this->data['product_id']),
+                'id' => $this->uniqidReal(),
+                'product' => $product,
+                'productVariation' => isset($this->data['product_variation_id']) ? $product->productVariations()->where('id', $this->data['product_variation_id'])->first() : null,
+                'product_id' => $this->data['product_id'],
                 'product_variation_id' => $this->data['product_variation_id'] ?? null,
-                'qty' => intval($this->data['qty']),
+                'qty' => $this->data['qty'],
             ];
+        }
+        foreach ($cart as &$item) {
+            if (
+                $item['product_id'] == $this->data['product_id'] &&
+                $item['product_variation_id'] == ($this->data['product_variation_id'] ?? null)
+            ) {
+                $currentCartItem = $item;
+                break;
+            }
         }
         session()->put('cart', $cart);
         session()->save();
-        return $cart;
+        return (object) $currentCartItem;
     }
 
     public function update(Request $request)
     {
         $this->data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $shoppingCart = $this->repository->findOrFail($this->data['id']);
-            $shoppingCart->update(['qty' => $this->data['qty']]);
-            DB::commit();
-            return $shoppingCart;
-        } catch (Exception $e) {
-            $this->logError('Failed to update shopping cart: ', $e);
-            DB::rollBack();
-            return false;
+        if ($this->getCurrentUser()) {
+            DB::beginTransaction();
+            try {
+                $shoppingCart = $this->repository->findOrFail($this->data['id']);
+                $shoppingCart->update(['qty' => $this->data['qty']]);
+                DB::commit();
+                return $shoppingCart;
+            } catch (Exception $e) {
+                $this->logError('Failed to update shopping cart: ', $e);
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($cart as &$item) {
+                if ($item['id'] == $this->data['id']) {
+                    if (isset($item['productVariation'])) {
+                        if ($item['productVariation']->qty < $this->data['qty']) {
+                            return 1;
+                        }
+                    } else {
+                        if ($item['product']->qty < $this->data['qty']) {
+                            return 1;
+                        }
+                    }
+                    $item['qty'] = $this->data['qty'];
+                }
+            }
+            session()->put('cart', $cart);
+            session()->save();
+            return true;
         }
     }
 
     public function increament(Request $request)
     {
         $this->data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $shoppingCart = $this->repository->findOrFail($this->data['id']);
-            $shoppingCart->update(['qty' => $shoppingCart->qty + 1]);
-            DB::commit();
-            return $shoppingCart;
-        } catch (Exception $e) {
-            $this->logError('Failed to increament quantity shopping cart: ', $e);
-            DB::rollBack();
-            return false;
+        if ($this->getCurrentUser()) {
+            DB::beginTransaction();
+            try {
+                $shoppingCart = $this->repository->findOrFail($this->data['id']);
+                $shoppingCart->update(['qty' => $shoppingCart->qty + 1]);
+                DB::commit();
+                return $shoppingCart;
+            } catch (Exception $e) {
+                $this->logError('Failed to increament quantity shopping cart: ', $e);
+                DB::rollBack();
+                return false;
+            }
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($cart as &$item) {
+                if ($item['id'] == $this->data['id']) {
+                    $item['qty'] += 1;
+                }
+            }
+            session()->put('cart', $cart);
+            session()->save();
+            return true;
         }
     }
 
     public function decreament(Request $request)
     {
         $this->data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $shoppingCart = $this->repository->findOrFail($this->data['id']);
-            if ($shoppingCart->qty > 1) {
-                $shoppingCart->update(['qty' => $shoppingCart->qty - 1]);
-            } else {
-                $this->delete($shoppingCart->id);
+        if ($this->getCurrentUser()) {
+            DB::beginTransaction();
+            try {
+                $shoppingCart = $this->repository->findOrFail($this->data['id']);
+                if ($shoppingCart->qty > 1) {
+                    $shoppingCart->update(['qty' => $shoppingCart->qty - 1]);
+                } else {
+                    $this->delete($shoppingCart->id);
+                }
+                DB::commit();
+                return $shoppingCart;
+            } catch (Exception $e) {
+                $this->logError('Failed to decreament quantity shopping cart: ', $e);
+                DB::rollBack();
+                return false;
             }
-            DB::commit();
-            return $shoppingCart;
-        } catch (Exception $e) {
-            $this->logError('Failed to decreament quantity shopping cart: ', $e);
-            DB::rollBack();
-            return false;
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($cart as $key => &$item) {
+                if ($item['id'] == $this->data['id']) {
+                    if ($item['qty'] > 1) {
+                        $item['qty'] -= 1;
+                    } else {
+                        unset($cart[$key]);
+                    }
+                }
+            }
+            session()->put('cart', array_values($cart));
+            session()->save();
+            return true;
         }
     }
 
     public function delete($id)
     {
-        return $this->repository->delete($id);
+        if ($this->getCurrentUser()) {
+            return $this->repository->delete($id);
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($cart as $key => $item) {
+                if ($item['id'] == $id) {
+                    unset($cart[$key]);
+                    break;
+                }
+            }
+            session()->put('cart', array_values($cart));
+            session()->save();
+            return true;
+        }
     }
 
     public function checkout(Request $request)
@@ -211,41 +287,88 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->data = $request->validated();
         $user = $this->getCurrentUser();
         $isBuyNow = false;
+        $discount = null;
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
-        $this->data['order']['user_id'] = $user->id;
-        $this->data['order']['user_id'] = $user->id;
         DB::beginTransaction();
         try {
-            $shopping_cart = $this->repository->findManyById($this->data['shopping_cart_id']);
-            foreach ($shopping_cart as $item) {
-                if ($item['qty'] != $this->data['qty'][$item->id]) {
-                    $item['qty'] = $this->data['qty'][$item->id];
-                    $isBuyNow = true;
+            if ($user) {
+                $this->data['order']['user_id'] = $user->id;
+                $shopping_cart = $this->repository->findManyById($this->data['shopping_cart_id']);
+                foreach ($shopping_cart as $item) {
+                    if ($item['qty'] >= $this->data['qty'][$item->id]) {
+                        $item['qty'] = $this->data['qty'][$item->id];
+                        if (count($shopping_cart) === 1) {
+                            $isBuyNow = true;
+                        }
+                    }
                 }
-            }
-            $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
-            $this->prepareData($shopping_cart);
-            if (isset($this->data['code'])) {
-                $discount = $this->discountRepository->findByField('code', $this->data['code']);
-                $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
-            }
-            $order = $this->orderRepository->create($this->data['order']);
-            if (isset($this->data['code'])) {
-                $this->handleDiscount($order, $discount);
-            }
-            $this->storeOrderDetail($order->id, $this->orderDetails);
-            $shopping_cart->each(function ($item) use ($isBuyNow) {
-                if (!$isBuyNow) {
-                    $item->delete();
+                $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
+                $this->prepareData($shopping_cart);
+                if (isset($this->data['code'])) {
+                    $discount = $this->discountRepository->findByField('code', $this->data['code']);
+                    $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
+                }
+                $order = $this->orderRepository->create($this->data['order']);
+                if (isset($this->data['code'])) {
+                    $this->handleDiscount($order, $discount);
+                }
+                $this->storeOrderDetail($order->id, $this->orderDetails);
+                $shopping_cart->each(function ($item) use ($isBuyNow) {
+                    if (!$isBuyNow) {
+                        $item->delete();
+                    } else {
+                        $instance = $this->repository->find($item->id);
+                        $instance->update(['qty' => $instance->qty - $item->qty]);
+                    }
+                });
+                DB::commit();
+                return $order;
+            } else {
+                $cart = session()->get('cart', []);
+                $cartCollection = collect($cart)->map(function ($item) {
+                    return (object) $item;
+                });
+                $cartCollection = $cartCollection->whereIn('id', $this->data['shopping_cart_id'])->values()->all();
+                foreach ($cartCollection as $item) {
+                    if ($item->qty >= $this->data['qty'][$item->id]) {
+                        $item->qty = $this->data['qty'][$item->id];
+                        if (count($cartCollection) === 1) {
+                            $isBuyNow = true;
+                        }
+                    }
+                }
+                $this->data['order']['total'] = $this->calculateTotal($cartCollection);
+                $this->prepareData($cartCollection);
+                if (isset($this->data['code'])) {
+                    $discount = $this->discountRepository->findByField('code', $this->data['code']);
+                    $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
+                }
+                $order = $this->orderRepository->create($this->data['order']);
+                if ($discount !== null) {
+                    $this->handleDiscount($order, $discount);
+                }
+                $this->storeOrderDetail($order->id, $this->orderDetails);
+                if ($isBuyNow) {
+                    foreach ($cart as $key => &$item) {
+                        if ($item['id'] == $cartCollection[0]->id) {
+                            if ($item['qty'] > $cartCollection[0]->qty) {
+                                $item['qty'] -= $cartCollection[0]->qty;
+                            } else {
+                                unset($cart[$key]);
+                            }
+                        }
+                    }
+                    session()->put('cart', array_values($cart));
+                    session()->save();
                 } else {
-                    $instance = $this->repository->find($item->id);
-                    $instance->update(['qty' => $instance->qty - $item->qty]);
+                    session()->remove('cart');
+                    session()->save();
                 }
-            });
-            DB::commit();
-            return $order;
+                DB::commit();
+                return $order;
+            }
         } catch (Exception $e) {
             $this->logError('Failed to process checkout: ', $e);
             DB::rollBack();
@@ -274,6 +397,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             ? ($item->product->on_flash_sale ? $item->productVariation->flashsale_price * $item->qty : $item->productVariation->promotion_price * $item->qty)
             : ($item->product->on_flash_sale ? $item->product->flashsale_price * $item->qty : $item->product->promotion_price * $item->qty);
     }
+
 
     public function calculateDiscountValue($total, $discount)
     {

@@ -5,9 +5,9 @@
 				<div class="d-flex justify-content-center align-items-center container bg-white">
 								<div class="container gap-64">
 												<div class="row mb-3 mt-3">
-																@include('user.auth.menu')
-																<div class="col-md-10">
-																				<x-form :action="route('user.profile.update')" type="put" enctype="multipart/form-data" :validate="true">
+																<x-form class="row" :action="route('user.profile.update')" type="put" enctype="multipart/form-data" :validate="true">
+																				@include('user.auth.menu')
+																				<div class="col-md-10">
 																								<div class="row">
 																												<!-- Họ và tên -->
 																												<div class="col-md-6">
@@ -56,8 +56,8 @@
 																																								NHẬT</strong></button></div>
 																												<div class="col-md-4"></div>
 																								</div>
-																				</x-form>
-																</div>
+																				</div>
+																</x-form>
 												</div>
 								</div>
 				</div>

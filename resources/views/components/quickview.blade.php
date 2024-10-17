@@ -151,8 +151,8 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
-																																												disabled class="btn btn-default w-100 mt-2"><strong>Mua
+																																				<div class="col-md-3"><button id="btnBuyNowModal" disabled
+																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
 																												@else
@@ -175,7 +175,7 @@
 																																												class="btn btn-default-primary w-100 mt-2"><strong>Thêm vào giỏ
 																																																hàng</strong></button>
 																																				</div>
-																																				<div class="col-md-3"><button id="btnBuyNowModal" onclick="buyNowModal()"
+																																				<div class="col-md-3"><button id="btnBuyNowModal"
 																																												class="btn btn-default w-100 mt-2"><strong>Mua
 																																																ngay</strong></button></div>
 																																</div>
@@ -436,6 +436,43 @@
 																})
 												}
 								});
+
+								$('#btnBuyNowModal').click(function(e) {
+												var productId = $('input[name="hidden_product_id_modal"]').val();
+												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
+												var qty = $('#filter-input-detail-modal').val();
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.buyNow') }}',
+																data: {
+																				product_id: productId,
+																				product_variation_id: productVariationId,
+																				qty: qty,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				if (response.status) {
+																								window.location.href =
+																												`{{ route('user.cart.checkout') }}?cart_id=${response.data.id}&qty=${response.data.qty}`;
+																				} else {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: 'Không thể xử lý đơn hàng của bạn!',
+																												showConfirmButton: true
+																								});
+																				}
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
+																}
+												});
+								})
 								$('#btnAddToCartModal').click(function(e) {
 												var productId = $('input[name="hidden_product_id_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();

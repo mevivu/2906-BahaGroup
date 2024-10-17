@@ -25,6 +25,8 @@ class Order extends Model
         'payment_method',
         /** Địa chỉ giao hàng */
         'address',
+        /** Email */
+        'email',
         /** Tổng tiền của đơn hàng */
         'total',
         /** Trạng thái của đơn hàng */
