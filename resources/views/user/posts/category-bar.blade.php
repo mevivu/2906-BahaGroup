@@ -13,8 +13,7 @@
             </a>
             @foreach ($categories as $category)
                 @if ($category->status == '1')
-                    <a href="{{ route('user.post.category', ['idCategory' => $category->id, 'slugCategory' => $category->slug]) }}"
-                        class="category-item">
+                    <a href="{{ route('user.post.category', ['slugCategory' => $category->slug]) }}" class="category-item">
                         {{ $category->name }}
                     </a>
                 @endif

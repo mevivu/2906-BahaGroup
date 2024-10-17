@@ -26,7 +26,7 @@ class ProductEditResource extends JsonResource
     {
         $productAttributes = [];
         $productVariations = [];
-        if($this->type == ProductType::Variable){
+        if ($this->type == ProductType::Variable) {
             $productAttributes = $this->productAttributes($this->productAttributes);
             $productVariations = $this->productVariations($this->productVariations);
         }
@@ -38,6 +38,7 @@ class ProductEditResource extends JsonResource
             'qty' => $this->qty,
             'sku' => $this->sku,
             'promotion_price' => $this->promotion_price,
+            'flashsale_price' => $this->flashsale_price,
             'in_stock' => $this->in_stock,
             'is_active' => $this->is_active,
             'is_featured' => $this->is_featured,
@@ -53,16 +54,17 @@ class ProductEditResource extends JsonResource
         return $data;
     }
 
-    private function productAttributes($data){
-        $data = $data->map(function($productAttribute) {
+    private function productAttributes($data)
+    {
+        $data = $data->map(function ($productAttribute) {
 
             $this->arrProductAttributesId[] = $productAttribute->only('attribute_id')['attribute_id'];
 
-            $this->arrProductAttributes[] = $productAttribute->attribute->variations->mapWithKeys(function($item) {
+            $this->arrProductAttributes[] = $productAttribute->attribute->variations->mapWithKeys(function ($item) {
                 return [$item->id => $item->name];
             });
 
-            foreach($productAttribute->attributeVariations as $item){
+            foreach ($productAttribute->attributeVariations as $item) {
                 $arr[] = $item->only('id')['id'];
             }
 
@@ -75,9 +77,10 @@ class ProductEditResource extends JsonResource
         return $data;
     }
 
-    private function productVariations($data){
-        $data = $data->map(function($productVariation) {
-            foreach($productVariation->attributeVariations as $item){
+    private function productVariations($data)
+    {
+        $data = $data->map(function ($productVariation) {
+            foreach ($productVariation->attributeVariations as $item) {
                 $arr[] = $item->only('id')['id'];
             }
 

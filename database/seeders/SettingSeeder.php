@@ -145,6 +145,34 @@ class SettingSeeder extends Seeder
                 'type_input' => SettingTypeInput::Text,
                 'group' => 1
             ],
+            [
+                'setting_key' => 'title_home_slider_1',
+                'setting_name' => 'Tiêu đề mục slider sản phẩm trang chủ 1',
+                'plain_value' => 'Thiết bị công nghệ hàng đầu',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 1
+            ],
+            [
+                'setting_key' => 'title_home_slider_2',
+                'setting_name' => 'Tiêu đề mục slider sản phẩm trang chủ 2',
+                'plain_value' => 'Đồ gia dụng hiện đại',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 1
+            ],
+            [
+                'setting_key' => 'image_home_slider_1',
+                'setting_name' => 'Ảnh trưng bày mục slider sản phẩm trang chủ 1',
+                'plain_value' => '/userfiles/images/banner-home2-04.jpg',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 1
+            ],
+            [
+                'setting_key' => 'image_home_slider_2',
+                'setting_name' => 'Ảnh trưng bày mục slider sản phẩm trang chủ 2',
+                'plain_value' => '/userfiles/images/img-slider-02-home2.png',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 1
+            ],
             // Footer
             [
                 'setting_key' => 'footer_open_time',
@@ -191,7 +219,7 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'footer_phone',
                 'setting_name' => 'Số điện thoại',
-                'plain_value' => '0359-777-777',
+                'plain_value' => '0359777777',
                 'type_input' => SettingTypeInput::Phone,
                 'group' => 4
             ],
@@ -206,6 +234,41 @@ class SettingSeeder extends Seeder
                 'setting_key' => 'footer_banking_2',
                 'setting_name' => 'Thông tin ngân hàng 2',
                 'plain_value' => 'BIDV: 8696.777.777 - CN BẮC SÀI GÒN - CÔNG TY CP TẬP ĐOÀN BAHA',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'help_center',
+                'setting_name' => 'Help Center',
+                'plain_value' => 'http://localhost:8080/2906-BahaGroup',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'how_to_buy',
+                'setting_name' => 'How to Buy',
+                'plain_value' => 'http://localhost:8080/2906-BahaGroup',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'shipping_delivery',
+                'setting_name' => 'Shipping & Delivery',
+                'plain_value' => 'http://localhost:8080/2906-BahaGroup',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'product_policy',
+                'setting_name' => 'Product Policy',
+                'plain_value' => 'http://localhost:8080/2906-BahaGroup',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'how_to_return',
+                'setting_name' => 'How to Return',
+                'plain_value' => 'http://localhost:8080/2906-BahaGroup',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 4
             ],
@@ -255,7 +318,7 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'contact_phone',
                 'setting_name' => 'Phone',
-                'plain_value' => '0359-777-777',
+                'plain_value' => '0359777777',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 5
             ],
@@ -693,102 +756,18 @@ class SettingSeeder extends Seeder
                 'group' => 6
             ],
             [
-                'setting_key' => 'slider_text_1',
-                'setting_name' => 'Nội dung slider 1',
-                'plain_value' => 'LAPTOP',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_11',
-                'setting_name' => 'Nội dung phụ slider 1',
-                'plain_value' => 'Chất lượng & Cấu hình cao',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_12',
-                'setting_name' => 'Nội dung phụ slider 1 (2)',
-                'plain_value' => 'Đa dạng mẫu mã',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'slider_image_1',
-                'setting_name' => 'Ảnh slider 1',
-                'plain_value' => '/userfiles/images/img-slider-01-home2.png',
-                'type_input' => SettingTypeInput::Image,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'slider_text_2',
-                'setting_name' => 'Nội dung slider 2',
-                'plain_value' => 'GHẾ',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_21',
-                'setting_name' => 'Nội dung phụ slider 2',
-                'plain_value' => 'Ghế Velvet xịn thiết kế Fashion',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_22',
-                'setting_name' => 'Nội dung phụ slider 2 (2)',
-                'plain_value' => 'Chất liệu cao cấp',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'slider_image_2',
-                'setting_name' => 'Ảnh slider 2',
-                'plain_value' => '/userfiles/images/img-slider-02-home2.png',
-                'type_input' => SettingTypeInput::Image,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'slider_text_3',
-                'setting_name' => 'Nội dung slider 3',
-                'plain_value' => 'TAI NGHE',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_31',
-                'setting_name' => 'Nội dung phụ slider 3',
-                'plain_value' => 'Tai nghe Apple Headphone MATRIX',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'sub_text_32',
-                'setting_name' => 'Nội dung phụ slider 3 (2)',
-                'plain_value' => 'Chất lượng âm thanh vượt trội',
-                'type_input' => SettingTypeInput::Text,
-                'group' => 7
-            ],
-            [
-                'setting_key' => 'slider_image_3',
-                'setting_name' => 'Ảnh slider 3',
-                'plain_value' => '/userfiles/images/img-slider-03-home2.png',
-                'type_input' => SettingTypeInput::Image,
-                'group' => 7
-            ],
-            [
                 'setting_key' => 'slider_image_4',
                 'setting_name' => 'Ảnh dưới slider 1',
                 'plain_value' => '/userfiles/images/banner-home2-01.jpg',
                 'type_input' => SettingTypeInput::Image,
-                'group' => 7
+                'group' => 1
             ],
             [
                 'setting_key' => 'slider_image_5',
                 'setting_name' => 'Ảnh dưới slider 2',
                 'plain_value' => '/userfiles/images/banner-home2-02222.jpg',
                 'type_input' => SettingTypeInput::Image,
-                'group' => 7
+                'group' => 1
             ],
             [
                 'setting_key' => 'object_discount',

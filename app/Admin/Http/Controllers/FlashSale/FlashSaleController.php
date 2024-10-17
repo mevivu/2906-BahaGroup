@@ -7,7 +7,6 @@ use App\Admin\Http\Controllers\Controller;
 use App\Admin\Http\Requests\FlashSale\FlashSaleRequest;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Admin\Services\FlashSale\FlashSaleServiceInterface;
-use App\Traits\ResponseController;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,7 +15,6 @@ use Illuminate\Http\JsonResponse;
 
 class FlashSaleController extends Controller
 {
-    use ResponseController;
     protected $repository;
 
     public function __construct(
@@ -69,7 +67,10 @@ class FlashSaleController extends Controller
     public function store(FlashSaleRequest $request)
     {
         $response = $this->service->store($request);
-        $this->handleResponse($response, $request, $this->route['index'], $this->route['edit']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 
     /**
@@ -90,20 +91,26 @@ class FlashSaleController extends Controller
     public function update(FlashSaleRequest $request)
     {
         $response = $this->service->update($request);
-        return $this->handleUpdateResponse($response, $this->route['edit']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 
     public function delete($id)
     {
         $response = $this->service->delete($id);
-        $this->handleDeleteResponse($response, $this->route['index']);
+        if ($response) {
+            return to_route($this->route['index'])->with('success', __('notifySuccess'));
+        }
+        return to_route($this->route['index'])->with('error', __('notifyFail'));
     }
 
     public function addProduct(FlashSaleRequest $request): JsonResponse
     {
         $product = $this->service->addProduct($request);
 
-        if(!$product){
+        if (!$product) {
             return response()->json([
                 'status' => 400,
                 'message' => __('notifyFail')
@@ -118,8 +125,9 @@ class FlashSaleController extends Controller
         ], 200);
     }
 
-    public function deleteDetail($id){
-        if($this->repository->deleteDetail($id)){
+    public function deleteDetail($id)
+    {
+        if ($this->repository->deleteDetail($id)) {
             return response()->json([
                 'status' => 200,
                 'msg' => __('notifySuccess')

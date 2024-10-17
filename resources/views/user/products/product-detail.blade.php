@@ -1,7 +1,30 @@
 @extends('user.layouts.master')
 @section('title', __('Chi tiết sản phẩm'))
 
+@push('custom-css')
+				<style>
+								.review_rating input {
+												display: none;
+								}
+
+								.review_rating input:checked~label {
+												color: #aaa;
+								}
+
+								.review_rating label {
+												color: orange;
+												font-size: 2rem;
+								}
+
+								h1 {
+												font-family: sans-serif;
+												color: #222;
+								}
+				</style>
+@endpush
+
 @section('content')
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
 												<div class="row">
@@ -57,22 +80,32 @@
 																												    ->first();
 																								@endphp
 																								<div class="row align-items-center mb-3 ms-1 mt-3">
-																												<div class="col-md-8 bg-default h-100 text-center text-white">End in
+																												<div class="col-md-8 bg-default h-100 text-center text-white">Kết thúc sau
 																																<strong id="countdown-flashsale-product"></strong>
 																												</div>
-																												<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold :
-																																{{ $flash_sale->sold ?? 0 . '/' . $flash_sale->qty }}</div>
+																												<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Đã bán :
+																																{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}</div>
 																								</div>
 																				@endif
 
 																				@if (!isset($product->productVariations[0]))
-																								<p class="lead"><del>{{ format_price($product->price) }}</del> <strong
-																																class="text-red">{{ format_price($product->promotion_price) }}</strong></p>
+																								<p class="lead">
+																												<del>{{ format_price($product->price) }}</del>
+																												<strong class="text-red">{{ format_price($product->promotion_price) }}</strong><br>
+																												@if (isset($product->on_flash_sale))
+																																<span class="flashsale-price">FLASH SALE
+																																				- {{ format_price($product->flashsale_price) }}</span>
+																												@endif
+																								</p>
 																				@else
-																								<p id="productDetailPrice" class="lead"><del
-																																id="productVariationPrice">{{ format_price($product->productVariations[0]->price) }}</del>
+																								<p id="productDetailPrice" class="lead">
+																												<del id="productVariationPrice">{{ format_price($product->productVariations[0]->price) }}</del>
 																												<strong id="productVariationPromotionPrice"
-																																class="text-red">{{ format_price($product->productVariations[0]->promotion_price) }}</strong>
+																																class="text-red">{{ format_price($product->productVariations[0]->promotion_price) }}</strong><br>
+																												@if (isset($product->on_flash_sale))
+																																<span class="flashsale-price">FLASH SALE -
+																																				{{ format_price($product->productVariations[0]->flashsale_price) }}</span>
+																												@endif
 																								</p>
 																				@endif
 
@@ -167,12 +200,21 @@
 				</div>
 				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
 								<div class="container">
-												<div class="row me-3 bg-white">
-																<div class="col-12 ms-3 mt-4">
+												<div class="row bg-white">
+																<div class="col-12 ms-2 mt-4">
 																				<h4>Mô tả sản phẩm</h4>
-																				<div>
+																				<div class="pe-3 text-justify">
 																								{!! $product->desc !!}
 																				</div>
+																</div>
+												</div>
+								</div>
+				</div>
+				<div id="container-sale-off" class="d-flex justify-content-center align-items-center container">
+								<div class="container">
+												<div class="row bg-white">
+																<div class="col-12 ms-3 mt-3">
+																				@include('user.products.review')
 																</div>
 												</div>
 								</div>
@@ -198,7 +240,7 @@
 																																@for ($i = 5; $i > $review->rating; $i--)
 																																				<span style="color: gray" class="star">★</span>
 																																@endfor
-																																<p>{!! $review->content !!}</p>
+																																<p class="text-justify">{!! $review->content !!}</p>
 																												</div>
 																								</div>
 																				@endforeach

@@ -3,7 +3,6 @@
 								function updateCountdown() {
 												const startTime = new Date();
 												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
-
 												const diffInMs = endTime - startTime;
 												const diffInHours = Math.floor(diffInMs / 3600000);
 												const diffInMinutes = Math.floor((diffInMs % 3600000) / 60000);
@@ -35,7 +34,6 @@
 												});
 												const hasEmpty = hiddenAttributeValues.some(value => value === '');
 												if (!hasEmpty) {
-
 																$.ajax({
 																				type: "GET",
 																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
@@ -54,7 +52,6 @@
 																												$('input[name="hidden_quantity"]').val(response.data.qty);
 																												$('input[name="hidden_product_variation_id"]').val(response.data
 																																.id);
-
 																												$('#filter-input-detail').removeAttr('readonly');
 																												$('#btnAddToCart').removeAttr('disabled');
 																												$('#btnBuyNow').removeAttr('disabled');
@@ -63,17 +60,21 @@
 																								}
 																				},
 																				error: function(response) {
-																								handleAjaxError(response);
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: `${response.responseJSON.message}`,
+																												showConfirmButton: true
+																								});
 																				}
 																})
 												}
 								});
 								$('#btnAddToCart').click(function(e) {
+												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
-												console.log(productId, productVariationId, qty);
-
 												$.ajax({
 																type: "POST",
 																url: '{{ route('user.cart.store') }}',
@@ -92,18 +93,55 @@
 																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
 																								showConfirmButton: true
 																				});
+																				$('#btnAddToCart').removeAttr('disabled');
 																},
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
-																								title: 'Thất bại',
-																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: true
 																				});
-																				handleAjaxError(response);
+																				$('#btnAddToCart').removeAttr('disabled');
 																}
 												});
 								});
+								$('#btnBuyNow').click(function(e) {
+												var productId = $('input[name="hidden_product_id"]').val();
+												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
+												var qty = $('#filter-input-detail').val();
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.buyNow') }}',
+																data: {
+																				product_id: productId,
+																				product_variation_id: productVariationId,
+																				qty: qty,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				if (response.status) {
+																								window.location.href =
+																												`{{ route('user.cart.checkout') }}?cart_id=${response.data.id}&qty=${response.data.qty}`;
+																				} else {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: 'Không thể xử lý đơn hàng của bạn!',
+																												showConfirmButton: true
+																								});
+																				}
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
+																}
+												});
+								})
 				});
 
 				function incrementDetail() {
@@ -160,6 +198,50 @@
 								}
 				}
 
+				function updatePrice() {
+								var minPrice = document.getElementById('min-price').value;
+								var maxPrice = document.getElementById('max-price').value;
+								document.getElementById('min-price-value').textContent = formatPrice(minPrice);
+								document.getElementById('max-price-value').textContent = formatPrice(maxPrice);
+				}
+
+				const sort = document.getElementById('sort');
+				sort.addEventListener('change', function() {
+								const currentUrl = window.location.href;
+								const urlWithoutSort = currentUrl.replace(/(\?|&)sort=[^&]+/g, '');
+								if (this.value === 'default') {
+												window.location = `${urlWithoutSort}`;
+								} else if (this.value === 'price-asc') {
+												if (urlWithoutSort == '{{ route('user.product.indexUser') }}') {
+																window.location = `${urlWithoutSort}?sort=asc`;
+												} else {
+																window.location = `${urlWithoutSort}&sort=asc`;
+												}
+								} else if (this.value === 'price-desc') {
+												if (urlWithoutSort == '{{ route('user.product.indexUser') }}') {
+																window.location = `${urlWithoutSort}?sort=desc`;
+												} else {
+																window.location = `${urlWithoutSort}&sort=desc`;
+												}
+								}
+				});
+
+				const filterByPriceCheckbox = document.getElementById('filter-by-price');
+				const minPriceInput = document.getElementById('min-price');
+				const maxPriceInput = document.getElementById('max-price');
+
+				filterByPriceCheckbox.addEventListener('change', () => {
+								if (filterByPriceCheckbox.checked) {
+												// Kích hoạt input range
+												minPriceInput.disabled = false;
+												maxPriceInput.disabled = false;
+								} else {
+												// Vô hiệu hóa input range
+												minPriceInput.disabled = true;
+												maxPriceInput.disabled = true;
+								}
+				});
+
 				function showDetailProductModal(modal, product_id) {
 								if (product_id) {
 												$.ajax({
@@ -170,7 +252,12 @@
 																				openModal(modal);
 																},
 																error: function(response) {
-																				handleAjaxError(response);
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
 																}
 												});
 								}

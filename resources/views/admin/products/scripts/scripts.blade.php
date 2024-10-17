@@ -18,12 +18,10 @@
             async: false,
         }).done(function(response){
             flagDelete = true;
-            console.log(flagDelete);
 
         }).fail(function(response){
             handleAjaxError(response);
         })
-        console.log(flagDelete);
         return flagDelete;
     }
 
@@ -51,7 +49,7 @@
             // when dragging from bottom
             $(this).height($(this).height());
         }).mouseup(function() {
-            // set height back to auto 
+            // set height back to auto
             // when user just clicked on item
             $(this).height('auto');
         }).sortable({
@@ -66,7 +64,7 @@
             }
         });
     }
-    
+
     $(document).ready(function() {
         checkProductType();
         addSelect2();

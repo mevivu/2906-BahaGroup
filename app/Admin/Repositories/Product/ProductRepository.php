@@ -119,6 +119,91 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         $this->instance = $this->instance->orderBy($column, $sort);
         return $this->instance;
     }
+    public function getMinMaxPromotionPrices($relations = ['productVariations']): array
+    {
+        $this->getQueryBuilder();
+        $this->instance = $this->instance->with($relations);
+        $products = $this->instance->get();
+
+        $allPrices = collect();
+
+        foreach ($products as $product) {
+            // Thêm giá của sản phẩm chính
+            $allPrices->push($product->promotion_price);
+
+            // Thêm giá của các biến thể sản phẩm
+            if ($product->productVariations) {
+                $allPrices = $allPrices->concat($product->productVariations->pluck('promotion_price'));
+            }
+        }
+
+        // Lọc bỏ các giá trị null hoặc 0 (nếu cần)
+        $allPrices = $allPrices->filter();
+
+        return [
+            'min_product_price' => $allPrices->min(),
+            'max_product_price' => $allPrices->max(),
+        ];
+    }
+
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc')
+    {
+        $this->instance = $this->instance->with($relations);
+
+        if (isset($filterData['min_product_price'])) {
+            $this->instance = $this->instance->where(function ($query) use ($filterData) {
+                $query->where('promotion_price', '>=', $filterData['min_product_price'])
+                    ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
+                        $subQuery->where('promotion_price', '>=', $filterData['min_product_price']);
+                    });
+            });
+        }
+
+        if (isset($filterData['max_product_price'])) {
+            $this->instance = $this->instance->where(function ($query) use ($filterData) {
+                $query->where('promotion_price', '<=', $filterData['min_product_price'])
+                    ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
+                        $subQuery->where('promotion_price', '<=', $filterData['min_product_price']);
+                    });
+            });
+        }
+
+        if (isset($filterData['category_slug'])) {
+            $this->instance = $this->instance->whereHas('categories', function ($query) use ($filterData) {
+                $query->where('slug', $filterData['category_slug']);
+            });
+        }
+
+        if (isset($filterData['color_slug'])) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+                $query->where('slug', $filterData['color_slug']);
+            });
+        }
+
+        if (isset($filterData['size_slug'])) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+                $query->where('slug', $filterData['size_slug']);
+            });
+        }
+        $desc = $desc ?? 'asc';
+        $this->instance = $this->instance->orderBy(function ($query) {
+            $query->selectRaw('CASE
+                WHEN type = 1 THEN promotion_price
+                WHEN type = 2 THEN (SELECT promotion_price FROM products_variations WHERE products_variations.product_id = products.id ORDER BY promotion_price ASC LIMIT 1)
+                ELSE promotion_price
+            END');
+        }, $desc)->paginate($filterData['limit']);
+        return $this->instance;
+    }
+
+    public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations'])
+    {
+        $this->instance = $this->loadRelations($this->model, $relations);
+        $this->instance = $this->instance->where('is_active', 1)->orderBy('promotion_price', 'ASC')->paginate(8);
+
+        return $this->instance;
+    }
+
     public function searchAllLimit($keySearch = '', $meta = [], $select = ['id', 'sku', 'name', 'price', 'promotion_price'], $limit = 10)
     {
         $this->instance = $this->model->with('productVariations')->select($select);
@@ -137,5 +222,9 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
             return $query->where('name', 'LIKE', '%' . $key . '%')
                 ->orWhere('price', 'LIKE', '%' . $key . '%');
         });
+    }
+    public function findOrFailBySlug($slug)
+    {
+        return $this->model->where('slug', $slug)->firstOrFail();
     }
 }

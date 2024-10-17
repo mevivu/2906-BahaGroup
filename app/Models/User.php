@@ -41,6 +41,9 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'device_token',
         'notification_preference',
+        'oauth',
+        'token_get_password',
+        'token_expiration',
     ];
 
     /**
@@ -60,8 +63,6 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
         'gender' => Gender::class,
-        'active' => 'boolean',
-
     ];
 
 

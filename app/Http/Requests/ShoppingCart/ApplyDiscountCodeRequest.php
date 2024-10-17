@@ -10,6 +10,8 @@ class ApplyDiscountCodeRequest extends BaseRequest
     {
         return [
             'code' => ['required', 'exists:App\Models\Discount,code'],
+            'cart_id' => ['nullable'],
+            'qty' => ['nullable'],
         ];
     }
 

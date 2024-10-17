@@ -67,23 +67,34 @@
 																																				    ->first();
 																																@endphp
 																																<div class="row align-items-center mb-3 ms-1 mt-3">
-																																				<div class="col-md-8 bg-default h-100 text-center text-white">End in
+																																				<div class="col-md-8 bg-default h-100 text-center text-white">Kết thúc sau
 																																								<strong id="countdown-flashsale-product-modal"></strong>
 																																				</div>
-																																				<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Sold :
+																																				<div style="background-color: #f5f5f5;" class="col-md-4 text-center">Đã bán :
 																																								{{ $flash_sale->sold ?? 0 }}/{{ $flash_sale->qty }}</div>
 																																</div>
 																												@endif
 
 																												@if (!isset($productModal->productVariations[0]))
-																																<p class="lead"><del>{{ format_price($productModal->price) }}</del> <strong
-																																								class="text-red">{{ format_price($productModal->promotion_price) }}</strong>
+																																<p class="lead">
+																																				<del>{{ format_price($productModal->price) }}</del>
+																																				<strong
+																																								class="text-red">{{ format_price($productModal->promotion_price) }}</strong><br>
+																																				@if (isset($productModal->on_flash_sale))
+																																								<span class="flashsale-price">FLASH SALE
+																																												- {{ format_price($productModal->flashsale_price) }}</span>
+																																				@endif
 																																</p>
 																												@else
-																																<p id="productDetailPrice" class="lead"><del
-																																								id="productVariationPriceModal">{{ format_price($productModal->productVariations[0]->price) }}</del>
-																																				<strong id="productVariationPromotionPriceModal"
-																																								class="text-red">{{ format_price($productModal->productVariations[0]->promotion_price) }}</strong>
+																																<p id="productDetailPrice" class="lead">
+																																				<del
+																																								id="productVariationPrice">{{ format_price($productModal->productVariations[0]->price) }}</del>
+																																				<strong id="productVariationPromotionPrice"
+																																								class="text-red">{{ format_price($productModal->productVariations[0]->promotion_price) }}</strong><br>
+																																				@if (isset($productModal->on_flash_sale))
+																																								<span class="flashsale-price">FLASH SALE -
+																																												{{ format_price($productModal->productVariations[0]->flashsale_price) }}</span>
+																																				@endif
 																																</p>
 																												@endif
 
@@ -309,7 +320,8 @@
 																																<div class="col-md-4"><button class="btn btn-default-primary w-100 mt-2"><strong>Thêm
 																																												vào
 																																												giỏ</strong></button></div>
-																																<div class="col-md-3"><button class="btn btn-default w-100 mt-2"><strong>Mua
+																																<div class="col-md-3"><button id="btnBuyNowModal"
+																																								class="btn btn-default w-100 mt-2"><strong>Mua
 																																												ngay</strong></button></div>
 																												</div>
 																												<div style="border-top: 1px solid #f5f5f5" class="row mt-3">
@@ -341,6 +353,21 @@
 
 <script>
 				$(document).ready(function() {
+								document.querySelectorAll('.color-btn-modal').forEach(button => {
+												button.addEventListener('click', function() {
+																document.querySelectorAll('.color-btn-modal').forEach(btn => btn.classList.remove(
+																				'lift-up'));
+																this.classList.add('lift-up');
+												});
+								});
+								document.querySelectorAll('.capacity-btn-modal').forEach(button => {
+												button.addEventListener('click', function() {
+																document.querySelectorAll('.capacity-btn-modal p').forEach(p => p.classList.remove(
+																				'bold-text'));
+																this.querySelector('p').classList.add('bold-text');
+												});
+								});
+
 								function updateCountdownModal() {
 												const startTime = new Date();
 												const endTime = new Date('{{ $productModal->on_flash_sale->end_time ?? 0 }}');
@@ -376,7 +403,6 @@
 																hiddenAttributeModalValues.push(element.value);
 												});
 												const hasEmpty = hiddenAttributeModalValues.some(value => value === '');
-												console.log(hiddenAttributeModalValues);
 												if (!hasEmpty) {
 																$.ajax({
 																				type: "GET",
@@ -397,7 +423,6 @@
 																												$('input[name="hidden_product_variation_modal_id"]').val(response
 																																.data
 																																.id);
-
 																												$('#filter-input-detail-modal').removeAttr('readonly');
 																												$('#btnAddToCartModal').removeAttr('disabled');
 																												$('#btnBuyNowModal').removeAttr('disabled');
@@ -411,11 +436,47 @@
 																})
 												}
 								});
+
+								$('#btnBuyNowModal').click(function(e) {
+												var productId = $('input[name="hidden_product_id_modal"]').val();
+												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
+												var qty = $('#filter-input-detail-modal').val();
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.buyNow') }}',
+																data: {
+																				product_id: productId,
+																				product_variation_id: productVariationId,
+																				qty: qty,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				if (response.status) {
+																								window.location.href =
+																												`{{ route('user.cart.checkout') }}?cart_id=${response.data.id}&qty=${response.data.qty}`;
+																				} else {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Lưu ý',
+																												text: 'Không thể xử lý đơn hàng của bạn!',
+																												showConfirmButton: true
+																								});
+																				}
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true
+																				});
+																}
+												});
+								})
 								$('#btnAddToCartModal').click(function(e) {
 												var productId = $('input[name="hidden_product_id_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
-												console.log(productId, productVariationId, qty);
 
 												$.ajax({
 																type: "POST",

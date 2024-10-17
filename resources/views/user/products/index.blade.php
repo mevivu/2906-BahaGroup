@@ -1,167 +1,201 @@
 @extends('user.layouts.master')
 @section('title', __($title))
 
+<style>
+				.size-filter {
+								display: block;
+								position: relative;
+								margin-bottom: 12px;
+								cursor: pointer;
+								-webkit-user-select: none;
+								-moz-user-select: none;
+								-ms-user-select: none;
+				}
+
+				.size-filter input {
+								position: absolute;
+								opacity: 0;
+								cursor: pointer;
+								height: 0;
+								width: 0;
+				}
+
+				.checkmark {
+								position: absolute;
+								top: 0;
+								left: 0;
+								height: 25px;
+								width: 25px;
+								border-radius: 20%;
+								border: 2px solid black;
+				}
+
+				.checkmark:after {
+								content: "";
+								position: absolute;
+								display: none;
+				}
+
+				.size-filter #checkAll,
+				input:checked~.checkmark:after {
+								display: block;
+				}
+
+				.size-filter .checkmark:after {
+								left: 9px;
+								top: 5px;
+								width: 5px;
+								height: 10px;
+								border: solid #eee;
+								border-width: 0 3px 3px 0;
+								-webkit-transform: rotate(45deg);
+								-ms-transform: rotate(45deg);
+								transform: rotate(45deg);
+				}
+</style>
+
 <head>
 				<meta name="description" content="{{ $meta_desc }}">
 </head>
 
-@php
-				$categoryRepository = app()->make(App\Admin\Repositories\Category\CategoryRepository::class);
-				$categories = $categoryRepository->getFlatTree();
-@endphp
-
 @section('content')
-				<div class="rounded-2 container gap-64 bg-white shadow">
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+				<div class="rounded-2 container bg-white shadow">
 								<div class="row pb-3 pt-3">
 												<a style="cursor: pointer" class="filter-icon d-none text-default mt-3">
 																<i class="fa fa-filter me-2"></i> Lọc
 												</a>
 												<div class="col-md-2 category-filter" id="filter-container">
-																<h6 class="text-uppercase">
-																				<strong>Danh mục</strong>
-																</h6>
-																@foreach ($categories as $category)
-																				<div class="d-flex align-items-center fs-12 mb-1">
-																								<input name="category_ids[]" value="{{ $category->id }}" type="checkbox"
-																												id="category{{ $category->id }}" class="me-2">
-																								<label for="category{{ $category->id }}" class="mb-0">{{ $category->name }}</label>
-																				</div>
-																@endforeach
+																<x-form action="" method="get" class="filter-form" id="filter-form">
+																				<h6 class="text-uppercase">
+																								<strong>Danh mục</strong>
+																				</h6>
 
-																<h6 class="text-uppercase mt-3">
-																				<strong>Màu sắc</strong>
-																</h6>
-																<div class="row me-3">
-																				<a class="col-2 bg-red custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16"></a>
-																				<a class="col-2 bg-yellow custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16"></a>
-																				<a class="col-2 bg-green custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16"></a>
-																				<a class="col-2 bg-pink custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16"></a>
-																				<a class="col-2 custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16 bg-black"></a>
-																				<a class="col-2 bg-cyan custom-col btn btn-sm square-btn color-btn-filter mb-2 w-16"></a>
-																</div>
+																				@foreach ($categories as $category)
+																								<div class="d-flex align-items-center fs-12 mb-1">
+																												<input name="category_slugs[]" value="{{ $category->slug }}" type="checkbox"
+																																id="category{{ $category->slug }}" class="me-2" autocomplete="off"
+																																@if (in_array($category->slug, request('category_slugs', []))) checked @endif>
+																												<label for="category{{ $category->slug }}" class="mb-0">
+																																<i class="{{ $category->icon }} me-2"></i>{{ $category->name }}
+																												</label>
+																								</div>
+																				@endforeach
 
-																<h6 class="text-uppercase mt-3">
-																				<strong>Kích thước</strong>
-																</h6>
-																<div class="row me-3">
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																				<a class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter mb-2 w-16">41</a>
-																</div>
-																<div class="mt-2">
-																				<div class="price-filter">
-																								<h6 class="text-uppercase mt-3">
-																												<strong>Giá sản phẩm</strong>
-																								</h6>
-																								<div class="d-flex align-items-center mb-2">
-																												<input type="range" id="min-price" class="form-range me-2" min="0" max="1000000"
-																																value="1000" oninput="updatePrice()">
-																												<input type="range" id="max-price" class="form-range" min="0" max="1000000"
-																																value="9000" oninput="updatePrice()">
-																								</div>
-																								<div class="d-flex justify-content-between">
-																												<span id="min-price-value">1000₫</span>
-																												<i class="fa fa-arrow-circle-right"></i>
-																												<span id="max-price-value">9000₫</span>
-																								</div>
+																				<h6 class="text-uppercase mt-3">
+																								<strong>Màu sắc</strong>
+																				</h6>
+																				<div class="row me-3">
+																								@foreach ($colors->variations as $co)
+																												@if (isset($co->meta_value['color']))
+																																<div class="col-2 mb-2">
+																																				<label class="size-filter">
+																																								<span style="display: none">tow</span>
+																																								<input id="checkAll" type="checkbox" name="color_slugs[]"
+																																												value="{{ $co->slug }}" autocomplete="off"
+																																												@if (in_array($co->slug, request('color_slugs', []))) checked @endif>
+																																								<span class="checkmark"
+																																												style="background-color: {{ htmlspecialchars($co->meta_value['color']) }}"></span>
+																																				</label>
+																																</div>
+																												@endif
+																								@endforeach
 																				</div>
-																				<button class="btn btn-default w-100 rounded-1 mt-3">
-																								<strong>Lọc</strong>
-																				</button>
-																</div>
+
+																				<h6 class="text-uppercase mt-3">
+																								<strong>Kích thước</strong>
+																				</h6>
+																				<div class="row me-3">
+																								@foreach ($sizes->variations as $size)
+																												<input type="checkbox" class="btn-check" id="btn-check-{{ $size->slug }}" name="size_slugs[]"
+																																value="{{ $size->slug }}" autocomplete="off"
+																																@if (in_array($size->slug, request('size_slugs', []))) checked @endif>
+																												<label
+																																class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter btn-check-label btn-outline-secondary text-dark mb-2 w-16"
+																																for="btn-check-{{ $size->slug }}">{{ $size->name }}</label>
+																								@endforeach
+																				</div>
+																				<div class="mt-2">
+																								<div class="price-filter">
+																												<h6 class="text-uppercase mt-3">
+																																<strong>Giá sản phẩm</strong>
+																												</h6>
+																												<div class="d-flex align-items-center fs-12 mb-1"><input type="checkbox" id="filter-by-price"
+																																				class="me-2" autocomplete="off" @if (request('min_product_price') && request('max_product_price')) checked @endif>
+																																<label for="filter-by-price" class="mb-0">Lọc theo giá</label>
+																												</div>
+																												<div class="d-flex align-items-center mb-2">
+																																<input type="range" id="min-price" name="min_product_price" class="form-range me-2"
+																																				min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
+																																				value="{{ $minMax['min_product_price'] }}" oninput="updatePrice()"
+																																				@if (!request('min_product_price')) disabled @endif>
+																																<input type="range" id="max-price" name="max_product_price" class="form-range"
+																																				min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
+																																				value="{{ $minMax['max_product_price'] }}" oninput="updatePrice()"
+																																				@if (!request('max_product_price')) disabled @endif>
+																												</div>
+																												<div class="d-flex justify-content-between">
+																																<span id="min-price-value">{{ format_price($minMax['min_product_price']) }}</span>
+																																<i class="fa fa-arrow-circle-right"></i>
+																																<span id="max-price-value">{{ format_price($minMax['max_product_price']) }}</span>
+																												</div>
+																								</div>
+																								<button type="submit" class="btn btn-default w-100 rounded-1 mt-3">
+																												<strong>Lọc</strong>
+																								</button>
+																				</div>
+																</x-form>
 												</div>
+												<!-- Main content -->
 												<div class="col-md-10 position-relative">
 																<div class="row align-items-center nt">
 																				<div class="col-md-6">
 																								<h5>Phụ kiện điện tử</h5>
 																								<p class="fs-12">
 																												Hiển thị tất cả
-																												<span class="text-success">15 kết quả</span>
+																												<span class="text-success">{{ $products->count() }} kết quả</span>
 																								</p>
 																				</div>
 																				<div class="col-md-6 text-end">
 																								<label for="sort" class="form-label fs-12">Sắp xếp theo:</label>
 																								<select id="sort" class="form-select d-inline-block fs-12 w-auto">
-																												<option value="popularity">Thứ tự mặc định</option>
-																												<option value="price-asc">Giá: Thấp đến Cao</option>
-																												<option value="price-desc">Giá: Cao đến Thấp</option>
+																												<option {{ $sort === null ? 'selected' : '' }} value="default">Thứ tự mặc định</option>
+																												<option {{ $sort === 'asc' ? 'selected' : '' }} value="price-asc">Giá: Thấp đến Cao</option>
+																												<option {{ $sort === 'desc' ? 'selected' : '' }} value="price-desc">Giá: Cao đến Thấp</option>
 																								</select>
 																				</div>
 																</div>
-																<div class="row no-gutters">
-																				<div class="col-6 col-md-3 mb-4">
-																								<div class="card hover-shadow border-0 shadow">
-																												<div class="position-relative">
-																																<img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';"
-																																				class="card-img-top img-default"
-																																				src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
-																																				style="cursor: pointer;" alt="Product 3">
-																																<img onclick="location.href='{{ route('user.product.detail', ['id' => 1]) }}';"
-																																				class="card-img-top img-hover"
-																																				src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg" alt="Product 3"
-																																				style="display: none;cursor: pointer;">
-																																<span class="badge badge-danger position-absolute end-0 top-0 m-3">50%</span>
-																																<span class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi bật</span>
-																												</div>
-																												<div class="card-body">
-																																<h6 class="card-title">
-																																				<a class="text-black" href="{{ route('user.product.detail', ['id' => 1]) }}">
-																																								Cell phone Silver
-																																				</a>
-																																</h6>
-																																<div class="rating">
-																																				<span class="star">★</span>
-																																				<span class="star">★</span>
-																																				<span class="star">★</span>
-																																				<span class="star">★</span>
-																																				<span class="star">★</span>
-																																				<span>100</span>
-																																</div>
-																																<p class="mb-0">
-																																				<del>3,990,000₫</del> <strong class="text-red">2,990,000₫</strong>
-																																</p>
-																																<div class="text-center" style="height: 0px;">
-																																				<a style="cursor: pointer;" class="add-to-cart">
-																																								<i class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i
-																																												class="fa fa-arrows-alt w-50" data-product-id="1" onclick="openModal(this)"
-																																												aria-hidden="true"></i>
-																																				</a>
-																																</div>
-																												</div>
+																<div class="row">
+																				@foreach ($products as $item)
+																								<div class="col-6 col-md-3 mb-4 shadow-lg">
+																												<x-cardproduct :item="$item" />
 																								</div>
-																				</div>
-																				{{-- <div class="col-6 col-md-3 mb-4">
-																								<x-cardproduct :item="$item" />
-																				</div> --}}
+																				@endforeach
 																</div>
-																<div class="pagination w-100 bottom-0 mb-0">
-																				<button class="pagination-btn prev" disabled><i class="fa fa-chevron-left"
-																												aria-hidden="true"></i></button>
-																				<button class="pagination-btn">1</button>
-																				<button class="pagination-btn">2</button>
-																				<button class="pagination-btn active">3</button>
-																				<button class="pagination-btn">4</button>
-																				<button class="pagination-btn">5</button>
-																				<button class="pagination-btn next"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+
+																<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																				<button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
+																								onclick="window.location='{{ $products->previousPageUrl() }}'">
+																								<i class="fa fa-chevron-left" aria-hidden="true"></i>
+																				</button>
+
+																				@for ($i = 1; $i <= $products->lastPage(); $i++)
+																								<button class="pagination-btn @if ($i == $products->currentPage()) active @endif"
+																												onclick="window.location='{{ $products->url($i) }}'">
+																												{{ $i }}
+																								</button>
+																				@endfor
+
+																				<button class="pagination-btn next" @if (!$products->hasMorePages()) disabled @endif
+																								onclick="window.location='{{ $products->nextPageUrl() }}'">
+																								<i class="fa fa-chevron-right" aria-hidden="true"></i>
+																				</button>
 																</div>
 												</div>
 								</div>
 				</div>
-				<script>
-								function updatePrice() {
-												var minPrice = document.getElementById('min-price').value;
-												var maxPrice = document.getElementById('max-price').value;
-												document.getElementById('min-price-value').textContent = minPrice + '₫';
-												document.getElementById('max-price-value').textContent = maxPrice + '₫';
-								}
-								const filterIcon = document.querySelector('.filter-icon');
-								const filterContainer = document.getElementById('filter-container');
-
-								filterIcon.addEventListener('click', () => {
-												filterContainer.classList.toggle('d-block');
-								});
-				</script>
 @endsection
+
+@push('custom-js')
+				@include('user.products.scripts.scripts')
+@endpush

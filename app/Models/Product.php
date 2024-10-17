@@ -148,6 +148,15 @@ class Product extends Model
         return $this->flash_sales()
             ->where('start_time', '<=', $now)
             ->where('end_time', '>=', $now)
-            ->where('qty', '>', 0)->first();
+            ->whereRaw('qty > sold')
+            ->first();
+    }
+
+    public function isSimple()
+    {
+        if ($this->type == ProductType::Simple) {
+            return true;
+        }
+        return false;
     }
 }

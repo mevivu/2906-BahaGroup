@@ -734,7 +734,7 @@ return [
             'addClass' => 'text-center align-middle'
         ],
         'payment_method' => [
-            'title' => 'Phương thức thanh toán',
+            'title' => 'PT Thanh toán',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
@@ -745,6 +745,16 @@ return [
         ],
         'total' => [
             'title' => 'Tổng tiền',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'discount_value' => [
+            'title' => 'Giảm giá',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'surcharge' => [
+            'title' => 'Phụ thu',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
@@ -924,12 +934,12 @@ return [
             'visible' => false
         ],
         //        'action' => [
-//            'title' => 'Thao tác',
-//            'orderable' => false,
-//            'exportable' => false,
-//            'printable' => false,
-//            'addClass' => 'text-center align-middle'
-//        ],
+        //            'title' => 'Thao tác',
+        //            'orderable' => false,
+        //            'exportable' => false,
+        //            'printable' => false,
+        //            'addClass' => 'text-center align-middle'
+        //        ],
     ],
     'driver' => [
         'fullname' => [
@@ -948,10 +958,10 @@ return [
             'orderable' => false,
         ],
         //        'roles' => [
-//            'title' => 'role',
-//            'orderable' => false,
-//            'visible' => false
-//        ],
+        //            'title' => 'role',
+        //            'orderable' => false,
+        //            'visible' => false
+        //        ],
         'order_accepted' => [
             'title' => 'status',
             'orderable' => false,

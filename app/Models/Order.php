@@ -25,8 +25,16 @@ class Order extends Model
         'payment_method',
         /** Địa chỉ giao hàng */
         'address',
+        /** Email */
+        'email',
+        /** Tên khách hàng */
+        'fullname',
+        /** Số điện thoại khách hàng */
+        'phone',
         /** Tổng tiền của đơn hàng */
         'total',
+        /** Phụ thu */
+        'surcharge',
         /** Trạng thái của đơn hàng */
         'status',
         /** Ghi chú cho đơn hàng */
@@ -48,7 +56,9 @@ class Order extends Model
         /** Giá trị giảm */
         'discount_value',
         /** code */
-        'code'
+        'code',
+        /** Đánh giá */
+        'is_reviewed',
     ];
 
     protected $casts = [

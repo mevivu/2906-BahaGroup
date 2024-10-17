@@ -35,4 +35,10 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
     public function syncDiscounts(Product $product, array $discountIds);
     public function getRelatedProducts($id);
 
+    public function getMinMaxPromotionPrices($relations = ['productVariations']);
+
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc');
+
+    public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations']);
+    public function findOrFailBySlug($slug);
 }

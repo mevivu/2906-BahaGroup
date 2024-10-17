@@ -4,22 +4,22 @@
 								<div class="row d-flex justify-content-center">
 												<div class="col-lg-3 col-12 box">
 																<h6><strong>Liên hệ</strong></h6>
-																<p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a style="color: red;"
+																<p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a class="text-red"
 																								class="d-inline-block">{{ $settingsFooter->where('setting_key', 'footer_open_time')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Bán hàng: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_shop_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_shop_phone')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Office: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_office_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_office_phone')->first()->plain_value }}</a>
 																</p>
 																<p><i class="fa fa-phone text-red"></i> Bảo hành: <a
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_warranty_phone')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_warranty_phone')->first()->plain_value }}</a>
 																</p>
 																<p>
 																				<i class="fa fa-envelope text-red"></i> Hợp tác khiếu nại:
 																				<a href="mailto:{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}"
-																								style="color: red;">{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}</a>
+																								class="text-red">{{ $settingsFooter->where('setting_key', 'footer_email')->first()->plain_value }}</a>
 																				<br>
 																</p>
 																<p><i class="fa fa-map-marker text-red"></i>
@@ -43,11 +43,17 @@
 												<div class="col-lg-3 col-12 box">
 																<h6><strong>Hỗ trợ</strong></h6>
 																<ul>
-																				<li><a style="color: #777777;" href="#">Help Center</a></li>
-																				<li><a style="color: #777777;" href="#">How to Buy</a></li>
-																				<li><a style="color: #777777;" href="#">Shipping & Delivery</a></li>
-																				<li><a style="color: #777777;" href="#">Product Policy</a></li>
-																				<li><a style="color: #777777;" href="#">How to Return</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'help_center')->first()->plain_value }}">Help
+																												Center</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'how_to_buy')->first()->plain_value }}">How
+																												to Buy</a></li>
+																				<li><a
+																												href="{{ $settingsFooter->where('setting_key', 'shipping_delivery')->first()->plain_value }}">Shipping
+																												& Delivery</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'product_policy')->first()->plain_value }}">Product
+																												Policy</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'how_to_return')->first()->plain_value }}">How
+																												to Return</a></li>
 																</ul>
 												</div>
 												<div class="col-lg-3 col-12 box">
@@ -76,12 +82,12 @@
 																				<p><strong>{{ $parentCategory->name }}</strong></p>
 																				<p class="text-777777 small mt-2 text-justify">
 																								@foreach ($parentCategory->children as $children)
-																												<x-link class="text-777777" :href="route('user.product.indexUser', ['category_id' => $children->id])">{{ $children->name }}</x-link>
+																												<x-link class="text-777777" :href="route('user.product.indexUser', ['category_ids[]' => $children->id])">{{ $children->name }}</x-link>
 																												@if (!$loop->last)
 																																|
 																												@endif
 																												@foreach ($children->children as $item)
-																																<x-link class="text-777777" :href="route('user.product.indexUser', ['category_id' => $item->id])">{{ $item->name }}</x-link>
+																																<x-link class="text-777777" :href="route('user.product.indexUser', ['category_ids[]' => $item->id])">{{ $item->name }}</x-link>
 																																@if (!$loop->last)
 																																				|
 																																@endif

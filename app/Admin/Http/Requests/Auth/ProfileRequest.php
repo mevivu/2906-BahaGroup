@@ -28,6 +28,7 @@ class ProfileRequest extends BaseRequest
                 'address' => ['nullable'],
                 'birthday' => ['required'],
                 'gender' => ['required'],
+                'avatar' => ['nullable'],
             ];
             return $this->validate;
         }
