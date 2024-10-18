@@ -133,7 +133,7 @@ class ProductController extends Controller
         $product = new ProductEditResource($product);
         $is_reviewed = false;
         $orderIds = $this->orderRepository->getQueryBuilder()
-            ->where('status', App\Enums\Order\OrderStatus::Completed->value)
+            ->where('status', App\Enums\Order\OrderStatus::Confirmed->value)
             ->where('user_id', auth()->id())
             ->where('is_reviewed', App\Enums\Order\OrderReview::NotReviewed->value)
             ->where('created_at', '>=', now()->subDays(14))
