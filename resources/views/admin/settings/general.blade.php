@@ -1,11 +1,10 @@
 @extends('admin.layouts.master')
 
 @push('libs-css')
-
 @endpush
 @push('custom-css')
     <style>
-        .wrap-loop-input .add-image-ckfinder{
+        .wrap-loop-input .add-image-ckfinder {
             max-width: 300px;
             display: block;
         }
@@ -42,9 +41,8 @@
 @endsection
 
 @push('libs-js')
-@include('ckfinder::setup')
+    @include('ckfinder::setup')
 @endpush
 
 @push('custom-js')
-
 @endpush
