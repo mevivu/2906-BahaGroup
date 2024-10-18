@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
+use Illuminate\Support\Str;
 
 class PostService implements PostServiceInterface
 {
@@ -35,6 +36,17 @@ class PostService implements PostServiceInterface
     {
 
         $data = $request->validated();
+        $slug = Str::slug($data['title']);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while ($this->repository->getQueryBuilder()->where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        $data['slug'] = $slug;
+        $data['meta_title'] = $data['title'];
         $data['post_type'] = PostType::Default;
         $data['posted_at'] = now();
         $data['priority'] = PriorityStatus::NotPriority;
@@ -64,6 +76,13 @@ class PostService implements PostServiceInterface
         $current = $this->repository->getQueryBuilderOrderBy('id')->where('id', $data['id'])->first();
         if ($data['status'] == '1' && $current->status->value == '2') {
             $data['posted_at'] = now();
+        }
+        if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $data['slug'])) {
+            return false;
+        }
+        if ($this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()) {
+            $this->logError('Failed to process update post CMS', new Exception('Slug đã tồn tại.'));
+            return false;
         }
         $categoriesId = $data['categories_id'] ?? [];
         unset($data['categories_id']);
