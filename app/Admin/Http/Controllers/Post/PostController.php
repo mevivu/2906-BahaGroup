@@ -23,15 +23,15 @@ class PostController extends Controller
     use ResponseController;
 
     protected PostCategoryRepositoryInterface $repositoryPostCategory;
+    protected PostCategory $modelCategory;
 
     public function __construct(
-        PostRepositoryInterface         $repository,
+        PostRepositoryInterface $repository,
         PostCategoryRepositoryInterface $repositoryPostCategory,
-        PostServiceInterface            $service,
-        Post    $modelPost,
+        PostServiceInterface $service,
+        Post $modelPost,
         PostCategory $modelCategory,
-    )
-    {
+    ) {
 
         parent::__construct();
         $this->repository = $repository;

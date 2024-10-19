@@ -1,4 +1,4 @@
-#post .col-inner {
+#post .col-6 {
     position: relative;
 }
 
@@ -27,7 +27,7 @@
     text-overflow: ellipsis;
 }
 
-#post .col-inner:hover .badge {
+#post .col-6:hover .badge {
     background-color: var(--bs-dark);
     color: var(--bs-white);
 }
