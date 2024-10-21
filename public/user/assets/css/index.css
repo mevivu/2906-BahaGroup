@@ -1136,8 +1136,8 @@ td[data-label="Tổng"] {
 
 .pagination-btn {
     border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 5px 10px;
+    border-radius: 50% 50%;
+    padding: 5px 12px;
     margin: 0 5px;
     background-color: #fff;
     color: #000;
@@ -1157,6 +1157,7 @@ td[data-label="Tổng"] {
 .pagination-btn.prev,
 .pagination-btn.next {
     cursor: pointer;
+    padding: 5px 8px
 }
 
 .pagination-btn[disabled] {

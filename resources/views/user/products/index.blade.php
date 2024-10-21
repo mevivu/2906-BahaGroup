@@ -180,22 +180,7 @@
                 </div>
 
                 <div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
-                    <button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
-                        onclick="window.location='{{ $products->previousPageUrl() }}'">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </button>
-
-                    @for ($i = 1; $i <= $products->lastPage(); $i++)
-                        <button class="pagination-btn @if ($i == $products->currentPage()) active @endif"
-                            onclick="window.location='{{ $products->url($i) }}'">
-                            {{ $i }}
-                        </button>
-                    @endfor
-
-                    <button class="pagination-btn next" @if (!$products->hasMorePages()) disabled @endif
-                        onclick="window.location='{{ $products->nextPageUrl() }}'">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                    </button>
+                    {{ $products->withQueryString()->links('components.pagination') }}
                 </div>
             </div>
         </div>
