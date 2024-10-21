@@ -10,7 +10,7 @@
 												const diffInSeconds = Math.floor((diffInMs % 60000) / 1000);
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
-																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+																`${diffInHours.toString().padStart(2, '0')} Giờ : ${diffInMinutes.toString().padStart(2, '0')} Phút : ${diffInSeconds.toString().padStart(2, '0')} Giây`;
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $flashSale->end_time ?? 0 }}';

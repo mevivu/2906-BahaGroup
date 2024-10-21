@@ -3,11 +3,11 @@
 								function addChip(slug, name, type) {
 												let chipID = type + '-' + slug;
 												$('#filter-chips-container').append(`
-												<div class="col col-sm col-md col-lg my-1" id="${chipID}">
-																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
-																				<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
-																</button>
-												</div>
+																																																																																																																																																																																																<div class="col col-sm col-md col-lg my-1" id="${chipID}">
+																																																																																																																																																																																																																																																																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
+																																																																																																																																																																																																																																																																																																																																<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
+																																																																																																																																																																																																																																																																</button>
+																																																																																																																																																																																																</div>
         `);
 								}
 
@@ -58,8 +58,7 @@
 												const diffInSeconds = Math.floor((diffInMs % 60000) / 1000);
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
-																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
-												console.log(formattedTime);
+																`${diffInHours.toString().padStart(2, '0')} Giờ : ${diffInMinutes.toString().padStart(2, '0')} Phút : ${diffInSeconds.toString().padStart(2, '0')} Giây`;
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
@@ -114,7 +113,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: `${response.responseJSON.message}`,
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																})
@@ -141,7 +141,8 @@
 																								icon: 'success',
 																								title: 'Thành công',
 																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																				$('#btnAddToCart').removeAttr('disabled');
 																},
@@ -150,7 +151,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																				$('#btnAddToCart').removeAttr('disabled');
 																}
@@ -178,7 +180,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: 'Không thể xử lý đơn hàng của bạn!',
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																},
@@ -187,7 +190,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});
@@ -202,7 +206,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng vượt quá hàng trong kho!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = hiddenQuantity;
 								} else {
@@ -216,7 +221,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Vui lòng chỉ nhập số!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -225,7 +231,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng phải lớn hơn 0!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -235,7 +242,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: `Số lượng vượt quá hàng trong kho, còn lại ${hiddenQuantity} sản phẩm!`,
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -306,7 +314,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});

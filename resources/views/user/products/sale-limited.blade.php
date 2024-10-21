@@ -22,7 +22,7 @@
 																<div class="col-12">
 																				<div class="row">
 																								@foreach ($products as $item)
-																												<div class="col-6 col-md-3 mb-4">
+																												<div class="col-6 col-md-3 mb-2 mt-2">
 																																<x-cardflash :item="$item" />
 																												</div>
 																								@endforeach

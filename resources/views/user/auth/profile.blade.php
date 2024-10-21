@@ -4,8 +4,8 @@
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex justify-content-center align-items-center container bg-white">
 								<div class="container gap-64">
-												<div class="row mb-3 mt-3">
-																<x-form class="row" :action="route('user.profile.update')" type="put" enctype="multipart/form-data" :validate="true">
+												<x-form :action="route('user.profile.update')" type="put" enctype="multipart/form-data" :validate="true">
+																<div class="row mb-3 mt-3">
 																				@include('user.auth.menu')
 																				<div class="col-md-10">
 																								<div class="row">
@@ -48,6 +48,7 @@
 
 																												<!-- Địa chỉ -->
 																												<div class="col-md-12 mt-3">
+																																<label for="address">Địa chỉ <p style="display: inline;" class="text-red">*</p></label>
 																																<x-input :label="trans('address')" name="address" :value="$auth->address" :placeholder="trans('address')"
 																																				:required="true" />
 																												</div>
@@ -57,8 +58,8 @@
 																												<div class="col-md-4"></div>
 																								</div>
 																				</div>
-																</x-form>
-												</div>
+																</div>
+												</x-form>
 								</div>
 				</div>
 @endsection

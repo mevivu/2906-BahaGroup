@@ -378,7 +378,7 @@
 												const diffInSeconds = Math.floor((diffInMs % 60000) / 1000);
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
-																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+																`${diffInHours.toString().padStart(2, '0')} Giờ : ${diffInMinutes.toString().padStart(2, '0')} Phút : ${diffInSeconds.toString().padStart(2, '0')} Giây`;
 												document.getElementById('countdown-flashsale-product-modal').textContent = formattedTime;
 								}
 								const endTime = '{{ $productModal->on_flash_sale->end_time ?? 0 }}';
@@ -459,7 +459,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: 'Không thể xử lý đơn hàng của bạn!',
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																},
@@ -468,7 +469,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});
@@ -494,7 +496,8 @@
 																								icon: 'success',
 																								title: 'Thành công',
 																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																},
 																error: function(response) {
@@ -502,7 +505,8 @@
 																								icon: 'warning',
 																								title: 'Thất bại',
 																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																				handleAjaxError(response);
 																}
@@ -518,7 +522,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng vượt quá hàng trong kho!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = hiddenQuantity;
 								} else {
@@ -532,7 +537,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Vui lòng chỉ nhập số!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -541,7 +547,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng phải lớn hơn 0!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -551,7 +558,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: `Số lượng vượt quá hàng trong kho, còn lại ${hiddenQuantity} sản phẩm!`,
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}

@@ -60,7 +60,7 @@
 
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-				<div class="rounded-2 container bg-white shadow">
+				<div class="rounded-2 container gap-64 bg-white shadow">
 								<div class="row pb-3 pt-3">
 												<a style="cursor: pointer" class="filter-icon d-none text-default mt-3">
 																<i class="fa fa-filter me-2"></i> Lọc
@@ -117,7 +117,7 @@
 																																value="{{ $size->slug }}" autocomplete="off"
 																																@if (in_array($size->slug, request('size_slugs', []))) checked @endif>
 																												<label
-																																class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter btn-check-label btn-outline-secondary text-dark mb-2 w-16"
+																																class="col-4 custom-col btn btn-sm square-btn capacity-btn-filter btn-check-label btn-outline-secondary text-dark mb-2 w-16"
 																																for="btn-check-{{ $size->slug }}">{{ $size->name }}</label>
 																								@endforeach
 																				</div>
@@ -171,9 +171,9 @@
 																								</select>
 																				</div>
 																</div>
-																<div class="row">
+																<div class="row bg-f4f4f4">
 																				@foreach ($products as $item)
-																								<div class="col-6 col-md-3 mb-4 shadow-lg">
+																								<div class="col-6 col-md-3 mb-2 mt-2">
 																												<x-cardproduct :item="$item" />
 																								</div>
 																				@endforeach
@@ -188,5 +188,17 @@
 @endsection
 
 @push('custom-js')
+				<script>
+								const filterIcon = document.querySelector('.filter-icon');
+								const filterContainer = document.getElementById('filter-container');
+
+								filterIcon.addEventListener('click', function() {
+												if (filterContainer.style.display === 'none' || filterContainer.style.display === '') {
+																filterContainer.style.display = 'block';
+												} else {
+																filterContainer.style.display = 'none';
+												}
+								});
+				</script>
 				@include('user.products.scripts.scripts')
 @endpush

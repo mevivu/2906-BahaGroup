@@ -26,7 +26,7 @@
 																class="{{ Route::is('user.profile.indexUser') ? 'text-white' : 'text-6' }}" :href="route('user.profile.indexUser')">TÀI
 																KHOẢN</x-link></li>
 								<li class="list-group-item {{ Route::is('user.password.indexUser') ? 'bg-default text-white' : '' }}"><i
-																class="fa fa-sign-out me-2 ms-2"></i><x-link
+																class="fa fa-key me-2 ms-2"></i><x-link
 																class="{{ Route::is('user.password.indexUser') ? 'text-white' : 'text-6' }}" :href="route('user.password.indexUser')">MẬT
 																KHẨU</x-link></li>
 								<li style="cursor: pointer;" class="list-group-item"><i class="fa fa-sign-out me-2 ms-2"></i><x-link

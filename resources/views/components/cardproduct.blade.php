@@ -14,7 +14,7 @@
 								@endif
 								<span class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi bật</span>
 				</div>
-				<div class="card-body shadow-sm">
+				<div class="card-body">
 								<h6 class="card-title mb-1"><x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->slug])">
 																{{ $item->name }}
 												</x-link></h6>
