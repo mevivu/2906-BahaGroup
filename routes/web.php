@@ -110,7 +110,7 @@ Route::controller(App\Http\Controllers\Post\PostController::class)
         Route::get('/{slug}', function ($slug) {
             $postCategory = \App\Models\PostCategory::where('slug', $slug)->first();
             if ($postCategory) {
-                return App::make(App\Http\Controllers\Post\PostController::class)->index($slug);
+                return App::make(App\Http\Controllers\Post\PostController::class)->category($slug);
             }
 
             $post = \App\Models\Post::where('slug', $slug)->first();
