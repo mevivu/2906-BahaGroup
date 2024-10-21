@@ -4,6 +4,7 @@ namespace App\Admin\Services\PostCategory;
 
 use App\Admin\Services\PostCategory\PostCategoryServiceInterface;
 use App\Admin\Repositories\PostCategory\PostCategoryRepositoryInterface;
+use App\Admin\Repositories\Post\PostRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -18,10 +19,14 @@ class PostCategoryService implements PostCategoryServiceInterface
     protected array $data;
 
     protected PostCategoryRepositoryInterface $repository;
+    protected PostRepositoryInterface $postRepository;
 
-    public function __construct(PostCategoryRepositoryInterface $repository)
-    {
+    public function __construct(
+        PostCategoryRepositoryInterface $repository,
+        PostRepositoryInterface $postRepository
+    ) {
         $this->repository = $repository;
+        $this->postRepository = $postRepository;
     }
 
     public function store(Request $request)
@@ -32,7 +37,11 @@ class PostCategoryService implements PostCategoryServiceInterface
         $originalSlug = $slug;
         $counter = 1;
 
-        while ($this->repository->getQueryBuilder()->where('slug', $slug)->exists()) {
+        while (
+            $this->repository->getQueryBuilder()->where('slug', $slug)->exists()
+            ||
+            $this->postRepository->getQueryBuilder()->where('slug', $slug)->exists()
+        ) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
@@ -52,7 +61,11 @@ class PostCategoryService implements PostCategoryServiceInterface
         if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $data['slug'])) {
             return false;
         }
-        if ($this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()) {
+        if (
+            $this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()
+            ||
+            $this->postRepository->getQueryBuilder()->where('slug', $data['slug'])->exists()
+        ) {
             return false;
         }
         return $this->repository->update($data['id'], $data);
