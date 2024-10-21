@@ -158,14 +158,14 @@
 																<div class="offcanvas-body">
 																				<ul class="nav nav-tabs" id="myTab" role="tablist">
 																								<li class="nav-item" role="presentation">
-																												<button class="nav-link active" id="menu-tab" data-bs-toggle="tab"
+																												<button class="nav-link active fs-6 bold-text" id="menu-tab" data-bs-toggle="tab"
 																																data-bs-target="#menu" type="button" role="tab" aria-controls="menu"
 																																aria-selected="true">
 																																<i class="ti ti-list"></i> Menu
 																												</button>
 																								</li>
 																								<li class="nav-item" role="presentation">
-																												<button class="nav-link" id="category-tab" data-bs-toggle="tab"
+																												<button class="nav-link fs-6 bold-text" id="category-tab" data-bs-toggle="tab"
 																																data-bs-target="#category" type="button" role="tab" aria-controls="category"
 																																aria-selected="false">
 																																<i class="ti ti-list"></i> Danh mục
