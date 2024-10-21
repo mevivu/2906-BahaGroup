@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Admin\Http\Resources\Province;
+namespace App\Admin\Http\Resources\Icon;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProvinceSearchSelectResource extends JsonResource
+class IconSearchSelectResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class ProvinceSearchSelectResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
+            'id' => $this->name,
             'text' => "<i class=\"ti ti-phone\">before</i> {$this->name}"
         ];
     }
