@@ -92,7 +92,7 @@
             </div>
 
             <!-- Main Navigation Links -->
-            <div class="col-9 d-flex align-items-center d-none d-xl-flex">
+            <div class="col-9 d-flex align-items-center d-none d-xl-flex bold-text">
                 <ul class="nav">
                     <li class="nav-item default-font-size">
                         <x-link :href="route('user.index')">Trang chủ</x-link>
