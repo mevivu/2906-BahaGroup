@@ -59,7 +59,7 @@
 																								</ul>
 																				</div>
 																</div>
-																<div class="col-12 col-md-8">
+																<div class="col-12 col-md-8 mb-4">
 																				<div class="map me-3 mt-4">
 																								<div style="width: 100%"><iframe width="100%" height="400" frameborder="0" scrolling="no"
 																																marginheight="0" marginwidth="0"

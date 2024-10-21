@@ -12,6 +12,7 @@
 																<input accept="image/*" style="display: none" type='file' id="coverInp" name="avatar" />
 												</div>
 								</section>
+								@include('user.scripts.upload-image')
 				@endif
 				<ul class="list-group">
 								<li
@@ -33,5 +34,3 @@
 																class="text-6" data-bs-toggle="modal" data-bs-target="#modalLogout">ĐĂNG XUẤT</x-link></li>
 				</ul>
 </div>
-
-@include('user.scripts.upload-image')

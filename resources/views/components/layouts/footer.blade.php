@@ -83,12 +83,12 @@
 																				<p><strong>{{ $parentCategory->name }}</strong></p>
 																				<p class="text-777777 small mt-2 text-justify">
 																								@foreach ($parentCategory->children as $children)
-																												<x-link class="text-777777" :href="route('user.product.indexUser', ['category_ids[]' => $children->id])">{{ $children->name }}</x-link>
+																												<x-link class="text-777777" :href="route('user.product.indexUser', ['category_slugs[]' => $children->slug])">{{ $children->name }}</x-link>
 																												@if (!$loop->last)
 																																|
 																												@endif
 																												@foreach ($children->children as $item)
-																																<x-link class="text-777777" :href="route('user.product.indexUser', ['category_ids[]' => $item->id])">{{ $item->name }}</x-link>
+																																<x-link class="text-777777" :href="route('user.product.indexUser', ['category_slugs[]' => $item->slug])">{{ $item->name }}</x-link>
 																																@if (!$loop->last)
 																																				|
 																																@endif

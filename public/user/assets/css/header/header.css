@@ -1,0 +1,45 @@
+.menu-container {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.menu-slide {
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.menu-panel {
+    min-width: 100%;
+    padding-right: 20px;
+    padding-top: 20px;
+    box-sizing: border-box;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.menu-item a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.menu-item i {
+    margin-right: 10px;
+}
+
+.back-button {
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+#submenu-title {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
