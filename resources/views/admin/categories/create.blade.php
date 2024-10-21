@@ -32,8 +32,8 @@
 @endsection
 
 @push('libs-js')
-<!-- ckfinder js -->
-@include('ckfinder::setup')
+    <!-- ckfinder js -->
+    @include('ckfinder::setup')
     {{-- <script src="{{ asset('/public/libs/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('/public/libs/select2/dist/js/i18n/vi.js') }}"></script> --}}
 @endpush
