@@ -104,10 +104,20 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::get('/success', 'success')->name('success');
     });
 Route::controller(App\Http\Controllers\Post\PostController::class)
-    ->prefix('/bai-viet')
     ->as('post.')
     ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{slugPost}', 'detail')->name('detail');
-        Route::get('/danh-muc/{slugCategory}', 'category')->name('category');
+        Route::get('/tin-tuc', 'index')->name('index');
+        Route::get('/{slug}', function ($slug) {
+            $postCategory = \App\Models\PostCategory::where('slug', $slug)->first();
+            if ($postCategory) {
+                return App::make(App\Http\Controllers\Post\PostController::class)->index($slug);
+            }
+
+            $post = \App\Models\Post::where('slug', $slug)->first();
+            if ($post) {
+                return App::make(App\Http\Controllers\Post\PostController::class)->detail($slug);
+            }
+
+            abort(404);
+        })->name('fallback');
     });

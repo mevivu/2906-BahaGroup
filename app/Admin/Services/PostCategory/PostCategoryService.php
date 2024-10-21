@@ -3,9 +3,10 @@
 namespace App\Admin\Services\PostCategory;
 
 use App\Admin\Services\PostCategory\PostCategoryServiceInterface;
-use  App\Admin\Repositories\PostCategory\PostCategoryRepositoryInterface;
+use App\Admin\Repositories\PostCategory\PostCategoryRepositoryInterface;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostCategoryService implements PostCategoryServiceInterface
 {
@@ -18,15 +19,27 @@ class PostCategoryService implements PostCategoryServiceInterface
 
     protected PostCategoryRepositoryInterface $repository;
 
-    public function __construct(PostCategoryRepositoryInterface $repository){
+    public function __construct(PostCategoryRepositoryInterface $repository)
+    {
         $this->repository = $repository;
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        $this->data = $request->validated();
+        $data = $request->validated();
+        $slug = Str::slug($data['name']);
+        $originalSlug = $slug;
+        $counter = 1;
 
-        return $this->repository->create($this->data);
+        while ($this->repository->getQueryBuilder()->where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        $data['slug'] = $slug;
+
+        return $this->repository->create($data);
     }
 
     /**
@@ -35,9 +48,14 @@ class PostCategoryService implements PostCategoryServiceInterface
     public function update(Request $request): object|bool
     {
 
-        $this->data = $request->validated();
-
-        return $this->repository->update($this->data['id'], $this->data);
+        $data = $request->validated();
+        if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $data['slug'])) {
+            return false;
+        }
+        if ($this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()) {
+            return false;
+        }
+        return $this->repository->update($data['id'], $data);
 
     }
 

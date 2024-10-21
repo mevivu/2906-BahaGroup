@@ -35,6 +35,8 @@ class PostRequest extends BaseRequest
             'categories_id' => ['nullable', 'array'],
             'categories_id.*' => ['nullable', 'exists:App\Models\PostCategory,id'],
             'title' => ['required', 'string'],
+            'slug' => ['required'],
+            'meta_title' => ['required'],
             'image' => ['required'],
             'is_featured' => ['nullable', new Enum(FeaturedStatus::class)],
             'status' => ['required', new Enum(PostStatus::class)],

@@ -8,8 +8,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -21,6 +20,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->string('meta_title');
             $table->text('image');
             $table->tinyInteger('is_featured')->default(FeaturedStatus::Featureless->value);
             $table->tinyInteger('status')->default(PostStatus::Draft->value);

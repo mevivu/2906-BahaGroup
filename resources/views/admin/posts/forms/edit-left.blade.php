@@ -8,17 +8,35 @@
             </div>
         </div>
 
+        <!-- meta title -->
+        <div class="col-12">
+            <div class="mb-3">
+                <label class="control-label">{{ __('Tiêu đề (Meta title)') }}:</label>
+                <x-input name="meta_title" :value="$post->meta_title" :required="true"
+                    placeholder="{{ __('Tiêu đề (Meta title)') }}" />
+            </div>
+        </div>
+
+        <!-- slug -->
+        <div class="col-12">
+            <div class="mb-3">
+                <label class="control-label">{{ __('Slug bài viết') }}:</label>
+                <x-input name="slug" :value="$post->slug" :required="true" placeholder="{{ __('Slug bài viết') }}" />
+            </div>
+        </div>
+
         <!-- desc -->
         <div class="col-12">
             <div class="mb-3">
-                <label class="control-label">{{ __('Mô tả') }}:</label>
+                <label class="control-label">{{ __('Nội dung bài viết') }}:</label>
                 <textarea name="content" class="ckeditor visually-hidden">{{ $post->content }}</textarea>
             </div>
         </div>
+
         <!-- excerpt -->
         <div class="col-12">
             <div class="mb-3">
-                <label class="control-label">{{ __('Mô tả ngắn') }}:</label>
+                <label class="control-label">{{ __('Mô tả ngắn (Meta description)') }}:</label>
                 <textarea class="form-control" name="excerpt" rows="5">{{ $post->excerpt }}</textarea>
             </div>
         </div>

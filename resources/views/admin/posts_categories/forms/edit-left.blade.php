@@ -13,12 +13,21 @@
                 </div>
             </div>
 
+            <!-- slug -->
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label class="control-label">{{ __('Slug Chuyên mục') }}:</label>
+                    <x-input name="slug" :value="$category->slug" :required="true"
+                        placeholder="{{ __('Slug Chuyên mục') }}" />
+                </div>
+            </div>
+
             <!-- desc -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('description') }}:</label>
                     <x-input name="desc" :value="$category->desc" :required="true"
-                             placeholder="{{ __('description') }}" />
+                        placeholder="{{ __('description') }}" />
                 </div>
             </div>
 

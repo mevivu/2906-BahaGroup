@@ -1,9 +1,10 @@
 @extends('user.layouts.master')
 @section('title', $post->title)
 
-<head>
+@push('meta')
+	<meta name="title" content="{{ $post->meta_title }}">
 	<meta name="description" content="{{ $post->excerpt }}" />
-</head>
+@endpush
 
 @section('content')
 @include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])

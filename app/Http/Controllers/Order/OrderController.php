@@ -53,7 +53,7 @@ class OrderController extends Controller
     public function indexUser(UserOrderDataTable $dataTable)
     {
         return $dataTable->render($this->view['indexUser'], [
-            'breadcrumbs' =>  $this->crums->add(__('Danh sách đơn hàng'))->getBreadcrumbs()
+            'breadcrumbs' => $this->crums->add(__('Danh sách đơn hàng'))->getBreadcrumbs()
         ]);
     }
 
@@ -100,19 +100,16 @@ class OrderController extends Controller
     {
         $reviews = $this->reviewRepository->getQueryBuilder()
             ->where('order_id', $id)
-            ->get();
-
-        $productIds = $reviews->pluck('product_id')->toArray();
-        $products = $this->productRepository->getQueryBuilder()
-            ->whereIn('id', $productIds)
+            ->where('user_id', auth()->id())
             ->get();
 
         $user = $this->userRepository->findOrFail(auth()->id());
 
         $combinedArray = [];
-        foreach ($reviews as $index => $review) {
+        foreach ($reviews as $review) {
+            $product = $this->productRepository->findOrFail($review->product_id);
             $combinedArray[] = [
-                'product_name' => $products[$index]->name,
+                'product_name' => $product->name,
                 'review_content' => $review->content,
                 'review_rating' => $review->rating,
                 'review_created_at' => $review->created_at->format('d-m-Y'),
@@ -135,7 +132,7 @@ class OrderController extends Controller
         $instance = $this->repository->findOrFail($id);
         return view($this->view['detail'], [
             'instance' => $instance,
-            'breadcrumbs' =>  $this->crums->add(__('Dach sách đơn hàng'), route('user.order.indexUser'))->add(__('Chi tiết đơn hàng'))->getBreadcrumbs()
+            'breadcrumbs' => $this->crums->add(__('Dach sách đơn hàng'), route('user.order.indexUser'))->add(__('Chi tiết đơn hàng'))->getBreadcrumbs()
         ]);
     }
 

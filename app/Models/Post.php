@@ -12,7 +12,7 @@ use App\Enums\PriorityStatus;
 
 class Post extends Model
 {
-    use HasFactory, Sluggable;
+    use HasFactory;
 
     protected $table = 'posts';
 

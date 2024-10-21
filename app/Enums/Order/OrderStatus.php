@@ -20,7 +20,6 @@ enum OrderStatus: int
         return match ($this) {
             self::Pending => 'bg-orange',
             self::Confirmed => 'bg-blue',
-            // self::Completed => 'bg-green',
             self::Cancelled => 'bg-red',
         };
     }

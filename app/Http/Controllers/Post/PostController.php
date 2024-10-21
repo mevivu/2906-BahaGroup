@@ -53,19 +53,6 @@ class PostController extends Controller
         return [];
     }
 
-    public function category($slug)
-    {
-        $query = $this->model->query();
-        $id = $this->categoryRepository->getQueryBuilder()->where('slug', $slug)->first()->id;
-        $posts = $this->model->scopeHasCategory($query, $id)->paginate(4);
-        $category = $this->categoryRepository->findOrFail($id);
-        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
-        $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
-        $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
-        $breadcrumbs = $this->homeCrums->add(__('Tin tức'))->getBreadcrumbs();
-        return view($this->view['index'], compact('posts', 'title', 'meta_desc', 'breadcrumbs'));
-    }
-
     public function detail($slug)
     {
         $post = $this->model->where('slug', $slug)->first();
@@ -79,12 +66,20 @@ class PostController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    public function index($slug = null)
     {
         $query = $this->model->query();
-        $posts = $this->model->scopePublished($query)
-            ->orderByRaw('is_featured ASC, posted_at DESC')
-            ->paginate(4);
+
+        if ($slug) {
+            $id = $this->categoryRepository->getQueryBuilder()->where('slug', $slug)->first()->id;
+            $posts = $this->model->scopeHasCategory($query, $id)->paginate(4);
+            $category = $this->categoryRepository->findOrFail($id);
+        } else {
+            $posts = $this->model->scopePublished($query)
+                ->orderByRaw('is_featured ASC, posted_at DESC')
+                ->paginate(4);
+        }
+
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;

@@ -408,6 +408,7 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
         });
     Route::prefix('/search')->as('search.')->group(function () {
         Route::prefix('/select')->as('select.')->group(function () {
+            Route::get('/icon', [App\Admin\Http\Controllers\Icon\IconSearchSelectController::class, 'selectSearch'])->name('icon');
             Route::get('/user', [App\Admin\Http\Controllers\User\UserSearchSelectController::class, 'selectSearch'])->name('user');
             Route::get('/product', [App\Admin\Http\Controllers\Product\ProductSearchSelectController::class, 'selectSearch'])->name('product');
             Route::get('/discount', [App\Admin\Http\Controllers\Discount\DiscountSearchSelectController::class, 'selectSearch'])->name('discount');
