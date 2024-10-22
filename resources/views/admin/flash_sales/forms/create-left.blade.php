@@ -41,7 +41,8 @@
 																icon: 'error',
 																title: 'Lỗi ngày giờ!',
 																text: 'Ngày bắt đầu/kết thúc không được nhỏ hơn ngày hiện tại.',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												element.value = "";
 												return;
@@ -55,7 +56,8 @@
 																				icon: 'error',
 																				title: 'Lỗi ngày giờ!',
 																				text: 'Ngày bắt đầu phải trước ngày kết thúc.',
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 																element.value = "";
 																return;

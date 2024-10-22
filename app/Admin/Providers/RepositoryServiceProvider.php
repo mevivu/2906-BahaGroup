@@ -34,6 +34,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Admin\Repositories\District\DistrictRepositoryInterface' => 'App\Admin\Repositories\District\DistrictRepository',
         'App\Admin\Repositories\Ward\WardRepositoryInterface' => 'App\Admin\Repositories\Ward\WardRepository',
         'App\Admin\Repositories\Review\ReviewRepositoryInterface' => 'App\Admin\Repositories\Review\ReviewRepository',
+        'App\Admin\Repositories\Icon\IconRepositoryInterface' => 'App\Admin\Repositories\Icon\IconRepository',
         'App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface' => 'App\Admin\Repositories\ShoppingCart\ShoppingCartRepository',
     ];
     /**

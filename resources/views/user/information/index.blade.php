@@ -110,7 +110,7 @@
 								class="responsive-section bg-white text-white">
 								<div class="margin-information rounded p-5">
 												<div class="row mt-5">
-																<div class="col-md-12 text-center">
+																<div class="col-md-12 pt-3 text-center">
 																				<h2><strong>SỨ MỆNH</strong></h2>
 																				<p><i><u>{{ $settingsInformation->where('setting_key', 'infor_mission_slogan')->first()->plain_value }}</u></i>
 																				</p>
@@ -238,7 +238,7 @@
 												</p>
 								</div>
 								<div class="section-percent margin-information text-center">
-												<div class="row mt-5">
+												<div class="row mt-5 pt-3">
 																<div class="col-md-4">
 																				<h2><strong>{{ $settingsInformation->where('setting_key', 'infor_achievement_stat_1')->first()->plain_value }}</strong>
 																				</h2>
@@ -261,7 +261,7 @@
 																				</p>
 																</div>
 												</div>
-												<div class="row mb-5 mt-3">
+												<div class="row mb-5 mt-3 pb-3">
 																<div class="col-md-4">
 																				<h2><strong>{{ $settingsInformation->where('setting_key', 'infor_achievement_stat_4')->first()->plain_value }}</strong>
 																				</h2>

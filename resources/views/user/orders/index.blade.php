@@ -35,7 +35,7 @@
 																@include('user.auth.menu')
 																<div class="col-md-10 col-12">
 																				<div class="table-responsive position-relative">
-																								<x-admin.partials.toggle-column-datatable />
+																								<x-user.partials.toggle-column-datatable />
 																								{{ $dataTable->table(['class' => 'table table-bordered', 'style' => 'min-width: 900px;'], true) }}
 																				</div>
 																</div>
@@ -45,7 +45,6 @@
 @endsection
 
 @push('libs-js')
-				<!-- button in datatable -->
 				<script src="{{ asset('/public/vendor/datatables/buttons.server-side.js') }}"></script>
 @endpush
 

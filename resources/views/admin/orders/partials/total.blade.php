@@ -29,7 +29,13 @@
 																<td class="text-end">{{ format_price($order->total - $order->discount_value + $order->surcharge) }}
 																</td>
 												@else
-																<td class="text-end">{{ format_price($total + $order->surcharge) }}</td>
+																<td class="text-end">
+																				@if (isset($order))
+																								{{ format_price($total - $order->discount_value + $order->surcharge) }}
+																				@else
+																								{{ format_price($total) }}
+																				@endif
+																</td>
 												@endif
 								</tr>
 				</tbody>

@@ -6,12 +6,13 @@
 								<div style="border: none; border-radius: 0" class="form-container">
 												<ul class="nav nav-tabs" id="myTab" role="tablist">
 																<li class="nav-item" role="presentation">
-																				<button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button"
-																								role="tab" aria-controls="login" aria-selected="true">Đăng nhập</button>
+																				<button class="nav-link active bold-text fs-6" id="login-tab" data-bs-toggle="tab" data-bs-target="#login"
+																								type="button" role="tab" aria-controls="login" aria-selected="true">Đăng nhập</button>
 																</li>
 																<li class="nav-item" role="presentation">
-																				<button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register"
-																								type="button" role="tab" aria-controls="register" aria-selected="false">Đăng ký</button>
+																				<button class="nav-link bold-text fs-6" id="register-tab" data-bs-toggle="tab"
+																								data-bs-target="#register" type="button" role="tab" aria-controls="register"
+																								aria-selected="false">Đăng ký</button>
 																</li>
 												</ul>
 												<div class="tab-content" id="myTabContent">

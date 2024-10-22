@@ -15,7 +15,8 @@
 																				icon: 'success',
 																				title: 'Thành công',
 																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 												},
 												error: function(response) {
@@ -23,7 +24,8 @@
 																				icon: 'warning',
 																				title: 'Lưu ý',
 																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 												}
 								});

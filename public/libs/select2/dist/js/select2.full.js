@@ -5256,7 +5256,10 @@ S2.define('select2/defaults',[
       scrollAfterSelect: false,
       sorter: function (data) {
         return data;
-      },
+        },
+        escapeMarkup: function (markup) {
+            return markup;
+        },
       templateResult: function (result) {
         return result.text;
       },
