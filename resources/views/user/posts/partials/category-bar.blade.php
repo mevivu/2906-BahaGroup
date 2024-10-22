@@ -12,7 +12,6 @@
         @foreach ($categories as $category)
             @if ($category->status == '1')
                 <x-link class="category-item" href="{{ route('user.post.fallback', ['slug' => $category->slug]) }}">
-                    <img class="category-image" src="{{ asset($category->avatar) }}" alt="{{ $category->name }}">
                     <p class="category-name">{{ $category->name }}</p>
                 </x-link>
             @endif

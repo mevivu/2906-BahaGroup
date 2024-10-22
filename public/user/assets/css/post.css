@@ -15,6 +15,7 @@
 #post-container .post-title,
 #category-post .post-title {
     font-size: 24px;
+    text-transform: uppercase;
 }
 
 #post-container .post-excerpt,
@@ -89,8 +90,12 @@
     margin-right: auto;
 }
 
-#post-detail .post-title {
+#post-detail .post-title,
+#related-post .post-title {
     text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #category-bar .title,
@@ -112,18 +117,15 @@
     margin: 0;
 }
 
-#category-bar .category-image {
-    height: 50px;
-    margin: 0;
-}
-
 #related-post .post-title,
-#related-post .post-date {
+#related-post .post-date,
+#category .post-title {
     color: var(--bs-black);
-    margin: 0;
+    margin-bottom: 4px;
 }
 
-#related-post .post-item:hover .post-title {
+#related-post .post-item:hover .post-title,
+#category .post-title:hover {
     color: #1c5639;
 }
 
@@ -134,6 +136,7 @@
 #related-post .post-image {
     width: 100%;
     object-fit: cover;
+    margin-top: 4px;
 }
 
 #category-post .post-wrapper {
