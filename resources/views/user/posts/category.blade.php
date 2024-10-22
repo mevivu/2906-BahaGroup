@@ -6,6 +6,8 @@
 				<meta name="description" content="{{ $category->name }}" />
 @endpush
 
+<link rel="stylesheet" href="{{ asset('user/assets/css/posts/post-category.css') }}">
+
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div id="category-post" class="container">
@@ -18,7 +20,7 @@
 																				<div class="post-wrapper rounded-2 mb-4 bg-white shadow">
 																								<x-link href="{{ route('user.post.fallback', ['slug' => $post->slug]) }}">
 																												<img class="post-image" src="{{ asset($post->image) }}" alt="{{ $post->title }}">
-																												<h1 class="post-title">{{ $post->title }}</h1>
+																												<h1 class="post-category-title">{{ $post->title }}</h1>
 																								</x-link>
 																								<p class="post-excerpt">{{ $post->excerpt }}</p>
 																								<div class="post-bottom">
@@ -29,8 +31,8 @@
 																								</div>
 																				</div>
 																@endforeach
-																<div class="pagination">
-																				{{ $posts->links() }}
+																<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																				{{ $posts->links('components.pagination') }}
 																</div>
 												</div>
 												<div class="col-lg-4 col-md-12">

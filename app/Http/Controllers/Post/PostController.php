@@ -61,8 +61,10 @@ class PostController extends Controller
         $posts = $this->model->scopeHasCategory($query, $id)->paginate(3);
         $postIds = $posts->pluck('id');
         $otherPosts = $this->model->whereNotIn('id', $postIds)->limit(3)->get();
+        $categories = $this->categoryRepository->getFlatTree();
         return view($this->view['category'], [
             'posts' => $posts,
+            'categories' => $categories,
             'otherPosts' => $otherPosts,
             'category' => $category,
             'breadcrumbs' => $this->homeCrums->add(__('Tin tức'), route('user.post.index'))->add(__($category->name))->getBreadcrumbs()
@@ -75,8 +77,10 @@ class PostController extends Controller
         $relatedPosts = $this->model->whereHas('categories', function ($query) use ($post) {
             $query->whereIn('category_id', $post->categories->pluck('id'));
         })->where('id', '!=', $post->id)->limit(3)->get();
+        $categories = $this->categoryRepository->getFlatTree();
         return view($this->view['detail'], [
             'post' => $post,
+            'categories' => $categories,
             'relatedPosts' => $relatedPosts,
             'breadcrumbs' => $this->homeCrums->add(__('Tin tức'), route('user.post.index'))->add(__('Chi tiết bài viết'))->getBreadcrumbs()
         ]);
