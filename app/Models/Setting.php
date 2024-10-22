@@ -21,18 +21,23 @@ class Setting extends Model
         'group' => SettingGroup::class,
     ];
 
-    public function getNameComponentTypeInput(){
-        if($this->type_input == SettingTypeInput::Text()){
+    public function getNameComponentTypeInput()
+    {
+        if ($this->type_input == SettingTypeInput::Text()) {
             return 'input';
-        }elseif($this->type_input == SettingTypeInput::Number()){
+        } elseif ($this->type_input == SettingTypeInput::Number()) {
             return 'input-number';
-        }elseif($this->type_input == SettingTypeInput::Image()){
+        } elseif ($this->type_input == SettingTypeInput::Image()) {
             return 'input-image-ckfinder';
-        }elseif($this->type_input == SettingTypeInput::Email()){
+        } elseif ($this->type_input == SettingTypeInput::Email()) {
             return 'input-email';
-        }elseif($this->type_input == SettingTypeInput::Phone()){
+        } elseif ($this->type_input == SettingTypeInput::Phone()) {
             return 'input-phone';
-        }else{
+        } elseif ($this->type_input == SettingTypeInput::Ckeditor()) {
+            return 'input-ckeditor';
+        } elseif ($this->type_input == SettingTypeInput::Icon()) {
+            return 'input-icon';
+        } else {
             return 'input';
         }
     }
