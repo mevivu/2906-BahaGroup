@@ -8,9 +8,6 @@
         <p>Chọn Icon Font-Awesome ở đây: <a target="blank"
                 href="https://fontawesome.com/search">https://fontawesome.com/search</a>. Tìm Icon bạn thích. Ví dụ icon
             có class là fa-solid fa-house, bạn nhập vô ô dưới fa-solid fa-house</p>
-        @php
-            dd($settings);
-        @endphp
         @foreach ($settings as $setting)
             <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                 <div class="mb-3">
