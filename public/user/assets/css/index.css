@@ -1371,6 +1371,7 @@ table.dataTable>thead .sorting_desc_disabled:after {
     font-family: 'Font Awesome 5 free';
 }
 
+
 .dt-buttons {
     width: 100%;
     margin-bottom: 20px;

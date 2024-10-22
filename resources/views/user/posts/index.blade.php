@@ -20,8 +20,8 @@
 																				</x-link>
 																</div>
 												@endforeach
-												<div class="pagination">
-																{{ $posts->links() }}
+												<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																{{ $posts->links('components.pagination') }}
 												</div>
 								</div>
 				</div>

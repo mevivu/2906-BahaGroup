@@ -290,7 +290,7 @@
 												li.style.paddingLeft = `${level * 20}px`;
 
 												const a = document.createElement('a');
-												a.href = `{{ route('user.product.indexUser') }}?category_id=${subcategory.id}`;
+												a.href = `{{ route('user.product.indexUser') }}?category_slugs[]=${subcategory.slug}`;
 												if (level === 0) {
 																a.innerHTML = `<i class="${subcategory.icon}"></i><strong>${subcategory.name}</strong>`;
 												} else {

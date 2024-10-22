@@ -187,7 +187,7 @@
 																								<p class="mt-2">SKU: {{ $product->sku }}</p>
 																								<p>Danh mục:
 																												@foreach ($product->categories as $item)
-																																<x-link class="text-default" :href="route('user.product.indexUser', ['category_id' => $item->id])">{{ $item->name }}</x-link>
+																																<x-link class="text-default" :href="route('user.product.indexUser', ['category_slugs[]' => $item->slug])">{{ $item->name }}</x-link>
 																																@if (!$loop->last)
 																																				,
 																																@endif
