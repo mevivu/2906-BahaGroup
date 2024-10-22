@@ -78,7 +78,7 @@
 																				</h6>
 
 																				@foreach ($categories as $category)
-																								<div class="d-flex align-items-center fs-12 mb-1">
+																								<div class="d-flex align-items-center fs-6 mb-1">
 																												<input name="category_slugs[]" value="{{ $category->slug }}" type="checkbox"
 																																id="category{{ $category->slug }}" class="category-checkbox me-2" autocomplete="off"
 																																@if (in_array($category->slug, request('category_slugs', []))) checked @endif>

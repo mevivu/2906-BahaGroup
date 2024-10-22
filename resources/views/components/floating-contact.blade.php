@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('user/assets/css/floating-contact-button/floating-contact-button.css') }}">
 <div class="fab-container">
 				<div class="fab shadow">
 								<div class="fab-content">

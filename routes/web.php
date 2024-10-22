@@ -16,7 +16,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/khuyen-mai-gioi-han', 'saleLimited')->name('saleLimited');
-        Route::get('/{slug}', 'detail')->name('detail');
+        Route::get('/{slug?}', 'detail')->name('detail');
         Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');

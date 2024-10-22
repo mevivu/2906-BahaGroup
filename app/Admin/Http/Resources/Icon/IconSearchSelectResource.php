@@ -16,7 +16,7 @@ class IconSearchSelectResource extends JsonResource
     {
         return [
             'id' => $this->name,
-            'text' => "<i class=\"ti ti-phone\">before</i> {$this->name}"
+            'text' => "<i class='{$this->name}'>before</i> {$this->name}"
         ];
     }
 }
