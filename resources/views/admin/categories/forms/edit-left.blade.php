@@ -8,8 +8,7 @@
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Tên danh mục') }}:</label>
-                    <x-input name="name" :value="$category->name" :required="true"
-                        placeholder="{{ __('Tên danh mục') }}" />
+                    <x-input name="name" :value="$category->name" :required="true" placeholder="{{ __('Tên danh mục') }}" />
                 </div>
             </div>
             <!-- Danh mục cha -->
@@ -19,7 +18,7 @@
                     <x-select class="select2-bs5" name="parent_id">
                         <x-select-option value="" :title="__('Trống')" />
                         @foreach ($categories as $item)
-                            <x-select-option :option="$category->parent_id" :value="$item->id" :title="generate_text_depth_tree($item->depth).' '.__($item->name)" />
+                            <x-select-option :option="$category->parent_id" :value="$item->id" :title="generate_text_depth_tree($item->depth) . ' ' . __($item->name)" />
                         @endforeach
                     </x-select>
                 </div>
@@ -41,12 +40,18 @@
                     </x-select>
                 </div>
             </div>
-            <p>Chọn Icon ở đây: <a target="blank" href="https://tabler.io/icons">https://tabler.io/icons</a>. Tìm Icon bạn thích. Ví dụ icon là alert-circle, bạn nhập vô ô dưới ti ti-alert-circle</p>
+            <p>Chọn Icon ở đây: <a target="blank" href="https://tabler.io/icons">https://tabler.io/icons</a>. Tìm Icon
+                bạn thích. Ví dụ icon là alert-circle, bạn nhập vô ô dưới ti ti-alert-circle</p>
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Icon') }}:</label>
-                    <x-input name="icon" :value="$category->icon" :required="true"
-                        placeholder="{{ __('Ví dụ: ti ti-alert-circle') }}" />
+                    {{-- <x-input name="icon" :value="$category->icon" :required="true"
+                        placeholder="{{ __('Ví dụ: ti ti-alert-circle') }}" /> --}}
+                    <x-select name="icon[text]" id="icon-select" class="select2-bs5"
+                        data-ajax--url="{{ route('admin.search.select.icon') }}" data-ajax--cache="true"
+                        :required="true">
+                        <x-select-option value="1" :title="__('Ví dụ: ti ti-alert-circle')" />
+                    </x-select>
                 </div>
             </div>
         </div>

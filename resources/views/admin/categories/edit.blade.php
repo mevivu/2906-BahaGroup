@@ -1,5 +1,8 @@
 @extends('admin.layouts.master')
-
+@push('libs-css')
+    <link rel="stylesheet" href="{{ asset('/public/libs/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/public/libs/select2/dist/css/select2-bootstrap-5-theme.min.css') }}">
+@endpush
 @section('content')
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -30,8 +33,18 @@
 @endsection
 
 @push('libs-js')
-<!-- ckfinder js -->
-@include('ckfinder::setup')
+    <!-- ckfinder js -->
+    @include('ckfinder::setup')
+    <script src="{{ asset('/public/libs/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/public/libs/select2/dist/js/i18n/vi.js') }}"></script>
+    <script src="{{ asset('/public/libs/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js') }}"></script>
 @endpush
 
-
+@push('custom-js')
+    <script>
+        $('.select2-bs5').select2({
+            language: "vi",
+            theme: 'bootstrap-5'
+        });
+    </script>
+@endpush

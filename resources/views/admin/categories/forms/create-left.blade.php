@@ -42,11 +42,14 @@
             </div>
             <p>Chọn Icon ở đây: <a target="blank" href="https://tabler.io/icons">https://tabler.io/icons</a>. Tìm Icon
                 bạn thích. Ví dụ icon là alert-circle, bạn nhập vô ô dưới ti ti-alert-circle</p>
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
                     <label class="control-label">{{ __('Icon') }}:</label>
-                    <x-input name="icon" :value="old('icon')" :required="true"
-                        placeholder="{{ __('Ví dụ: ti ti-alert-circle') }}" />
+                    <x-select name="icon[text]" id="icon-select" class="select2-bs5"
+                        data-ajax--url="{{ route('admin.search.select.icon') }}" data-ajax--cache="true"
+                        :required="true">
+                        <x-select-option value="1" :title="__('Ví dụ: ti ti-alert-circle')" />
+                    </x-select>
                 </div>
             </div>
         </div>
