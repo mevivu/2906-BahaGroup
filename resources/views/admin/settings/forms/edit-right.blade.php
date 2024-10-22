@@ -7,5 +7,5 @@
             <x-button.submit :title="__('Cập nhật')" />
         </div>
     </div>
-    
+
 </div>
