@@ -49,6 +49,7 @@ li {
 
 @media (max-width: 1199px) {
 
+
     #top-bar,
     #top-header {
         display: none !important;
@@ -256,6 +257,14 @@ li {
 }
 
 @media (max-width: 768px) {
+    #footerCategory {
+        display: block;
+    }
+
+    .banner-img {
+        display: none;
+    }
+
     .pagination {
         display: flex;
         justify-content: center;
@@ -339,6 +348,12 @@ li {
     .header-box .timer {
         width: 100%;
         margin: 0.5em 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    #footerCategory {
+        display: flex;
     }
 }
 

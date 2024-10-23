@@ -36,6 +36,8 @@ class ComponentServiceProvider extends ServiceProvider
         Blade::component('input-phone', \App\Admin\View\Components\Input\InputPhone::class);
         Blade::component('input-number', \App\Admin\View\Components\Input\InputNumber::class);
         Blade::component('input-price', \App\Admin\View\Components\Input\InputPrice::class);
+        Blade::component('input-icon', \App\Admin\View\Components\Input\InputIcon::class);
+        Blade::component('input-ckeditor', \App\Admin\View\Components\Input\InputCkeditor::class);
         // Blade::component('input-datetime', \App\Admin\View\Components\Input\InputDatetime::class);
         Blade::component('input-gallery-ckfinder', \App\Admin\View\Components\Input\InputGalleryCkfinder::class);
         Blade::component('input-image-ckfinder', \App\Admin\View\Components\Input\InputImageCkfinder::class);

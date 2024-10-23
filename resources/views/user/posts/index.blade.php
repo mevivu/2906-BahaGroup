@@ -15,7 +15,7 @@
 																				<x-link class="post-wrapper" style="--post-image: url('{{ asset($post->image) }}')"
 																								href="{{ route('user.post.fallback', ['slug' => $post->slug]) }}">
 																								<h1 class="post-title">{{ $post->title }}</h1>
-																								<p class="post-excerpt">{{ $post->excerpt }}</p>
+																								<p style="height: 48px;" class="post-excerpt">{{ $post->excerpt }}</p>
 																								<x-button type="button" class="btn-light post-button">Xem thêm</x-button>
 																				</x-link>
 																</div>

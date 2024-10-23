@@ -24,6 +24,7 @@
     font-size: 18px;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #post-container .post-button,

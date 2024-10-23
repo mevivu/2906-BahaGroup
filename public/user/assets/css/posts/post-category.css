@@ -50,6 +50,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     height: 76px;
+    text-overflow: ellipsis;
 }
 
 /* Phần bottom */

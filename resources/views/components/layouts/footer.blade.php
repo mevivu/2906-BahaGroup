@@ -2,7 +2,7 @@
 <div id="footer" class="bg-white">
 				<div class="container">
 								<div class="row d-flex justify-content-center">
-												<div class="col-lg-3 col-12 box">
+												<div class="col-md-3 col-12 box">
 																<h6><strong>Liên hệ</strong></h6>
 																<p><i class="fa-solid fa-clock text-red"></i> Bán hàng: <a class="text-red"
 																								class="d-inline-block">{{ $settingsFooter->where('setting_key', 'footer_open_time')->first()->plain_value }}</a>
@@ -29,7 +29,7 @@
 																								href="tel:{{ $settingsFooter->where('setting_key', 'footer_phone')->first()->plain_value }}">(+84)
 																								{{ $settingsFooter->where('setting_key', 'footer_phone')->first()->plain_value }}</a></span>
 												</div>
-												<div class="col-lg-3 col-12 box">
+												<div class="col-md-3 col-12 box">
 																<h6><strong>Thông tin ngân hàng</strong></h6>
 																<ul>
 																				<li>
@@ -40,7 +40,7 @@
 																				</li>
 																</ul>
 												</div>
-												<div class="col-lg-3 col-12 box">
+												<div class="col-md-3 col-12 box">
 																<h6><strong>Hỗ trợ</strong></h6>
 																<ul>
 																				<li><a href="{{ $settingsFooter->where('setting_key', 'help_center')->first()->plain_value }}">Help
@@ -56,7 +56,7 @@
 																												to Return</a></li>
 																</ul>
 												</div>
-												<div class="col-lg-3 col-12 box">
+												<div class="col-md-3 col-12 box">
 																<h6><strong>Mạng xã hội</strong></h6>
 																<ul>
 																				<li><a target="none"
@@ -77,9 +77,9 @@
 																</ul>
 												</div>
 								</div>
-								<div class="d-flex custom-line mt-2">
+								<div id="footerCategory" class="custom-line mt-2">
 												@foreach ($parentCategories as $parentCategory)
-																<div class="col-lg-3 col-12 box">
+																<div class="col-md-3 col-12 box">
 																				<p><strong>{{ $parentCategory->name }}</strong></p>
 																				<p class="text-777777 small mt-2 text-justify">
 																								@foreach ($parentCategory->children as $children)
