@@ -65,8 +65,8 @@
 
 				<div class="section-gap-default responsive-section bg-white" style="width: 100%">
 								<div class="margin-information rounded p-5">
-												<div class="row mt-5">
-																<div class="col-md-12 text-center">
+												<div class="row mb-3 mt-5">
+																<div class="col-md-12 mt-2 text-center">
 																				<h2><strong>TẦM NHÌN</strong></h2>
 																				<p class="lead text-secondary">
 																								{{ $settingsInformation->where('setting_key', 'infor_vision_content')->first()->plain_value }}
@@ -75,30 +75,30 @@
 												</div>
 												<div class="row d-flex justify-content-center flex-wrap">
 																<div class="col-md-3 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_1')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_1')->first()->plain_value }} fa-3x"
 																								style="color: #7AC14A; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_vision_text_1')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-3 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_2')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_2')->first()->plain_value }} fa-3x"
 																								style="color: #7AC14A; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_vision_text_2')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-3 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_3')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_3')->first()->plain_value }} fa-3x"
 																								style="color: #7AC14A; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_vision_text_3')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-3 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_4')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_vision_icon_4')->first()->plain_value }} fa-3x"
 																								style="color: #7AC14A; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_vision_text_4')->first()->plain_value }}
 																				</p>
 																</div>
@@ -109,7 +109,7 @@
 				<div style="background-image: url('{{ asset('public/user/assets/images/nen1.png') }}'); width: 100%"
 								class="responsive-section bg-white text-white">
 								<div class="margin-information rounded p-5">
-												<div class="row mt-5">
+												<div class="row mb-3 mt-5">
 																<div class="col-md-12 pt-3 text-center">
 																				<h2><strong>SỨ MỆNH</strong></h2>
 																				<p><i><u>{{ $settingsInformation->where('setting_key', 'infor_mission_slogan')->first()->plain_value }}</u></i>
@@ -122,23 +122,23 @@
 
 												<div class="row d-flex justify-content-center flex-wrap">
 																<div class="col-md-4 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_1')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_1')->first()->plain_value }} fa-3x"
 																								style="border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_mission_text_1')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-4 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_2')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_2')->first()->plain_value }} fa-3x"
 																								style="border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_mission_text_2')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-4 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_3')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_mission_icon_3')->first()->plain_value }} fa-3x"
 																								style="border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
-																				<p class="text-justify">
+																				<p class="mt-5 text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_mission_text_3')->first()->plain_value }}
 																				</p>
 																</div>
@@ -149,7 +149,7 @@
 				<div style="background-image: url('{{ asset('public/user/assets/images/nen2.png') }}'); width: 100%"
 								class="responsive-section bg-white">
 								<div class="margin-information rounded p-5">
-												<div class="row mt-5">
+												<div class="row mb-3 mt-5">
 																<div class="col-md-12 text-center">
 																				<h2><strong>GIÁ TRỊ CỐT LÕI</strong></h2>
 																				<p class="lead text-start">
@@ -163,66 +163,66 @@
 
 												<div class="row d-flex justify-content-center flex-wrap">
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_1')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_1')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_1')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_1')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_1')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_2')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_2')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_2')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_2')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_2')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_3')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_3')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_3')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_3')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_3')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_4')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_4')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_4')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_4')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_4')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_5')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_5')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_5')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_5')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_5')->first()->plain_value }}
 																				</p>
 																</div>
 																<div class="col-md-2 col-12 p-3 text-center" style="border-radius: 5px">
-																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_6')->first()->plain_value }} fa-3x mb-3"
+																				<i class="{{ $settingsInformation->where('setting_key', 'infor_value_icon_6')->first()->plain_value }} fa-3x"
 																								style="color: #7FC84E; border: 2px solid #cccccc; border-radius: 50%; padding: 0.8em; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></i>
 																				<div class="highlight-container">
 																								<span
-																												class="highlight">{{ $settingsInformation->where('setting_key', 'infor_value_title_6')->first()->plain_value }}</span>
+																												class="highlight mt-5">{{ $settingsInformation->where('setting_key', 'infor_value_title_6')->first()->plain_value }}</span>
 																				</div>
 																				<p class="text-justify">
 																								{{ $settingsInformation->where('setting_key', 'infor_value_text_6')->first()->plain_value }}

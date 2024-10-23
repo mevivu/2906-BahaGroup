@@ -175,40 +175,40 @@
 																				<div class="tab-content" id="myTabContent">
 																								<div class="tab-pane fade show active" id="menu" role="tabpanel"
 																												aria-labelledby="menu-tab">
-																												<ul class="nav">
-																																<li class="nav-item">
+																												<ul style="margin-top: 0px" class="nav">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.index')">Trang chủ</x-link>
 																																</li>
-																																<li class="nav-item">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.information')">Giới thiệu</x-link>
 																																</li>
-																																<li class="nav-item">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.product.indexUser')">Sản phẩm</x-link>
 																																</li>
-																																<li class="nav-item">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.contact')">Liên hệ</x-link>
 																																</li>
-																																<li class="nav-item">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.product.saleLimited')">Khuyến mãi giới hạn</x-link>
 																																</li>
-																																<li class="nav-item">
+																																<li class="nav-item nav-item-menu">
 																																				<x-link :href="route('user.post.index')">Tin tức</x-link>
 																																</li>
 																																@if (!auth('web')->user())
-																																				<li class="nav-item">
+																																				<li class="nav-item nav-item-menu">
 																																								<x-link :href="route('user.auth.indexUser')">Đăng nhập</x-link>
 																																				</li>
 																																@endif
 																																@if (auth('web')->user())
-																																				<li class="nav-item">
+																																				<li class="nav-item nav-item-menu">
 																																								<x-link :href="route('user.order.indexUser')">Đơn hàng</x-link>
 																																				</li>
-																																				<li class="nav-item">
+																																				<li class="nav-item nav-item-menu">
 																																								<x-link :href="route('user.profile.indexUser')">Tài khoản</x-link>
-																																				<li class="nav-item">
+																																				<li class="nav-item nav-item-menu">
 																																								<x-link :href="route('user.password.indexUser')">Mật khẩu</x-link>
 																																				</li>
-																																				<li class="nav-item">
+																																				<li class="nav-item nav-item-menu">
 																																								<x-link data-bs-toggle="modal" data-bs-target="#modalLogout"
 																																												:href="route('user.product.saleLimited')">Đăng xuất</x-link>
 																																				</li>

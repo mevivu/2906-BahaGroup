@@ -53,14 +53,10 @@
     border-radius: 50%;
 }
 
-.fab-container .fab .fab-content .material-icons {
-    color: white;
-    font-size: 48px;
-}
-
 .fab-container .sub-button {
     position: absolute;
     display: flex;
+    right: 0px;
     align-items: center;
     justify-content: center;
     height: 50px;

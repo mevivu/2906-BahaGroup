@@ -175,7 +175,7 @@
 																												class="progress-bar" id="progressBar"></div>
 																								<div class="progress-content">
 																												<span
-																																id="progressText">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}%</span>
+																																id="progressText">{{ ($total / $object) * 100 >= 100 ? '100%' : round(($total / $object) * 100) }}</span>
 																								</div>
 																				</div>
 																				<p class="mt-3 text-center">Bạn đã chi

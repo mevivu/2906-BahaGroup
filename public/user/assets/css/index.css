@@ -481,6 +481,34 @@ li {
     border: none;
 }
 
+.nav-tabs {
+    display: flex;
+    overflow-y: hidden;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.nav-link {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.nav-item-menu {
+    display: flex;
+    /* Căn giữa theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    height: 100%;
+    /* Đảm bảo các mục menu chiếm toàn bộ chiều cao của ô chứa */
+    padding: 20px !important;
+    margin-left: 16px;
+    /* Điều chỉnh padding để có khoảng trống hợp lý */
+    font-weight: 500;
+    margin: 0px !important;
+    border-bottom: 1px solid #eee;
+}
+
+
 .nav-tabs .nav-link.active {
     border: none;
     border-bottom: 2px solid #ff9900;
