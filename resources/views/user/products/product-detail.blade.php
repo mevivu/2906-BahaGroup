@@ -93,7 +93,7 @@
 																												<del>{{ format_price($product->price) }}</del>
 																												<strong class="text-red">{{ format_price($product->promotion_price) }}</strong><br>
 																												@if (isset($product->on_flash_sale))
-																																<span class="flashsale-price">FLASH SALE
+																																<span class="flashsale-price"><i class="ti ti-bolt"></i> FLASH SALE
 																																				- {{ format_price($product->flashsale_price) }}</span>
 																												@endif
 																								</p>
@@ -103,7 +103,7 @@
 																												<strong id="productVariationPromotionPrice"
 																																class="text-red">{{ format_price($product->productVariations[0]->promotion_price) }}</strong><br>
 																												@if (isset($product->on_flash_sale))
-																																<span class="flashsale-price">FLASH SALE -
+																																<span class="flashsale-price"><i class="ti ti-bolt"></i> FLASH SALE -
 																																				{{ format_price($product->productVariations[0]->flashsale_price) }}</span>
 																												@endif
 																								</p>
@@ -187,7 +187,7 @@
 																								<p class="mt-2">SKU: {{ $product->sku }}</p>
 																								<p>Danh mục:
 																												@foreach ($product->categories as $item)
-																																<x-link class="text-default" :href="route('user.product.indexUser', ['category_id' => $item->id])">{{ $item->name }}</x-link>
+																																<x-link class="text-default" :href="route('user.product.indexUser', ['category_slugs[]' => $item->slug])">{{ $item->name }}</x-link>
 																																@if (!$loop->last)
 																																				,
 																																@endif

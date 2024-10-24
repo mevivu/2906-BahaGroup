@@ -1,5 +1,3 @@
-const { isSet } = require("lodash");
-
 function showTabContent() {
     const sideBar = document.getElementById("side-bar");
     if (sideBar.classList.contains("d-none")) {

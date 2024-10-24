@@ -16,7 +16,7 @@ Route::controller(App\Http\Controllers\Product\ProductController::class)
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/khuyen-mai-gioi-han', 'saleLimited')->name('saleLimited');
-        Route::get('/{slug}', 'detail')->name('detail');
+        Route::get('/{slug?}', 'detail')->name('detail');
         Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
@@ -110,7 +110,7 @@ Route::controller(App\Http\Controllers\Post\PostController::class)
         Route::get('/{slug}', function ($slug) {
             $postCategory = \App\Models\PostCategory::where('slug', $slug)->first();
             if ($postCategory) {
-                return App::make(App\Http\Controllers\Post\PostController::class)->index($slug);
+                return App::make(App\Http\Controllers\Post\PostController::class)->category($slug);
             }
 
             $post = \App\Models\Post::where('slug', $slug)->first();

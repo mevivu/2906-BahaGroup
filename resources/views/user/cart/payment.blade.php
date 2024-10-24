@@ -144,7 +144,8 @@
 																				icon: 'warning',
 																				title: 'Lưu ý',
 																				text: `Vui lòng chọn một phương thức thanh toán!`,
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 												}
 								});
@@ -202,7 +203,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: `${response.responseJSON.message}`,
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																								$('#discountValue').text('0đ');
 																				}
@@ -223,7 +225,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: `${response.responseJSON.message}`,
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																								$('#discountValue').text('0đ');
 																				}

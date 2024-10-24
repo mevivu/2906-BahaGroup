@@ -4,6 +4,7 @@ namespace App\Admin\Services\Post;
 
 use App\Admin\Services\Post\PostServiceInterface;
 use App\Admin\Repositories\Post\PostRepositoryInterface;
+use App\Admin\Repositories\PostCategory\PostCategoryRepositoryInterface;
 use App\Api\V1\Support\UseLog;
 use App\Enums\FeaturedStatus;
 use App\Enums\Post\PostType;
@@ -26,10 +27,14 @@ class PostService implements PostServiceInterface
     protected array $data;
 
     protected PostRepositoryInterface $repository;
+    protected PostCategoryRepositoryInterface $postCategoryRepository;
 
-    public function __construct(PostRepositoryInterface $repository)
-    {
+    public function __construct(
+        PostRepositoryInterface $repository,
+        PostCategoryRepositoryInterface $postCategoryRepository
+    ) {
         $this->repository = $repository;
+        $this->postCategoryRepository = $postCategoryRepository;
     }
 
     public function store(Request $request)
@@ -40,7 +45,11 @@ class PostService implements PostServiceInterface
         $originalSlug = $slug;
         $counter = 1;
 
-        while ($this->repository->getQueryBuilder()->where('slug', $slug)->exists()) {
+        while (
+            $this->repository->getQueryBuilder()->where('slug', $slug)->exists()
+            ||
+            $this->postCategoryRepository->getQueryBuilder()->where('slug', $slug)->exists()
+        ) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
@@ -80,7 +89,11 @@ class PostService implements PostServiceInterface
         if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $data['slug'])) {
             return false;
         }
-        if ($this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()) {
+        if (
+            $this->repository->getQueryBuilder()->where('slug', $data['slug'])->where('id', '!=', $data['id'])->exists()
+            ||
+            $this->postCategoryRepository->getQueryBuilder()->where('slug', $data['slug'])->exists()
+        ) {
             $this->logError('Failed to process update post CMS', new Exception('Slug đã tồn tại.'));
             return false;
         }

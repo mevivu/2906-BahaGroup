@@ -75,7 +75,7 @@ class ShoppingCartController extends Controller
                 'shoppingCart' => $cart,
                 'total' => $this->service->calculateTotalFromSession($cart),
                 'object' => $object[0]->plain_value,
-                'breadcrumbs' => $this->crums->add(__('Giỏ này'))->getBreadcrumbs()
+                'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
             ]);
         }
     }
