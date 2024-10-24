@@ -15,7 +15,8 @@ class LoginRequest extends BaseRequest
     {
         return [
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'remember' => 'nullable'
         ];
     }
 }

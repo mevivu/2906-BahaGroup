@@ -115,9 +115,9 @@
 												</div>
 												<!-- NavBar Responsive-->
 												<div class="nav-responsive row d-xl-none d-flex container">
-																<button class="col-3 btn d-xl-none d-block" type="button" data-bs-toggle="offcanvas"
+																<button class="col-3 btn d-xl-none d-block text-start" type="button" data-bs-toggle="offcanvas"
 																				data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-																				<i class="ti ti-list default-double-font-size"></i>
+																				<i class="fa fa-bars default-double-font-size"></i>
 																</button>
 																<div class="col-6 d-flex justify-content-center align-items-center">
 																				<x-link :href="route('user.index')">
@@ -125,10 +125,10 @@
 																												alt="Baha" class="img-fluid">
 																				</x-link>
 																</div>
-																<div class="col-3 d-flex justify-content-center align-items-center cart">
+																<div class="col-3 d-flex justify-content-center align-items-center cart ps-1">
 																				<div class="position-relative">
 																								<i onclick="location.href='{{ route('user.cart.index') }}';"
-																												style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
+																												style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart ms-4"></i>
 																								<span id="cart-count-mobile"
 																												class="position-absolute start-100 translate-middle badge rounded-pill bg-danger top-0"
 																												style="left: 100% !important;">
@@ -158,14 +158,14 @@
 																<div class="offcanvas-body">
 																				<ul class="nav nav-tabs" id="myTab" role="tablist">
 																								<li class="nav-item" role="presentation">
-																												<button class="nav-link active fs-6 bold-text" id="menu-tab" data-bs-toggle="tab"
-																																data-bs-target="#menu" type="button" role="tab" aria-controls="menu"
-																																aria-selected="true">
+																												<button class="nav-link active fs-6 bold-text text-black" id="menu-tab"
+																																data-bs-toggle="tab" data-bs-target="#menu" type="button" role="tab"
+																																aria-controls="menu" aria-selected="true">
 																																<i class="ti ti-list"></i> Menu
 																												</button>
 																								</li>
 																								<li class="nav-item" role="presentation">
-																												<button class="nav-link fs-6 bold-text" id="category-tab" data-bs-toggle="tab"
+																												<button class="nav-link fs-6 bold-text text-black" id="category-tab" data-bs-toggle="tab"
 																																data-bs-target="#category" type="button" role="tab" aria-controls="category"
 																																aria-selected="false">
 																																<i class="ti ti-list"></i> Danh mục

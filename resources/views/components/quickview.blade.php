@@ -14,6 +14,8 @@
 																				<div class="modal-body row">
 																								<div class="col-md-5 mb-5 mt-5">
 																												<div class="position-relative text-center">
+																																<x-input name="hidden_avatar_modal" type="hidden"
+																																				value="{{ asset($productModal->avatar) }}" />
 																																<div class="fotorama" data-nav="thumbs" data-allowfullscreen="true">
 																																				@foreach ($productModal->gallery as $item)
 																																								<img src="{{ asset($item) }}" alt="Product image">
@@ -477,6 +479,7 @@
 								})
 								$('#btnAddToCartModal').click(function(e) {
 												var productId = $('input[name="hidden_product_id_modal"]').val();
+												var productImageUrl = $('input[name="hidden_avatar_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
 
@@ -492,13 +495,7 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
-																				Swal.fire({
-																								icon: 'success',
-																								title: 'Thành công',
-																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true,
-																								confirmButtonColor: "#1c5639",
-																				});
+																				handleAddToCartAnimation(productImageUrl);
 																},
 																error: function(response) {
 																				Swal.fire({

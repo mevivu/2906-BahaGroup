@@ -30,6 +30,7 @@
 												<div class="row">
 																<div class="col-md-5 mb-5 mt-5">
 																				<div class="position-relative text-center">
+																								<x-input name="hidden_avatar" type="hidden" value="{{ asset($product->avatar) }}" />
 																								<div class="fotorama" data-nav="thumbs" data-allowfullscreen="true">
 																												@foreach ($product->gallery as $item)
 																																<img src="{{ asset($item) }}" alt="Product image">

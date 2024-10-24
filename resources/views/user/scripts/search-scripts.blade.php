@@ -1,5 +1,34 @@
 <script>
-				function addToCart(id) {
+				function handleAddToCartAnimation(productImageUrl) {
+								Swal.fire({
+												html: `
+            <div id="cartAnimation" class="custom-cart-success">
+                <div class="product-image-animation"
+                    style="background-image: url('${productImageUrl}')">
+                </div>
+                <div class="cart-image cart-animation"
+                    style="background-image: url('{{ asset('user/assets/images/cart.png') }}')">
+                </div>
+            </div>
+        `,
+												icon: 'success',
+												title: 'Thành công',
+												showConfirmButton: true,
+												confirmButtonColor: "#1c5639",
+												didOpen: () => {
+																setTimeout(() => {
+																								const cartAnimation = document.getElementById('cartAnimation');
+																								if (cartAnimation) {
+																												cartAnimation.classList.add('hide');
+																								}
+																				},
+																				2000
+																);
+												}
+								});
+				}
+
+				function addToCart(id, productImageUrl) {
 								$.ajax({
 												type: "POST",
 												url: '{{ route('user.cart.store') }}',
@@ -11,17 +40,11 @@
 												success: function(response) {
 																$('#cart-count-mobile').text(response.data.count);
 																$('#cart-count').text(response.data.count);
-																Swal.fire({
-																				icon: 'success',
-																				title: 'Thành công',
-																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																				showConfirmButton: true,
-																				confirmButtonColor: "#1c5639",
-																});
+																handleAddToCartAnimation(productImageUrl);
 												},
 												error: function(response) {
 																Swal.fire({
-																				icon: 'warning',
+																				icon: 'error',
 																				title: 'Lưu ý',
 																				text: `${response.responseJSON.message}`,
 																				showConfirmButton: true,

@@ -5,8 +5,8 @@
 												$('#filter-chips-container').append(`
             <div class="col col-sm col-md col-lg my-1" id="${chipID}">
 																																																																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
-																																																																																<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
-																																																																</button>
+																																																																																				<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
+																																																																				</button>
 																																																</div>
         `);
 								}
@@ -123,6 +123,7 @@
 								$('#btnAddToCart').click(function(e) {
 												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
+												var productImageUrl = $('input[name="hidden_avatar"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
 												$.ajax({
@@ -137,14 +138,8 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
-																				Swal.fire({
-																								icon: 'success',
-																								title: 'Thành công',
-																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true,
-																								confirmButtonColor: "#1c5639",
-																				});
 																				$('#btnAddToCart').removeAttr('disabled');
+																				handleAddToCartAnimation(productImageUrl);
 																},
 																error: function(response) {
 																				Swal.fire({

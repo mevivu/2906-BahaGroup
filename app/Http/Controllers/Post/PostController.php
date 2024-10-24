@@ -92,12 +92,11 @@ class PostController extends Controller
 
         if ($slug) {
             $id = $this->categoryRepository->getQueryBuilder()->where('slug', $slug)->first()->id;
-            $posts = $this->model->scopeHasCategory($query, $id)->paginate(3);
+            $posts = $this->model->scopeHasCategory($query, $id)->get();
             $category = $this->categoryRepository->findOrFail($id);
         } else {
             $posts = $this->model->scopePublished($query)
-                ->orderByRaw('is_featured ASC, posted_at DESC')
-                ->paginate(3);
+                ->orderByRaw('is_featured ASC, posted_at DESC')->get();
         }
 
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);

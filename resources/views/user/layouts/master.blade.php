@@ -14,6 +14,7 @@
 																<x-modal-category />
 												</div>
 												@yield('content')
+												<x-bottom-nav />
 												<x-footer />
 												<x-quickview />
 								</div>

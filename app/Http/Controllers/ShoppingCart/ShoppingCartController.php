@@ -86,62 +86,70 @@ class ShoppingCartController extends Controller
         $user = $this->getCurrentUser();
 
         if ($user) {
-            if ($request->query('cart_id')) {
-                $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
-                if ($cartItem) {
-                    $cartItem['qty'] = $request->input('qty');
-                    $total = $this->service->calculateTotal($cartItem);
-                    return view($this->view['payment'], [
-                        'user' => $user,
-                        'total' => $total,
-                        'isBuyNow' => true,
-                        'shoppingCart' => [$cartItem],
-                        'payment_methods' => PaymentMethod::asSelectArray(),
-                        'code' => $request->input('code') ?? null,
-                        'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-                    ]);
+            if ($user->shopping_cart->count() > 0) {
+                if ($request->query('cart_id')) {
+                    $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
+                    if ($cartItem) {
+                        $cartItem['qty'] = $request->input('qty');
+                        $total = $this->service->calculateTotal($cartItem);
+                        return view($this->view['payment'], [
+                            'user' => $user,
+                            'total' => $total,
+                            'isBuyNow' => true,
+                            'shoppingCart' => [$cartItem],
+                            'payment_methods' => PaymentMethod::asSelectArray(),
+                            'code' => $request->input('code') ?? null,
+                            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                        ]);
+                    }
                 }
+                $total = $this->service->calculateTotal($user->shopping_cart);
+                return view($this->view['payment'], [
+                    'user' => $user,
+                    'total' => $total,
+                    'isBuyNow' => false,
+                    'shoppingCart' => $user->shopping_cart,
+                    'payment_methods' => PaymentMethod::asSelectArray(),
+                    'code' => $request->input('code') ?? null,
+                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                ]);
+            } else {
+                return back()->with('error', __('Giỏ hàng của bạn đang trống.'));
             }
-            $total = $this->service->calculateTotal($user->shopping_cart);
-            return view($this->view['payment'], [
-                'user' => $user,
-                'total' => $total,
-                'isBuyNow' => false,
-                'shoppingCart' => $user->shopping_cart,
-                'payment_methods' => PaymentMethod::asSelectArray(),
-                'code' => $request->input('code') ?? null,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-            ]);
         } else {
             $cart = session()->get('cart', []);
             $cartCollection = collect($cart)->map(function ($item) {
                 return (object) $item;
             });
-            if ($request->query('cart_id')) {
-                $cartItem = $cartCollection->firstWhere('id', $request->input('cart_id'));
-                if ($cartItem) {
-                    $cartItem->qty = $request->input('qty');
-                    $total = $this->service->calculateTotal($cartItem);
-                    return view($this->view['payment'], [
-                        'user' => $user,
-                        'total' => $total,
-                        'isBuyNow' => true,
-                        'shoppingCart' => [$cartItem],
-                        'payment_methods' => PaymentMethod::asSelectArray(),
-                        'code' => $request->input('code') ?? null,
-                        'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-                    ]);
+            if ($cartCollection->count() > 0) {
+                if ($request->query('cart_id')) {
+                    $cartItem = $cartCollection->firstWhere('id', $request->input('cart_id'));
+                    if ($cartItem) {
+                        $cartItem->qty = $request->input('qty');
+                        $total = $this->service->calculateTotal($cartItem);
+                        return view($this->view['payment'], [
+                            'user' => $user,
+                            'total' => $total,
+                            'isBuyNow' => true,
+                            'shoppingCart' => [$cartItem],
+                            'payment_methods' => PaymentMethod::asSelectArray(),
+                            'code' => $request->input('code') ?? null,
+                            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                        ]);
+                    }
                 }
+                $total = $this->service->calculateTotal($cartCollection);
+                return view($this->view['payment'], [
+                    'total' => $total,
+                    'isBuyNow' => false,
+                    'shoppingCart' => $cartCollection,
+                    'payment_methods' => PaymentMethod::asSelectArray(),
+                    'code' => $request->input('code') ?? null,
+                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                ]);
+            } else {
+                return back()->with('error', __('Giỏ hàng của bạn đang trống.'));
             }
-            $total = $this->service->calculateTotal($cartCollection);
-            return view($this->view['payment'], [
-                'total' => $total,
-                'isBuyNow' => false,
-                'shoppingCart' => $cartCollection,
-                'payment_methods' => PaymentMethod::asSelectArray(),
-                'code' => $request->input('code') ?? null,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-            ]);
         }
     }
 

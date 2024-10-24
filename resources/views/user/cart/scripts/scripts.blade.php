@@ -125,8 +125,8 @@
 																title: "Bạn có chắc chắn muốn thực hiện?",
 																icon: "info",
 																showCancelButton: true,
-																confirmButtonColor: "#7FC84E",
-																cancelButtonColor: "#FA4F26",
+																confirmButtonColor: "#1c5639",
+																cancelButtonColor: "#d33",
 																confirmButtonText: "Chắc chắn!",
 																cancelButtonText: "Quay lại!"
 												}).then((result) => {

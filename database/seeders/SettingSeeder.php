@@ -160,6 +160,13 @@ class SettingSeeder extends Seeder
                 'group' => 1
             ],
             [
+                'setting_key' => 'object_discount',
+                'setting_name' => 'Mục tiêu để được miễn phí ship',
+                'plain_value' => '3000000',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 1
+            ],
+            [
                 'setting_key' => 'image_home_slider_1',
                 'setting_name' => 'Ảnh trưng bày mục slider sản phẩm trang chủ 1',
                 'plain_value' => '/userfiles/images/banner-home2-04.jpg',
@@ -767,13 +774,6 @@ class SettingSeeder extends Seeder
                 'setting_name' => 'Ảnh dưới slider 2',
                 'plain_value' => '/userfiles/images/banner-home2-02222.jpg',
                 'type_input' => SettingTypeInput::Image,
-                'group' => 1
-            ],
-            [
-                'setting_key' => 'object_discount',
-                'setting_name' => 'Mục tiêu để được miễn phí ship',
-                'plain_value' => '3000000',
-                'type_input' => SettingTypeInput::Text,
                 'group' => 1
             ],
         ]);

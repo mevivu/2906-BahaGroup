@@ -6,7 +6,7 @@
     align-items: center;
     user-select: none;
     position: fixed;
-    bottom: 30px;
+    bottom: 80px;
     z-index: 999;
     right: 30px;
 }
@@ -16,23 +16,23 @@
 }
 
 .fab-container .sub-button:nth-child(2) {
-    transform: translateY(-80px);
+    transform: translateY(-60px);
 }
 
 .fab-container .sub-button:nth-child(3) {
-    transform: translateY(-140px);
+    transform: translateY(-120px);
 }
 
 .fab-container .sub-button:nth-child(4) {
-    transform: translateY(-200px);
+    transform: translateY(-180px);
 }
 
 .fab-container .sub-button:nth-child(5) {
-    transform: translateY(-260px);
+    transform: translateY(-240px);
 }
 
 .fab-container .sub-button:nth-child(6) {
-    transform: translateY(-320px);
+    transform: translateY(-300px);
 }
 
 .fab-container .fab {

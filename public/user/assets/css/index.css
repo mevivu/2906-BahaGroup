@@ -49,7 +49,6 @@ li {
 
 @media (max-width: 1199px) {
 
-
     #top-bar,
     #top-header {
         display: none !important;
@@ -256,7 +255,21 @@ li {
     }
 }
 
+
 @media (max-width: 768px) {
+    .badge-flash-sale {
+        top: 220px !important;
+        left: 160px !important;
+    }
+
+    .button-post {
+        margin-top: 45em !important;
+    }
+
+    #endFooter {
+        margin-bottom: 3.5em;
+    }
+
     #footerCategory {
         display: block;
     }
@@ -354,6 +367,10 @@ li {
 @media (min-width: 1200px) {
     #footerCategory {
         display: flex;
+    }
+
+    .bottom-nav {
+        display: none;
     }
 }
 
@@ -645,19 +662,19 @@ li {
 
 
 .bg-red {
-    background-color: red;
+    background-color: red !important;
 }
 
 .bg-orange {
-    background-color: orange;
+    background-color: orange !important;
 }
 
 .bg-blue {
-    background-color: blue;
+    background-color: blue !important;
 }
 
 .bg-green {
-    background-color: green;
+    background-color: green !important;
 }
 
 
@@ -1057,8 +1074,8 @@ td[data-label="Tổng"] {
 #backToTopBtn {
     display: none;
     position: fixed;
-    bottom: 20px;
-    left: 30px;
+    bottom: 65px;
+    left: 20px;
     z-index: 999;
     border: none;
     outline: none;
@@ -1536,4 +1553,188 @@ input:checked~.checkmark:after {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    display: inline-block;
+}
+
+.badge-flash-sale {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 165px;
+    left: 230px;
+    margin-top: 0.75rem;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    z-index: 2;
+}
+
+.badge-flash-sale .flash-icon {
+    animation: shake 1.5s ease infinite;
+    display: inline-block;
+    color: #FFBA43;
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(-15deg);
+    }
+
+    40% {
+        transform: rotate(13deg);
+    }
+
+    60% {
+        transform: rotate(-8deg);
+    }
+
+    80% {
+        transform: rotate(5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes addToCartAnimation {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2) translateY(0);
+        opacity: 1;
+    }
+
+    75% {
+        transform: scale(0.8) translateY(-100px);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(0.5) translateY(-150px);
+        opacity: 0;
+    }
+}
+
+.custom-cart-success {
+    position: relative;
+    width: 200px;
+    height: 100px;
+    margin: 0 auto 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 1;
+    transform-origin: center;
+    transform: scale(1);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes hideAnimation {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    60% {
+        opacity: 0;
+        transform: scale(0.8);
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+        height: 0;
+        margin: 0;
+    }
+}
+
+.custom-cart-success.hide {
+    animation: hideAnimation 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.product-image-animation {
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    left: 0;
+    animation: slideToCart 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.cart-image {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+@keyframes slideToCart {
+    0% {
+        transform: scale(1) translateX(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2) translateX(70px);
+        opacity: 1;
+    }
+
+    80% {
+        transform: scale(0.8) translateX(140px);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(0) translateX(140px);
+        opacity: 0;
+    }
+}
+
+@keyframes cartBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.cart-animation {
+    animation: cartBounce 0.5s ease-in-out;
+    animation-delay: 0.8s;
 }

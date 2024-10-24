@@ -15,7 +15,7 @@
 																												<p><strong>Phương thức thanh toán:</strong>
 																																<span
 																																				@class([
-																																								'badge',
+																																								'badge-status',
 																																								App\Enums\Payment\PaymentMethod::from(
 																																												$instance->payment_method->value)->badge(),
 																																				])>{{ \App\Enums\Payment\PaymentMethod::getDescription($instance->payment_method->value) }}</span>
@@ -29,7 +29,7 @@
 																												<p><strong>Trạng thái đơn hàng:</strong>
 																																<span
 																																				@class([
-																																								'badge',
+																																								'badge-status',
 																																								App\Enums\Order\OrderStatus::from($instance->status->value)->badge(),
 																																				])>{{ \App\Enums\Order\OrderStatus::getDescription($instance->status->value) }}</span>
 																												</p>
