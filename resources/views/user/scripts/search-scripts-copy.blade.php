@@ -1,11 +1,30 @@
 <script>
 				function handleAddToCartAnimation(productImageUrl) {
 								Swal.fire({
+												html: `
+            <div id="cartAnimation" class="custom-cart-success">
+                <div class="product-image-animation"
+                    style="background-image: url('${productImageUrl}')">
+                </div>
+                <div class="cart-image cart-animation"
+                    style="background-image: url('{{ asset('user/assets/images/cart.png') }}')">
+                </div>
+            </div>
+        `,
 												icon: 'success',
 												title: 'Thành công',
-												text: 'Thêm sản phẩm vào giỏ hàng thành công!',
 												showConfirmButton: true,
 												confirmButtonColor: "#1c5639",
+												didOpen: () => {
+																setTimeout(() => {
+																								const cartAnimation = document.getElementById('cartAnimation');
+																								if (cartAnimation) {
+																												cartAnimation.classList.add('hide');
+																								}
+																				},
+																				2000
+																);
+												}
 								});
 				}
 

@@ -19,40 +19,42 @@ class DashboardController extends Controller
     }
     public function index()
     {
-        $totalOrders = Order::count();
-        $pendingOrders = Order::where('status', OrderStatus::Pending)->count();
-        $completedOrders = Order::where('status', OrderStatus::Confirmed)->count();
-        $totalRevenue = Order::where('status', OrderStatus::Confirmed)->sum('total');
+        // $totalOrders = Order::count();
+        // $pendingOrders = Order::where('status', OrderStatus::Pending)->count();
+        // $completedOrders = Order::where('status', OrderStatus::Confirmed)->count();
+        // $totalRevenue = Order::where('status', OrderStatus::Confirmed)->sum('total');
 
-        $newCustomers = 32;
-        $totalCustomers = 128;
+        // $newCustomers = 32;
+        // $totalCustomers = 128;
 
-        $totalProductsSold = OrderDetail::whereHas('order', function ($query) {
-            $query->where('status', OrderStatus::Confirmed);
-        })->sum('qty');
+        // $totalProductsSold = OrderDetail::whereHas('order', function ($query) {
+        //     $query->where('status', OrderStatus::Confirmed);
+        // })->sum('qty');
 
-        $canceledOrders = Order::where('status', OrderStatus::Cancelled)->count();
-        $cancelRate = $totalOrders > 0 ? ($canceledOrders / $totalOrders) * 100 : 0;
+        // $canceledOrders = Order::where('status', OrderStatus::Cancelled)->count();
+        // $cancelRate = $totalOrders > 0 ? ($canceledOrders / $totalOrders) * 100 : 0;
 
-        $averageOrderValue = $completedOrders > 0
-            ? $totalRevenue / $completedOrders
-            : 0;
+        // $averageOrderValue = $completedOrders > 0
+        //     ? $totalRevenue / $completedOrders
+        //     : 0;
 
-        $months = ['Tháng 1', 'Tháng 2', 'Tháng 3'];
-        $monthlyRevenue = [10000000, 25000000, 13000000];
+        // $months = ['Tháng 1', 'Tháng 2', 'Tháng 3'];
+        // $monthlyRevenue = [10000000, 25000000, 13000000];
 
-        return view($this->view['index'], compact(
-            'totalOrders',
-            'pendingOrders',
-            'completedOrders',
-            'totalRevenue',
-            'newCustomers',
-            'totalCustomers',
-            'totalProductsSold',
-            'cancelRate',
-            'averageOrderValue',
-            'months',
-            'monthlyRevenue',
-        ));
+        // return view($this->view['index'], compact(
+        //     'totalOrders',
+        //     'pendingOrders',
+        //     'completedOrders',
+        //     'totalRevenue',
+        //     'newCustomers',
+        //     'totalCustomers',
+        //     'totalProductsSold',
+        //     'cancelRate',
+        //     'averageOrderValue',
+        //     'months',
+        //     'monthlyRevenue',
+        // ));
+
+        return view($this->view['index']);
     }
 }

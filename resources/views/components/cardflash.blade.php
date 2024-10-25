@@ -21,11 +21,11 @@
 								<h6 class="card-title">
 												<x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->product->slug])">
 																{{ $item->product->name }}
-																@if ($item->product->on_flash_sale)
+																{{-- @if ($item->product->on_flash_sale)
 																				<span class="badge-flash-sale">
 																								<i class="fas fa-bolt flash-icon"></i>
 																				</span>
-																@endif
+																@endif --}}
 												</x-link>
 								</h6>
 								<div class="rating fs-12">

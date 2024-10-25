@@ -17,11 +17,11 @@
 				<div class="card-body">
 								<h6 class="card-title mb-1"><x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->slug])">
 																{{ $item->name }}
-																@if ($item->on_flash_sale)
+																{{-- @if ($item->on_flash_sale)
 																				<span class="badge-flash-sale">
 																								<i class="fas fa-bolt flash-icon"></i>
 																				</span>
-																@endif
+																@endif --}}
 												</x-link></h6>
 								<div class="rating fs-12">
 												@for ($i = 1; $i <= 5; $i++)
