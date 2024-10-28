@@ -7,31 +7,35 @@
             <div class="col-12 col-md-6">
                 <h3>{{ __('Thông tin chung') }}</h3>
                 <div class="mb-3">
-                    <label for="">{{ __('Khách hàng') }}</label>
+                    <label for=""><i class="ti ti-user"></i> {{ __('Khách hàng') }} <span
+                            class="text-danger">*</span></label>
                     <x-select name="order[user_id]" id="user_id" class="select2-bs5-ajax"
                         data-url="{{ route('admin.search.select.user') }}" :required="true">
                     </x-select>
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Tỉnh/Thành phố') }}</label>
+                    <label for=""><i class="ti ti-building"></i> {{ __('Tỉnh/Thành phố') }} <span
+                            class="text-danger">*</span></label>
                     <x-select name="order[province_id]" id="province_id" class="select2-bs5-ajax"
                         data-url="{{ route('admin.search.select.province') }}" :required="true">
                     </x-select>
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Quận/Huyện') }}</label>
+                    <label for=""><i class="ti ti-building"></i> {{ __('Quận/Huyện') }} <span
+                            class="text-danger">*</span></label>
                     <x-select name="order[district_id]" id="district_id" class="select2-bs5-ajax" data-url=""
                         :required="true">
                     </x-select>
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Phường/Xã') }}</label>
+                    <label for=""><i class="ti ti-building"></i> {{ __('Phường/Xã') }} <span
+                            class="text-danger">*</span></label>
                     <x-select name="order[ward_id]" id="ward_id" class="select2-bs5-ajax" data-url=""
                         :required="true">
                     </x-select>
                 </div>
                 <div class="mb-3">
-                    <label for="">{{ __('Ghi chú') }}:</label>
+                    <label for=""><i class="ti ti-note"></i> {{ __('Ghi chú') }}:</label>
                     <textarea name="order[note]" class="form-control">{{ old('order.note') }}</textarea>
                 </div>
             </div>
