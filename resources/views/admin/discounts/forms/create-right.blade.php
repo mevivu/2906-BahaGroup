@@ -6,10 +6,10 @@
 
         <div class="card-body p-2">
             <div class="d-flex align-items-center h-100 gap-2">
-                <x-button.submit :title="__('save')" name="submitter" value="save"/>
-                <x-button type="submit" name="submitter" value="saveAndExit">
+                <x-button.submit :title="__('save')" name="submitter" value="save" />
+                {{-- <x-button type="submit" name="submitter" value="saveAndExit">
                     @lang('save&exit')
-                </x-button>
+                </x-button> --}}
             </div>
         </div>
     </div>
