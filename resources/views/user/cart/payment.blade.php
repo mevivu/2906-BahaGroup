@@ -11,6 +11,7 @@
 				<div class="d-flex justify-content-center align-items-center container bg-white">
 								<div class="container gap-64">
 												<x-form id="formCheckout" :action="route('user.cart.checkoutFinal')" type="post" :validate="true">
+																<x-input :value="$isBuyNow" type="hidden" name="isBuyNow" />
 																<div class="row">
 																				<div class="col-md-6 col-12 mt-3">
 																								<h4>Thông tin thanh toán</h4>

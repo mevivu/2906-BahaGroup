@@ -9,9 +9,7 @@
 																				@foreach ($homeSliderCategory1 as $category1)
 																								<button class="nav-link tab-btn {{ $loop->first ? 'active' : '' }}" data-bs-toggle="tab"
 																												data-bs-target="#nav-home-category1-{{ $category1->id }}" type="button" role="tab"
-																												aria-controls="nav-sport" aria-selected="false">
-																												{{ $category1->name }}
-																								</button>
+																												aria-controls="nav-sport" aria-selected="false">{{ $category1->name }}</button>
 																				@endforeach
 																				<button id="allBtn" class="nav-link"
 																								onclick="location.href='{{ route('user.product.indexUser') }}';" type="button" role="tab"

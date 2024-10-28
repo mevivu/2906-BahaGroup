@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Admin\Repositories\Review\ReviewRepositoryInterface;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Enums\Order\OrderReview;
+use App\Http\Requests\ShoppingCart\CreatePaymentRequest;
 
 class OrderController extends Controller
 {
@@ -66,8 +67,8 @@ class OrderController extends Controller
         foreach ($productIds as $productId) {
             if (
                 $this->reviewRepository->getQueryBuilder()
-                    ->where('product_id', $productId)
-                    ->where('order_id', $id)->first()
+                ->where('product_id', $productId)
+                ->where('order_id', $id)->first()
             ) {
                 continue;
             }

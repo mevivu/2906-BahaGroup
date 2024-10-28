@@ -51,7 +51,7 @@
 																<div class="progress-icon">
 																				<i class="fa fa-bolt"></i>
 																</div>
-																<span id="progressText">Sold: {{ $item->sold }}/{{ $item->qty }}</span>
+																<span id="progressText">Sold: {{ $item->sold ?? 0 }}/{{ $item->qty }}</span>
 												</div>
 								</div>
 								<div class="product-hover text-center">

@@ -14,6 +14,7 @@ use App\Admin\Traits\Setup;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Order\OrderReview;
+use App\Enums\Payment\PaymentMethod;
 use App\Enums\Product\ProductType;
 use App\Traits\UseLog;
 use Exception;
@@ -286,7 +287,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         $this->data = $request->validated();
         $user = $this->getCurrentUser();
-        $isBuyNow = false;
+        $isBuyNow = $this->data['isBuyNow'];
         $discount = null;
         $isNotify = false;
         $this->data['order']['status'] = OrderStatus::Pending->value;
@@ -300,9 +301,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 foreach ($shopping_cart as $item) {
                     if ($item['qty'] >= $this->data['qty'][$item->id]) {
                         $item['qty'] = $this->data['qty'][$item->id];
-                        if (count($shopping_cart) === 1) {
-                            $isBuyNow = true;
-                        }
                     }
                 }
                 $this->data['order']['total'] = $this->calculateTotal($shopping_cart);
@@ -335,7 +333,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 });
                 DB::commit();
                 if ($isNotify) {
-                    return 1;
+                    return $order;
                 }
             } else {
                 $cart = session()->get('cart', []);
@@ -389,15 +387,79 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 }
                 DB::commit();
                 if ($isNotify) {
-                    return 1;
+                    return $order;
                 }
             }
-            return true;
+            return $order;
         } catch (Exception $e) {
             $this->logError('Failed to process checkout: ', $e);
             DB::rollBack();
             return false;
         }
+    }
+
+    public function handleVnpay(Request $request)
+    {
+        $language = $request->get('language');
+        $orderId = $request->get('order_id');
+        $bankcode = $request->get('bankcode');
+        $order = $this->orderRepository->find($orderId);
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = route('user.index');
+        $vnp_TmnCode = env('VNP_TMNCODE');; //Mã website tại VNPAY
+        $vnp_HashSecret = env('VNP_HASHSECRET'); //Chuỗi bí mật
+
+        $vnp_TxnRef = $order->id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = 'Thanh toan don hang #' . $order->code;
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = ($order->total - $order->discount_value + $order->surcharge) * 100;
+        $vnp_Locale = $language;
+        $vnp_BankCode = $bankcode;
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        dd($vnp_Url);
+        header('Location: ' . $vnp_Url);
+        die();
     }
 
     public function calculateTotal($shoppingCart)

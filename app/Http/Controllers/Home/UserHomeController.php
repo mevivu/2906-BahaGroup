@@ -10,6 +10,7 @@ use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Category\HomeSliderOption;
 use App\Enums\Setting\SettingGroup;
+use Illuminate\Http\Request;
 
 class UserHomeController extends Controller
 {
@@ -36,7 +37,28 @@ class UserHomeController extends Controller
             'contact' => 'user.contact.index',
         ];
     }
-    public function index()
+    public function index(Request $request)
+    {
+        if ($request->input()) {
+            dd($request->input());
+        }
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
+        $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;
+        $flashSale = $this->flashSaleRepository->getFlashSaleId_ValidDay();
+        $homeSliderCategory1 = $this->categoryRepository->getBy(['is_home_slider_1' => HomeSliderOption::Active]);
+        $homeSliderCategory2 = $this->categoryRepository->getBy(['is_home_slider_2' => HomeSliderOption::Active]);
+        return view($this->view['index'], [
+            'flashSale' => $flashSale,
+            'title' => $title,
+            'meta_desc' => $meta_desc,
+            'settingsGeneral' => $settingsGeneral,
+            'homeSliderCategory1' => $homeSliderCategory1,
+            'homeSliderCategory2' => $homeSliderCategory2,
+        ]);
+    }
+
+    public function payment()
     {
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;

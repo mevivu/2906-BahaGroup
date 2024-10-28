@@ -17,6 +17,7 @@ class CheckoutRequest extends BaseRequest
     {
         return [
             'qty' => ['required'],
+            'isBuyNow' => ['nullable'],
             'code' => ['nullable', 'exists:App\Models\Discount,code'],
             'shopping_cart_id' => ['required'],
             'order.payment_method' => ['required', new Enum(PaymentMethod::class)],

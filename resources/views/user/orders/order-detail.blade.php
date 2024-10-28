@@ -8,10 +8,10 @@
 																@include('user.auth.menu')
 																<div class="col-md-10">
 																				<div class="row">
-																								<div class="col-md-4 col-12 border-right">
-																												<h3>Chi tiết đơn hàng</h3>
+																								<div class="col-md-6 col-12 border-right">
+																												<h4>Chi tiết đơn hàng</h4>
 																												<p><strong>Mã đơn hàng:</strong> {{ $instance->code }}</p>
-																												<p><strong>Ngày đặt:</strong> {{ format_date($instance->created_at) }}</p>
+																												<p><strong>Ngày đặt:</strong> {{ format_datetime($instance->created_at) }}</p>
 																												<p><strong>Phương thức thanh toán:</strong>
 																																<span
 																																				@class([
@@ -22,9 +22,9 @@
 																												</p>
 																												<p><strong>Địa chỉ giao hàng:</strong> {{ $instance->province->name }},
 																																{{ $instance->district->name }}, {{ $instance->ward->name }}</p>
+																												<p><strong>Địa chỉ chi tiết:</strong> {{ $instance->address }}</p>
 																												@if ($instance->discount_value)
 																																<p><strong>Mã giảm giá áp dụng:</strong> {{ $instance->discount->code }}</p>
-																																<p><strong>Giá trị giảm:</strong> {{ format_price($instance->discount_value) }}</p>
 																												@endif
 																												<p><strong>Trạng thái đơn hàng:</strong>
 																																<span
@@ -34,24 +34,41 @@
 																																				])>{{ \App\Enums\Order\OrderStatus::getDescription($instance->status->value) }}</span>
 																												</p>
 																												<p><strong>Ghi chú:</strong> {{ $instance->note }}</p>
-																												<p><strong>Tổng hoá đơn:</strong> {{ format_price($instance->total) }}</p>
+																												</p>
+																												<div class="row">
+																																<div class="col-6 text-start">Tạm tính</div>
+																																<div class="col-6 text-end"><strong>{{ format_price($instance->total) }}</strong>
+																																</div>
+																																<div class="col-6 text-start">Giảm giá</div>
+																																<div class="col-6 text-end">
+																																				<strong>{{ format_price($instance->discount_value ?? 0) }}</strong>
+																																</div>
+																																<div class="col-6 border-bottom pb-1 text-start">Phụ thu</div>
+																																<div class="col-6 border-bottom pb-1 text-end">
+																																				{{ format_price($instance->surcharge ?? 0) }}</div>
+																																<div class="col-6 mt-1 text-start">Tổng</div>
+																																<div class="col-6 mb-3 mt-1 text-end">
+																																				<strong
+																																								id="totalAfterDiscount">{{ format_price($instance->total - $instance->discount_value - $instance->surcharge) }}</strong>
+																																</div>
+																												</div>
 																								</div>
 
 																								<!-- Thông tin người dùng -->
-																								<div class="col-md-4 col-12 border-right mt-md-0 mt-4">
+																								<div class="col-md-6 col-12 border-right mt-md-0 mt-4">
 																												<h4>Thông tin người dùng</h4>
 																												<p><strong>Tên:</strong> {{ $instance->user->fullname }}</p>
 																												<p><strong>Địa chỉ:</strong> {{ $instance->user->address }}</p>
 																												<p><strong>Số điện thoại:</strong> {{ $instance->user->phone }}</p>
-																								</div>
-
-																								<!-- Thông tin khác -->
-																								<div class="col-md-4 col-12 mt-md-0 mt-4">
-																												<h4>Thông tin khác</h4>
+																												<h4 class="mt-3">Thông tin khác</h4>
 																												<p><strong>Tên người nhận:</strong> {{ $instance->name_other }}</p>
 																												<p><strong>Địa chỉ người nhận:</strong> {{ $instance->address_other }}</p>
 																												<p><strong>Số điện thoại người nhận:</strong> {{ $instance->phone_other }}</p>
 																												<p><strong>Ghi chú khác:</strong> {{ $instance->note_other }}</p>
+																								</div>
+
+																								<!-- Thông tin khác -->
+																								<div class="col-md-4 col-12 mt-md-0 mt-4">
 																								</div>
 																				</div>
 

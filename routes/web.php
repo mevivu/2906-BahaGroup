@@ -10,6 +10,15 @@ Route::controller(App\Http\Controllers\Home\UserHomeController::class)
         Route::get('/lien-he', 'contact')->name('contact');
     });
 
+Route::controller(App\Http\Controllers\Home\UserHomeController::class)
+    ->prefix('/vnpay-payment')
+    ->as('payment.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/gioi-thieu', 'information')->name('information');
+        Route::get('/lien-he', 'contact')->name('contact');
+    });
+
 Route::controller(App\Http\Controllers\Product\ProductController::class)
     ->prefix('/san-pham')
     ->as('product.')
@@ -37,6 +46,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::delete('/remove/{id?}', 'delete')->name('remove');
         Route::post('/buy-now', 'buyNow')->name('buyNow');
         Route::get('/thanh-toan', 'checkout')->name('checkout');
+        Route::get('/vnpay', 'handleVnpay')->name('handleVnpay');
         Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 

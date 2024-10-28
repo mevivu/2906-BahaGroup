@@ -14,6 +14,7 @@ use App\Enums\Payment\PaymentMethod;
 use App\Http\Requests\ShoppingCart\ApplyDiscountCodeRequest;
 use App\Http\Requests\ShoppingCart\ChangeQtyRequest;
 use App\Http\Requests\ShoppingCart\CheckoutRequest;
+use App\Http\Requests\ShoppingCart\CreatePaymentRequest;
 use App\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
@@ -155,14 +156,28 @@ class ShoppingCartController extends Controller
 
     public function checkoutFinal(CheckoutRequest $request)
     {
-        $result = $this->service->checkout($request);
-        if ($result === 1) {
-            return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
-        }
-        if ($result) {
+        $order = $this->service->checkout($request);
+        if ($order) {
+            if ($order->payment_method == PaymentMethod::Online) {
+                return view('user.home.create-payment-vnpay', [
+                    'order' => $order,
+                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                ]);
+            }
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
+        // if ($result[1] === 1) {
+        //     return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
+        // }
+        // if ($result[1]) {
+        //     return to_route('user.index')->with('success', __('Đặt hàng thành công'));
+        // }
         return back()->with('error', __('Đặt hàng thất bại'));
+    }
+
+    public function handleVnpay(Request $request)
+    {
+        $result = $this->service->handleVnpay($request);
     }
 
     public function store(ShoppingCartRequest $request)
