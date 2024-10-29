@@ -36,30 +36,28 @@
 												<div class="col-12 col-md-6">
 																<div class="mb-3">
 																				<label for="">{{ __('Giá bán thường') . ' (' . config('custom.currency') . ')' }}</label>
-																				<x-input-price id="products_variations[price][{{ $identity ?? ($productVariation->id ?? '') }}]"
+																				<x-input id="inputPVP{{ $identity ?? ($productVariation->id ?? '') }}"
 																								name="products_variations[price][{{ $identity ?? ($productVariation->id ?? '') }}]"
 																								:value="$productVariation->price ?? ''" :placeholder="__('Giá bán thường')" :required="true" data-parsley-type="number"
 																								data-parsley-type-message="{{ __('Trường này phải là số.') }}" />
 																</div>
-																<div class="mb-3">
+																<div class="">
 																				<label for="mb-3">{{ __('Giá khuyến mãi') . ' (' . config('custom.currency') . ')' }}</label>
-																				<x-input-price
-																								id="products_variations[promotion_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
+																				<x-input id="inputPMP{{ $identity ?? ($productVariation->id ?? '') }}"
 																								name="products_variations[promotion_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
 																								:value="$productVariation->promotion_price ?? ''" :placeholder="__('Giá khuyến mãi')" data-parsley-type="number"
-																								data-parsley-lt="#products_variations[price][{{ $identity ?? ($productVariation->id ?? '') }}]"
+																								data-parsley-lt="#inputPVP{{ $identity ?? ($productVariation->id ?? '') }}"
 																								data-parsley-number-message="Trường này phải là số."
 																								data-parsley-lt-message="Giá khuyến mãi phải nhỏ hơn giá mặc định." />
 																</div>
-																<div class="mb-3">
+																<div class="">
 																				<label for="mb-3">{{ __('Giá Flash Sale') . ' (' . config('custom.currency') . ')' }}</label>
-																				<x-input-price
-																								id="products_variations[flashsale_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
+																				<x-input
 																								name="products_variations[flashsale_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
-																								:value="$productVariation->flashsale_price ?? ''" :placeholder="__('Giá Flash Sale')" data-parsley-type="number"
-																								data-parsley-lt="#products_variations[promotion_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
+																								:value="$productVariation->flashsale_price ?? ''" :placeholder="__('Giá khuyến mãi')" data-parsley-type="number"
+																								data-parsley-lt="#inputPMP{{ $identity ?? ($productVariation->id ?? '') }}"
 																								data-parsley-number-message="Trường này phải là số."
-																								data-parsley-lt-message="Giá flash sale phải nhỏ hơn giá khuyến mãi." />
+																								data-parsley-lt-message="Giá khuyến mãi phải nhỏ hơn giá mặc định." />
 																</div>
 																<div class="">
 																				<label for="mb-3">{{ __('Số lượng') }}</label>

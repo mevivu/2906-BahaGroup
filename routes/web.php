@@ -47,6 +47,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::post('/buy-now', 'buyNow')->name('buyNow');
         Route::get('/thanh-toan', 'checkout')->name('checkout');
         Route::get('/vnpay', 'handleVnpay')->name('handleVnpay');
+        Route::get('/vnpay/return', 'handleVnpayReturn')->name('handleVnpayReturn');
         Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 

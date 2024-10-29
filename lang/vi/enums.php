@@ -8,10 +8,12 @@ use App\Enums\FeaturedStatus;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Payment\PaymentMethod;
 use App\Enums\Order\OrderType;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Post\PostStatus;
 use App\Enums\PriorityStatus;
 use App\Enums\Product\{ProductInStock, ProductManagerStock, ProductStatus, ProductType, ProductVariationAction};
 use App\Enums\Slider\SliderStatus;
+use App\Enums\Transaction\TransactionStatus;
 use App\Enums\User\{Gender, UserVip, UserRoles};
 
 return [
@@ -23,6 +25,15 @@ return [
     DefaultActiveStatus::class => [
         DefaultActiveStatus::Active->value => 'Có',
         DefaultActiveStatus::UnActive->value => 'Không',
+    ],
+    PaymentStatus::class => [
+        PaymentStatus::UnPaid->value => 'Chưa thanh toán',
+        PaymentStatus::Paid->value => 'Đã thanh toán',
+    ],
+    TransactionStatus::class => [
+        TransactionStatus::Pending->value => 'Đang xử lý',
+        TransactionStatus::Success->value => 'Thành công',
+        TransactionStatus::Failed->value => 'Thất bại',
     ],
     HomeSliderOption::class => [
         HomeSliderOption::Active->value => 'Có',

@@ -36,6 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider
         'App\Admin\Repositories\Review\ReviewRepositoryInterface' => 'App\Admin\Repositories\Review\ReviewRepository',
         'App\Admin\Repositories\Icon\IconRepositoryInterface' => 'App\Admin\Repositories\Icon\IconRepository',
         'App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface' => 'App\Admin\Repositories\ShoppingCart\ShoppingCartRepository',
+        'App\Admin\Repositories\Transaction\TransactionRepositoryInterface' => 'App\Admin\Repositories\Transaction\TransactionRepository',
     ];
     /**
      * Register services.

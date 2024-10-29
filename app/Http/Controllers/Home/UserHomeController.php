@@ -37,11 +37,8 @@ class UserHomeController extends Controller
             'contact' => 'user.contact.index',
         ];
     }
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->input()) {
-            dd($request->input());
-        }
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'home_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'home_meta_desc')->first()->plain_value;

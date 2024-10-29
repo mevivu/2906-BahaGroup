@@ -166,18 +166,17 @@ class ShoppingCartController extends Controller
             }
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
-        // if ($result[1] === 1) {
-        //     return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
-        // }
-        // if ($result[1]) {
-        //     return to_route('user.index')->with('success', __('Đặt hàng thành công'));
-        // }
         return back()->with('error', __('Đặt hàng thất bại'));
     }
 
     public function handleVnpay(Request $request)
     {
-        $result = $this->service->handleVnpay($request);
+        return $this->service->handleVnpay($request);
+    }
+
+    public function handleVnpayReturn(Request $request)
+    {
+        return $this->service->handleVnpayReturn($request);
     }
 
     public function store(ShoppingCartRequest $request)

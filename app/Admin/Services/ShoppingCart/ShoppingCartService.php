@@ -9,13 +9,16 @@ use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
+use App\Admin\Repositories\Transaction\TransactionRepositoryInterface;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Order\OrderReview;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Payment\PaymentMethod;
 use App\Enums\Product\ProductType;
+use App\Enums\Transaction\TransactionStatus;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
@@ -35,6 +38,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     protected $repositoryOrderDetail;
     protected $discountRepository;
     protected $discountApplicationRepository;
+    protected $transactionRepository;
 
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
@@ -44,6 +48,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         OrderDetailRepositoryInterface $repositoryOrderDetail,
         DiscountRepositoryInterface $discountRepository,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
+        TransactionRepositoryInterface $transactionRepository,
     ) {
         $this->repository = $repository;
         $this->orderRepository = $orderRepository;
@@ -52,6 +57,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->repositoryOrderDetail = $repositoryOrderDetail;
         $this->discountRepository = $discountRepository;
         $this->discountApplicationRepository = $discountApplicationRepository;
+        $this->transactionRepository = $transactionRepository;
     }
 
     public function store(Request $request)
@@ -400,66 +406,112 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
     public function handleVnpay(Request $request)
     {
-        $language = $request->get('language');
-        $orderId = $request->get('order_id');
-        $bankcode = $request->get('bankcode');
-        $order = $this->orderRepository->find($orderId);
-        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = route('user.index');
-        $vnp_TmnCode = env('VNP_TMNCODE');; //Mã website tại VNPAY
-        $vnp_HashSecret = env('VNP_HASHSECRET'); //Chuỗi bí mật
+        DB::beginTransaction();
+        try {
+            $language = $request->get('language');
+            $orderId = $request->get('order_id');
+            $bankcode = $request->get('bankcode');
 
-        $vnp_TxnRef = $order->id; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
-        $vnp_OrderInfo = 'Thanh toan don hang #' . $order->code;
-        $vnp_OrderType = 'billpayment';
-        $vnp_Amount = ($order->total - $order->discount_value + $order->surcharge) * 100;
-        $vnp_Locale = $language;
-        $vnp_BankCode = $bankcode;
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
-        $inputData = array(
-            "vnp_Version" => "2.1.0",
-            "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
-            "vnp_Command" => "pay",
-            "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
-            "vnp_IpAddr" => $vnp_IpAddr,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_OrderType" => $vnp_OrderType,
-            "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef
-        );
+            $order = $this->orderRepository->find($orderId);
+            $transactionData = [
+                'vnp_Amount' => ($order->total - $order->discount_value + $order->surcharge) * 100,
+                'vnp_BankCode' => $bankcode,
+                'vnp_OrderInfo' => 'Thanh toan don hang #' . $order->code,
+                'vnp_TmnCode' => env('VNP_TMNCODE'),
+                'vnp_TxnRef' => $order->code,
+                'expires_at' => now()->addMinutes(15),
+            ];
 
-        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
-            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
-        }
+            $this->transactionRepository->getBy(['vnp_TxnRef' => $transactionData['vnp_TxnRef']])->delete();
 
-        ksort($inputData);
-        $query = "";
-        $i = 0;
-        $hashdata = "";
-        foreach ($inputData as $key => $value) {
-            if ($i == 1) {
-                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
-            } else {
-                $hashdata .= urlencode($key) . "=" . urlencode($value);
-                $i = 1;
+            $this->transactionRepository->create($transactionData);
+
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            $vnp_Returnurl = route('user.cart.handleVnpayReturn');
+            $vnp_HashSecret = env('VNP_HASHSECRET'); //Chuỗi bí mật
+            $vnp_OrderType = 'billpayment';
+            $vnp_Locale = $language;
+            $vnp_BankCode = $bankcode;
+            $inputData = array(
+                "vnp_Version" => "2.1.0",
+                "vnp_TmnCode" => env('VNP_TMNCODE'),
+                "vnp_Amount" => $transactionData['vnp_Amount'],
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => request()->ip(),
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => $transactionData['vnp_OrderInfo'],
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $transactionData['vnp_TxnRef']
+            );
+
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
             }
-            $query .= urlencode($key) . "=" . urlencode($value) . '&';
-        }
+            if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+                $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+            }
 
-        $vnp_Url = $vnp_Url . "?" . $query;
-        if (isset($vnp_HashSecret)) {
-            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
-            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+
+            $vnp_Url = $vnp_Url . "?" . $query;
+            if (isset($vnp_HashSecret)) {
+                $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
+                $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            }
+            DB::commit();
+            header('Location: ' . $vnp_Url);
+            die();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-        dd($vnp_Url);
-        header('Location: ' . $vnp_Url);
-        die();
+    }
+
+
+    public function handleVnpayReturn(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $inputData = $request->all();
+            $transaction = $this->transactionRepository->findByField('vnp_TxnRef', $inputData['vnp_TxnRef']);
+            $order = $this->orderRepository->findByField('code', $inputData['vnp_TxnRef']);
+            if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
+                if ($transaction && $transaction->vnp_Amount == $inputData['vnp_Amount'] && $transaction->expires_at > now() && $transaction->status == TransactionStatus::Pending->value) {
+                    $transaction->update([
+                        'status' => TransactionStatus::Success
+                    ]);
+                    $order->update([
+                        'payment_status' => PaymentStatus::Paid
+                    ]);
+                    DB::commit();
+                    return redirect()->route('user.index')->with('success', __('Thanh toán thành công'));
+                }
+            }
+            $transaction->update([
+                'status' => TransactionStatus::Failed
+            ]);
+            DB::commit();
+
+            return redirect()->route('user.index')->with('error', __('Thanh toán thất bại'));
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     public function calculateTotal($shoppingCart)

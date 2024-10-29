@@ -59,6 +59,8 @@ class Order extends Model
         'code',
         /** Đánh giá */
         'is_reviewed',
+        /** Trạng thái thanh toán */
+        'payment_status',
     ];
 
     protected $casts = [
