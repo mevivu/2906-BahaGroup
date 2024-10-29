@@ -158,12 +158,12 @@ class ShoppingCartController extends Controller
     {
         $order = $this->service->checkout($request);
         if ($order) {
-            if ($order->payment_method == PaymentMethod::Online) {
-                return view('user.home.create-payment-vnpay', [
-                    'order' => $order,
-                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-                ]);
-            }
+            // if ($order->payment_method == PaymentMethod::Online) {
+            //     return view('user.home.create-payment-vnpay', [
+            //         'order' => $order,
+            //         'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+            //     ]);
+            // }
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
         return back()->with('error', __('Đặt hàng thất bại'));
