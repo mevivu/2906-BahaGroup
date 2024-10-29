@@ -1,7 +1,7 @@
-<div class="col-12 col-md-3" style="margin-top: 35px;">
+<div class="col-12 col-md-3">
     <div class="card mb-3">
         <div class="card-header">
-            @lang('action')
+            <i class="ti ti-playstation-circle"></i><span class="ms-2">@lang('action')</span>
         </div>
 
         <div class="card-body p-2">
