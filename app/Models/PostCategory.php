@@ -10,7 +10,7 @@ use Kalnoy\Nestedset\NodeTrait;
 
 class PostCategory extends Model
 {
-    use HasFactory, Sluggable, NodeTrait;
+    use HasFactory, NodeTrait;
 
     protected $table = 'posts_categories';
 

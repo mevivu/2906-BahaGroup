@@ -7,19 +7,18 @@
             <!-- name -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Tên danh mục') }}:</label>
-                    <x-input name="name" :value="$category->name" :required="true"
-                        placeholder="{{ __('Tên danh mục') }}" />
+                    <label class="control-label"><i class="ti ti-category"></i> {{ __('Tên danh mục') }}:</label>
+                    <x-input name="name" :value="$category->name" :required="true" placeholder="{{ __('Tên danh mục') }}" />
                 </div>
             </div>
             <!-- Danh mục cha -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Danh mục cha') }}:</label>
+                    <label class="control-label"><i class="ti ti-category"></i> {{ __('Danh mục cha') }}:</label>
                     <x-select class="select2-bs5" name="parent_id">
                         <x-select-option value="" :title="__('Trống')" />
                         @foreach ($categories as $item)
-                            <x-select-option :option="$category->parent_id" :value="$item->id" :title="generate_text_depth_tree($item->depth).' '.__($item->name)" />
+                            <x-select-option :option="$category->parent_id" :value="$item->id" :title="generate_text_depth_tree($item->depth) . ' ' . __($item->name)" />
                         @endforeach
                     </x-select>
                 </div>
@@ -27,26 +26,29 @@
             <!-- position -->
             <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Vị trí') }}:</label>
+                    <label class="control-label"><i class="ti ti-location"></i> {{ __('Vị trí') }}:</label>
                     <x-input type="number" name="position" :value="$category->position" :required="true" />
                 </div>
             </div>
             <!-- is active -->
             <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Trạng thái') }}:</label>
+                    <label class="control-label"><i class="ti ti-settings-star"></i> {{ __('Trạng thái') }}:</label>
                     <x-select class="select2-bs5" name="is_active" :required="true">
                         <x-select-option :value="true" :title="__('Hoạt động')" />
                         <x-select-option :option="$category->is_active ?: '0'" value="0" :title="__('Tạm ngưng')" />
                     </x-select>
                 </div>
             </div>
-            <p>Chọn Icon ở đây: <a target="blank" href="https://tabler.io/icons">https://tabler.io/icons</a>. Tìm Icon bạn thích. Ví dụ icon là alert-circle, bạn nhập vô ô dưới ti ti-alert-circle</p>
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-6 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Icon') }}:</label>
-                    <x-input name="icon" :value="$category->icon" :required="true"
-                        placeholder="{{ __('Ví dụ: ti ti-alert-circle') }}" />
+                    <label class="control-label"><i class="ti ti-favicon"></i> {{ __('Icon') }}:</label>
+                    <i class="{{ $category->icon }} fs-2 ms-1"></i>
+                    <x-select name="icon" id="icon-select" class="select2-bs5"
+                        data-ajax-url="{{ route('admin.search.select.icon') }}" data-ajax-cache="true"
+                        :required="true">
+                        <x-select-option :option="$category->icon" :value="$category->icon" :title="$category->icon" />
+                    </x-select>
                 </div>
             </div>
         </div>

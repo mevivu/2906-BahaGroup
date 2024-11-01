@@ -14,9 +14,14 @@
 								@endif
 								<span class="badge badge-featured position-absolute start-0 top-0 m-3">Nổi bật</span>
 				</div>
-				<div class="card-body shadow-sm">
+				<div class="card-body">
 								<h6 class="card-title mb-1"><x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->slug])">
 																{{ $item->name }}
+																{{-- @if ($item->on_flash_sale)
+																				<span class="badge-flash-sale">
+																								<i class="fas fa-bolt flash-icon"></i>
+																				</span>
+																@endif --}}
 												</x-link></h6>
 								<div class="rating fs-12">
 												@for ($i = 1; $i <= 5; $i++)
@@ -29,8 +34,8 @@
 																				class="text-red">{{ format_price($item->promotion_price) }}</strong></p>
 												<div class="product-hover text-center">
 																<a style="cursor: pointer;" class="add-to-cart">
-																				<i onclick="addToCart({{ $item->id }})" class="fa fa-shopping-cart w-50"
-																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																				<i onclick="addToCart({{ $item->id }}, '{{ asset($item->avatar) }}')"
+																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
 																								onclick="showDetailProductModal(this, {{ $item->id }})" aria-hidden="true"></i>
 																</a>
 												</div>

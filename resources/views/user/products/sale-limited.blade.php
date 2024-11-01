@@ -16,37 +16,24 @@
 																<div class="col-12 header-box d-flex align-items-center">
 																				<h4>Khuyến mãi giới hạn</h4>
 																				<div class="timer">
-																								<p class="mt-1"><span id="countdown-flashsale-product">216:19:42:02</span></p>
+																								<p class="mt-1"><span id="countdown-flashsale-product">0 Giờ : 0 Phút : 0 Giây</span></p>
 																				</div>
 																</div>
 																<div class="col-12">
 																				<div class="row">
-																								@foreach ($products as $item)
-																												<div class="col-6 col-md-3 mb-4">
-																																<x-cardflash :item="$item" />
-																												</div>
-																								@endforeach
+																								@if ($products)
+																												@foreach ($products as $item)
+																																<div class="col-6 col-md-3 mb-2 mt-2">
+																																				<x-cardflash :item="$item" />
+																																</div>
+																												@endforeach
+																								@endif
 																				</div>
 
-																				<div class="pagination">
-																								<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
-																												<button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
-																																onclick="window.location='{{ $products->previousPageUrl() }}'">
-																																<i class="fa fa-chevron-left" aria-hidden="true"></i>
-																												</button>
-
-																												@for ($i = 1; $i <= $products->lastPage(); $i++)
-																																<button class="pagination-btn @if ($i == $products->currentPage()) active @endif"
-																																				onclick="window.location='{{ $products->url($i) }}'">
-																																				{{ $i }}
-																																</button>
-																												@endfor
-
-																												<button class="pagination-btn next" @if (!$products->hasMorePages()) disabled @endif
-																																onclick="window.location='{{ $products->nextPageUrl() }}'">
-																																<i class="fa fa-chevron-right" aria-hidden="true"></i>
-																												</button>
-																								</div>
+																				<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
+																								@if ($products)
+																												{{ $products->links('components.pagination') }}
+																								@endif
 																				</div>
 																</div>
 												</div>

@@ -48,7 +48,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng vượt quá hàng trong kho!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.val(parseInt(hiddenValue.val()));
 								} else {
@@ -106,7 +107,8 @@
 																				icon: 'warning',
 																				title: 'Lưu ý',
 																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 																updateText(response.responseJSON);
 																$(button).prop('disabled', false);
@@ -123,8 +125,8 @@
 																title: "Bạn có chắc chắn muốn thực hiện?",
 																icon: "info",
 																showCancelButton: true,
-																confirmButtonColor: "#7FC84E",
-																cancelButtonColor: "#FA4F26",
+																confirmButtonColor: "#1c5639",
+																cancelButtonColor: "#d33",
 																confirmButtonText: "Chắc chắn!",
 																cancelButtonText: "Quay lại!"
 												}).then((result) => {
@@ -144,7 +146,8 @@
 																																icon: 'warning',
 																																title: 'Lưu ý',
 																																text: `${response.responseJSON.message}`,
-																																showConfirmButton: true
+																																showConfirmButton: true,
+																																confirmButtonColor: "#1c5639",
 																												});
 																												updateText(response.responseJSON);
 																								}
@@ -162,7 +165,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Vui lòng chỉ nhập số!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -171,7 +175,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng phải lớn hơn 0!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -181,7 +186,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: `Số lượng vượt quá hàng trong kho, còn lại ${hiddenQuantity} sản phẩm!`,
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -202,7 +208,8 @@
 																				icon: 'warning',
 																				title: 'Lưu ý',
 																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 																input.value = 1;
 												}

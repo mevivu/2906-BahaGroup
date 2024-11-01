@@ -1,11 +1,11 @@
 <script>
-    $(document).on('click', '#review', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+				$(document).on('click', '#review', function(e) {
+								e.preventDefault();
+								var url = $(this).attr('href');
 
-        Swal.fire({
-            title: "Đánh giá đơn hàng",
-            html: `
+								Swal.fire({
+												title: "Đánh giá đơn hàng",
+												html: `
                 <div class="review_rating">
                     <input type=radio checked value='0' id='star-0' name='rating' />
                     <label for='star-1'>★</label>
@@ -23,42 +23,45 @@
                     <textarea name="content" class="form-control" placeholder="Nhập đánh giá của bạn tại đây... "></textarea>
                 </div>
             `,
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Đánh giá!",
-            cancelButtonText: "Quay lại!",
-            preConfirm: () => {
-                const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
-                const review = document.querySelector('textarea[name="content"]').value;
-                if (!review || !rating) {
-                    Swal.showValidationMessage('Vui lòng nhập đánh giá và chọn số sao.');
-                    return false;
-                }
-                return { review: review, rating: rating };
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const rating = result.value.rating;
-                const review = result.value.review;
-                window.location.href = `${url}?rating=${rating}&review=${review}`;
-            }
-        });
-    });
+												showCancelButton: true,
+												confirmButtonColor: "#3085d6",
+												cancelButtonColor: "#d33",
+												confirmButtonText: "Đánh giá!",
+												cancelButtonText: "Quay lại!",
+												preConfirm: () => {
+																const rating = parseInt(document.querySelector('input[name="rating"]:checked').value);
+																const review = document.querySelector('textarea[name="content"]').value;
+																if (!review || !rating) {
+																				Swal.showValidationMessage('Vui lòng nhập đánh giá và chọn số sao.');
+																				return false;
+																}
+																return {
+																				review: review,
+																				rating: rating
+																};
+												}
+								}).then((result) => {
+												if (result.isConfirmed) {
+																const rating = result.value.rating;
+																const review = result.value.review;
+																window.location.href = `${url}?rating=${rating}&review=${review}`;
+												}
+								});
+				});
 
-    $(document).on('click', '#review-detail', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+				$(document).on('click', '#review-detail', function(e) {
+								e.preventDefault();
+								var url = $(this).attr('href');
 
-        $.ajax({
-            url: url,
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                let reviewHtml = '';
+								$.ajax({
+												url: url,
+												type: 'GET',
+												dataType: 'json',
+												success: function(data) {
+																let reviewHtml = '';
 
-                data.response.reviewsDetail.forEach(review => {
-                    reviewHtml += `
+																data.response.reviewsDetail.forEach(review => {
+																				reviewHtml += `
                     <div class="d-flex mb-3">
                         <img src="${data.response.user.avatar}" alt="Customer Image" class="customer-image me-3">
                         <div class="rating" style="text-align:left">
@@ -70,38 +73,38 @@
                             <p>${review.review_content}</p>
                         </div>
                     </div>`;
-                });
+																});
 
-                Swal.fire({
-                    title: "Đánh giá đơn hàng",
-                    html: reviewHtml,
-                    cancelButtonColor: "#d33",
-                    cancelButtonText: "Quay lại!",
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-                Swal.fire('Error!', 'Could not fetch review data.', 'error');
-            }
-        });
-    });
+																Swal.fire({
+																				title: "Đánh giá đơn hàng",
+																				html: reviewHtml,
+																				cancelButtonColor: "#d33",
+																				cancelButtonText: "Quay lại!",
+																});
+												},
+												error: function(xhr, status, error) {
+																console.error(xhr.responseText);
+																Swal.fire('Error!', 'Could not fetch review data.', 'error');
+												}
+								});
+				});
 
-    $(document).on('click', '#cancel-order', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
+				$(document).on('click', '#cancel-order', function(e) {
+								e.preventDefault();
+								var url = $(this).attr('href');
 
-        Swal.fire({
-            title: "Bạn có chắc chắn muốn hủy đơn này?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Chắc chắn!",
-            cancelButtonText: "Quay lại!"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
-    });
+								Swal.fire({
+												title: "Bạn có chắc chắn muốn hủy đơn này?",
+												icon: "warning",
+												showCancelButton: true,
+												confirmButtonColor: "#1c5639",
+												cancelButtonColor: "#d33",
+												confirmButtonText: "Chắc chắn!",
+												cancelButtonText: "Quay lại!"
+								}).then((result) => {
+												if (result.isConfirmed) {
+																window.location.href = url;
+												}
+								});
+				});
 </script>

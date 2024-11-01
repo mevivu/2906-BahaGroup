@@ -1,6 +1,9 @@
-<span @class(['badge', App\Enums\Order\OrderStatus::from($status)->badge()])>{{ \App\Enums\Order\OrderStatus::getDescription($status) }}</span>
+<span @class([
+				'badge-status',
+				App\Enums\Order\OrderStatus::from($status)->badge(),
+])>{{ \App\Enums\Order\OrderStatus::getDescription($status) }}</span>
 <br>
-@if ($status == App\Enums\Order\OrderStatus::Completed->value && $created_at >= now()->subDays(14))
+@if ($status == App\Enums\Order\OrderStatus::Confirmed->value && $created_at >= now()->subDays(14))
 				@if ($is_reviewed == App\Enums\Order\OrderReview::NotReviewed->value)
 								<a class="text-default" id="review" href="{{ route('user.order.review', $id) }}">Đánh giá đơn hàng</a>
 				@else

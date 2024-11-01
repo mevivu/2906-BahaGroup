@@ -4,7 +4,8 @@
 												<h5 class="mb-0">{{ $settingsGeneral->where('setting_key', 'title_home_slider_1')->first()->plain_value }}
 												</h5>
 												<nav>
-																<div class="nav nav-tabs border-0" id="nav-tab" role="tablist">
+																<div class="nav nav-tabs border-0" id="nav-tab" role="tablist"
+																				style="overflow-x: auto; white-space: nowrap;">
 																				@foreach ($homeSliderCategory1 as $category1)
 																								<button class="nav-link tab-btn {{ $loop->first ? 'active' : '' }}" data-bs-toggle="tab"
 																												data-bs-target="#nav-home-category1-{{ $category1->id }}" type="button" role="tab"
@@ -12,7 +13,8 @@
 																				@endforeach
 																				<button id="allBtn" class="nav-link"
 																								onclick="location.href='{{ route('user.product.indexUser') }}';" type="button" role="tab"
-																								aria-selected="true">Tất cả</button>
+																								aria-selected="true">Tất cả
+																				</button>
 																</div>
 												</nav>
 								</div>
@@ -39,7 +41,7 @@
 																																								<div class="container">
 																																												<div class="row">
 																																																@foreach ($chunk as $product)
-																																																				<div class="col-md-3 mb-4">
+																																																				<div class="col-md-3 col-6 mb-4">
 																																																								<x-cardproduct :item="$product" />
 																																																				</div>
 																																																@endforeach

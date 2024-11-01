@@ -14,6 +14,7 @@ use App\Enums\Payment\PaymentMethod;
 use App\Http\Requests\ShoppingCart\ApplyDiscountCodeRequest;
 use App\Http\Requests\ShoppingCart\ChangeQtyRequest;
 use App\Http\Requests\ShoppingCart\CheckoutRequest;
+use App\Http\Requests\ShoppingCart\CreatePaymentRequest;
 use App\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
@@ -75,7 +76,7 @@ class ShoppingCartController extends Controller
                 'shoppingCart' => $cart,
                 'total' => $this->service->calculateTotalFromSession($cart),
                 'object' => $object[0]->plain_value,
-                'breadcrumbs' => $this->crums->add(__('Giỏ này'))->getBreadcrumbs()
+                'breadcrumbs' => $this->crums->add(__('Giỏ hàng'))->getBreadcrumbs()
             ]);
         }
     }
@@ -86,75 +87,96 @@ class ShoppingCartController extends Controller
         $user = $this->getCurrentUser();
 
         if ($user) {
-            if ($request->query('cart_id')) {
-                $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
-                if ($cartItem) {
-                    $cartItem['qty'] = $request->input('qty');
-                    $total = $this->service->calculateTotal($cartItem);
-                    return view($this->view['payment'], [
-                        'user' => $user,
-                        'total' => $total,
-                        'isBuyNow' => true,
-                        'shoppingCart' => [$cartItem],
-                        'payment_methods' => PaymentMethod::asSelectArray(),
-                        'code' => $request->input('code') ?? null,
-                        'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-                    ]);
+            if ($user->shopping_cart->count() > 0) {
+                if ($request->query('cart_id')) {
+                    $cartItem = $user->shopping_cart->where('id', $request->query('cart_id'))->first();
+                    if ($cartItem) {
+                        $cartItem['qty'] = $request->input('qty');
+                        $total = $this->service->calculateTotal($cartItem);
+                        return view($this->view['payment'], [
+                            'user' => $user,
+                            'total' => $total,
+                            'isBuyNow' => true,
+                            'shoppingCart' => [$cartItem],
+                            'payment_methods' => PaymentMethod::asSelectArray(),
+                            'code' => $request->input('code') ?? null,
+                            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                        ]);
+                    }
                 }
+                $total = $this->service->calculateTotal($user->shopping_cart);
+                return view($this->view['payment'], [
+                    'user' => $user,
+                    'total' => $total,
+                    'isBuyNow' => false,
+                    'shoppingCart' => $user->shopping_cart,
+                    'payment_methods' => PaymentMethod::asSelectArray(),
+                    'code' => $request->input('code') ?? null,
+                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                ]);
+            } else {
+                return back()->with('error', __('Giỏ hàng của bạn đang trống.'));
             }
-            $total = $this->service->calculateTotal($user->shopping_cart);
-            return view($this->view['payment'], [
-                'user' => $user,
-                'total' => $total,
-                'isBuyNow' => false,
-                'shoppingCart' => $user->shopping_cart,
-                'payment_methods' => PaymentMethod::asSelectArray(),
-                'code' => $request->input('code') ?? null,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-            ]);
         } else {
             $cart = session()->get('cart', []);
             $cartCollection = collect($cart)->map(function ($item) {
                 return (object) $item;
             });
-            if ($request->query('cart_id')) {
-                $cartItem = $cartCollection->firstWhere('id', $request->input('cart_id'));
-                if ($cartItem) {
-                    $cartItem->qty = $request->input('qty');
-                    $total = $this->service->calculateTotal($cartItem);
-                    return view($this->view['payment'], [
-                        'user' => $user,
-                        'total' => $total,
-                        'isBuyNow' => true,
-                        'shoppingCart' => [$cartItem],
-                        'payment_methods' => PaymentMethod::asSelectArray(),
-                        'code' => $request->input('code') ?? null,
-                        'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-                    ]);
+            if ($cartCollection->count() > 0) {
+                if ($request->query('cart_id')) {
+                    $cartItem = $cartCollection->firstWhere('id', $request->input('cart_id'));
+                    if ($cartItem) {
+                        $cartItem->qty = $request->input('qty');
+                        $total = $this->service->calculateTotal($cartItem);
+                        return view($this->view['payment'], [
+                            'user' => $user,
+                            'total' => $total,
+                            'isBuyNow' => true,
+                            'shoppingCart' => [$cartItem],
+                            'payment_methods' => PaymentMethod::asSelectArray(),
+                            'code' => $request->input('code') ?? null,
+                            'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                        ]);
+                    }
                 }
+                $total = $this->service->calculateTotal($cartCollection);
+                return view($this->view['payment'], [
+                    'total' => $total,
+                    'isBuyNow' => false,
+                    'shoppingCart' => $cartCollection,
+                    'payment_methods' => PaymentMethod::asSelectArray(),
+                    'code' => $request->input('code') ?? null,
+                    'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+                ]);
+            } else {
+                return back()->with('error', __('Giỏ hàng của bạn đang trống.'));
             }
-            $total = $this->service->calculateTotal($cartCollection);
-            return view($this->view['payment'], [
-                'total' => $total,
-                'isBuyNow' => false,
-                'shoppingCart' => $cartCollection,
-                'payment_methods' => PaymentMethod::asSelectArray(),
-                'code' => $request->input('code') ?? null,
-                'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
-            ]);
         }
     }
 
     public function checkoutFinal(CheckoutRequest $request)
     {
-        $result = $this->service->checkout($request);
-        if ($result === 1) {
-            return to_route('user.index')->with('success', __('Đặt hàng thành công! Xin lưu ý, một vài sản phẩm đã hết số lượng ưu đãi Flash Sale. Chúng tôi sẽ tính giá gốc cho phần không còn ưu đãi và sẽ thêm vào phần phụ thu cho quý khách.'));
-        }
-        if ($result) {
+        $order = $this->service->checkout($request);
+        if ($order) {
+            // if ($order->payment_method == PaymentMethod::Online) {
+            //     return view('user.home.create-payment-vnpay', [
+            //         'order' => $order,
+            //         'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
+            //     ]);
+            // }
             return to_route('user.index')->with('success', __('Đặt hàng thành công'));
         }
         return back()->with('error', __('Đặt hàng thất bại'));
+    }
+
+    public function handleVnpay(Request $request)
+    {
+        return $this->service->handleVnpay($request);
+    }
+
+    public function handleVnpayReturn(Request $request)
+    {
+        return $this->service->handleVnpayReturn($request);
     }
 
     public function store(ShoppingCartRequest $request)

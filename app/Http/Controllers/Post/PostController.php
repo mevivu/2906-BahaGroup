@@ -57,13 +57,18 @@ class PostController extends Controller
     {
         $query = $this->model->query();
         $id = $this->categoryRepository->getQueryBuilder()->where('slug', $slug)->first()->id;
-        $posts = $this->model->scopeHasCategory($query, $id)->paginate(4);
         $category = $this->categoryRepository->findOrFail($id);
-        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
-        $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
-        $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;
-        $breadcrumbs = $this->homeCrums->add(__('Tin tức'))->getBreadcrumbs();
-        return view($this->view['index'], compact('posts', 'title', 'meta_desc', 'breadcrumbs'));
+        $posts = $this->model->scopeHasCategory($query, $id)->paginate(3);
+        $postIds = $posts->pluck('id');
+        $otherPosts = $this->model->whereNotIn('id', $postIds)->limit(3)->get();
+        $categories = $this->categoryRepository->getFlatTree();
+        return view($this->view['category'], [
+            'posts' => $posts,
+            'categories' => $categories,
+            'otherPosts' => $otherPosts,
+            'category' => $category,
+            'breadcrumbs' => $this->homeCrums->add(__('Tin tức'), route('user.post.index'))->add(__($category->name))->getBreadcrumbs()
+        ]);
     }
 
     public function detail($slug)
@@ -72,19 +77,28 @@ class PostController extends Controller
         $relatedPosts = $this->model->whereHas('categories', function ($query) use ($post) {
             $query->whereIn('category_id', $post->categories->pluck('id'));
         })->where('id', '!=', $post->id)->limit(3)->get();
+        $categories = $this->categoryRepository->getFlatTree();
         return view($this->view['detail'], [
             'post' => $post,
+            'categories' => $categories,
             'relatedPosts' => $relatedPosts,
             'breadcrumbs' => $this->homeCrums->add(__('Tin tức'), route('user.post.index'))->add(__('Chi tiết bài viết'))->getBreadcrumbs()
         ]);
     }
 
-    public function index(Request $request)
+    public function index($slug = null)
     {
         $query = $this->model->query();
-        $posts = $this->model->scopePublished($query)
-            ->orderByRaw('is_featured ASC, posted_at DESC')
-            ->paginate(4);
+
+        if ($slug) {
+            $id = $this->categoryRepository->getQueryBuilder()->where('slug', $slug)->first()->id;
+            $posts = $this->model->scopeHasCategory($query, $id)->get();
+            $category = $this->categoryRepository->findOrFail($id);
+        } else {
+            $posts = $this->model->scopePublished($query)
+                ->orderByRaw('is_featured ASC, posted_at DESC')->get();
+        }
+
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         $title = $settingsGeneral->where('setting_key', 'post_title')->first()->plain_value;
         $meta_desc = $settingsGeneral->where('setting_key', 'post_meta_desc')->first()->plain_value;

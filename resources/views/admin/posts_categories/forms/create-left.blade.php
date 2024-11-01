@@ -7,7 +7,7 @@
             <!-- name -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Tên chuyên mục') }}:</label>
+                    <label class="control-label"><i class="ti ti-article"></i> {{ __('Tên chuyên mục') }}:</label>
                     <x-input name="name" :value="old('name')" :required="true"
                         placeholder="{{ __('Tên chuyên mục') }}" />
                 </div>
@@ -15,11 +15,8 @@
             <!-- desc -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('description') }}:</label>
-                    <x-input name="desc"
-                             :value="old('desc')"
-                             :required="true"
-                             placeholder="{{ __('description') }}" />
+                    <label class="control-label"><i class="ti ti-file-description"></i> {{ __('description') }}:</label>
+                    <x-input name="desc" :value="old('desc')" :required="true" placeholder="{{ __('description') }}" />
                 </div>
             </div>
         </div>

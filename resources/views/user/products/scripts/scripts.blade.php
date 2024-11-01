@@ -1,5 +1,54 @@
 <script>
 				$(document).ready(function() {
+								function addChip(slug, name, type) {
+												let chipID = type + '-' + slug;
+												$('#filter-chips-container').append(`
+            <div class="col col-sm col-md col-lg my-1" id="${chipID}">
+																																																																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
+																																																																																				<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
+																																																																				</button>
+																																																</div>
+        `);
+								}
+
+								function removeChip(slug, type) {
+												let chipID = type + '-' + slug;
+												$('#' + chipID).remove();
+								}
+
+								$('.category-checkbox:checked, input[name="color_slugs[]"]:checked, input[name="size_slugs[]"]:checked')
+												.each(function() {
+																let slug = $(this).val();
+																let name = $(this).next('label').text() || $(this).closest('label').find('.checkmark').attr(
+																				'title');
+																let type = $(this).attr('name').split('_')[0];
+
+																addChip(slug, name, type);
+												});
+
+								$('input[name="category_slugs[]"], input[name="color_slugs[]"], input[name="size_slugs[]"]').on(
+												'change',
+												function() {
+																let slug = $(this).val();
+																let name = $(this).next('label').text() || $(this).closest('label').find('.checkmark').attr(
+																				'title');
+																let type = $(this).attr('name').split('_')[0];
+
+																if ($(this).is(':checked')) {
+																				addChip(slug, name, type);
+																} else {
+																				removeChip(slug, type);
+																}
+												});
+
+								$(document).on('click', '.remove-chip', function() {
+												let slug = $(this).data('slug');
+												let type = $(this).data('type');
+												$(`input[name="${type}_slugs[]"][value="${slug}"]`).prop('checked',
+																false);
+												removeChip(slug, type);
+								});
+
 								function updateCountdown() {
 												const startTime = new Date();
 												const endTime = new Date('{{ $product->on_flash_sale->end_time ?? 0 }}');
@@ -9,7 +58,7 @@
 												const diffInSeconds = Math.floor((diffInMs % 60000) / 1000);
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
-																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+																`${diffInHours.toString().padStart(2, '0')} Giờ : ${diffInMinutes.toString().padStart(2, '0')} Phút : ${diffInSeconds.toString().padStart(2, '0')} Giây`;
 												document.getElementById('countdown-flashsale-product').textContent = formattedTime;
 								}
 								const endTime = '{{ $product->on_flash_sale->end_time ?? 0 }}';
@@ -64,7 +113,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: `${response.responseJSON.message}`,
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																})
@@ -73,6 +123,7 @@
 								$('#btnAddToCart').click(function(e) {
 												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
+												var productImageUrl = $('input[name="hidden_avatar"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_id"]').val();
 												var qty = $('#filter-input-detail').val();
 												$.ajax({
@@ -87,20 +138,16 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
-																				Swal.fire({
-																								icon: 'success',
-																								title: 'Thành công',
-																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true
-																				});
 																				$('#btnAddToCart').removeAttr('disabled');
+																				handleAddToCartAnimation(productImageUrl);
 																},
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																				$('#btnAddToCart').removeAttr('disabled');
 																}
@@ -128,7 +175,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: 'Không thể xử lý đơn hàng của bạn!',
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																},
@@ -137,7 +185,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});
@@ -152,7 +201,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng vượt quá hàng trong kho!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = hiddenQuantity;
 								} else {
@@ -166,7 +216,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Vui lòng chỉ nhập số!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -175,7 +226,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng phải lớn hơn 0!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -185,7 +237,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: `Số lượng vượt quá hàng trong kho, còn lại ${hiddenQuantity} sản phẩm!`,
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -256,7 +309,8 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});

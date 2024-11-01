@@ -23,10 +23,23 @@ class Header extends Component
         $this->settingRepository = $settingRepository;
     }
 
+    public function getCategoriesWithChildren($categories)
+    {
+        foreach ($categories as $category) {
+            if (!$category->relationLoaded('children')) {
+                $category->load('children');
+            }
+            $this->getCategoriesWithChildren($category->children);
+        }
+
+        return $categories;
+    }
+
     public function render()
     {
         $categories = $this->categoryRepository->getFlatTree();
-        $parentCategories = $this->categoryRepository->getParentCategory();
+        $parentTempCategories = $this->categoryRepository->getParentCategory();
+        $parentCategories = $this->getCategoriesWithChildren($parentTempCategories);
         $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
         return view('components.layouts.header', compact('categories', 'parentCategories', 'settingsGeneral'));
     }

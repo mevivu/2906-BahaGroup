@@ -14,6 +14,8 @@
 																				<div class="modal-body row">
 																								<div class="col-md-5 mb-5 mt-5">
 																												<div class="position-relative text-center">
+																																<x-input name="hidden_avatar_modal" type="hidden"
+																																				value="{{ asset($productModal->avatar) }}" />
 																																<div class="fotorama" data-nav="thumbs" data-allowfullscreen="true">
 																																				@foreach ($productModal->gallery as $item)
 																																								<img src="{{ asset($item) }}" alt="Product image">
@@ -378,7 +380,7 @@
 												const diffInSeconds = Math.floor((diffInMs % 60000) / 1000);
 												const diffInMilliseconds = diffInMs % 1000;
 												const formattedTime =
-																`${diffInHours.toString().padStart(2, '0')} : ${diffInMinutes.toString().padStart(2, '0')} : ${diffInSeconds.toString().padStart(2, '0')}`;
+																`${diffInHours.toString().padStart(2, '0')} Giờ : ${diffInMinutes.toString().padStart(2, '0')} Phút : ${diffInSeconds.toString().padStart(2, '0')} Giây`;
 												document.getElementById('countdown-flashsale-product-modal').textContent = formattedTime;
 								}
 								const endTime = '{{ $productModal->on_flash_sale->end_time ?? 0 }}';
@@ -459,7 +461,8 @@
 																												icon: 'warning',
 																												title: 'Lưu ý',
 																												text: 'Không thể xử lý đơn hàng của bạn!',
-																												showConfirmButton: true
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
 																								});
 																				}
 																},
@@ -468,13 +471,15 @@
 																								icon: 'warning',
 																								title: 'Lưu ý',
 																								text: `${response.responseJSON.message}`,
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																}
 												});
 								})
 								$('#btnAddToCartModal').click(function(e) {
 												var productId = $('input[name="hidden_product_id_modal"]').val();
+												var productImageUrl = $('input[name="hidden_avatar_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
 
@@ -490,19 +495,15 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
-																				Swal.fire({
-																								icon: 'success',
-																								title: 'Thành công',
-																								text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																								showConfirmButton: true
-																				});
+																				handleAddToCartAnimation(productImageUrl);
 																},
 																error: function(response) {
 																				Swal.fire({
 																								icon: 'warning',
 																								title: 'Thất bại',
 																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
-																								showConfirmButton: true
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
 																				});
 																				handleAjaxError(response);
 																}
@@ -518,7 +519,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng vượt quá hàng trong kho!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = hiddenQuantity;
 								} else {
@@ -532,7 +534,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Vui lòng chỉ nhập số!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -541,7 +544,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng phải lớn hơn 0!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}
@@ -551,7 +555,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: `Số lượng vượt quá hàng trong kho, còn lại ${hiddenQuantity} sản phẩm!`,
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												input.value = 1;
 								}

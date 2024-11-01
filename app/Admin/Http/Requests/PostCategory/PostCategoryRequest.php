@@ -32,6 +32,7 @@ class PostCategoryRequest extends BaseRequest
             'id' => ['required', 'exists:App\Models\PostCategory,id'],
             'desc' => ['required', 'string'],
             'name' => ['required', 'string'],
+            'slug' => ['required'],
             'parent_id' => ['nullable', 'exists:App\Models\PostCategory,id', new CategoryParent($this->id)],
             'position' => ['nullable', 'integer'],
             'avatar' => ['required', 'string'],

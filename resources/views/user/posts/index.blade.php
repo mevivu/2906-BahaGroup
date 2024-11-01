@@ -1,57 +1,50 @@
 @extends('user.layouts.master')
 @section('title', __($title))
 
-<head>
-	<meta name="description" content="{{ $meta_desc }}">
-</head>
+@push('meta')
+				<meta name="title" content="{{ $title }}">
+				<meta name="description" content="{{ $meta_desc }}" />
+@endpush
 
 @section('content')
-@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-<div id="post" class="container">
-	<div class="row">
-		@foreach ($posts as $post)
-			<div class="col-md-6 mb-4">
-				<div class="col-inner">
-					<a href="{{ route('user.post.detail', ['slugPost' => $post->slug]) }}">
-						<div class="post">
-							<img src="{{ asset($post->image) }}" alt="{{ $post->title }}" class="img-fluid post-image">
-							<h2 class="post-title">{{ $post->title }}</h2>
-							<a href="{{ route('user.post.detail', ['slugPost' => $post->slug]) }}" class="post-detail-btn">
-								Xem thêm →
-							</a>
-						</div>
-						<div class="badge">
-							<div class="badge-inner">
-								<span
-									class="post-date-day">{{ \Carbon\Carbon::parse($post->posted_at)->format('d') }}</span><br>
-								<span
-									class="post-date-month is-xsmall">Th{{ \Carbon\Carbon::parse($post->posted_at)->format('n') }}</span>
-							</div>
-						</div>
-					</a>
+				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
+				<div id="post-container" class="container">
+								<div id="postCarousel" class="carousel slide post-carousel" data-bs-ride="carousel">
+												<div class="carousel-inner">
+																@foreach ($posts->chunk(3) as $key => $chunk)
+																				<div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+																								<div class="row">
+																												@foreach ($chunk as $post)
+																																<div class="col-md-4">
+																																				<x-link class="post-wrapper" style="--post-image: url('{{ asset($post->image) }}')"
+																																								href="{{ route('user.post.fallback', ['slug' => $post->slug]) }}">
+																																								<h1 class="post-title">{{ $post->title }}</h1>
+																																								<p style="height: 48px;" class="post-excerpt">{{ $post->excerpt }}</p>
+																																								<x-button type="button" class="btn-light post-button">Xem thêm</x-button>
+																																				</x-link>
+																																</div>
+																												@endforeach
+																								</div>
+																				</div>
+																@endforeach
+												</div>
+
+												<button class="carousel-control-prev slider-button-left button-post" type="button"
+																data-bs-target="#postCarousel" data-bs-slide="prev">
+																<i class="fa fa-chevron-left" aria-hidden="true"></i>
+												</button>
+												<button class="carousel-control-next slider-button-right button-post" type="button"
+																data-bs-target="#postCarousel" data-bs-slide="next">
+																<i class="fa fa-chevron-right" aria-hidden="true"></i>
+												</button>
+
+												<div class="carousel-indicators">
+																@foreach ($posts->chunk(3) as $key => $chunk)
+																				<button type="button" data-bs-target="#postCarousel" data-bs-slide-to="{{ $key }}"
+																								{{ $key == 0 ? 'class=active aria-current=true' : '' }} aria-label="Slide {{ $key + 1 }}">
+																				</button>
+																@endforeach
+												</div>
+								</div>
 				</div>
-			</div>
-		@endforeach
-		<div class="pagination">
-			<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
-				<button class="pagination-btn prev" @if ($posts->onFirstPage()) disabled @endif
-					onclick="window.location='{{ $posts->previousPageUrl() }}'">
-					<i class="fa fa-chevron-left" aria-hidden="true"></i>
-				</button>
-
-				@for ($i = 1; $i <= $posts->lastPage(); $i++)
-					<button class="pagination-btn @if ($i == $posts->currentPage()) active @endif"
-						onclick="window.location='{{ $posts->url($i) }}'">
-						{{ $i }}
-					</button>
-				@endfor
-
-				<button class="pagination-btn next" @if (!$posts->hasMorePages()) disabled @endif
-					onclick="window.location='{{ $posts->nextPageUrl() }}'">
-					<i class="fa fa-chevron-right" aria-hidden="true"></i>
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
 @endsection

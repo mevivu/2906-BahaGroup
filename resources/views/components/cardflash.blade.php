@@ -21,6 +21,11 @@
 								<h6 class="card-title">
 												<x-link class="text-black" :href="route('user.product.detail', ['slug' => $item->product->slug])">
 																{{ $item->product->name }}
+																{{-- @if ($item->product->on_flash_sale)
+																				<span class="badge-flash-sale">
+																								<i class="fas fa-bolt flash-icon"></i>
+																				</span>
+																@endif --}}
 												</x-link>
 								</h6>
 								<div class="rating fs-12">
@@ -46,14 +51,14 @@
 																<div class="progress-icon">
 																				<i class="fa fa-bolt"></i>
 																</div>
-																<span id="progressText">Sold: {{ $item->sold }}/{{ $item->qty }}</span>
+																<span id="progressText">Sold: {{ $item->sold ?? 0 }}/{{ $item->qty }}</span>
 												</div>
 								</div>
 								<div class="product-hover text-center">
 												<a style="cursor: pointer;" class="add-to-cart-flash">
 																@if ($item->product->type == \App\Enums\Product\ProductType::Simple)
-																				<i onclick="addToCart({{ $item->product->id }})" class="fa fa-shopping-cart w-50"
-																								aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
+																				<i onclick="addToCart({{ $item->product->id }}, '{{ asset($item->product->avatar) }}')"
+																								class="fa fa-shopping-cart w-50" aria-hidden="true"></i><i class="fa fa-arrows-alt w-50"
 																								onclick="showDetailProductModal(this, {{ $item->product->id }})" aria-hidden="true"></i>
 																@else
 																				<i onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}'"

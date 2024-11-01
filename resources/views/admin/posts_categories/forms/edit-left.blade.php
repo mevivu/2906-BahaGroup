@@ -7,18 +7,26 @@
             <!-- name -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('Tên Chuyên mục') }}:</label>
+                    <label class="control-label"><i class="ti ti-article"></i> {{ __('Tên Chuyên mục') }}:</label>
                     <x-input name="name" :value="$category->name" :required="true"
                         placeholder="{{ __('Tên Chuyên mục') }}" />
+                </div>
+            </div>
+
+            <!-- slug -->
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-3">
+                    <label class="control-label"><i class="ti ti-link"></i> {{ __('Slug Chuyên mục') }}:</label>
+                    <x-input name="slug" :value="$category->slug" :required="true"
+                        placeholder="{{ __('Slug Chuyên mục') }}" />
                 </div>
             </div>
 
             <!-- desc -->
             <div class="col-md-12 col-sm-12">
                 <div class="mb-3">
-                    <label class="control-label">{{ __('description') }}:</label>
-                    <x-input name="desc" :value="$category->desc" :required="true"
-                             placeholder="{{ __('description') }}" />
+                    <label class="control-label"><i class="ti ti-file-description"></i> {{ __('description') }}:</label>
+                    <x-input name="desc" :value="$category->desc" :required="true" placeholder="{{ __('description') }}" />
                 </div>
             </div>
 

@@ -10,13 +10,22 @@ Route::controller(App\Http\Controllers\Home\UserHomeController::class)
         Route::get('/lien-he', 'contact')->name('contact');
     });
 
+Route::controller(App\Http\Controllers\Home\UserHomeController::class)
+    ->prefix('/vnpay-payment')
+    ->as('payment.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/gioi-thieu', 'information')->name('information');
+        Route::get('/lien-he', 'contact')->name('contact');
+    });
+
 Route::controller(App\Http\Controllers\Product\ProductController::class)
     ->prefix('/san-pham')
     ->as('product.')
     ->group(function () {
         Route::get('/', 'indexUser')->name('indexUser');
         Route::get('/khuyen-mai-gioi-han', 'saleLimited')->name('saleLimited');
-        Route::get('/{slug}', 'detail')->name('detail');
+        Route::get('/{slug?}', 'detail')->name('detail');
         Route::get('/render-modal/{id?}', 'renderModalProduct')->name('render');
         Route::get('/detailModal/{id}', 'detailModal')->name('detailModal');
         Route::get('/find/find-variation-by-attribute-ids', 'findVariationByAttributeVariationIds')->name('findVariationByAttributeVariationIds');
@@ -37,6 +46,8 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
         Route::delete('/remove/{id?}', 'delete')->name('remove');
         Route::post('/buy-now', 'buyNow')->name('buyNow');
         Route::get('/thanh-toan', 'checkout')->name('checkout');
+        Route::get('/vnpay', 'handleVnpay')->name('handleVnpay');
+        Route::get('/vnpay/return', 'handleVnpayReturn')->name('handleVnpayReturn');
         Route::post('/checkout-final', 'checkoutFinal')->name('checkoutFinal');
     });
 
@@ -104,10 +115,20 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::get('/success', 'success')->name('success');
     });
 Route::controller(App\Http\Controllers\Post\PostController::class)
-    ->prefix('/bai-viet')
     ->as('post.')
     ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{slugPost}', 'detail')->name('detail');
-        Route::get('/danh-muc/{slugCategory}', 'category')->name('category');
+        Route::get('/tin-tuc', 'index')->name('index');
+        Route::get('/{slug}', function ($slug) {
+            $postCategory = \App\Models\PostCategory::where('slug', $slug)->first();
+            if ($postCategory) {
+                return App::make(App\Http\Controllers\Post\PostController::class)->category($slug);
+            }
+
+            $post = \App\Models\Post::where('slug', $slug)->first();
+            if ($post) {
+                return App::make(App\Http\Controllers\Post\PostController::class)->detail($slug);
+            }
+
+            abort(404);
+        })->name('fallback');
     });

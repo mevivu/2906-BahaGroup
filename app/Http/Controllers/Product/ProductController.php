@@ -133,7 +133,7 @@ class ProductController extends Controller
         $product = new ProductEditResource($product);
         $is_reviewed = false;
         $orderIds = $this->orderRepository->getQueryBuilder()
-            ->where('status', App\Enums\Order\OrderStatus::Completed->value)
+            ->where('status', App\Enums\Order\OrderStatus::Confirmed->value)
             ->where('user_id', auth()->id())
             ->where('is_reviewed', App\Enums\Order\OrderReview::NotReviewed->value)
             ->where('created_at', '>=', now()->subDays(14))
@@ -220,7 +220,7 @@ class ProductController extends Controller
         return view($this->view['sale-limited'], [
             'flashSale' => $flashSale,
             'title' => $title,
-            'products' => $flashSale->details()->paginate(8),
+            'products' => $flashSale ? $flashSale->details()->paginate(8) : null,
             'meta_desc' => $meta_desc,
             'breadcrumbs' => $this->homeCrums->add(__('Khuyến mãi giới hạn'))->getBreadcrumbs(),
         ]);

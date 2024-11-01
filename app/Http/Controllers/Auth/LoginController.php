@@ -108,8 +108,10 @@ class LoginController extends Controller
     public function loginUser(LoginRequest $request)
     {
         $this->login = $request->validated();
+
         if ($this->resolveWeb()) {
             $request->session()->regenerate();
+
             return $this->handleUserLogin();
         }
 
@@ -129,8 +131,12 @@ class LoginController extends Controller
 
     protected function resolveWeb()
     {
-        return Auth::guard('web')->attempt($this->login, true);
+        return Auth::guard('web')->attempt(
+            ['email' => $this->login['email'], 'password' => $this->login['password']],
+            isset($this->login['remember'])
+        );
     }
+
 
     public function register(RegisterRequest $request)
     {

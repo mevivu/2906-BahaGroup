@@ -1,5 +1,15 @@
 <script>
-				function addToCart(id) {
+				function handleAddToCartAnimation(productImageUrl) {
+								Swal.fire({
+												icon: 'success',
+												title: 'Thành công',
+												text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+												showConfirmButton: true,
+												confirmButtonColor: "#1c5639",
+								});
+				}
+
+				function addToCart(id, productImageUrl) {
 								$.ajax({
 												type: "POST",
 												url: '{{ route('user.cart.store') }}',
@@ -11,19 +21,15 @@
 												success: function(response) {
 																$('#cart-count-mobile').text(response.data.count);
 																$('#cart-count').text(response.data.count);
-																Swal.fire({
-																				icon: 'success',
-																				title: 'Thành công',
-																				text: 'Thêm sản phẩm vào giỏ hàng thành công!',
-																				showConfirmButton: true
-																});
+																handleAddToCartAnimation(productImageUrl);
 												},
 												error: function(response) {
 																Swal.fire({
-																				icon: 'warning',
+																				icon: 'error',
 																				title: 'Lưu ý',
 																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true
+																				showConfirmButton: true,
+																				confirmButtonColor: "#1c5639",
 																});
 												}
 								});
@@ -122,14 +128,17 @@
 																																				maxPromotionPrice = Math.max(...prices);
 																																}
 																												}
-
+																												let url = "{{ route('user.product.detail') }}" +
+																																'/' +
+																																value.slug;
+																												let urlAvatar = '{{ asset('') }}' + value.avatar
 																												$('#menu-1').append(`
                 <li>
-                    <a class="dropdown-item p-0" href="/2906-BahaGroup/products/detail/${value.id}">
+                    <a class="dropdown-item p-0" href="${url}">
                         <div class="card border-0">
                             <div class="row g-0">
                                 <div class="col-md-2">
-                                    <img src="https://ttbh60s.com/wp-content/uploads/2020/03/Samsung-A50s.jpg"
+                                    <img src="${urlAvatar}"
                                         class="img-fluid rounded-start" alt="...">
                                 </div>
                                 <div class="col-md-10">
@@ -137,22 +146,22 @@
                                         <div class="row">
                                             <div class="col-6 text-truncate text-start">
                                                 <span class="card-text">
-                                                    ${value.name ? value.name : ''}
+                                                    ${value.name}
                                                 </span>
                                                 <p class="card-text">
-                                                    SKU: ${value.sku ? value.sku : ''}
+                                                    SKU: ${value.sku}
                                                 </p>
                                             </div>
                                             <div class="col-6 text-truncate text-end">
                                                 ${value.price != null && value.promotion_price != null
-                                                                                                                                             ? `<span class="card-text">
-                                                    <del class="text-muted">${number_format(value.price)}₫</del>
-                                                    ${value.promotion_price ? number_format(value.promotion_price).toString() + '₫' : ''}
+                                                    ? `<span class="card-text text-red">
+                                                    <del class="text-muted text-black">${formatPrice(value.price)}</del>
+                                                    ${formatPrice(value.promotion_price)}
                                                     </span>`
-                                                                                                                                             : ''}
+                                                    : ''}
                                                 ${minPromotionPrice !== null && maxPromotionPrice !== null
-                                                                                                                                             ? `<span class="card-text text-red">${number_format(minPromotionPrice)}₫ - ${number_format(maxPromotionPrice)}₫</span>`
-                                                                                                                                             : ''}
+                                                ? `<span class="card-text text-red">${number_format(minPromotionPrice)}₫ - ${number_format(maxPromotionPrice)}₫</span>`
+                                                : ''}
                                             </div>
                                         </div>
                                     </div>

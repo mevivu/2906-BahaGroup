@@ -60,7 +60,7 @@
 
 @section('content')
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
-				<div class="rounded-2 container bg-white shadow">
+				<div class="rounded-2 container gap-64 bg-white shadow">
 								<div class="row pb-3 pt-3">
 												<a style="cursor: pointer" class="filter-icon d-none text-default mt-3">
 																<i class="fa fa-filter me-2"></i> Lọc
@@ -68,13 +68,19 @@
 												<div class="col-md-2 category-filter" id="filter-container">
 																<x-form action="" method="get" class="filter-form" id="filter-form">
 																				<h6 class="text-uppercase">
+																								<strong>Bạn đã chọn</strong>
+																				</h6>
+
+																				<div class="row fs-12 mb-1" id="filter-chips-container"></div>
+
+																				<h6 class="text-uppercase">
 																								<strong>Danh mục</strong>
 																				</h6>
 
 																				@foreach ($categories as $category)
-																								<div class="d-flex align-items-center fs-12 mb-1">
+																								<div class="d-flex align-items-center fs-6 mb-1">
 																												<input name="category_slugs[]" value="{{ $category->slug }}" type="checkbox"
-																																id="category{{ $category->slug }}" class="me-2" autocomplete="off"
+																																id="category{{ $category->slug }}" class="category-checkbox me-2" autocomplete="off"
 																																@if (in_array($category->slug, request('category_slugs', []))) checked @endif>
 																												<label for="category{{ $category->slug }}" class="mb-0">
 																																<i class="{{ $category->icon }} me-2"></i>{{ $category->name }}
@@ -90,12 +96,12 @@
 																												@if (isset($co->meta_value['color']))
 																																<div class="col-2 mb-2">
 																																				<label class="size-filter">
-																																								<span style="display: none">tow</span>
 																																								<input id="checkAll" type="checkbox" name="color_slugs[]"
 																																												value="{{ $co->slug }}" autocomplete="off"
 																																												@if (in_array($co->slug, request('color_slugs', []))) checked @endif>
 																																								<span class="checkmark"
-																																												style="background-color: {{ htmlspecialchars($co->meta_value['color']) }}"></span>
+																																												style="background-color: {{ htmlspecialchars($co->meta_value['color']) }}"
+																																												title="{{ $co->name }}"></span>
 																																				</label>
 																																</div>
 																												@endif
@@ -111,7 +117,7 @@
 																																value="{{ $size->slug }}" autocomplete="off"
 																																@if (in_array($size->slug, request('size_slugs', []))) checked @endif>
 																												<label
-																																class="col-2 custom-col btn btn-sm square-btn capacity-btn-filter btn-check-label btn-outline-secondary text-dark mb-2 w-16"
+																																class="col-4 custom-col btn btn-sm square-btn capacity-btn-filter btn-check-label btn-outline-secondary text-dark mb-2 w-16"
 																																for="btn-check-{{ $size->slug }}">{{ $size->name }}</label>
 																								@endforeach
 																				</div>
@@ -165,31 +171,16 @@
 																								</select>
 																				</div>
 																</div>
-																<div class="row">
+																<div class="row bg-f4f4f4">
 																				@foreach ($products as $item)
-																								<div class="col-6 col-md-3 mb-4 shadow-lg">
+																								<div class="col-6 col-md-3 mb-2 mt-2">
 																												<x-cardproduct :item="$item" />
 																								</div>
 																				@endforeach
 																</div>
 
 																<div class="pagination w-100 d-flex justify-content-center bottom-0 mb-0 mt-3">
-																				<button class="pagination-btn prev" @if ($products->onFirstPage()) disabled @endif
-																								onclick="window.location='{{ $products->previousPageUrl() }}'">
-																								<i class="fa fa-chevron-left" aria-hidden="true"></i>
-																				</button>
-
-																				@for ($i = 1; $i <= $products->lastPage(); $i++)
-																								<button class="pagination-btn @if ($i == $products->currentPage()) active @endif"
-																												onclick="window.location='{{ $products->url($i) }}'">
-																												{{ $i }}
-																								</button>
-																				@endfor
-
-																				<button class="pagination-btn next" @if (!$products->hasMorePages()) disabled @endif
-																								onclick="window.location='{{ $products->nextPageUrl() }}'">
-																								<i class="fa fa-chevron-right" aria-hidden="true"></i>
-																				</button>
+																				{{ $products->links('components.pagination') }}
 																</div>
 												</div>
 								</div>
@@ -197,5 +188,17 @@
 @endsection
 
 @push('custom-js')
+				<script>
+								const filterIcon = document.querySelector('.filter-icon');
+								const filterContainer = document.getElementById('filter-container');
+
+								filterIcon.addEventListener('click', function() {
+												if (filterContainer.style.display === 'none' || filterContainer.style.display === '') {
+																filterContainer.style.display = 'block';
+												} else {
+																filterContainer.style.display = 'none';
+												}
+								});
+				</script>
 				@include('user.products.scripts.scripts')
 @endpush

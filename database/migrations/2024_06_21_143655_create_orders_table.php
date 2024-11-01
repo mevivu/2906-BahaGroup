@@ -3,6 +3,7 @@
 use App\Enums\DefaultStatus;
 use App\Enums\Order\OrderReview;
 use App\Enums\Order\OrderStatus;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Payment\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->double('total');
             $table->double('surcharge')->default(0);
             $table->tinyInteger('status')->default(OrderStatus::Pending->value);
+            $table->tinyInteger('payment_status')->default(PaymentStatus::UnPaid->value);
             $table->text('code')->unique();
             $table->tinyInteger('is_deleted')->default(DefaultStatus::Published->value);
             $table->tinyInteger('is_review')->default(OrderReview::NotReviewed->value);

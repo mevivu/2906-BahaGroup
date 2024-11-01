@@ -160,6 +160,13 @@ class SettingSeeder extends Seeder
                 'group' => 1
             ],
             [
+                'setting_key' => 'object_discount',
+                'setting_name' => 'Mục tiêu để được miễn phí ship',
+                'plain_value' => '3000000',
+                'type_input' => SettingTypeInput::Text,
+                'group' => 1
+            ],
+            [
                 'setting_key' => 'image_home_slider_1',
                 'setting_name' => 'Ảnh trưng bày mục slider sản phẩm trang chủ 1',
                 'plain_value' => '/userfiles/images/banner-home2-04.jpg',
@@ -217,24 +224,24 @@ class SettingSeeder extends Seeder
                 'group' => 4
             ],
             [
-                'setting_key' => 'footer_phone',
-                'setting_name' => 'Số điện thoại',
-                'plain_value' => '0359777777',
-                'type_input' => SettingTypeInput::Phone,
-                'group' => 4
-            ],
-            [
                 'setting_key' => 'footer_banking_1',
                 'setting_name' => 'Thông tin ngân hàng 1',
                 'plain_value' => 'TECHCOMBANK: 87.87.87.87.87 - CN Thủ Đức - CÔNG TY CP TẬP ĐOÀN BAHA',
-                'type_input' => SettingTypeInput::Text,
+                'type_input' => SettingTypeInput::Ckeditor,
                 'group' => 4
             ],
             [
                 'setting_key' => 'footer_banking_2',
                 'setting_name' => 'Thông tin ngân hàng 2',
                 'plain_value' => 'BIDV: 8696.777.777 - CN BẮC SÀI GÒN - CÔNG TY CP TẬP ĐOÀN BAHA',
-                'type_input' => SettingTypeInput::Text,
+                'type_input' => SettingTypeInput::Ckeditor,
+                'group' => 4
+            ],
+            [
+                'setting_key' => 'footer_phone',
+                'setting_name' => 'Số điện thoại',
+                'plain_value' => '0359777777',
+                'type_input' => SettingTypeInput::Phone,
                 'group' => 4
             ],
             [
@@ -348,8 +355,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_card_icon_1',
                 'setting_name' => 'Icon thẻ 1',
-                'plain_value' => 'fa fa-cart-plus',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -369,8 +376,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_card_icon_2',
                 'setting_name' => 'Icon thẻ 2',
-                'plain_value' => 'fa fa-credit-card',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -390,8 +397,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_card_icon_3',
                 'setting_name' => 'Icon thẻ 3',
-                'plain_value' => 'fa fa-check-circle',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -412,8 +419,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_vision_icon_1',
                 'setting_name' => 'Icon tầm nhìn 1',
-                'plain_value' => 'fa fa-trophy',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -426,8 +433,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_vision_icon_2',
                 'setting_name' => 'Icon tầm nhìn 2',
-                'plain_value' => 'fa fa-users',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -440,8 +447,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_vision_icon_3',
                 'setting_name' => 'Icon tầm nhìn 3',
-                'plain_value' => 'fa fa-building',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -454,8 +461,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_vision_icon_4',
                 'setting_name' => 'Icon tầm nhìn 4',
-                'plain_value' => 'fa fa-check-circle',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -483,8 +490,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_mission_icon_1',
                 'setting_name' => 'Icon sứ mệnh 1',
-                'plain_value' => 'fa fa-line-chart',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -497,8 +504,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_mission_icon_2',
                 'setting_name' => 'Icon sứ mệnh 2',
-                'plain_value' => 'fa-solid fa-hands-holding-child',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -511,8 +518,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_mission_icon_3',
                 'setting_name' => 'Icon sứ mệnh 3',
-                'plain_value' => 'fa fa-star',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -540,8 +547,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_1',
                 'setting_name' => 'Icon giá trị 1',
-                'plain_value' => 'fa fa-heart',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -561,8 +568,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_2',
                 'setting_name' => 'Icon giá trị 2',
-                'plain_value' => 'fa fa-user-circle',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -582,8 +589,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_3',
                 'setting_name' => 'Icon giá trị 3',
-                'plain_value' => 'fa fa-users',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -603,8 +610,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_4',
                 'setting_name' => 'Icon giá trị 4',
-                'plain_value' => 'fa-solid fa-handshake-angle',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -624,8 +631,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_5',
                 'setting_name' => 'Icon giá trị 5',
-                'plain_value' => 'fa fa-arrow-up',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -645,8 +652,8 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_value_icon_6',
                 'setting_name' => 'Icon giá trị 6',
-                'plain_value' => 'fa fa-check-circle',
-                'type_input' => SettingTypeInput::Text,
+                'plain_value' => 'ti ti-phone',
+                'type_input' => SettingTypeInput::Icon,
                 'group' => 6
             ],
             [
@@ -767,13 +774,6 @@ class SettingSeeder extends Seeder
                 'setting_name' => 'Ảnh dưới slider 2',
                 'plain_value' => '/userfiles/images/banner-home2-02222.jpg',
                 'type_input' => SettingTypeInput::Image,
-                'group' => 1
-            ],
-            [
-                'setting_key' => 'object_discount',
-                'setting_name' => 'Mục tiêu để được miễn phí ship',
-                'plain_value' => '3000000',
-                'type_input' => SettingTypeInput::Text,
                 'group' => 1
             ],
         ]);

@@ -56,7 +56,8 @@
 																icon: 'warning',
 																title: 'Lưu ý',
 																text: 'Số lượng tham gia phải nhỏ hơn hoặc bằng số lượng sản phẩm còn lại!',
-																showConfirmButton: true
+																showConfirmButton: true,
+																confirmButtonColor: "#1c5639",
 												});
 												element.value = hiddenQuantity;
 								}

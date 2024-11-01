@@ -1,18 +1,20 @@
 <div class="col-12 col-md-3">
     <div class="card mb-3">
         <div class="card-header">
-            {{ __('Đăng') }}
+            <i class="ti ti-playstation-circle"></i>
+            <span class="ms-2">{{ __('Đăng') }}</span>
         </div>
         <div class="card-body p-2 d-flex justify-content-between">
-            <x-button.submit :title="__('Cập nhật')"/>
+            <x-button.submit :title="__('Cập nhật')" />
             <x-button.modal-delete data-route="{{ route('admin.post_category.delete', $category->id) }}"
-                                   :title="__('Xóa')"/>
+                :title="__('Xóa')" />
         </div>
     </div>
     <!-- status -->
     <div class="card mb-3">
         <div class="card-header">
-            @lang('status')
+            <i class="ti ti-toggle-right"></i>
+            <span class="ms-2">@lang('status')</span>
         </div>
         <div class="card-body p-2">
             <x-select name="status" :required="true">
@@ -26,13 +28,11 @@
     <div class="col-12">
         <div class="card mb-3">
             <div class="card-header">
-                @lang('avatar')
+                <i class="ti ti-photo-scan"></i>
+                <span class="ms-2">{{ __('Ảnh đại diện') }}</span>
             </div>
             <div class="card-body p-2">
-                <x-input-image-ckfinder name="avatar"
-                                        showImage="avatar"
-                                        :value="$category->avatar"
-                                        class="img-fluid"/>
+                <x-input-image-ckfinder name="avatar" showImage="avatar" :value="$category->avatar" class="img-fluid" />
             </div>
         </div>
     </div>
