@@ -27,15 +27,13 @@ class PostCategoryController extends Controller
     }
 
     /**
-     * Danh sách chuyên mục
+     * Danh sách danh mục bài viết
      *
-     * Lấy danh sách chuyên mục.
+     * Lấy danh sách danh mục bài viết.
      *
-     * @headersParam X-TOKEN-ACCESS string required
-     * token để lấy dữ liệu. Example: 132323
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
-     * @authenticated Authorization string required
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
@@ -76,20 +74,11 @@ class PostCategoryController extends Controller
      *
      * Lấy chi tiết chuyên mục.
      *
-     * @headersParam X-TOKEN-ACCESS string required
-     * token để lấy dữ liệu. Example: 132323
-     *
-     * @queryParam page integer
-     * Trang hiện tại, page > 0. Ví dụ: 1
-     * Số lượng Phòng trong 1 trang, limit > 0. Ví dụ: 1
-     *
-     * @queryParam limit integer
-     * @authenticated Authorization string required
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
      * @pathParam id integer required
      * id hoặc chuyên mục. Example: 1
-     *
      *
      *
      * @response 200 {
@@ -130,19 +119,17 @@ class PostCategoryController extends Controller
             $category = $this->repository->findByIdWithAncestorsAndDescendants($id);
             $category = new ShowCategoryWithPostResource($category, $this->repositoryPost);
 
-
             return response()->json([
                 'status' => 200,
                 'message' => __('Thực hiện thành công.'),
                 'data' => $category
             ]);
-        } catch (Exception $e) {
-
+        } catch (\Throwable $th) {
+            throw $th;
             return response()->json([
                 'status' => 404,
                 'message' => __('Không tìm thấy dữ liệu')
             ], 404);
         }
     }
-
 }

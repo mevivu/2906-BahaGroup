@@ -9,7 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Admin extends Authenticatable
 {
-	use HasRoles;
+    use HasRoles;
     use HasFactory;
 
     /**
@@ -37,23 +37,18 @@ class Admin extends Authenticatable
         'gender' => 'integer',
     ];
 
-	public function roles(): BelongsToMany
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'model_has_roles',  'model_id', 'role_id');
     }
-    /* public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'model_has_roles', 'model_id', 'role_id');
-    }*/
 
-	public function checkPermissions($permissionsArr): bool
+    public function checkPermissions($permissionsArr): bool
     {
-		foreach($permissionsArr as $permission) {
-			if($this->can($permission)){
-				return true;
-			}
-		}
+        foreach ($permissionsArr as $permission) {
+            if ($this->can($permission)) {
+                return true;
+            }
+        }
         return false;
     }
-
 }

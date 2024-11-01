@@ -47,7 +47,7 @@ class Authentication extends Mailable
             with: [
                 'fullname' => $this->info['fullname'],
                 'email' => $this->info['email'],
-                'oauth' => $this->info['oauth'],
+                'token_active_account' => $this->info['token_active_account'],
             ]
         );
     }

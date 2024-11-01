@@ -26,13 +26,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         ShoppingCartRepositoryInterface $repository,
         ProductRepositoryInterface $repositoryProduct,
         ProductVariationRepositoryInterface $repositoryProductVariation,
-    ){
+    ) {
         $this->repository = $repository;
         $this->repositoryProduct = $repositoryProduct;
         $this->repositoryProductVariation = $repositoryProductVariation;
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $this->data = $request->validated();
 
         try {
@@ -43,7 +44,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 'product_id' => $this->data['product_id']
             ];
 
-            if($product->type == ProductType::Variable){
+            if ($product->type == ProductType::Variable) {
                 $productVariation = $this->repositoryProductVariation->findByProductAndAttributeVariation($this->data['product_id'], $this->data['variation_id']);
                 $compare['product_variation_id'] = $productVariation->id;
             }
@@ -53,13 +54,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             ]);
 
             return $instance;
-        } catch (Exception $e) {
-            //
+        } catch (\Throwable $th) {
+            throw $th;
             return false;
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 
         $this->data = $request->validated();
         $instance = $this->repository->updateMultiple($this->data['id'], $this->data['qty']);
@@ -71,15 +73,15 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         // ->all();
 
         return $instance;
-
     }
 
-    public function deleteMultiple(Request $request){
+    public function deleteMultiple(Request $request)
+    {
         return $this->repository->deleteMultiple($request->input('id'));
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         return $this->repository->delete($id);
     }
-
 }

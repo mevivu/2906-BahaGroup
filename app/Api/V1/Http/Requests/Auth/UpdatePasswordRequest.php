@@ -12,10 +12,10 @@ class UpdatePasswordRequest extends BaseRequest
      * @return array
      */
 
-    protected function methodPut()
+    protected function methodPost()
     {
         return [
-            'old_password' =>['current_password'],
+            'old_password' => ['current_password'],
             'password' => ['required', 'string', 'confirmed'],
         ];
     }

@@ -76,6 +76,22 @@ Route::controller(App\Http\Controllers\Auth\ResetPasswordController::class)
         Route::put('/update', 'update')->name('update');
     });
 
+Route::controller(App\Http\Controllers\Auth\ResetPasswordApiController::class)
+    ->prefix('/reset-password-api')
+    ->as('password.reset.api')
+    ->group(function () {
+        Route::get('/edit', 'edit')->name('edit')->middleware('signed');
+        Route::put('/update', 'update')->name('update');
+        Route::get('/success', 'success')->name('success');
+    });
+
+Route::controller(App\Http\Controllers\Auth\ActiveAccountController::class)
+    ->prefix('/activate-account')
+    ->as('activation')
+    ->group(function () {
+        Route::get('/', 'index')->name('index')->middleware('signed');
+    });
+
 Route::controller(App\Http\Controllers\Order\OrderController::class)
     ->prefix('/don-hang')
     ->as('order.')

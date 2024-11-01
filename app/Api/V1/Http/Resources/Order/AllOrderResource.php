@@ -2,7 +2,6 @@
 
 namespace App\Api\V1\Http\Resources\Order;
 
-use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class AllOrderResource extends ResourceCollection
@@ -15,15 +14,8 @@ class AllOrderResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function($order){
-            $data = [
-                'id' => $order->id,
-                'total' => $order->total,
-                'status' => $order->status,
-                'product' => new ShowOrderDetailResource($order->orderDetail)
-            ];
-
-            return $data;      
+        return $this->collection->map(function ($order) {
+            return new ShowOrderResource($order);
         });
     }
 }

@@ -16,8 +16,7 @@ class ProductVariationController extends Controller
 
     public function __construct(
         ProductVariationRepositoryInterface $repository
-    )
-    {
+    ) {
         $this->repository = $repository;
     }
     /**
@@ -52,9 +51,10 @@ class ProductVariationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductVariationRequest $request){
+    public function show(ProductVariationRequest $request)
+    {
         $data = $request->validated();
-        try{
+        try {
             $productVariation = $this->repository->findByProductAndAttributeVariation(...$data);
             $productVariation = new ShowProductVariationResource($productVariation);
             return response()->json([
@@ -62,13 +62,12 @@ class ProductVariationController extends Controller
                 'message' => __('Thực hiện thành công.'),
                 'data' => $productVariation
             ]);
-        }catch (Exception $e) {
-            //
+        } catch (\Throwable $th) {
+            // throw $th;
             return response()->json([
                 'status' => 404,
                 'message' => __('Sản phẩm không có sẵn.')
             ], 404);
         }
     }
-
 }

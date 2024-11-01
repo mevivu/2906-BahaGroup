@@ -19,7 +19,7 @@ class ShoppingCartResource extends ResourceCollection
     {
         $discount = 1 - $this->getDiscountProduct() / 100;
 
-        return $this->collection->map(function($shoppingCart) use ($discount){
+        return $this->collection->map(function ($shoppingCart) use ($discount) {
             $discount = $shoppingCart->product->is_user_discount == true ? $discount : 1;
             $data = [
                 'id' => $shoppingCart->id,
@@ -29,22 +29,21 @@ class ShoppingCartResource extends ResourceCollection
                     'name' => $shoppingCart->product->name,
                     'slug' => $shoppingCart->product->slug,
                     'in_stock' => $shoppingCart->product->in_stock,
-                    'avatar' => $shoppingCart->product->avatar
+                    'avatar' => asset($shoppingCart->product->avatar)
                 ]
             ];
 
-            if($shoppingCart->product->type == ProductType::Simple){
+            if ($shoppingCart->product->type == ProductType::Simple) {
 
                 $data['product']['price'] = $shoppingCart->product->price * $discount;
                 $data['product']['promotion_price'] = $shoppingCart->product->promotion_price * $discount ?: null;
-
-            }elseif($shoppingCart->productVariation){
+            } elseif ($shoppingCart->productVariation) {
                 $data['product_variation'] = [
                     'id' => $shoppingCart->productVariation->id,
                     'price' => $shoppingCart->productVariation->price * $discount,
                     'promotion_price' => $shoppingCart->productVariation->promotion_price * $discount ?: null,
-                    'image' => $shoppingCart->productVariation->image,
-                    'attribute_variations' => $shoppingCart->productVariation->attributeVariations->map(function($item){
+                    'image' => asset($shoppingCart->productVariation->image),
+                    'attribute_variations' => $shoppingCart->productVariation->attributeVariations->map(function ($item) {
                         return [
                             'id' => $item->id,
                             'name' => $item->name

@@ -20,9 +20,10 @@ class ProductCategoryRequest extends BaseRequest
             'name' => ['required', 'string'],
             'parent_id' => ['nullable', 'exists:App\Models\Category,id'],
             'position' => ['required', 'integer', 'min:0'],
-            'is_active' => ['required', 'boolean'],
-            'is_home_slider_1' => ['required', new Enum(HomeSliderOption::class)],
-            'is_home_slider_2' => ['required', new Enum(HomeSliderOption::class)],
+            'is_active' => ['required'],
+            'is_menu' => ['required'],
+            'is_home_slider_1' => ['nullable', new Enum(HomeSliderOption::class)],
+            'is_home_slider_2' => ['nullable', new Enum(HomeSliderOption::class)],
             'icon' => ['nullable'],
             'avatar' => ['required']
         ];
@@ -35,9 +36,10 @@ class ProductCategoryRequest extends BaseRequest
             'name' => ['required', 'string'],
             'parent_id' => ['nullable', 'exists:App\Models\Category,id', new CategoryParent($this->id)],
             'position' => ['nullable', 'integer', 'min:0'],
-            'is_home_slider_1' => ['required', new Enum(HomeSliderOption::class)],
-            'is_home_slider_2' => ['required', new Enum(HomeSliderOption::class)],
-            'is_active' => ['required', 'boolean'],
+            'is_home_slider_1' => ['nullable', new Enum(HomeSliderOption::class)],
+            'is_home_slider_2' => ['nullable', new Enum(HomeSliderOption::class)],
+            'is_active' => ['required'],
+            'is_menu' => ['required'],
             'icon' => ['nullable'],
             'avatar' => ['required']
         ];

@@ -50,4 +50,15 @@ class ShoppingCartRequest extends BaseRequest
             'id.*' => ['required', 'exists:App\Models\ShoppingCart,id'],
         ];
     }
+
+    public function prepareForValidation(){
+        if($this->has('variation_id') 
+            && $this->input('variation_id') 
+            && (!is_array($this->variation_id) || is_string($this->variation_id))
+        ){
+            $this->merge([
+                'variation_id' => explode(",", $this->variation_id)
+            ]);
+        }
+    }
 }

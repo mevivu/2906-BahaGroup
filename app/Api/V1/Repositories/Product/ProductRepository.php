@@ -4,10 +4,11 @@ namespace App\Api\V1\Repositories\Product;
 
 use App\Admin\Repositories\Product\ProductRepository as AdminProductRepository;
 use App\Api\V1\Repositories\Product\ProductRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ProductRepository extends AdminProductRepository implements ProductRepositoryInterface
 {
-    public function findOrFailWithRelations($id, array $relations = ['productAttributes', 'productVariations'])
+    public function findOrFailWithRelations($id, array $relations = ['productAttributes', 'productVariations.attributeVariations'])
     {
         $this->findOrFail($id);
         if (in_array('productAttributes', $relations)) {
@@ -33,22 +34,24 @@ class ProductRepository extends AdminProductRepository implements ProductReposit
     public function getSearchByKeysWithRelations(array $data, array $relations = ['productVariations'])
     {
         $this->instance = $this->model->active();
+
         if (isset($data['keywords'])) {
             $this->instance = $this->instance->where('name', 'like', "%{$data['keywords']}%");
         }
-        if (isset($data['store_id'])) {
-            $this->instance = $this->instance->where('store_id', '=', $data['store_id']);
-        }
-
-        $page = $data['page'] ?? 1;
-        $limit = $data['limit'] ?? 10;
-
 
         $this->instance = $this->instance->with($relations)
-            ->orderBy('id', 'desc')
-            ->paginate($limit, ['*'], 'page', $page);
+            ->orderBy('id', 'desc');
+
+        // Kiểm tra và áp dụng phân trang
+        $limit = isset($data['limit']) ? $data['limit'] : 10;
+
+        // Sử dụng paginate để thực hiện phân trang
+        $this->instance = $this->instance->paginate($limit);
+
         return $this->instance;
     }
+
+
     public function getAllWithRelations(array $relations = ['productVariations'])
     {
         $this->instance = $this->model->active()
@@ -62,6 +65,25 @@ class ProductRepository extends AdminProductRepository implements ProductReposit
         $this->getQueryBuilder();
         $this->instance = $this->instance->orderBy($column, $sort);
         return $this->instance;
+    }
+
+    public function searchProducts(Request $request)
+    {
+        $data = $request->validated();
+        $page = $data['page'] ?? 1;
+        $limit = $data['limit'] ?? 10;
+        $searchTerm = $data['keyword'] ?? '';
+
+        $query = $this->getQueryBuilder();
+
+        if ($searchTerm) {
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('sku', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        return $query->paginate($limit, ['*'], 'page', $page);
     }
 
     // public function getAllWithRelations(array $relations = ['productVariations']){

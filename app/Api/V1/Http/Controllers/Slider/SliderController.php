@@ -16,8 +16,7 @@ class SliderController extends Controller
 
     public function __construct(
         SliderRepositoryInterface $repository
-    )
-    {
+    ) {
         $this->repository = $repository;
     }
     /**
@@ -27,7 +26,7 @@ class SliderController extends Controller
      *
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
-     * 
+     *
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
@@ -52,17 +51,22 @@ class SliderController extends Controller
      * }
      *
      * @param  \Illuminate\Http\Request  $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($key){
-        
+    public function show($key)
+    {
         $slider = $this->repository->findByPlainKeyWithRelations($key);
-        $slider = new SliderResource($slider);
+        if ($slider) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.'),
+                'data' => new SliderResource($slider)
+            ]);
+        }
         return response()->json([
-            'status' => 200,
-            'message' => __('Thực hiện thành công.'),
-            'data' => $slider
-        ]);
+            'status' => 404,
+            'message' => __('Slider không tồn tại.')
+        ], 404);
     }
 }

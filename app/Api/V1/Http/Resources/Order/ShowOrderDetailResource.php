@@ -18,18 +18,18 @@ class ShowOrderDetailResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'id' => $this->detail['product']['id'],
-            'name' => $this->detail['product']['name'],
+            'id' => $this->product->id,
+            'name' => $this->product->name,
             'qty' => $this->qty,
             'unit_price' => $this->unit_price,
-            'slug' => $this->detail['product']['slug'],
-            'avatar' => $this->detail['product']['avatar']
+            'slug' => $this->product->slug,
+            'avatar' => asset($this->product->avatar)
         ];
-        if($this->detail['product']['type'] == ProductType::Variable){
-            $data['attribute_variations']  = collect($this->detail['productVariation']['attribute_variations'])->map(function($item){
+        if ($this->product->type == ProductType::Variable) {
+            $data['attribute_variations']  = collect($this->productVariation->attribute_variations)->map(function ($item) {
                 return [
-                    'id' => $item['id'],
-                    'name' => $item['name']
+                    'id' => $item->id,
+                    'name' => $item->name
                 ];
             });
         }

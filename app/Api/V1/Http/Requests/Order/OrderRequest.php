@@ -4,7 +4,7 @@ namespace App\Api\V1\Http\Requests\Order;
 
 use App\Api\V1\Http\Requests\BaseRequest;
 use App\Enums\Order\OrderStatus;
-use BenSampo\Enum\Rules\EnumValue;
+use Illuminate\Validation\Rules\Enum;
 
 class OrderRequest extends BaseRequest
 {
@@ -16,7 +16,7 @@ class OrderRequest extends BaseRequest
     protected function methodGet()
     {
         return [
-            'status' => ['nullable', new EnumValue(OrderStatus::class, false)]
+            'status' => ['nullable', new Enum(OrderStatus::class)]
         ];
     }
     /**
@@ -27,11 +27,6 @@ class OrderRequest extends BaseRequest
     protected function methodPost()
     {
         return [
-            'customer_fullname' => ['required', 'string'],
-            'customer_phone' => ['required', 'regex:/((09|03|07|08|05)+([0-9]{8})\b)/'],
-            'customer_email' => ['required', 'email'],
-            'shipping_address' => ['required'],
-            'payment_code' => ['required', 'string'],
             'note' => ['nullable']
         ];
     }
@@ -55,8 +50,6 @@ class OrderRequest extends BaseRequest
      */
     protected function methodDelete()
     {
-        return [
-
-        ];
+        return [];
     }
 }

@@ -18,50 +18,7 @@ class Order extends Model
 
     protected $table = 'orders';
 
-    protected $fillable = [
-        /** ID của người dùng */
-        'user_id',
-        /** Phương thức thanh toán */
-        'payment_method',
-        /** Địa chỉ giao hàng */
-        'address',
-        /** Email */
-        'email',
-        /** Tên khách hàng */
-        'fullname',
-        /** Số điện thoại khách hàng */
-        'phone',
-        /** Tổng tiền của đơn hàng */
-        'total',
-        /** Phụ thu */
-        'surcharge',
-        /** Trạng thái của đơn hàng */
-        'status',
-        /** Ghi chú cho đơn hàng */
-        'note',
-        /** Tên người nhận khác */
-        'name_other',
-        /** Địa chỉ người nhận khác */
-        'address_other',
-        /** Số điện thoại người nhận khác */
-        'phone_other',
-        /** Ghi chú người nhận khác */
-        'note_other',
-        /** ward_id */
-        'ward_id',
-        /** province_id */
-        'province_id',
-        /** district_id */
-        'district_id',
-        /** Giá trị giảm */
-        'discount_value',
-        /** code */
-        'code',
-        /** Đánh giá */
-        'is_reviewed',
-        /** Trạng thái thanh toán */
-        'payment_status',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'status' => OrderStatus::class,
@@ -83,23 +40,8 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function discount(): HasOneThrough
+    public function scopeCurrentAuth($query)
     {
-        return $this->hasOneThrough(Discount::class, DiscountApplication::class, 'order_id', 'id', 'id', 'discount_code_id');
-    }
-
-    public function province(): BelongsTo
-    {
-        return $this->belongsTo(Province::class, 'province_id');
-    }
-
-    public function ward(): BelongsTo
-    {
-        return $this->belongsTo(Ward::class, 'ward_id');
-    }
-
-    public function district(): BelongsTo
-    {
-        return $this->belongsTo(District::class, 'district_id');
+        return $query->where('user_id', auth()->user()->id);
     }
 }

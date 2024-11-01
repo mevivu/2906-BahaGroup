@@ -28,7 +28,6 @@ class Product extends Model
         'type', // Loại sản phẩm
         'name', // Tên sản phẩm
         'price', // Giá sản phẩm
-        'flashsale_price', // Giá bán
         'promotion_price', // Giá khuyến mãi
         'sku', // Mã SKU
         'manager_stock', // Quản lý kho
@@ -113,23 +112,9 @@ class Product extends Model
         return $query->where('type', ProductType::Variable);
     }
 
-    public function discounts(): BelongsToMany
-    {
-        return $this->belongsToMany(Discount::class, 'discount_applications', 'product_id', 'discount_code_id');
-    }
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class, 'product_id', 'id');
-    }
-
     public function order_details(): HasMany
     {
         return $this->hasMany(OrderDetail::class, 'product_id', 'id');
-    }
-
-    public function flash_sales(): BelongsToMany
-    {
-        return $this->belongsToMany(FlashSale::class, 'flash_sales_products', 'product_id', 'flash_sale_id');
     }
 
     public function getAvgRatingAttribute()
@@ -139,17 +124,6 @@ class Product extends Model
     public function getTotalSoldAttribute()
     {
         return $this->order_details->count();
-    }
-
-    public function getOnFlashSaleAttribute()
-    {
-        $now = Carbon::now();
-
-        return $this->flash_sales()
-            ->where('start_time', '<=', $now)
-            ->where('end_time', '>=', $now)
-            ->whereRaw('qty > sold')
-            ->first();
     }
 
     public function isSimple()

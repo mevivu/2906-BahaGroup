@@ -5,10 +5,10 @@ namespace App\Admin\Services\Post;
 use App\Admin\Services\Post\PostServiceInterface;
 use App\Admin\Repositories\Post\PostRepositoryInterface;
 use App\Admin\Repositories\PostCategory\PostCategoryRepositoryInterface;
-use App\Api\V1\Support\UseLog;
 use App\Enums\FeaturedStatus;
 use App\Enums\Post\PostType;
 use App\Enums\PriorityStatus;
+use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -120,7 +120,5 @@ class PostService implements PostServiceInterface
     public function delete($id): object|bool
     {
         return $this->repository->delete($id);
-
     }
-
 }

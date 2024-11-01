@@ -21,7 +21,7 @@ class OauthReqest extends BaseRequest
     {
         return [
             'email' => 'required|email',
-            'oauth' => 'required|numeric',
+            'token_active_account' => 'required|numeric',
         ];
     }
 }

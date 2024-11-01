@@ -7,7 +7,6 @@ use App\Api\V1\Repositories\Category\CategoryRepositoryInterface;
 use \Illuminate\Http\Request;
 use App\Api\V1\Http\Resources\Category\{AllCategoryTreeResource, RootCategoryWithProductResource, ShowCategoryWithAllResource};
 use App\Api\V1\Repositories\Product\ProductRepositoryInterface;
-use App\Api\V1\Http\Requests\Category\CategoryRequest;
 
 /**
  * @group Danh mục
@@ -19,8 +18,7 @@ class CategoryController extends Controller
     public function __construct(
         CategoryRepositoryInterface $repository,
         ProductRepositoryInterface $repositoryProduct
-    )
-    {
+    ) {
         $this->repository = $repository;
         $this->repositoryProduct = $repositoryProduct;
     }
@@ -30,8 +28,8 @@ class CategoryController extends Controller
      *
      * Lấy danh sách danh mục.
      *
-     * @headersParam X-TOKEN-ACCESS string required
-     * token để lấy dữ liệu. Example: 132323
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
      * @response 200 {
      *      "status": 200,
@@ -58,8 +56,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request){
-
+    public function index(Request $request)
+    {
         $categories = $this->repository->getTree();
         $categories = new AllCategoryTreeResource($categories);
 
@@ -74,11 +72,11 @@ class CategoryController extends Controller
      *
      * Lấy chi tiết danh mục.
      *
-     * @headersParam X-TOKEN-ACCESS string required
-     * token để lấy dữ liệu. Example: 132323
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
      * @pathParam id integer required
-     * id hoặc slug danh mục. Example: 1 | cat-1
+     * id danh mục. Example: 1
      *
      *
      * @response 200 {
@@ -102,14 +100,15 @@ class CategoryController extends Controller
      *           ],
      *           "products": [
      *               {
-     *                   "id": 5,
-     *                   "name": "Iphone 16",
-     *                   "slug": "iphone-16",
-     *                   "in_stock": true,
-     *                   "avatar": "http://localhost/topzone/public/assets/images/default-image.png",
-     *                   "price": 200000,
-     *                   "promotion_price": null
-     *               }
+     *                   "id": 31,
+     *                   "name": "Doraemon",
+     *                   "slug": "doraemon",
+     *                   "in_stock": 1,
+     *                   "avatar": "http://localhost:8080/AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
+     *                   "min_promotion_price": 45000,
+     *                   "min_price": 50000,
+     *                   "max_price": 60000
+     *               },
      *           ]
      *       }
      * }
@@ -118,8 +117,9 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id){
-        try{
+    public function show($id)
+    {
+        try {
             $category = $this->repository->findByIdOrSlugWithAncestorsAndDescendants($id);
             $category = new ShowCategoryWithAllResource($category, $this->repositoryProduct);
             return response()->json([
@@ -127,8 +127,7 @@ class CategoryController extends Controller
                 'message' => __('Thực hiện thành công.'),
                 'data' => $category
             ]);
-        }catch (Exception $e) {
-            //
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => 404,
                 'message' => __('Không tìm thấy dữ liệu')
@@ -141,8 +140,8 @@ class CategoryController extends Controller
      *
      * Lấy danh sách danh mục root và tất cả sản phẩm thuộc danh mục này và danh mục của nó.
      *
-     * @headersParam X-TOKEN-ACCESS string required
-     * token để lấy dữ liệu. Example: 132323
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
      * @response 200 {
      *      "status": 200,
@@ -154,13 +153,14 @@ class CategoryController extends Controller
      *             "slug": "ipad",
      *              "products": [
      *                   {
-     *                       "id": 4,
-     *                       "name": "iPab pro",
-     *                       "slug": "iPab-pro",
-     *                       "in_stock": true,
-     *                       "avatar": "http://localhost/topzone/public/assets/images/default-image.png",
-     *                       "price": 2000000,
-     *                       "promotion_price": null
+     *                       "id": 31,
+     *                       "name": "Doraemon",
+     *                       "slug": "doraemon",
+     *                       "in_stock": 1,
+     *                       "avatar": "http://localhost:8080/AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
+     *                       "min_promotion_price": 45000,
+     *                       "min_price": 50000,
+     *                       "max_price": 60000
      *                   }
      *               ]
      *           }
@@ -171,10 +171,55 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function product(Request $request){
+    public function product()
+    {
         $categories = $this->repository->getRootWithAllChildren();
         $categories = new RootCategoryWithProductResource($categories, $this->repositoryProduct);
         return $categories;
     }
 
+    /**
+     * Danh sách danh mục nằm trên menu
+     *
+     * Lấy danh sách danh mục nằm trên menu.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công.",
+     *      "data": [
+     *          {
+     *               "id": 7,
+     *               "name": "parent 3",
+     *               "slug": "parent-3",
+     *               "avatar": null,
+     *               "children": [
+     *                   {
+     *                       "id": 8,
+     *                       "name": "child 3",
+     *                       "slug": "child-3",
+     *                       "avatar": null
+     *                   }
+     *               ]
+     *           }
+     *      ]
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        $categories = $this->repository->getTree()->where('is_menu', 1);
+        $categories = new AllCategoryTreeResource($categories);
+
+        return response()->json([
+            'status' => 200,
+            'message' => __('Thực hiện thành công.'),
+            'data' => $categories
+        ]);
+    }
 }

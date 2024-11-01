@@ -3,145 +3,199 @@
 namespace App\Api\V1\Http\Controllers\Order;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Api\V1\Http\Requests\Order\BookOrderRequest;
-use App\Api\V1\Http\Requests\Order\RentVehicleOrderRequest;
 use App\Api\V1\Services\Order\OrderServiceInterface;
 use App\Api\V1\Repositories\Order\OrderRepositoryInterface;
-use App\Api\V1\Repositories\User\UserRepositoryInterface;
-use App\Api\V1\Support\AuthServiceApi;
-use App\Api\V1\Support\Response;
-use App\Api\V1\Support\UseLog;
-use App\Traits\JwtService;
-use Exception;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use App\Api\V1\Http\Requests\Order\OrderRequest;
+use App\Api\V1\Http\Resources\Order\AllOrderResource;
+use App\Api\V1\Http\Resources\Order\ShowOrderResource;
 
 /**
  * @group Đơn hàng
  */
+
 class OrderController extends Controller
 {
-    use JwtService, Response, AuthServiceApi, UseLog;
-
-    private static string $GUARD_API = 'api';
-
-    protected $auth;
-    private $login;
-
-    protected UserRepositoryInterface $userRepository;
 
     public function __construct(
         OrderRepositoryInterface $repository,
-        UserRepositoryInterface $userRepository,
-        OrderServiceInterface    $service
+        OrderServiceInterface $service
     ) {
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
         $this->service = $service;
-        $this->middleware('auth:api');
     }
-
-    protected function resolve(): bool
+    /**
+     * Danh sách đơn hàng
+     *
+     * Lấy danh sách đơn hàng của user.
+     *
+     * <strong>Trạng thái của đơn hàng bao gồm:</strong>
+     * + 1: Chưa xác nhận
+     * + 2: Đã xác nhận
+     * + 3: Đã hủy
+     *
+     * @queryParam status integer
+     * Trạng thái của đơn hàng. Example: 1
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @authenticated Authorization string required
+     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công.",
+     *      "data": [
+     *         {
+     *          "id": 4,
+     *          "total": 2970000,
+     *          "status": 1,
+     *          "product": {
+     *              "id": 2,
+     *              "name": "Iphone 15",
+     *              "qty": 15,
+     *              "unit_price": 2000000,
+     *              "slug": "iphone-15",
+     *              "avatar": "http://localhost:8080/2976-AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
+     *              "attribute_variations": [
+     *               {
+     *                   "id": 1,
+     *                   "name": "64GB"
+     *               },
+     *               {
+     *                   "id": 2,
+     *                   "name": "Màu Trắng"
+     *               }
+     *           ]
+     *          }
+     *          }
+     *      ]
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(OrderRequest $request)
     {
-        $user = $this->userRepository->findByField('phone', $this->login['phone']);
-        if ($user) {
-            Auth::login($user);
-            return true;
-        }
-        return false;
+        $filter = $request->validated();
+
+        $orders = $this->repository->getByKeyAuthCurrent($filter);
+        $orders = new AllOrderResource($orders);
+        return response()->json([
+            'status' => 200,
+            'message' => __('Thực hiện thành công.'),
+            'data' => $orders
+        ]);
     }
-
-    public function createBookOrder(BookOrderRequest $request): JsonResponse
+    /**
+     * Chi tiết đơn hàng
+     *
+     * Lấy chi tiết đơn hàng của user.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @authenticated Authorization string required
+     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     *
+     * @pathParam id integer required
+     * id của đơn hàng. Example: 1
+     *
+     * @authenticated
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công.",
+     *      "data": {
+     *           "id": 1,
+     *           "customer_fullname": "Phạm Minh Mạnh",
+     *           "customer_phone": "0961592552",
+     *           "customer_email": "marispham@gmail.com",
+     *           "shipping_address": "Thành phố Hồ Chí Minh, Hồ Chí Minh, Việt Nam",
+     *           "total": 700000,
+     *           "code": "HD7C1341730262480",
+     *           "status": "Chờ xác nhận",
+     *           "payment_method": "Trực tiếp",
+     *           "payment_type": "Toàn bộ",
+     *           "note": "123",
+     *           "created_at": "2024-10-30T04:28:00.000000Z",
+     *           "order_details":[
+     *              {
+     *                  "id": 2,
+     *                  "name": "Iphone 15",
+     *                  "qty": 15,
+     *                  "unit_price": 2000000,
+     *                  "slug": "iphone-15",
+     *                  "avatar": "http://localhost:8080/2976-AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
+     *                  "attribute_variations": [
+     *                      {
+     *                          "id": 1,
+     *                          "name": "64GB"
+     *                      },
+     *                      {
+     *                          "id": 2,
+     *                          "name": "Màu Trắng"
+     *                      }
+     *                  ]
+     *              }
+     *           ]
+     *      }
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
     {
-        try {
-            $this->service->createBookOrder($request);
-            return $this->jsonResponseSuccessNoData();
-        } catch (Exception $e) {
-            $this->logError('Order creation failed:', $e);
-            return $this->jsonResponseError('', 500);
-        }
+        $order = $this->repository->findOrFailWithRelations($id);
+        $order = new ShowOrderResource($order);
+        return response()->json([
+            'status' => 200,
+            'message' => __('Thực hiện thành công.'),
+            'data' => $order
+        ]);
     }
 
     /**
-     * Thêm mới đơn thuê xe
+     * Hủy đơn hàng
      *
-     * API này dùng để Thêm mới đơn thuê xe
+     * Hủy đơn hàng của user.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @authenticated Authorization string required
+     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     *
+     * @bodyParam id integer required
+     * id đơn hàng. Example: 1
+     *
+     *
      * @authenticated
-     * Example: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvMjczNi1BcHBEdWFSdW9jL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzE5NDU0ODM5LCJleHAiOjE3MjQ2Mzg4MzksIm5iZiI6MTcxOTQ1NDgzOSwianRpIjoiZG5NWXE4d2dWTWFkOFNCdiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.uGA0ylhxwMxq8zBOsDEmSGrE97LHQxSn811jl3BLrK4
-     *
-     * @bodyParam vehicle_id int required ID của phương tiện. Example: 1
-     * @bodyParam start_date date optional Ngày bắt đầu. Example: 2024-07-26
-     * @bodyParam end_date date optional Ngày kết thúc (phải sau hoặc bằng ngày bắt đầu). Example: 2024-07-27
-     * @bodyParam payment_method string required Phương thức thanh toán. Example: credit_card
-     * @bodyParam total float required Tổng số tiền. Example: 150.0
-     * @bodyParam note string nullable Ghi chú (nếu có). Example: Giao hàng từ cửa hàng ABC đến địa chỉ XYZ
-     *
      *
      * @response 200 {
-     *     "status": 200,
-     *     "message": "Thực hiện thành công."
+     *      "status": 200,
+     *      "message": "Thực hiện thành công."
      * }
      *
-     * @response 400 {
-     *     "status": 400,
-     *     "message": "Kiểm tra lại các trường."
-     * }
+     * @param  \Illuminate\Http\Request  $request
      *
-     * @response 500 {
-     *     "status": 500,
-     *     "message": "Error."
-     * }
-     *
-     * @return JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function createRentOrder(RentVehicleOrderRequest $request): JsonResponse
+    public function cancel($id)
     {
-        try {
-            $this->service->createRentOrder($request);
-            return $this->jsonResponseSuccessNoData();
-        } catch (Exception $e) {
-            $this->logError('Order creation failed:', $e);
-            return $this->jsonResponseError($e->getMessage(), 500);
+        $response = $this->service->cancel($id);
+        if ($response) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.')
+            ]);
         }
-    }
-
-    /**
-     * Xoá đơn hàng
-     *
-     * API này dùng để Xoá đơn hàng
-     * @authenticated
-     * Example: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvMjczNi1BcHBEdWFSdW9jL2FwaS92MS9hdXRoL2xvZ2luIiwiaWF0IjoxNzE5NDU0ODM5LCJleHAiOjE3MjQ2Mzg4MzksIm5iZiI6MTcxOTQ1NDgzOSwianRpIjoiZG5NWXE4d2dWTWFkOFNCdiIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.uGA0ylhxwMxq8zBOsDEmSGrE97LHQxSn811jl3BLrK4
-     *
-     * @pathParam id int required ID của đơn hàng cần xoá. Example: 1
-     *
-     * @response 200 {
-     *     "status": 200,
-     *     "message": "Thực hiện thành công."
-     * }
-     *
-     * @response 400 {
-     *     "status": 400,
-     *     "message": "ERROR."
-     * }
-     *
-     * @response 500 {
-     *     "status": 500,
-     *     "message": "Error."
-     * }
-     *
-     * @return JsonResponse
-     */
-    public function delete($id): JsonResponse
-    {
-        try {
-            $result = $this->service->delete($id);
-            if ($result) {
-                return $this->jsonResponseSuccessNoData();
-            }
-            return $this->jsonResponseError();
-        } catch (Exception $e) {
-            $this->logError('Order delete failed:', $e);
-            return $this->jsonResponseError($e->getMessage(), 500);
-        }
+        return response()->json([
+            'status' => 400,
+            'message' => __('Thực hiện không thành công.')
+        ], 400);
     }
 }

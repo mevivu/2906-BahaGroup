@@ -18,23 +18,24 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->char('code', 50);
-            $table->char('username', 100)->unique()->nullable();
-            $table->string('slug')->unique();
+            $table->char('username', 100)->nullable();
+            $table->string('slug');
             $table->string('fullname');
-            $table->char('email', 100)->unique()->nullable();
-            $table->char('phone', 20)->unique()->nullable();
+            $table->char('email', 100)->nullable();
+            $table->char('phone', 20)->nullable();
             $table->text('address')->nullable();
             $table->text('avatar')->nullable();
+            $table->text('token_active_account')->nullable();
             $table->date('birthday')->nullable();
             $table->string('device_token')->nullable();
             $table->tinyInteger('gender');
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('token_expiration')->nullable();
             $table->string('token_get_password')->nullable();
             $table->string('password')->nullable();
             $table->boolean('active')->default(DefaultActiveStatus::Active->value);
             $table->rememberToken();
             $table->timestamps();
-
         });
     }
 

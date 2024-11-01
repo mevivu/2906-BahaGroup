@@ -16,8 +16,9 @@
 																								@csrf
 																								<input type="hidden" name="email" value="{{ $email }}">
 																								<div class="form-group mb-3">
-																												<label for="oauth" class="form-label">Mã OTP</label>
-																												<input type="text" class="form-control" name="oauth" id="oauth">
+																												<label for="token_active_account" class="form-label">Mã OTP</label>
+																												<input type="text" class="form-control" name="token_active_account"
+																																id="token_active_account">
 																								</div>
 																</div>
 																<button style="width: 100%;" type="submit" class="btn btn-default">Đăng ký</button>

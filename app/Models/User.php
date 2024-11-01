@@ -24,28 +24,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $columnSlug = 'fullname';
 
-    protected $fillable = [
-        'username',
-        'code',
-        'slug',
-        'fullname',
-        'password',
-        'email',
-        'phone',
-        'birthday',
-        'gender',
-        'active',
-        'avatar',
-        'area_id',
-        'address',
-        'status',
-        'device_token',
-        'notification_preference',
-        'oauth',
-        'token_get_password',
-        'token_expiration',
-    ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -54,6 +32,8 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'remember_token',
     ];
+
+    protected $guarded = [];
 
     /**
      * The attributes that should be cast.

@@ -143,7 +143,7 @@ class LoginController extends Controller
         $data = $request->validated();
         $data['code'] = $this->createCodeUser();
         $data['password'] = Hash::make($data['password']);
-        $data['oauth'] = random_int(1000000, 9999999);
+        $data['token_active_account'] = random_int(1000000, 9999999);
         $data['active'] = DefaultActiveStatus::UnActive;
         $data['gender'] = Gender::Female;
 
@@ -165,8 +165,8 @@ class LoginController extends Controller
         $data = $request->validated();
         $user = $this->repository->findByField('email', $data['email']);
 
-        if ($user && $user['oauth'] === intval($data['oauth'])) {
-            $this->repository->update($user['id'], ['active' => 1, 'oauth' => null]);
+        if ($user && $user['token_active_account'] === intval($data['token_active_account'])) {
+            $this->repository->update($user['id'], ['active' => 1, 'token_active_account' => null]);
             return redirect()->route('user.auth.indexUser')->with('success', __('Xác thực tài khoản thành công'));
         }
 

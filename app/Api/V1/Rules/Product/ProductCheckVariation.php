@@ -32,11 +32,11 @@ class ProductCheckVariation implements Rule
     {
         //
         $product = Product::select('id', 'type')->withCount('productAttributes')->find($this->product_id);
-        if(!$product){
+        if (!$product) {
             return false;
         }
         $this->countAttribute = $product->product_attributes_count;
-        if($product->type == ProductType::Simple || $product->type == ProductType::Variable && gettype($value) === 'array' && $this->countAttribute > 0 && $this->countAttribute == count($value)){
+        if ($product->type == ProductType::Simple || $product->type == ProductType::Variable && gettype($value) === 'array' && $this->countAttribute > 0 && $this->countAttribute == count($value)) {
             return true;
         }
 
@@ -50,7 +50,7 @@ class ProductCheckVariation implements Rule
      */
     public function message()
     {
-        if($this->countAttribute == 0){
+        if ($this->countAttribute == 0) {
             return __('Sản phẩm này không có biến thể.');
         }
         return __('Sản phẩm này có :attribute thuộc tính vui lòng truyền đủ :attribute biến thể tương ứng hoặc kiểm tra lại sản phẩm.', ['attribute' => $this->countAttribute]);

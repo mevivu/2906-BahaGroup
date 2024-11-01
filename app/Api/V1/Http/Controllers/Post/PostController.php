@@ -3,11 +3,9 @@
 namespace App\Api\V1\Http\Controllers\Post;
 
 use App\Admin\Http\Controllers\Controller;
-use App\Admin\Repositories\Post\PostRepository;
 use App\Api\V1\Http\Requests\Post\PostRequest;
 use App\Api\V1\Http\Resources\Post\{AllPostResource, ShowPostResource};
 use App\Api\V1\Repositories\Post\PostRepositoryInterface;
-use App\Models\Post;
 
 /**
  * @group Bài viết
@@ -17,25 +15,24 @@ class PostController extends Controller
 {
     public function __construct(
         PostRepositoryInterface $repository
-    ) {
+    )
+    {
         $this->repository = $repository;
     }
     /**
-     * DS Quản lý Bài viết
+     * DS bài viết
      *
-     * Lấy danh sách các Bài viết.
+     * Lấy danh sách bài viết.
      *
      * @headersParam X-TOKEN-ACCESS string
-     * token để lấy dữ liệu. Ví dụ: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      * 
      * @queryParam page integer
-     * Trang hiện tại, page > 0. Ví dụ: 1
+     * Trang hiện tại, page > 0. Example: 1
      * 
      * @queryParam limit integer
-     * Số lượng Phòng trong 1 trang, limit > 0. Ví dụ: 1
+     * Số lượng bài viết trong 1 trang, limit > 0. Example: 1
      * 
-     * @authenticated Authorization string required 
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
      * 
      * @response 200 {
      *      "status": 200,
@@ -52,24 +49,22 @@ class PostController extends Controller
      *           }
      *      ]
      * }
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * 
      * @return \Illuminate\Http\Response
      */
-    public function index(PostRequest $request)
-    {
+    public function index(PostRequest $request){
         $data = $request->validated();
-
+        
         $posts = $this->repository->paginate(...$data);
         $posts = new AllPostResource($posts);
-        // $posts = Post::paginate($data);
+
         return response()->json([
             'status' => 200,
             'message' => __('Thực hiện thành công.'),
             'data' => $posts
         ]);
-
     }
     /**
      * DS bài viết nổi bật
@@ -85,8 +80,6 @@ class PostController extends Controller
      * @queryParam limit integer
      * Số lượng bài viết trong 1 trang, limit > 0. Example: 1
      * 
-     * @authenticated Authorization string required 
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
      * 
      * @response 200 {
      *      "status": 200,
@@ -108,10 +101,9 @@ class PostController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function featured(PostRequest $request)
-    {
+    public function featured(PostRequest $request){
         $data = $request->validated();
-
+        
         $posts = $this->repository->getFeaturedPaginate(...$data);
         $posts = new AllPostResource($posts);
 
@@ -128,8 +120,6 @@ class PostController extends Controller
      *
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
-     * @authenticated Authorization string required
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
      * 
      * @pathParam id integer required
      * id bài viết. Example: 1
@@ -154,8 +144,7 @@ class PostController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $post = $this->repository->findByPublished($id);
         $post = new ShowPostResource($post);
         return response()->json([
@@ -181,8 +170,6 @@ class PostController extends Controller
      * @queryParam limit integer
      * Số lượng bài viết trong 1 trang, limit > 0. Example: 1
      * 
-     * @authenticated Authorization string required 
-     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
      * 
      * @response 200 {
      *      "status": 200,
@@ -204,8 +191,7 @@ class PostController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function related($id, PostRequest $request)
-    {
+    public function related($id, PostRequest $request){
 
         $posts = $this->repository->getRelated($id, ...$request->validated());
         $posts = new AllPostResource($posts);

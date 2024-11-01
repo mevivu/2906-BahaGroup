@@ -4,6 +4,10 @@ namespace App\Api\V1\Http\Resources\Order;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Api\V1\Support\AuthSupport;
+use App\Enums\Order\OrderStatus;
+use App\Enums\Order\PaymentStatus;
+use App\Enums\Payment\PaymentMethod;
+use App\Enums\Payment\PaymentType;
 
 class ShowOrderResource extends JsonResource
 {
@@ -18,19 +22,19 @@ class ShowOrderResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'customer_fullname' => $this->customer_fullname,
-            'customer_phone' => $this->customer_phone,
-            'customer_email' => $this->customer_email,
-            'shipping_address' => $this->shipping_address,
-            'sub_total' => $this->sub_total,
-            'discount' => $this->discount,
+            'customer_fullname' => $this->user->fullname,
+            'customer_phone' => $this->user->phone,
+            'customer_email' => $this->user->email,
+            'shipping_address' => $this->user->address,
             'total' => $this->total,
-            'payment_code' => $this->payment_code,
-            'status' => $this->status,
+            'code' => $this->code,
+            'status' => OrderStatus::getDescription($this->status->value),
+            'payment_method' => PaymentMethod::getDescription($this->payment_method->value),
+            'payment_type' => PaymentType::getDescription($this->payment_type),
             'note' => $this->note,
             'created_at' => $this->created_at,
-            'order_details' => $this->details->map(function($orderDetail){
-                return new ShowOrderDetailResource($orderDetail);
+            'order_details' => $this->details->map(function ($detail) {
+                return new ShowOrderDetailResource($detail);
             })
         ];
         return $data;

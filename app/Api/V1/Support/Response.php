@@ -1,10 +1,14 @@
 <?php
+
 namespace App\Api\V1\Support;
 
 
 use Illuminate\Http\JsonResponse;
 
-trait Response {
+trait Response
+{
+    protected static array $EMPTY_ARRAY = [];
+
     /**
      * Return a standardized success JSON response.
      *
@@ -19,14 +23,6 @@ trait Response {
             'status' => $status,
             'message' => $message ?: __('Thực hiện thành công.'),
             'data' => $data
-        ], $status);
-    }
-
-    protected function jsonResponseSuccessNoData(string $message = '', int $status = 200): JsonResponse
-    {
-        return response()->json([
-            'status' => $status,
-            'message' => $message ?: __('Thực hiện thành công.'),
         ], $status);
     }
 
