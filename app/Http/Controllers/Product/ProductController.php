@@ -13,7 +13,6 @@ use App\Admin\Repositories\Attribute\AttributeRepositoryInterface;
 use App\Admin\Repositories\AttributeVariation\AttributeVariationRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
-use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
@@ -22,6 +21,7 @@ use App\Admin\Http\Requests\Review\ReviewRequest;
 use App\Admin\Services\Review\ReviewServiceInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
+use App\Api\V1\Http\Resources\Product\ShowProductVariationResource;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -200,7 +200,7 @@ class ProductController extends Controller
         if ($matchingProductVariation) {
             return response()->json([
                 'status' => true,
-                'data' => new ProductVariationResource($matchingProductVariation)
+                'data' => new ShowProductVariationResource($matchingProductVariation)
             ]);
         } else {
             return response()->json([

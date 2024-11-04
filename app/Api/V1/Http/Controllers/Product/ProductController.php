@@ -3,9 +3,11 @@
 namespace App\Api\V1\Http\Controllers\Product;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
 use App\Api\V1\Repositories\Product\ProductRepositoryInterface;
-use App\Api\V1\Http\Resources\Product\{AllProductResource, ShowProductResource};
+use App\Api\V1\Http\Resources\Product\{AllProductResource, FlashSaleResource, ShowProductResource};
 use App\Api\V1\Http\Requests\Product\ProductRequest;
+use Illuminate\Http\Request;
 
 /**
  * @group Sản phẩm
@@ -13,11 +15,13 @@ use App\Api\V1\Http\Requests\Product\ProductRequest;
 
 class ProductController extends Controller
 {
-
+    protected FlashSaleRepositoryInterface $flashSaleRepository;
     public function __construct(
-        ProductRepositoryInterface $repository
+        ProductRepositoryInterface $repository,
+        FlashSaleRepositoryInterface $flashSaleRepository,
     ) {
         $this->repository = $repository;
+        $this->flashSaleRepository = $flashSaleRepository;
     }
 
     /**
@@ -79,6 +83,66 @@ class ProductController extends Controller
             'message' => __('Thực hiện thành công.'),
             'data' => $products
         ]);
+    }
+
+    /**
+     * Chương trình flash sale
+     *
+     * Lấy ra chương trình flash sale cũng như các sản phẩm đang có trong chương trình.
+     *
+     * @headersParam X-TOKEN-ACCESS string required
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @queryParam keywords string
+     * Từ khóa tên sản phẩm. Example: ipad
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công.",
+     *      "data": [
+     *          {
+     *              "id": 1,
+     *              "name": "SALE15",
+     *              "start_time": "19-09-2024 12:40",
+     *              "end_time": "27-11-2024 12:40",
+     *              "products": [
+     *                  {
+     *                      "id": 18,
+     *                      "name": "CELL PHONE Z",
+     *                      "slug": "cell-phone-z",
+     *                      "on_flashsale": true,
+     *                      "in_stock": 1,
+     *                      "avatar": "http://localhost:8080/2906-BahaGroup/userfiles/files/d1.jpg",
+     *                      "flashsale_price": null,
+     *                      "min_promotion_price": 4500000,
+     *                      "min_price": 5000000,
+     *                      "max_price": 5500000
+     *                  }
+     *              ]
+     *           }
+     *      ]
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function saleLimited()
+    {
+        $flashSale = $this->flashSaleRepository->getFlashSaleId_ValidDay();
+        if ($flashSale) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Chương trình flash sale đang được diễn ra.'),
+                'data' => new FlashSaleResource($flashSale)
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => __('Hiện tại không có chương trình flash sale.'),
+                'data' => []
+            ]);
+        }
     }
     /**
      * Chi tiết sản phẩm

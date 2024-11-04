@@ -26,3 +26,33 @@
 								</div>
 				</div>
 </div>
+
+<script>
+				document.addEventListener('DOMContentLoaded', function() {
+								const form = document.querySelector('form'); // Chọn biểu mẫu của bạn
+
+								form.addEventListener('submit', function(event) {
+												const price = document.querySelector('#product\\[price\\]-hidden').value;
+												const promotionPrice = document.querySelector('#product\\[promotion_price\\]-hidden').value;
+												const flashsalePrice = document.querySelector('#product\\[flashsale_price\\]-hidden').value;
+												if (promotionPrice >= price) {
+																event.preventDefault();
+																Swal.fire({
+																				icon: 'error',
+																				title: 'Lỗi!',
+																				text: 'Giá khuyến mãi phải nhỏ hơn giá bán thường.',
+																				confirmButtonText: 'OK'
+																});
+												}
+												if (flashsalePrice >= promotionPrice) {
+																event.preventDefault();
+																Swal.fire({
+																				icon: 'error',
+																				title: 'Lỗi!',
+																				text: 'Giá flash sale phải nhỏ hơn giá khuyến mãi.',
+																				confirmButtonText: 'OK'
+																});
+												}
+								});
+				});
+</script>

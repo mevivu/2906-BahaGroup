@@ -80,6 +80,7 @@ Route::prefix('/products')
         Route::controller(App\Api\V1\Http\Controllers\Product\ProductController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
+                Route::get('/flash-sale', 'saleLimited')->name('saleLimited');
                 Route::get('/show/{id}', 'show')->name('show');
             });
         Route::controller(App\Api\V1\Http\Controllers\Product\ProductVariationController::class)
