@@ -3,6 +3,8 @@
 namespace App\Api\V1\Http\Controllers\Lookup;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
+use App\Api\V1\Http\Resources\Discount\AllDiscountResource;
 use App\Api\V1\Support\Response;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Order\PaymentStatus;
@@ -19,7 +21,38 @@ class LookupController extends Controller
 {
     use Response;
 
-    public function __construct() {}
+    protected DiscountRepositoryInterface $discountRepository;
+
+    public function __construct(DiscountRepositoryInterface $discountRepository)
+    {
+        $this->discountRepository = $discountRepository;
+    }
+
+    /**
+     * Danh sách mã giảm giá
+     *
+     * Lấy danh sách mã giảm giá.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công.",
+     *      "data": {
+     *          "1": "Online",
+     *          "2": "Trực tiếp"
+     *      }
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function discount(): JsonResponse
+    {
+        return $this->jsonResponseSuccess(new AllDiscountResource($this->discountRepository->getValid()));
+    }
 
     /**
      * Danh sách phương thức thanh toán

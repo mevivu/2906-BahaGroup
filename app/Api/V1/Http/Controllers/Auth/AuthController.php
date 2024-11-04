@@ -4,7 +4,7 @@ namespace App\Api\V1\Http\Controllers\Auth;
 
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Services\File\FileService;
-use App\Api\V1\Http\Requests\Auth\{RegisterRequest, LoginRequest, UpdateRequest, UpdatePasswordRequest};
+use App\Api\V1\Http\Requests\Auth\{ActiveRequest, RegisterRequest, LoginRequest, UpdateRequest, UpdatePasswordRequest};
 use App\Api\V1\Repositories\User\UserRepositoryInterface;
 use App\Api\V1\Services\Auth\AuthServiceInterface;
 use Illuminate\Support\Facades\Auth;
@@ -138,8 +138,8 @@ class AuthController extends Controller
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
-     * @bodyParam username string required
-     * Tên tài khoản là số điện thoại. Example: 0999999999
+     * @bodyParam email string required
+     * Tên tài khoản là số marispham1509@gmail.com. Example: 0999999999
      *
      * @bodyParam password string required
      * Mật khẩu của bạn. Example: 123456
@@ -324,8 +324,8 @@ class AuthController extends Controller
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
      *
-     * @bodyParam username string required
-     * Tài khoản. Example: 0961592551
+     * @bodyParam email string required
+     * Tài khoản. Example: marispham1509@gmail.com
      *
      * @bodyParam password string required
      * Mật khẩu của bạn. Example: 123456
@@ -390,5 +390,41 @@ class AuthController extends Controller
             'status' => 200,
             'message' => __('notifySuccess'),
         ]);
+    }
+
+    /**
+     * Kích hoạt tài khoản
+     *
+     * Thực hiện kích hoạt tài khoản.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @bodyParam email string required
+     * Tài khoản. Example: marispham1509@gmail.com
+     *
+     * @response {
+     *      "status": 200,
+     *      "message": "Thực hiện thành công."
+     * }
+     *
+     * @param  App\Api\V1\Http\Requests\Auth\UpdatePasswordRequest  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function active(ActiveRequest $request)
+    {
+        $user = $this->repository->findByField('email', $request->input('email'));
+        if ($user && !$user->active) {
+            Mail::to($user->email)->send(new AccountActivation($user));
+            return response()->json([
+                'status' => 200,
+                'message' => __('Đường dẫn kích hoạt đã được gửi, vui lòng kiểm tra hòm thư để kích hoạt.'),
+            ], 200);
+        }
+        return response()->json([
+            'status' => 500,
+            'message' =>  __('Kích hoạt tài khoản thất bại.')
+        ], 500);
     }
 }

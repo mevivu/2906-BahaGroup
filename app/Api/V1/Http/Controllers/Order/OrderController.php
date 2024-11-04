@@ -47,27 +47,51 @@ class OrderController extends Controller
      *      "message": "Thực hiện thành công.",
      *      "data": [
      *         {
-     *          "id": 4,
-     *          "total": 2970000,
-     *          "status": 1,
-     *          "product": {
-     *              "id": 2,
-     *              "name": "Iphone 15",
-     *              "qty": 15,
-     *              "unit_price": 2000000,
-     *              "slug": "iphone-15",
-     *              "avatar": "http://localhost:8080/2976-AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
-     *              "attribute_variations": [
-     *               {
-     *                   "id": 1,
-     *                   "name": "64GB"
-     *               },
-     *               {
-     *                   "id": 2,
-     *                   "name": "Màu Trắng"
-     *               }
-     *           ]
-     *          }
+     *          "id": 112,
+     *          "discount_code": "SALE10",
+     *          "customer_fullname": "Phạm Minh Mạnh",
+     *          "customer_phone": "0961592552",
+     *          "customer_email": "marispham1509@gmail.com",
+     *          "shipping_address": "Thành phố Hồ Chí Minh, Hồ Chí Minh, Việt Nam",
+     *          "note": null,
+     *          "customer_fullname_other": null,
+     *          "customer_phone_other": null,
+     *          "shipping_address_other": null,
+     *          "note_other": null,
+     *          "total": 4500000,
+     *          "surcharge": 0,
+     *          "discount_value": 1125000,
+     *          "code": "HDAEE771730110899",
+     *          "status": "Chờ xác nhận",
+     *          "payment_method": "Online",
+     *          "created_at": "2024-10-28T10:21:39.000000Z",
+     *          "province": "Tỉnh Lào Cai",
+     *          "district": "Huyện Si Ma Cai",
+     *          "ward": "Xã Thào Chư Phìn",
+     *          "order_details": [
+     *              {
+     *                  "id": 16,
+     *                  "name": "CELL PHONE X",
+     *                  "qty": 5,
+     *                  "unit_price": 1000000,
+     *                  "slug": "cell-phone-x",
+     *                  "avatar": "http://localhost:8080/2906-BahaGroup/userfiles/files/d1.jpg",
+     *                  "attribute_variations": [
+     *                      {
+     *                          "id": 1,
+     *                          "name": "Màu đen"
+     *                      }
+     *                  ]
+     *              },
+     *              {
+     *                  "id": 10,
+     *                  "name": "Điện thoại OPPO Reno5",
+     *                  "qty": 5,
+     *                  "unit_price": 11000000,
+     *                  "slug": "dien-thoai-oppo-reno5",
+     *                  "avatar": "http://localhost:8080/2906-BahaGroup/userfiles/files/d1.jpg"
+     *              }
+     *          ]
      *          }
      *      ]
      * }
@@ -108,39 +132,52 @@ class OrderController extends Controller
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
      *      "data": {
-     *           "id": 1,
-     *           "customer_fullname": "Phạm Minh Mạnh",
-     *           "customer_phone": "0961592552",
-     *           "customer_email": "marispham@gmail.com",
-     *           "shipping_address": "Thành phố Hồ Chí Minh, Hồ Chí Minh, Việt Nam",
-     *           "total": 700000,
-     *           "code": "HD7C1341730262480",
-     *           "status": "Chờ xác nhận",
-     *           "payment_method": "Trực tiếp",
-     *           "payment_type": "Toàn bộ",
-     *           "note": "123",
-     *           "created_at": "2024-10-30T04:28:00.000000Z",
-     *           "order_details":[
+     *          "id": 112,
+     *          "discount_code": "SALE10",
+     *          "customer_fullname": "Phạm Minh Mạnh",
+     *          "customer_phone": "0961592552",
+     *          "customer_email": "marispham1509@gmail.com",
+     *          "shipping_address": "Thành phố Hồ Chí Minh, Hồ Chí Minh, Việt Nam",
+     *          "note": null,
+     *          "customer_fullname_other": null,
+     *          "customer_phone_other": null,
+     *          "shipping_address_other": null,
+     *          "note_other": null,
+     *          "total": 4500000,
+     *          "surcharge": 0,
+     *          "discount_value": 1125000,
+     *          "code": "HDAEE771730110899",
+     *          "status": "Chờ xác nhận",
+     *          "payment_method": "Online",
+     *          "created_at": "2024-10-28T10:21:39.000000Z",
+     *          "province": "Tỉnh Lào Cai",
+     *          "district": "Huyện Si Ma Cai",
+     *          "ward": "Xã Thào Chư Phìn",
+     *          "order_details": [
      *              {
-     *                  "id": 2,
-     *                  "name": "Iphone 15",
-     *                  "qty": 15,
-     *                  "unit_price": 2000000,
-     *                  "slug": "iphone-15",
-     *                  "avatar": "http://localhost:8080/2976-AppBanSach/userfiles/files/Huong-dan-hoc-va-giai-cac-dang-bai-tap-toan-9-tap-1-KNTT.jpg",
+     *                  "id": 16,
+     *                  "name": "CELL PHONE X",
+     *                  "qty": 5,
+     *                  "unit_price": 1000000,
+     *                  "slug": "cell-phone-x",
+     *                  "avatar": "http://localhost:8080/2906-BahaGroup/userfiles/files/d1.jpg",
      *                  "attribute_variations": [
      *                      {
      *                          "id": 1,
-     *                          "name": "64GB"
-     *                      },
-     *                      {
-     *                          "id": 2,
-     *                          "name": "Màu Trắng"
+     *                          "name": "Màu đen"
      *                      }
      *                  ]
+     *              },
+     *              {
+     *                  "id": 10,
+     *                  "name": "Điện thoại OPPO Reno5",
+     *                  "qty": 5,
+     *                  "unit_price": 11000000,
+     *                  "slug": "dien-thoai-oppo-reno5",
+     *                  "avatar": "http://localhost:8080/2906-BahaGroup/userfiles/files/d1.jpg"
      *              }
-     *           ]
-     *      }
+     *          ]
+     *          }
      * }
      *
      * @param  \Illuminate\Http\Request  $request
@@ -149,7 +186,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->repository->findOrFailWithRelations($id);
+        $order = $this->repository->findOrFail($id);
         $order = new ShowOrderResource($order);
         return response()->json([
             'status' => 200,

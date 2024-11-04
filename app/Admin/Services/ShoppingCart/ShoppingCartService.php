@@ -8,7 +8,7 @@ use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
-use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
+use App\Admin\Repositories\Product\{ProductRepositoryInterface};
 use App\Admin\Repositories\Transaction\TransactionRepositoryInterface;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
@@ -16,7 +16,6 @@ use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Order\OrderReview;
 use App\Enums\Order\PaymentStatus;
-use App\Enums\Payment\PaymentMethod;
 use App\Enums\Product\ProductType;
 use App\Enums\Transaction\TransactionStatus;
 use App\Traits\UseLog;
@@ -34,8 +33,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     protected $repository;
     protected $orderRepository;
     protected $productRepository;
-    protected $productRepositoryVariation;
-    protected $repositoryOrderDetail;
+    protected $orderDetailRepository;
     protected $discountRepository;
     protected $discountApplicationRepository;
     protected $transactionRepository;
@@ -44,8 +42,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         ShoppingCartRepositoryInterface $repository,
         ProductRepositoryInterface $productRepository,
         OrderRepositoryInterface $orderRepository,
-        ProductVariationRepositoryInterface $productRepositoryVariation,
-        OrderDetailRepositoryInterface $repositoryOrderDetail,
+        OrderDetailRepositoryInterface $orderDetailRepository,
         DiscountRepositoryInterface $discountRepository,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
         TransactionRepositoryInterface $transactionRepository,
@@ -53,8 +50,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->repository = $repository;
         $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
-        $this->productRepositoryVariation = $productRepositoryVariation;
-        $this->repositoryOrderDetail = $repositoryOrderDetail;
+        $this->orderDetailRepository = $orderDetailRepository;
         $this->discountRepository = $discountRepository;
         $this->discountApplicationRepository = $discountApplicationRepository;
         $this->transactionRepository = $transactionRepository;
@@ -295,7 +291,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $user = $this->getCurrentUser();
         $isBuyNow = $this->data['isBuyNow'];
         $discount = null;
-        $isNotify = false;
+        $surcharge = 0; // Tổng phụ phí
+        $flashSaleAppliedQty = 0; // Số lượng được áp dụng flash sale
+        $flashSaleExcessQty = 0; // Số lượng vượt quá chương trình flash sale
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
@@ -316,7 +314,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
                 }
                 $order = $this->orderRepository->create($this->data['order']);
-                if (isset($this->data['code'])) {
+                if ($order->discount_value) {
                     $this->handleDiscount($order, $discount);
                 }
                 $this->storeOrderDetail($order->id, $this->orderDetails);
@@ -324,8 +322,16 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     if ($detail->product->on_flash_sale) {
                         $flashSaleDetail = $detail->product->on_flash_sale->details()->firstWhere('product_id', $detail->product_id);
                         $remainFlashSaleQty = $flashSaleDetail->qty - $flashSaleDetail->sold;
+
                         if ($remainFlashSaleQty < $detail->qty) {
-                            $isNotify = true;
+
+                            $excessQty = $detail->qty - $remainFlashSaleQty;
+                            $surcharge += $excessQty * ($detail->product->promotion_price - $flashSaleDetail->price);
+
+                            $flashSaleAppliedQty += $remainFlashSaleQty;
+                            $flashSaleExcessQty += $excessQty;
+                        } else {
+                            $flashSaleAppliedQty += $detail->qty;
                         }
                     }
                 }
@@ -337,10 +343,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         $instance->update(['qty' => $instance->qty - $item->qty]);
                     }
                 });
-                DB::commit();
-                if ($isNotify) {
-                    return $order;
-                }
             } else {
                 $cart = session()->get('cart', []);
                 $cartCollection = collect($cart)->map(function ($item) {
@@ -362,7 +364,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     $this->data['order']['discount_value'] = $this->calculateDiscountValue($this->data['order']['total'], $discount);
                 }
                 $order = $this->orderRepository->create($this->data['order']);
-                if ($discount !== null) {
+                if (isset($this->data['code'])) {
                     $this->handleDiscount($order, $discount);
                 }
                 $this->storeOrderDetail($order->id, $this->orderDetails);
@@ -370,8 +372,16 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     if ($detail->product->on_flash_sale) {
                         $flashSaleDetail = $detail->product->on_flash_sale->details()->firstWhere('product_id', $detail->product_id);
                         $remainFlashSaleQty = $flashSaleDetail->qty - $flashSaleDetail->sold;
+
                         if ($remainFlashSaleQty < $detail->qty) {
-                            $isNotify = true;
+
+                            $excessQty = $detail->qty - $remainFlashSaleQty;
+                            $surcharge += $excessQty * ($detail->product->promotion_price - $flashSaleDetail->price);
+
+                            $flashSaleAppliedQty += $remainFlashSaleQty;
+                            $flashSaleExcessQty += $excessQty;
+                        } else {
+                            $flashSaleAppliedQty += $detail->qty;
                         }
                     }
                 }
@@ -391,11 +401,8 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     session()->remove('cart');
                     session()->save();
                 }
-                DB::commit();
-                if ($isNotify) {
-                    return $order;
-                }
             }
+            DB::commit();
             return $order;
         } catch (Exception $e) {
             $this->logError('Failed to process checkout: ', $e);
@@ -598,14 +605,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     {
         foreach ($data as $item) {
             $item['order_id'] = $orderId;
-            $this->repositoryOrderDetail->create($item);
+            $this->orderDetailRepository->create($item);
         }
     }
 
     private function prepareData($cartItems)
     {
         foreach ($cartItems as $item) {
-            $product = $this->productRepository->find($item->product->id);
+            $product = $item->product;
             if ($product->type == ProductType::Simple) {
                 $unitPrice = $product->on_flash_sale ? $product->flashsale_price : $product->promotion_price;
             } else {

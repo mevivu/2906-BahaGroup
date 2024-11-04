@@ -22,8 +22,7 @@ class NotificationDetailResource extends JsonResource
             'title' => $this->title,
             'message' => $this->message,
             'status' => NotificationStatus::getDescription($this->status->value),
-            'created_at' => $this->created_at->toIso8601String(),
-
+            'created_at' => $this->created_at,
         ];
     }
 }

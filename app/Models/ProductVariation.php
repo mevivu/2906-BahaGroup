@@ -12,11 +12,21 @@ class ProductVariation extends Model
     protected $table = 'products_variations';
 
     protected $guarded = [];
-    
-    public function product(){
+
+    public function product()
+    {
         return $this->belongsTo(Product::class, 'product_id');
     }
-    public function attributeVariations(){
+    public function __call($method, $parameters)
+    {
+        if ($method === 'attributeVariations') {
+            return $this->attribute_variations();
+        }
+        return parent::__call($method, $parameters);
+    }
+
+    public function attribute_variations()
+    {
         return $this->belongsToMany(AttributeVariation::class, 'products_variations_variations', 'product_variation_id', 'attribute_variation_id')->orderBy('position', 'asc');
     }
 }

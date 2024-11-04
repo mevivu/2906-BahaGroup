@@ -6,6 +6,7 @@ use App\Api\V1\Http\Resources\PaginationResource;
 use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Api\V1\Support\AuthSupport;
+use Illuminate\Support\Facades\Log;
 
 class AllProductResource extends ResourceCollection
 {
@@ -25,25 +26,24 @@ class AllProductResource extends ResourceCollection
                 'id' => $product->id,
                 'name' => $product->name,
                 'slug' => $product->slug,
+                'on_flashsale' => false,
                 'in_stock' => $product->in_stock,
                 'avatar' => asset($product->avatar)
             ];
+            if ($product->on_flash_sale) {
+                $data['flashsale_price'] = $product->flashsale_price * $discount ?: null;
+                $data['on_flashsale'] = true;
+            }
             if ($product->type == ProductType::Simple) {
-
                 $data['price'] = $product->price * $discount;
                 $data['promotion_price'] = $product->promotion_price * $discount ?: null;
             } elseif ($product->productVariations) {
-                if ($product->productVariations->count() == 1) {
-                    $data['price'] = $product->productVariations[0]->price * $discount;
-                    $data['promotion_price'] = $product->productVariations[0]->promotion_price * $discount ?: null;
-                } elseif ($product->productVariations->count() > 1) {
-                    $price_variation = array_column($product->productVariations->toArray(), 'price');
-                    $promotion_price_variation = array_column($product->productVariations->toArray(), 'promotion_price');
+                $price_variation = array_column($product->productVariations->toArray(), 'price');
+                $promotion_price_variation = array_column($product->productVariations->toArray(), 'promotion_price');
 
-                    $data['min_promotion_price'] = min($promotion_price_variation) * $discount ?: null;
-                    $data['min_price'] = min($price_variation) * $discount;
-                    $data['max_price'] = max($price_variation) * $discount;
-                }
+                $data['min_promotion_price'] = min($promotion_price_variation) * $discount ?: null;
+                $data['min_price'] = min($price_variation) * $discount;
+                $data['max_price'] = max($price_variation) * $discount;
             }
             return $data;
         });

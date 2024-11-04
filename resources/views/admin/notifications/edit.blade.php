@@ -27,18 +27,15 @@
                     @include('admin.notifications.forms.edit-left')
                     @include('admin.notifications.forms.edit-right')
                 </div>
-                @include('admin.forms.actions-fixed')
             </x-form>
         </div>
     </div>
 @endsection
 
 @push('libs-js')
-    <!-- button in datatable -->
     <script src="{{ asset('/public/libs/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('/public/libs/select2/dist/js/i18n/'.trans()->getLocale().'.js') }}"></script>
     <script src="{{ asset('/public/libs/jquery-throttle-debounce/jquery.ba-throttle-debounce.min.js') }}"></script>
-
 @endpush
 
 @push('custom-js')

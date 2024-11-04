@@ -3,7 +3,10 @@
 namespace App\Http\Requests\ShoppingCart;
 
 use App\Admin\Http\Requests\BaseRequest;
+use App\Enums\Order\OrderStatus;
 use App\Enums\Payment\PaymentMethod;
+use App\Models\Order;
+use App\Models\ShoppingCart;
 use Illuminate\Validation\Rules\Enum;
 
 class CheckoutRequest extends BaseRequest
@@ -34,5 +37,31 @@ class CheckoutRequest extends BaseRequest
             'order.phone_other' => ['nullable'],
             'order.note_other' => ['nullable'],
         ];
+    }
+
+    protected function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $userId = auth()->id();
+            if ($userId) {
+                $cartIds = $this->input('shopping_cart_id');
+
+                $invalidCartIds = ShoppingCart::whereIn('id', $cartIds)
+                    ->where('user_id', '!=', $userId)
+                    ->pluck('id')
+                    ->all();
+
+                if (!empty($invalidCartIds)) {
+                    $validator->errors()->add('id', 'Một hoặc nhiều giỏ hàng không thuộc về người dùng hiện tại.');
+                }
+                $pendingOrdersCount = Order::where('user_id', $userId)
+                    ->where('status', OrderStatus::Pending)
+                    ->count();
+
+                if ($pendingOrdersCount >= 3) {
+                    $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
+                }
+            }
+        });
     }
 }

@@ -44,4 +44,24 @@ class Order extends Model
     {
         return $query->where('user_id', auth()->user()->id);
     }
+
+    public function discount(): HasOneThrough
+    {
+        return $this->hasOneThrough(Discount::class, DiscountApplication::class, 'order_id', 'id', 'id', 'discount_code_id');
+    }
+
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function ward(): BelongsTo
+    {
+        return $this->belongsTo(Ward::class, 'ward_id');
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
 }

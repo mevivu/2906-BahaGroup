@@ -31,7 +31,7 @@ class ProductRepository extends AdminProductRepository implements ProductReposit
             ->get();
         return $this->instance;
     }
-    public function getSearchByKeysWithRelations(array $data, array $relations = ['productVariations'])
+    public function getSearchByKeysWithRelations(array $data)
     {
         $this->instance = $this->model->active();
 
@@ -39,7 +39,7 @@ class ProductRepository extends AdminProductRepository implements ProductReposit
             $this->instance = $this->instance->where('name', 'like', "%{$data['keywords']}%");
         }
 
-        $this->instance = $this->instance->with($relations)
+        $this->instance = $this->instance
             ->orderBy('id', 'desc');
 
         // Kiểm tra và áp dụng phân trang

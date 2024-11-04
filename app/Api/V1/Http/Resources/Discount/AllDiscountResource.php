@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Api\V1\Http\Resources\Notification;
+namespace App\Api\V1\Http\Resources\Discount;
 
-use App\Enums\Notification\NotificationStatus;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use JsonSerializable;
 
-class NotificationResource extends ResourceCollection
+class AllDiscountResource extends ResourceCollection
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +17,8 @@ class NotificationResource extends ResourceCollection
      */
     public function toArray($request): array|JsonSerializable|Arrayable
     {
-        return $this->collection->map(function ($notification) {
-            return new NotificationDetailResource($notification);
+        return $this->collection->map(function ($item) {
+            return new DiscountResource($item);
         });
     }
 }

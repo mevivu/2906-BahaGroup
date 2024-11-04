@@ -5,6 +5,8 @@ use App\Enums\DefaultActiveStatus;
 use App\Enums\DefaultStatus;
 use App\Enums\Discount\DiscountType;
 use App\Enums\FeaturedStatus;
+use App\Enums\Notification\NotificationStatus;
+use App\Enums\Notification\NotificationType;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Payment\PaymentMethod;
 use App\Enums\Order\OrderType;
@@ -21,6 +23,14 @@ return [
         Gender::Male->value => 'Nam',
         Gender::Female->value => 'Nữ',
         Gender::Other->value => 'Khác',
+    ],
+    NotificationType::class => [
+        NotificationType::All->value => 'Tất cả',
+        NotificationType::Customer->value => 'Một vài người cụ thể',
+    ],
+    NotificationStatus::class => [
+        NotificationStatus::READ->value => 'Đã đọc',
+        NotificationStatus::NOT_READ->value => 'Chưa đọc',
     ],
     DefaultActiveStatus::class => [
         DefaultActiveStatus::Active->value => 'Có',
@@ -89,13 +99,9 @@ return [
     ],
     OrderStatus::class => [
         OrderStatus::Pending->value => 'Chờ xác nhận',
-        OrderStatus::Confirmed->value => ' Đã xác nhận',
+        OrderStatus::Confirmed->value => 'Đã xác nhận',
         // OrderStatus::Completed->value => 'Hoàn thành',
         OrderStatus::Cancelled->value => 'Hủy bỏ',
-    ],
-    OrderType::class => [
-        OrderType::Renting->value => 'Thuê',
-        OrderType::Booking->value => 'Đặt',
     ],
     DiscountType::class => [
         DiscountType::Money->value => 'Tiền',

@@ -111,6 +111,26 @@ class Product extends Model
     {
         return $query->where('type', ProductType::Variable);
     }
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'product_id', 'id');
+    }
+
+    public function flash_sales(): BelongsToMany
+    {
+        return $this->belongsToMany(FlashSale::class, 'flash_sales_products', 'product_id', 'flash_sale_id');
+    }
+
+    public function getOnFlashSaleAttribute()
+    {
+        $now = Carbon::now();
+
+        return $this->flash_sales()
+            ->where('start_time', '<=', $now)
+            ->where('end_time', '>=', $now)
+            ->whereRaw('qty > sold')
+            ->first();
+    }
 
     public function order_details(): HasMany
     {

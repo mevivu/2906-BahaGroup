@@ -26,17 +26,22 @@ class ShowProductResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'in_stock' => $this->in_stock,
+            'on_flashsale' => $this->on_flash_sale ? true : false,
             'avatar' => asset($this->avatar),
             'gallery' => $this->gallery ? array_map(function ($value) {
                 return asset($value);
             }, $this->gallery->toArray()) : [],
-            'desc' => $this->desc
+            'desc' => $this->desc,
+            'avg_rating' => $this->avg_rating,
+            'reviews' => $this->reviews
         ];
 
         if ($this->type == ProductType::Simple) {
-
             $data['price'] = $this->price * $discount;
             $data['promotion_price'] = $this->promotion_price * $discount ?: null;
+            if ($this->on_flash_sale) {
+                $data['flashsale_price'] = $this->flashsale_price * $discount ?: null;
+            }
         } elseif ($this->productAttributes) {
             $data = array_merge($data, $this->handlePriceVariation($discount));
 
@@ -48,6 +53,7 @@ class ShowProductResource extends JsonResource
                     'id' => $item->id,
                     "price" => $item->price,
                     "promotion_price" => $item->promotion_price,
+                    "flashsale_price" => $this->on_flash_sale ? $item->flashsale_price : null,
                     "image" => $item->image,
                     'attributeVariations' => $item->attributeVariations->map(function ($item) {
                         return [

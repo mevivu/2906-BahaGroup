@@ -19,6 +19,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
 use App\Admin\Traits\AuthService;
 use App\Enums\Discount\DiscountType;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Payment\PaymentMethod;
 
 class OrderController extends Controller
@@ -91,7 +92,8 @@ class OrderController extends Controller
     {
         $payment_methods = PaymentMethod::asSelectArray();
         return view($this->view['create'], [
-            'payment_methods' => $payment_methods
+            'payment_methods' => $payment_methods,
+            'payment_statuses' => PaymentStatus::asSelectArray()
         ]);
     }
     public function store(OrderRequest $request): RedirectResponse
@@ -108,10 +110,12 @@ class OrderController extends Controller
     }
     public function edit($id): Factory|View|Application
     {
-        $order = $this->repository->findOrFailWithRelations($id);
-        $status = OrderStatus::asSelectArray();
-        $payment_methods = PaymentMethod::asSelectArray();
-        return view($this->view['edit'], compact('order', 'status', 'payment_methods'));
+        return view($this->view['edit'], [
+            'order' => $this->repository->findOrFailWithRelations($id),
+            'status' => OrderStatus::asSelectArray(),
+            'payment_methods' => PaymentMethod::asSelectArray(),
+            'payment_statuses' => PaymentStatus::asSelectArray()
+        ]);
     }
     public function update(OrderRequest $request): RedirectResponse
     {

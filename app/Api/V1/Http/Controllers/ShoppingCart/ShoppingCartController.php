@@ -46,12 +46,14 @@ class ShoppingCartController extends Controller
      *           "name": "Iphone 16",
      *           "slug": "iphone-16-1",
      *           "in_stock": true,
+     *           "on_flashsale": true,
      *           "avatar": "/public/assets/images/default-image.png"
      *       },
      *       "product_variation": {
      *           "id": 6,
-     *           "price": 33333333,
-     *           "promotion_price": null,
+     *           "price": 50000,
+     *           "promotion_price": 40000,
+     *           "flashsale_price": 30000,
      *           "image": "/public/assets/images/default-image.png",
      *           "attribute_variations": [
      *               {

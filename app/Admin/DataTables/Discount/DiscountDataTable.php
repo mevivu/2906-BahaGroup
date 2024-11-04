@@ -14,12 +14,10 @@ class DiscountDataTable extends BaseDataTable
 
     public function __construct(
         DiscountRepositoryInterface $repository
-    )
-    {
+    ) {
         $this->repository = $repository;
 
         parent::__construct();
-
     }
 
     public function setView(): void
@@ -29,6 +27,7 @@ class DiscountDataTable extends BaseDataTable
             'title' => 'admin.discounts.datatable.title',
             'edit_link' => 'admin.discounts.datatable.edit-link',
             'type' => 'admin.discounts.datatable.type',
+            'discount' => 'admin.discounts.datatable.discount',
         ];
     }
 
@@ -37,7 +36,7 @@ class DiscountDataTable extends BaseDataTable
 
         $this->columnAllSearch = [0, 1, 2, 3, 4, 5, 6];
 
-        $this->columnSearchDate = [1,2];
+        $this->columnSearchDate = [1, 2];
 
         $this->columnSearchSelect = [
             [
@@ -45,7 +44,6 @@ class DiscountDataTable extends BaseDataTable
                 'data' => DiscountType::asSelectArray()
             ],
         ];
-
     }
 
     /**
@@ -56,7 +54,6 @@ class DiscountDataTable extends BaseDataTable
     public function query(): Builder
     {
         return $this->repository->getQueryBuilder();
-
     }
 
     protected function setCustomColumns(): void
@@ -72,7 +69,7 @@ class DiscountDataTable extends BaseDataTable
             'date_end' => '{{ format_datetime($date_end) }}',
             'date_start' => '{{ format_datetime($date_start) }}',
             'min_order_amount' => '{{ format_price($min_order_amount) }}',
-            'discount_value' => '{{ format_price($discount_value) }}',
+            'discount_value' => $this->view['discount'],
         ];
     }
 
@@ -85,11 +82,8 @@ class DiscountDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['action', 'code', 'type'];
+        $this->customRawColumns = ['action', 'code', 'type', 'discount_value'];
     }
 
-    public function setCustomFilterColumns(): void
-    {
-
-    }
+    public function setCustomFilterColumns(): void {}
 }

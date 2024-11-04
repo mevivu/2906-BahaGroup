@@ -23,6 +23,18 @@
 				</div>
 				<div class="card mb-3">
 								<div class="card-header">
+												<span><i class="ti ti-credit-card-pay me-2"></i>{{ __('Trạng thái thanh toán') }}</span>
+								</div>
+								<div class="card-body p-2">
+												<x-select class="form-select" name="order[payment_status]" :required="true">
+																@foreach ($payment_statuses as $key => $value)
+																				<x-select-option :value="$key" :title="$value" />
+																@endforeach
+												</x-select>
+								</div>
+				</div>
+				<div class="card mb-3">
+								<div class="card-header">
 												<i class="ti ti-discount"></i>
 												<span class="ms-2">{{ __('Mã giảm giá') }}</span>
 								</div>

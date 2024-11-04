@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('icon')->nullable();
             $table->integer('position')->default(0);
             $table->boolean('is_active')->default(DefaultActiveStatus::Active->value);
+            $table->boolean('is_menu')->default(DefaultActiveStatus::Active->value);
             $table->tinyInteger('is_home_slider_1')->default(HomeSliderOption::InActive->value);
             $table->tinyInteger('is_home_slider_2')->default(HomeSliderOption::InActive->value);
             $table->timestamps();

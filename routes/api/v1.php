@@ -10,6 +10,7 @@ Route::controller(App\Api\V1\Http\Controllers\Lookup\LookupController::class)
         Route::get('/payment-status', 'paymentStatus')->name('paymentStatus');
         Route::get('/payment-method', 'paymentMethod')->name('paymentMethod');
         Route::get('/order-status', 'orderStatus')->name('orderStatus');
+        Route::get('/discount-code', 'discount')->name('discount');
         Route::get('/gender', 'gender')->name('gender');
     });
 
@@ -56,7 +57,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/store', 'store')->name('store');
-            Route::put('/update', 'update')->name('update');
+            Route::post('/checkout', 'checkout')->name('checkout');
+            Route::post('/update', 'update')->name('update');
             Route::delete('/delete', 'delete')->name('delete');
         });
 });
@@ -73,12 +75,12 @@ Route::prefix('/categories')
     });
 
 Route::prefix('/products')
+    ->as('product')
     ->group(function () {
         Route::controller(App\Api\V1\Http\Controllers\Product\ProductController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/show/{id}', 'show')->name('show');
-                Route::get('/search', 'search')->name('search');
             });
         Route::controller(App\Api\V1\Http\Controllers\Product\ProductVariationController::class)
             ->prefix('/variation')
@@ -104,6 +106,7 @@ Route::controller(App\Api\V1\Http\Controllers\Auth\AuthController::class)
             Route::post('/update-password', 'updatePassword')->name('updatePassword');
         });
         Route::post('/register', 'register')->name('register');
+        Route::post('/active', 'active')->name('active');
         Route::post('/login', 'login')->name('login');
         Route::post('/delete', 'delete')->name('delete');
     });

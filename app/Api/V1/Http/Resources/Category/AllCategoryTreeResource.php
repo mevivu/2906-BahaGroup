@@ -25,7 +25,7 @@ class AllCategoryTreeResource extends ResourceCollection
             'id' => $category->id,
             'name' => $category->name,
             'slug' => $category->slug,
-            'avatar' => asset($category->avatar)
+            'avatar' => asset($category->avatar),
         ];
         if ($category->children && $category->children->count() > 0) {
             $data['children'] = $category->children->map(function ($category) {

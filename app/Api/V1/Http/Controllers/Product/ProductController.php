@@ -6,8 +6,6 @@ use App\Admin\Http\Controllers\Controller;
 use App\Api\V1\Repositories\Product\ProductRepositoryInterface;
 use App\Api\V1\Http\Resources\Product\{AllProductResource, ShowProductResource};
 use App\Api\V1\Http\Requests\Product\ProductRequest;
-use App\Api\V1\Http\Requests\Product\ProductSearchRequest;
-use Illuminate\Http\JsonResponse;
 
 /**
  * @group Sản phẩm
@@ -42,9 +40,24 @@ class ProductController extends Controller
      *               "name": "Iphone 14",
      *               "slug": "iphone-14",
      *               "in_stock": true,
+     *               "on_flashsale": true,
+     *               "flashsale_price": 20000,
      *               "avatar": "http://localhost/topzone/public/assets/images/default-image.png",
      *               "price": 20900,
-     *               "promotion_price": 10000
+     *               "promotion_price": 10000,
+     *               "review": [
+     *                  {
+     *                      "id": 7,
+     *                      "user_id": 1,
+     *                      "rating": 5,
+     *                      "content": "Hài lòng",
+     *                      "product_id": 16,
+     *                      "created_at": "2024-11-01T08:06:30.000000Z",
+     *                      "updated_at": "2024-11-01T08:06:30.000000Z",
+     *                      "order_id": null
+     *                  }
+     *              ],
+     *              "avg_rating": 5
      *           }
      *      ]
      * }
@@ -55,7 +68,6 @@ class ProductController extends Controller
      */
     public function index(ProductRequest $request)
     {
-
         $data = $request->validated();
 
         $products = $this->repository->getSearchByKeysWithRelations($data);
@@ -89,9 +101,24 @@ class ProductController extends Controller
      *               "name": "Iphone 14",
      *               "slug": "iphone-14",
      *               "in_stock": true,
+     *               "on_flashsale": true,
+     *               "flashsale_price": 20000,
      *               "avatar": "http://localhost/topzone/public/assets/images/default-image.png",
      *               "price": 20900,
-     *               "promotion_price": 10000
+     *               "promotion_price": 10000,
+     *               "review": [
+     *                  {
+     *                      "id": 7,
+     *                      "user_id": 1,
+     *                      "rating": 5,
+     *                      "content": "Hài lòng",
+     *                      "product_id": 16,
+     *                      "created_at": "2024-11-01T08:06:30.000000Z",
+     *                      "updated_at": "2024-11-01T08:06:30.000000Z",
+     *                      "order_id": null
+     *                  }
+     *               ],
+     *               "avg_rating": 5
      *           }
      *      ]
      * }

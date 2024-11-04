@@ -5,6 +5,7 @@ namespace App\Api\V1\Http\Resources\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Api\V1\Support\AuthSupport;
 use App\Enums\Product\ProductType;
+use Illuminate\Support\Facades\Log;
 
 class ShowOrderDetailResource extends JsonResource
 {

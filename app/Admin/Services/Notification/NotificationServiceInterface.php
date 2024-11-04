@@ -23,20 +23,5 @@ interface NotificationServiceInterface
      *
      */
     public function update(Request $request);
-
-    /**
-     * Xóa
-     *
-     * @param int $id
-     *
-     * @return boolean
-     */
     public function delete($id);
-
-    public function updateDeviceToken($request);
-
-    public function getNotifications(Request $request);
-
-    public function updateStatus(Request $request);
-
 }

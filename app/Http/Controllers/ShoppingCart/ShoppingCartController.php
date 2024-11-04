@@ -14,7 +14,6 @@ use App\Enums\Payment\PaymentMethod;
 use App\Http\Requests\ShoppingCart\ApplyDiscountCodeRequest;
 use App\Http\Requests\ShoppingCart\ChangeQtyRequest;
 use App\Http\Requests\ShoppingCart\CheckoutRequest;
-use App\Http\Requests\ShoppingCart\CreatePaymentRequest;
 use App\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Traits\ResponseController;
 use Illuminate\Http\Request;

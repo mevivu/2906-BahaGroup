@@ -13,16 +13,10 @@ class ProductRequest extends BaseRequest
      */
     protected function methodGet()
     {
-        if ($this->routeIs('api.v1.product.show')) {
-            return [
-                'id' => ['required', 'exists:App\Models\Product,id']
-            ];
-        } elseif ($this->routeIs('api.v1.product.index') || $this->routeIs('api.v1.product.auth.index')) {
-            return [
-                'keywords' => ['nullable', 'string'],
-                'limit' => ['nullable', 'string'],
-                'page' => ['nullable', 'string'],
-            ];
-        }
+        return [
+            'keywords' => ['nullable', 'string'],
+            'limit' => ['nullable', 'string'],
+            'page' => ['nullable', 'string'],
+        ];
     }
 }

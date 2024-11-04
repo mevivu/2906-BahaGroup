@@ -19,13 +19,6 @@ class OrderRepository extends AdminOrderRepository implements OrderRepositoryInt
         return $this->instance;
     }
 
-    public function findOrFailWithRelations($id, array $relations = ['details'])
-    {
-        $this->findOrFail($id);
-        $this->instance = $this->instance->load($relations);
-        return $this->instance;
-    }
-
     public function findOrFail($id)
     {
         $this->instance = $this->model->findOrFail($id);

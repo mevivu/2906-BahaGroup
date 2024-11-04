@@ -1,658 +1,54 @@
 <?php
 
 return [
-    'area' => [
-        'name' => [
-            'title' => 'name',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'status' => [
-            'title' => 'status',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'address' => [
-            'title' => 'address',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'notifications' => [
-        'title' => [
-            'title' => 'Tiêu đề',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'store_id' => [
-            'title' => 'Cửa hàng nhận',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'driver_id' => [
-            'title' => 'Tài xế nhận',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'user_id' => [
-            'title' => 'Khách hàng nhận',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'message' => [
-            'title' => 'Nội dung',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'status' => [
-            'title' => 'status',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-        ],
-
-        'created_at' => [
-            'title' => 'Ngày thông báo',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle',
-        ],
-
-    ],
     'discount' => [
         'code' => [
             'title' => 'Mã',
+            'icon' => 'ti-discount-2',  // biểu tượng mã giảm giá
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'date_start' => [
             'title' => 'Ngày bắt đầu',
+            'icon' => 'ti-calendar-event',  // biểu tượng ngày bắt đầu
             'orderable' => false,
             'addClass' => 'text-center align-middle',
             'visible' => true
         ],
         'date_end' => [
             'title' => 'Ngày kết thúc',
+            'icon' => 'ti-calendar-off',  // biểu tượng ngày kết thúc
             'orderable' => false,
             'addClass' => 'text-center align-middle',
             'visible' => true
         ],
         'max_usage' => [
             'title' => 'Số lượng phiếu',
+            'icon' => 'ti-ticket',  // biểu tượng số lượng phiếu
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
         'min_order_amount' => [
             'title' => 'Giá trị ĐH',
+            'icon' => 'ti-currency-dollar',  // biểu tượng giá trị đơn hàng
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
         'type' => [
             'title' => 'Loại',
+            'icon' => 'ti-tag',  // biểu tượng loại giảm giá
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
         'discount_value' => [
-            'title' => 'giá trị giảm',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'topping' => [
-        'name' => [
-            'title' => 'Tên',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'price' => [
-            'title' => 'Giá',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'status' => [
-            'title' => 'Trạng thái',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'avatar' => [
-            'title' => 'Ảnh',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => false
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'vehicle' => [
-        'id' => [
-            'title' => 'Mã phương tiện',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'vehicle_owner' => [
-            'title' => 'Chủ xe',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'driver' => [
-            'title' => 'Tài xế',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'name' => [
-            'title' => 'Tên xe',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'vehicle_company' => [
-            'title' => 'Nhà sản xuất',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'status' => [
-            'title' => 'Trạng thái',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'color' => [
-            'title' => 'Màu phương tiện',
-            'orderable' => false,
-            'visible' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'type' => [
-            'title' => 'Loại xe',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'license_plate' => [
-            'title' => 'Biển số xe',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'Ngày đặt',
-            'orderable' => false,
-            'visible' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'module' => [
-        'id' => [
-            'title' => 'ID',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'name' => [
-            'title' => 'Tên Module',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'status' => [
-            'title' => 'Trạng thái',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'role' => [
-        'id' => [
-            'title' => 'ID',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'title' => [
-            'title' => 'Tên vai trò',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'name' => [
-            'title' => 'Slug ( role_name )',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'guard_name' => [
-            'title' => 'Vai trò của nhóm ( Guard Name )',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'permission' => [
-        'id' => [
-            'title' => 'ID',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'title' => [
-            'title' => 'Tên quyền',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'name' => [
-            'title' => 'Slug ( Permission_name )',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'module_id' => [
-            'title' => 'Thuộc Module',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'guard_name' => [
-            'title' => 'Nhóm quyền ( Guard Name )',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'admin' => [
-
-        'fullname' => [
-            'title' => 'Họ tên',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'phone' => [
-            'title' => 'Số điện thoại',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'email' => [
-            'title' => 'Email',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'roles' => [
-            'title' => 'Vai trò',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'created_at' => [
-            'title' => 'Ngày tạo',
-            'orderable' => false,
-            'visible' => false
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle',
-        ],
-    ],
-    'user' => [
-
-        'fullname' => [
-            'title' => 'Họ tên',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'email' => [
-            'title' => 'Email',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'phone' => [
-            'title' => 'Số điện thoại',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'gender' => [
-            'title' => 'Giới tính',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-            'visible' => false
-        ],
-        'created_at' => [
-            'title' => 'Ngày tạo',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => false
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'store' => [
-        'priority' => [
-            'title' => 'priority',
-            'addClass' => 'text-center align-middle',
-            'orderable' => true
-        ],
-        'store_name' => [
-            'title' => 'storeName',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'category' => [
-            'title' => 'category2',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'area' => [
-            'title' => 'area',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'open_hours_1' => [
-            'title' => 'operatingTime',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-            'visible' => false
-        ],
-        'status' => [
-            'title' => 'status',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'address_detail' => [
-            'title' => 'address',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-            'visible' => false
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-
-    ],
-    'store_category' => [
-        'name' => [
-            'title' => 'name',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'status' => [
-            'title' => 'status',
-            'orderable' => false,
-            'width' => '150px',
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'store_product' => [
-        'name' => [
-            'title' => 'name',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'view-topping' => [
-            'title' => 'Topping',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'view-discount' => [
-            'title' => 'Discount',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-
-    ],
-    'product_topping' => [
-        'name' => [
-            'title' => 'name',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-
-    ],
-    'category' => [
-        'name' => [
-            'title' => 'Tên danh mục',
-            'orderable' => false,
-            'addClass' => 'align-middle text-center'
-        ],
-        'avatar' => [
-            'title' => 'Hình ảnh',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'is_active' => [
-            'title' => 'Trạng thái',
-            'orderable' => false,
-            'addClass' => 'align-middle text-center'
-        ],
-        'created_at' => [
-            'title' => 'Ngày tạo',
-            'orderable' => false,
-            'addClass' => 'align-middle text-center',
-            'visible' => false
-        ],
-        'icon' => [
-            'title' => 'Icon',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'products' => [
-            'title' => 'Danh sách sản phẩm',
+            'title' => 'Giá trị giảm',
+            'icon' => 'ti-cash-banknote',  // biểu tượng giá trị giảm giá
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'attribute' => [
-        'position' => [
-            'title' => 'Vị trí',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'name' => [
-            'title' => 'Tên thuộc tính',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'type' => [
-            'title' => 'Loại',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'variations' => [
-            'title' => 'Các biến thể',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'attributes_variations' => [
-        'position' => [
-            'title' => 'Vị trí',
-            'orderable' => false,
-        ],
-        'name' => [
-            'title' => 'Tên biến thể',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'desc' => [
-            'title' => 'Mô tả',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        'action' => [
-            'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'product' => [
-        'avatar' => [
-            'title' => 'Ảnh',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'name' => [
-            'title' => 'Tên',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'in_stock' => [
-            'title' => 'Kho',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'price' => [
-            'title' => 'Giá',
-            'width' => '150px',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'categories' => [
-            'title' => 'Danh mục',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'Ngày tạo',
-            'orderable' => false,
-            'visible' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
+            'icon' => 'ti-settings',  // biểu tượng cài đặt
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -662,21 +58,25 @@ return [
     'flash_sale' => [
         'name' => [
             'title' => 'Tên Flash Sale',
+            'icon' => 'ti-bolt',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'start_time' => [
             'title' => 'Thời gian bắt đầu',
+            'icon' => 'ti-clock-bolt',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'end_time' => [
             'title' => 'Thời gian kết thúc',
+            'icon' => 'ti-clock-x',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -686,36 +86,433 @@ return [
     'review' => [
         'id' => [
             'title' => 'Mã đánh giá',
+            'icon' => 'ti-tag',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'user' => [
             'title' => 'Khách hàng',
+            'icon' => 'ti-user',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'product' => [
             'title' => 'Sản phẩm',
+            'icon' => 'ti-brand-producthunt',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
         'rating' => [
             'title' => 'Số sao đánh giá',
+            'icon' => 'ti-star',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'content' => [
             'title' => 'Bình luận',
+            'icon' => 'ti-message',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
+            'icon' => 'ti-calendar',
             'title' => 'Ngày đánh giá',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'installment_types' => [
+        'name' => [
+            'title' => 'Tên loại trả góp',
+            'icon' => 'ti-tag',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'duration_months' => [
+            'title' => 'Tổng số tháng trả góp',
+            'icon' => 'ti-clock',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'monthly_percentage' => [
+            'title' => 'Phần trăm đơn hàng phải trả mỗi tháng',
+            'icon' => 'ti-percentage',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'description' => [
+            'title' => 'Mô tả',
+            'icon' => 'ti-message',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
+    'notification' => [
+        'title' => [
+            'title' => 'Tiêu đề',
+            'icon' => 'ti-bell',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'user_id' => [
+            'title' => 'Khách hàng nhận',
+            'icon' => 'ti-user',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'message' => [
+            'title' => 'Nội dung',
+            'icon' => 'ti-message',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'status' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-flag',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'created_at' => [
+            'title' => 'Ngày thông báo',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
+    'module' => [
+        'id' => [
+            'title' => 'ID',
+            'icon' => 'ti-hash',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'name' => [
+            'title' => 'Tên Module',
+            'icon' => 'ti-box',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'status' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-check',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-tools',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
+    'permission' => [
+        'id' => [
+            'title' => 'ID',
+            'icon' => 'ti-hash',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'title' => [
+            'title' => 'Tên quyền',
+            'icon' => 'ti-lock',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'name' => [
+            'title' => 'Slug ( Permission_name )',
+            'icon' => 'ti-tag',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'module_id' => [
+            'title' => 'Thuộc Module',
+            'icon' => 'ti-folder',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'guard_name' => [
+            'title' => 'Nhóm quyền ( Guard Name )',
+            'icon' => 'ti-shield',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'text-center align-middle',
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
+    'admin' => [
+        'fullname' => [
+            'title' => 'Họ tên',
+            'icon' => 'ti-user',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'phone' => [
+            'title' => 'Số điện thoại',
+            'icon' => 'ti-phone',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'email' => [
+            'title' => 'Email',
+            'icon' => 'ti-mail',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'roles' => [
+            'title' => 'Vai trò',
+            'icon' => 'ti-users',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'created_at' => [
+            'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'visible' => false,
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+    ],
+    'user' => [
+        'fullname' => [
+            'title' => 'Họ tên',
+            'icon' => 'ti-user',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false
+        ],
+        'email' => [
+            'title' => 'Email',
+            'icon' => 'ti-mail',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'phone' => [
+            'title' => 'Số điện thoại',
+            'icon' => 'ti-phone',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false
+        ],
+        'gender' => [
+            'title' => 'Giới tính',
+            'icon' => 'ti-gender',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+            'visible' => false
+        ],
+        'created_at' => [
+            'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+            'visible' => false
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'category' => [
+        'name' => [
+            'title' => 'Tên danh mục',
+            'icon' => 'ti-folder',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'avatar' => [
+            'title' => 'Hình ảnh',
+            'icon' => 'ti-photo',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'is_active' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'created_at' => [
+            'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center',
+            'visible' => false
+        ],
+        'icon' => [
+            'title' => 'Icon',
+            'icon' => 'ti-star',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'products' => [
+            'title' => 'Danh sách sản phẩm',
+            'icon' => 'ti-package',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'attribute' => [
+        'position' => [
+            'title' => 'Vị trí',
+            'icon' => 'ti-layers-intersect',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'name' => [
+            'title' => 'Tên thuộc tính',
+            'icon' => 'ti-tag',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'type' => [
+            'title' => 'Loại',
+            'icon' => 'ti-clipboard-list',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'variations' => [
+            'title' => 'Các biến thể',
+            'icon' => 'ti-list-check',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'attributes_variations' => [
+        'position' => [
+            'title' => 'Vị trí',
+            'icon' => 'ti-layers-intersect',
+            'orderable' => false,
+        ],
+        'name' => [
+            'title' => 'Tên biến thể',
+            'icon' => 'ti-tag',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'desc' => [
+            'title' => 'Mô tả',
+            'icon' => 'ti-description',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'product' => [
+        'avatar' => [
+            'title' => 'Ảnh',
+            'icon' => 'ti-photo',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'name' => [
+            'title' => 'Tên',
+            'icon' => 'ti-tag',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'in_stock' => [
+            'title' => 'Kho',
+            'icon' => 'ti-box',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'price' => [
+            'title' => 'Giá',
+            'width' => '150px',
+            'icon' => 'ti-currency-dollar',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'categories' => [
+            'title' => 'Danh mục',
+            'icon' => 'ti-folder',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'created_at' => [
+            'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'visible' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -725,80 +522,55 @@ return [
     'order' => [
         'id' => [
             'title' => 'Mã đơn hàng',
+            'icon' => 'ti-receipt',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'user' => [
-            'title' => 'customer',
+            'title' => 'Khách hàng',
+            'icon' => 'ti-user',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'payment_method' => [
             'title' => 'PT Thanh toán',
+            'icon' => 'ti-credit-card',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
         ],
         'status' => [
             'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'total' => [
             'title' => 'Tổng tiền',
+            'icon' => 'ti-currency-dollar',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'discount_value' => [
             'title' => 'Giảm giá',
+            'icon' => 'ti-currency-dollar',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'surcharge' => [
             'title' => 'Phụ thu',
+            'icon' => 'ti-currency-dollar',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
             'title' => 'Thời gian đặt',
+            'icon' => 'ti-calendar',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'order_user' => [
-        'id' => [
-            'title' => 'Mã đơn hàng',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'payment_method' => [
-            'title' => 'Phương thức thanh toán',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-        ],
-        'status' => [
-            'title' => 'Trạng thái',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'total' => [
-            'title' => 'Tổng tiền',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'Thời gian đặt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'action' => [
-            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -808,35 +580,41 @@ return [
     'slider' => [
         'name' => [
             'title' => 'Tên',
+            'icon' => 'ti-photo',
             'orderable' => false,
             'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
         'plain_key' => [
             'title' => 'Key',
+            'icon' => 'ti-key',
             'orderable' => false,
             'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
         'status' => [
             'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
             'orderable' => false,
             'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
         'items' => [
             'title' => 'Slider Item',
+            'icon' => 'ti-slideshow',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
             'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
             'orderable' => false,
             'visible' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -846,29 +624,34 @@ return [
     'slider_item' => [
         'title' => [
             'title' => 'Tên',
+            'icon' => 'ti-tag',
             'orderable' => false,
             'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
         'image' => [
             'title' => 'Hình ảnh',
+            'icon' => 'ti-photo',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'position' => [
             'title' => 'Vị trí',
+            'icon' => 'ti-layers-intersect',
             'orderable' => false,
             'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
             'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
             'orderable' => false,
             'visible' => false,
             'addClass' => 'text-center align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -877,28 +660,33 @@ return [
     ],
     'post_category' => [
         'avatar' => [
-            'title' => 'avatar',
+            'title' => 'Ảnh đại diện',
+            'icon' => 'ti-photo',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'name' => [
             'title' => 'Tên danh mục',
+            'icon' => 'ti-folder',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'status' => [
             'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'created_at' => [
             'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
             'visible' => false
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
@@ -908,120 +696,142 @@ return [
     'post' => [
         'image' => [
             'title' => 'Ảnh',
+            'icon' => 'ti-photo',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'title' => [
             'title' => 'Tiêu đề',
+            'icon' => 'ti-file',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'status' => [
             'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
         'is_featured' => [
             'title' => 'Nổi bật',
+            'icon' => 'ti-star',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
             'visible' => false
         ],
         'created_at' => [
             'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
             'orderable' => false,
             'addClass' => 'text-center align-middle',
             'visible' => false
         ],
-        //        'action' => [
-        //            'title' => 'Thao tác',
-        //            'orderable' => false,
-        //            'exportable' => false,
-        //            'printable' => false,
-        //            'addClass' => 'text-center align-middle'
-        //        ],
     ],
-    'driver' => [
-        'fullname' => [
-            'title' => 'fullname',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'id_card' => [
-            'title' => 'id_card',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'bank_name' => [
-            'title' => 'bank_name',
-            'addClass' => 'text-center align-middle',
-            'orderable' => false,
-        ],
-        //        'roles' => [
-        //            'title' => 'role',
-        //            'orderable' => false,
-        //            'visible' => false
-        //        ],
-        'order_accepted' => [
-            'title' => 'status',
-            'orderable' => false,
-        ],
-        'auto_accept' => [
-            'title' => 'Tự động nhận chuyến',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-
-        'created_at' => [
-            'title' => 'createdAt',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
-            'visible' => true
-        ],
-
-        'action' => [
-            'title' => 'action',
-            'orderable' => false,
-            'exportable' => false,
-            'printable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-    ],
-    'category_system' => [
+    'role' => [
         'id' => [
             'title' => 'ID',
+            'icon' => 'ti-id-badge',
             'orderable' => false,
             'width' => '150px',
-            'addClass' => 'text-center align-middle'
+            'addClass' => 'align-middle'
         ],
-
+        'title' => [
+            'title' => 'Tên vai trò',
+            'icon' => 'ti-user',
+            'orderable' => false,
+            'width' => '150px',
+            'addClass' => 'align-middle'
+        ],
         'name' => [
-            'title' => 'Tên dịch vụ',
+            'title' => 'Slug (role_name)',
+            'icon' => 'ti-tag',
             'orderable' => false,
             'width' => '150px',
-            'addClass' => 'text-center align-middle'
+            'addClass' => 'align-middle'
         ],
-        'avatar' => [
-            'title' => 'Hình ảnh',
+        'guard_name' => [
+            'title' => 'Vai trò của nhóm (Guard Name)',
+            'icon' => 'ti-shield',
             'orderable' => false,
-            'addClass' => 'text-center align-middle'
-        ],
-        'created_at' => [
-            'title' => 'Ngày tạo',
-            'orderable' => false,
-            'addClass' => 'text-center align-middle',
             'width' => '150px',
-            'visible' => true
+            'addClass' => 'align-middle'
         ],
         'action' => [
             'title' => 'Thao tác',
+            'icon' => 'ti-settings',
             'orderable' => false,
             'exportable' => false,
             'printable' => false,
-            'width' => '150px',
             'addClass' => 'text-center align-middle'
         ],
-
     ],
-
+    'transaction' => [
+        'checkbox' => [
+            'title' => '',
+            'icon' => 'ti-square',
+            'orderable' => false,
+            'exportable' => false,
+            'width' => '50px',
+            'printable' => false,
+            'addClass' => 'align-middle text-center',
+            'footer' => '<input type="checkbox" class="form-check-input check-all" />',
+        ],
+        'code' => [
+            'title' => 'Mã lệnh',
+            'icon' => 'ti-key',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'user' => [
+            'title' => 'Người tạo',
+            'icon' => 'ti-user',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'amount' => [
+            'title' => 'Số tiền',
+            'icon' => 'ti-currency-dollar',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'type' => [
+            'title' => 'Loại',
+            'icon' => 'ti-exchange',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'status' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'created_at' => [
+            'title' => 'Ngày tạo',
+            'icon' => 'ti-calendar',
+            'visible' => false,
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'paid_at' => [
+            'title' => 'Ngày thanh toán',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'due_date' => [
+            'title' => 'Hạn thanh toán',
+            'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'align-middle text-center'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
 ];

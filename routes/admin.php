@@ -16,6 +16,28 @@ Route::controller(App\Admin\Http\Controllers\Auth\LoginController::class)
 
 Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
 
+    //Notification
+    Route::prefix('/notifications')->as('notification.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\Notification\NotificationController::class)->group(function () {
+            Route::group(['middleware' => ['permission:createNotification', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewNotification', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
+
+            Route::group(['middleware' => ['permission:updateNotification', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
+
+            Route::group(['middleware' => ['permission:deleteNotification', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
+
     //Discount
     Route::controller(App\Admin\Http\Controllers\Discount\DiscountController::class)
         ->prefix('/discounts')

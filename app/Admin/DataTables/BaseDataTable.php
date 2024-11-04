@@ -2,6 +2,7 @@
 
 namespace App\Admin\DataTables;
 
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Column;
 
@@ -69,7 +70,8 @@ abstract class BaseDataTable extends DataTable
 
 
 
-    public function __construct(){
+    public function __construct()
+    {
 
         $this->setView();
 
@@ -87,8 +89,8 @@ abstract class BaseDataTable extends DataTable
 
         $this->setColumnSearch();
 
-        if(!empty($this->removeColumns)){
-            foreach($this->removeColumns as $value){
+        if (!empty($this->removeColumns)) {
+            foreach ($this->removeColumns as $value) {
                 unset($this->customEditColumns[$value], $this->customAddColumns[$value], $this->customFilterColumns[$value], $this->customRawColumns[$value]);
             }
         }
@@ -98,23 +100,28 @@ abstract class BaseDataTable extends DataTable
 
     abstract protected function setCustomColumns();
 
-    protected function setCustomEditColumns(){
+    protected function setCustomEditColumns()
+    {
         $this->customEditColumns = [];
     }
 
-    protected function setCustomAddColumns(){
+    protected function setCustomAddColumns()
+    {
         $this->customAddColumns = [];
     }
 
-    protected function setCustomFilterColumns(){
+    protected function setCustomFilterColumns()
+    {
         $this->customFilterColumns = [];
     }
 
-    protected function setCustomRawColumns(){
+    protected function setCustomRawColumns()
+    {
         $this->customRawColumns = [];
     }
 
-    public function getParameters(){
+    public function getParameters()
+    {
         return $this->parameters ?? [
             // 'responsive' => true,
             // 'ordering' => false,
@@ -123,65 +130,72 @@ abstract class BaseDataTable extends DataTable
             // 'searchDelay' => 350,
             // 'lengthMenu' => [ [3, 25, 50, -1], [20, 50, 100, "All"] ],
             'language' => [
-                'url' => asset('/public/libs/datatables/lang/'.trans()->getLocale().'.json')
+                'url' => asset('/public/libs/datatables/lang/' . trans()->getLocale() . '.json')
             ]
         ];
     }
 
 
-    public function setParameters(){
+    public function setParameters()
+    {
         return $this->parameters = $this->getParameters();
     }
 
-    public function setView(){
+    public function setView()
+    {
         $this->view = [];
     }
 
     protected function getColumns()
     {
         $this->exportVisiableColumns();
-
-        foreach($this->customColumns as $key => $items){
-            if(!in_array($key, $this->removeColumns)){
-
+        foreach ($this->customColumns as $key => $items) {
+            if (!in_array($key, $this->removeColumns)) {
                 $buildColumn = Column::make($key);
-                foreach($items as $key => $item){
-                    if($key == 'title'){
-                        $buildColumn = $buildColumn->$key(__($item));
-                    }else{
-                        $buildColumn = $buildColumn->$key($item);
+                foreach ($items as $attrKey => $item) {
+                    if ($attrKey == 'title') {
+                        $icon = isset($items['icon']) ? $items['icon'] : 'ti ti-columns-2';
+                        $iconHtml = "<i class='ti {$icon} me-1'></i>";
+                        $buildColumn = $buildColumn->$attrKey($iconHtml . __($item));
+                    } else {
+                        $buildColumn = $buildColumn->$attrKey($item);
                     }
                 }
                 array_push($this->buildColumns, $buildColumn);
             }
         }
         return $this->buildColumns;
-
     }
 
-    protected function customEditColumns(){
-        foreach($this->customEditColumns as $key => $value){
+
+    protected function customEditColumns()
+    {
+        foreach ($this->customEditColumns as $key => $value) {
             $this->instanceDataTable = $this->instanceDataTable->editColumn($key, $value);
         }
     }
 
-    protected function customAddColumns(){
-        foreach($this->customAddColumns as $key => $value){
+    protected function customAddColumns()
+    {
+        foreach ($this->customAddColumns as $key => $value) {
             $this->instanceDataTable = $this->instanceDataTable->addColumn($key, $value);
         }
     }
 
-    protected function customFilterColumns(){
-        foreach($this->customFilterColumns as $key => $value){
+    protected function customFilterColumns()
+    {
+        foreach ($this->customFilterColumns as $key => $value) {
             $this->instanceDataTable = $this->instanceDataTable->filterColumn($key, $value);
         }
     }
 
-    protected function customRawColumns(){
+    protected function customRawColumns()
+    {
         $this->instanceDataTable = $this->instanceDataTable->rawColumns($this->customRawColumns);
     }
 
-    protected function exportVisiableColumns(){
+    protected function exportVisiableColumns()
+    {
         if ($this->request && in_array($this->request->get('action'), ['excel', 'csv'])) {
             if ($this->request->get('visible_columns')) {
                 foreach ($this->customColumns as $key => $item) {
@@ -193,7 +207,8 @@ abstract class BaseDataTable extends DataTable
         }
     }
 
-    protected function startBuilderDataTable($query){
+    protected function startBuilderDataTable($query)
+    {
         $this->instanceDataTable = datatables()->eloquent($query);
     }
 
@@ -233,7 +248,8 @@ abstract class BaseDataTable extends DataTable
         return $this->instanceHtml;
     }
 
-    protected function htmlParameters(){
+    protected function htmlParameters()
+    {
 
         $this->parameters['buttons'] = $this->actions;
 
@@ -241,11 +257,11 @@ abstract class BaseDataTable extends DataTable
 
             moveSearchColumnsDatatable('#{$this->nameTable}');
 
-            searchColumsDataTable(this, ".json_encode($this->columnAllSearch).", ".json_encode($this->columnSearchDate).", ".json_encode($this->columnSearchSelect).", ".json_encode($this->columnSearchSelect2).");
+            searchColumsDataTable(this, " . json_encode($this->columnAllSearch) . ", " . json_encode($this->columnSearchDate) . ", " . json_encode($this->columnSearchSelect) . ", " . json_encode($this->columnSearchSelect2) . ");
 
             addWrapTableScroll('#{$this->nameTable}');
 
-            ".( !empty($this->columnSearchSelect2) ? 'addSelect2(); select2LoadDataMany();' : '' )."
+            " . (!empty($this->columnSearchSelect2) ? 'addSelect2(); select2LoadDataMany();' : '') . "
         }";
 
         $this->instanceHtml = $this->instanceHtml
@@ -254,6 +270,6 @@ abstract class BaseDataTable extends DataTable
 
     protected function filename(): string
     {
-        return $this->nameTable .'-' . date('YmdHis');
+        return $this->nameTable . '-' . date('YmdHis');
     }
 }

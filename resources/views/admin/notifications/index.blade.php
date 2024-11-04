@@ -15,16 +15,6 @@
             <div class="card">
                 <div class="card-header justify-content-between">
                     <h2 class="mb-0">@lang('Danh Sách Thông Báo')</h2>
-                    <div class="d-flex justify-content-between gap-2">
-                        <x-button.modal-delete class="btn btn-danger d-none" id="deleteSelect">
-                            <i class="ti ti-trash"></i>
-                            <span class="ms-1">@lang('deleteMulti')</span>
-                        </x-button.modal-delete>
-                        <x-link :href="route('admin.notification.create')" class="btn btn-primary">
-                            <i class="ti ti-plus"></i>
-                            <span class="ms-1">@lang('add')</span>
-                        </x-link>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -42,7 +32,6 @@
 @endsection
 
 @push('libs-js')
-    <!-- button in datatable -->
     <script src="{{ asset('/public/vendor/datatables/buttons.server-side.js') }}"></script>
 @endpush
 

@@ -8,7 +8,5 @@ enum NotificationType: int
 {
     use Enum;
     case All = 1;
-    case Driver = 2;
-    case Store = 3;
-    case Customer = 4;
+    case Customer = 2;
 }

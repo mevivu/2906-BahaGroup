@@ -32,9 +32,11 @@ class ShoppingCartResource extends ResourceCollection
                     'avatar' => asset($shoppingCart->product->avatar)
                 ]
             ];
-
+            if ($shoppingCart->product->on_flash_sale) {
+                $data['product']['flashsale_price'] = $shoppingCart->product->flashsale_price * $discount ?: null;
+                $data['product']['on_flashsale'] = true;
+            }
             if ($shoppingCart->product->type == ProductType::Simple) {
-
                 $data['product']['price'] = $shoppingCart->product->price * $discount;
                 $data['product']['promotion_price'] = $shoppingCart->product->promotion_price * $discount ?: null;
             } elseif ($shoppingCart->productVariation) {
@@ -42,6 +44,7 @@ class ShoppingCartResource extends ResourceCollection
                     'id' => $shoppingCart->productVariation->id,
                     'price' => $shoppingCart->productVariation->price * $discount,
                     'promotion_price' => $shoppingCart->productVariation->promotion_price * $discount ?: null,
+                    'flashsale_price' => $shoppingCart->product->on_flash_sale ? $shoppingCart->productVariation->flashsale_price : null,
                     'image' => asset($shoppingCart->productVariation->image),
                     'attribute_variations' => $shoppingCart->productVariation->attributeVariations->map(function ($item) {
                         return [

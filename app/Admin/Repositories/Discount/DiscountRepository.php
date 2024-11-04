@@ -22,4 +22,15 @@ class DiscountRepository extends EloquentRepository implements DiscountRepositor
         }
         return $this->instance->get();
     }
+
+    public function getValid()
+    {
+        $this->instance = $this->model
+            ->where('max_usage', '>', 0)
+            ->where('status', 1)
+            ->whereDate('date_start', '<=', now())
+            ->whereDate('date_end', '>=', now());
+
+        return $this->instance->get();
+    }
 }
