@@ -38,7 +38,8 @@
 												<!-- gender -->
 												<div class="col-md-6 col-12">
 																<div class="mb-3">
-																				<label class="control-label"><i class="ti ti-gender-female"></i> {{ __('Giới tính') }}: D</label>
+																				<label class="control-label"><i class="ti ti-gender-female"></i> {{ __('Giới tính') }}: <span
+																												class="text-danger">*</span></label>
 																				<x-select name="gender" :required="true">
 																								@foreach ($gender as $key => $value)
 																												<x-select-option :value="$key" :title="__($value)" />

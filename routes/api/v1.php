@@ -51,17 +51,18 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/cancel/{id}', 'cancel')->name('cancel');
             Route::get('/show/{id}', 'show')->name('show');
         });
-    //shopping cart
-    Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartController::class)
-        ->prefix('/shopping-cart')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('/store', 'store')->name('store');
-            Route::post('/checkout', 'checkout')->name('checkout');
-            Route::post('/update', 'update')->name('update');
-            Route::delete('/delete', 'delete')->name('delete');
-        });
 });
+
+//shopping cart
+Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartController::class)
+    ->prefix('/shopping-cart')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::post('/checkout', 'checkout')->name('checkout');
+        Route::post('/update', 'update')->name('update');
+        Route::delete('/delete', 'delete')->name('delete');
+    });
 
 Route::prefix('/categories')
     ->group(function () {

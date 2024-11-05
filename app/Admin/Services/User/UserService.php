@@ -30,6 +30,7 @@ class UserService implements UserServiceInterface
             $data = $request->validated();
             $data['username'] = $data['phone'];
             $data['code'] = $this->createCodeUser();
+            dd($data);
 
             $user = $this->repository->create($data);
             $roles = $this->getRoleCustomer();

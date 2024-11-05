@@ -46,7 +46,7 @@ class ShoppingCartResource extends ResourceCollection
                     'promotion_price' => $shoppingCart->productVariation->promotion_price * $discount ?: null,
                     'flashsale_price' => $shoppingCart->product->on_flash_sale ? $shoppingCart->productVariation->flashsale_price : null,
                     'image' => asset($shoppingCart->productVariation->image),
-                    'attribute_variations' => $shoppingCart->productVariation->attributeVariations->map(function ($item) {
+                    'attributeVariations' => $shoppingCart->productVariation->attributeVariations->map(function ($item) {
                         return [
                             'id' => $item->id,
                             'name' => $item->name

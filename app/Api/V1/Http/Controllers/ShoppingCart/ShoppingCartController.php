@@ -3,11 +3,14 @@
 namespace App\Api\V1\Http\Controllers\ShoppingCart;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Traits\AuthService;
 use App\Api\V1\Http\Requests\ShoppingCart\CheckoutRequest;
 use App\Api\V1\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Api\V1\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
 use App\Api\V1\Http\Requests\ShoppingCart\ShoppingCartRequest;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResource;
+use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResourceNoLogin;
+use Illuminate\Http\Request;
 
 /**
  * @group Giỏ hàng
@@ -15,7 +18,7 @@ use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResource;
 
 class ShoppingCartController extends Controller
 {
-
+    use AuthService;
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
         ShoppingCartServiceInterface $service
@@ -74,15 +77,26 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $shoppingCart = $this->repository->getAuthCurrent();
-        $shoppingCart = new ShoppingCartResource($shoppingCart);
-        return response()->json([
-            'status' => 200,
-            'message' => __('Thực hiện thành công.'),
-            'data' => $shoppingCart
-        ]);
+        if ($this->getCurrentUser()) {
+            $shoppingCart = $this->repository->getAuthCurrent();
+            $shoppingCart = new ShoppingCartResource($shoppingCart);
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.'),
+                'data' => $shoppingCart
+            ]);
+        } else {
+            // Lấy giỏ hàng từ cookie
+            $shoppingCart = json_decode($request->cookie('cart', '[]'), true);
+            $shoppingCart = new ShoppingCartResourceNoLogin($shoppingCart);
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.'),
+                'data' => $shoppingCart
+            ]);
+        }
     }
     /**
      * Thêm sản phẩm vào giỏ hàng
@@ -118,16 +132,16 @@ class ShoppingCartController extends Controller
     public function store(ShoppingCartRequest $request)
     {
         $response = $this->service->store($request);
-        if ($response) {
+        if ($response === 1) {
             return response()->json([
-                'status' => 200,
-                'message' => __('Thực hiện thành công.')
-            ]);
+                'status' => 400,
+                'message' => __('Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa.'),
+            ], 400);
         }
         return response()->json([
-            'status' => 400,
-            'message' => __('Sản phẩm không có sẵn.')
-        ], 400);
+            'status' => 200,
+            'message' => __('Thêm vào giỏ hàng thành công.'),
+        ])->withCookie(cookie('cart', json_encode($response), 86400));
     }
 
     /**

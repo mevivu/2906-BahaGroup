@@ -17,13 +17,6 @@ class ProductVariation extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
-    public function __call($method, $parameters)
-    {
-        if ($method === 'attributeVariations') {
-            return $this->attribute_variations();
-        }
-        return parent::__call($method, $parameters);
-    }
 
     public function attribute_variations()
     {

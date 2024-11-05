@@ -18,6 +18,7 @@ use App\Enums\Product\ProductType;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class ShoppingCartService implements ShoppingCartServiceInterface
@@ -207,29 +208,83 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function store(Request $request)
     {
         $this->data = $request->validated();
-
         try {
-            $product = $this->productRepository->findOrFail($this->data['product_id']);
+            if ($this->getCurrentUser()) {
+                $product = $this->productRepository->findOrFail($this->data['product_id']);
 
-            $compare = [
-                'user_id' => auth()->user()->id,
-                'product_id' => $this->data['product_id']
-            ];
+                $compare = [
+                    'user_id' => auth()->user()->id,
+                    'product_id' => $this->data['product_id']
+                ];
 
-            if ($product->type == ProductType::Variable) {
-                $productVariation = $this->productVariationRepository->findByProductAndAttributeVariation($this->data['product_id'], $this->data['variation_id']);
-                $compare['product_variation_id'] = $productVariation->id;
+                if ($product->type == ProductType::Variable) {
+                    $productVariation = $this->productVariationRepository->findByProductAndAttributeVariation($this->data['product_id'], $this->data['variation_id']);
+                    $compare['product_variation_id'] = $productVariation->id;
+                }
+
+                $instance = $this->repository->updateOrCreate($compare, [
+                    'qty' => DB::raw("qty + {$this->data['qty']}")
+                ]);
+
+                return $instance;
+            } else {
+                return $this->storeNotLogin($request);
             }
-
-            $instance = $this->repository->updateOrCreate($compare, [
-                'qty' => DB::raw("qty + {$this->data['qty']}")
-            ]);
-
-            return $instance;
         } catch (\Throwable $th) {
             throw $th;
             return false;
         }
+    }
+
+    public function storeNotLogin(Request $request)
+    {
+        $this->data = $request->validated();
+
+        // Lấy giỏ hàng từ cookie
+        $cart = json_decode($request->cookie('cart', '[]'), true);
+
+        $product = $this->productRepository->findOrFail($this->data['product_id']);
+
+        // Kiểm tra số lượng sản phẩm
+        foreach ($cart as $item) {
+            if ($item['product_id'] == $this->data['product_id']) {
+                if ($product->isSimple()) {
+                    if ($product->qty < intval($this->data['qty']) + $item['qty']) {
+                        return 1;
+                    }
+                } else {
+                    $productVariation = $this->productVariationRepository->findByProductAndAttributeVariation($this->data['product_id'], $this->data['variation_id']);
+                    if ($productVariation->qty < intval($this->data['qty']) + $item['qty']) {
+                        return 1;
+                    }
+                }
+            }
+        }
+
+        $productExists = false;
+        foreach ($cart as &$item) {
+            if (
+                $item['product_id'] == $this->data['product_id'] &&
+                $item['variation_id'] == ($this->data['variation_id'] ?? null)
+            ) {
+                $item['qty'] += $this->data['qty'];
+                $productExists = true;
+                break;
+            }
+        }
+
+        if (!$productExists) {
+            $cart[] = [
+                'id' => $this->uniqidReal(),
+                'product' => $product,
+                'productVariation' => isset($this->data['variation_id']) ? $this->productVariationRepository->findByProductAndAttributeVariation($this->data['product_id'], $this->data['variation_id']) : null,
+                'product_id' => $this->data['product_id'],
+                'variation_id' => $this->data['variation_id'] ?? null,
+                'qty' => $this->data['qty'],
+            ];
+        }
+
+        return $cart;
     }
 
     public function update(Request $request)
