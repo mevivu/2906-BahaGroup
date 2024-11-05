@@ -23,7 +23,7 @@ class ProductAttributeRepository extends EloquentRepository implements ProductAt
                 'attribute_id' => $value,
             ], [
                 'position' => $key
-            ])->attributeVariations()
+            ])->attribute_variations()
                 ->sync($productAttribute['attribute_variation_id'][$value]);
         }
     }
@@ -36,7 +36,7 @@ class ProductAttributeRepository extends EloquentRepository implements ProductAt
                 'attribute_id' => $value,
             ], [
                 'position' => $key
-            ])->attributeVariations()
+            ])->attribute_variations()
                 ->sync($productAttribute['attribute_variation_id'][$key]);
         }
     }

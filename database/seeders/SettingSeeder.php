@@ -476,14 +476,14 @@ class SettingSeeder extends Seeder
             [
                 'setting_key' => 'infor_mission_slogan',
                 'setting_name' => 'Khẩu hiệu sứ mệnh',
-                'plain_value' => '"Đội ngũ tiên phong - Nâng tầm giá trị"',
+                'plain_value' => 'Đội ngũ tiên phong - Nâng tầm giá trị',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 6
             ],
             [
                 'setting_key' => 'infor_mission_content',
                 'setting_name' => 'Nội dung sứ mệnh',
-                'plain_value' => '"Sứ mệnh của chúng tôi là tạo ra một đội ngũ tiên phong, không ngừng đổi mới và nâng cao giá trị, đem lại sự khác biệt cho khách hàng và cộng đồng,mang lại những trải nghiệm và thành công vượt bậc."',
+                'plain_value' => 'Sứ mệnh của chúng tôi là tạo ra một đội ngũ tiên phong, không ngừng đổi mới và nâng cao giá trị, đem lại sự khác biệt cho khách hàng và cộng đồng,mang lại những trải nghiệm và thành công vượt bậc.',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 6
             ],

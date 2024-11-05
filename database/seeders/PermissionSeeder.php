@@ -16,6 +16,7 @@ class PermissionSeeder extends Seeder
     {
         // roles
         DB::table('roles')->insert([
+            'id' => 1,
             'title' => 'Super Admin',
             'name' => 'superAdmin',
             'guard_name' => 'admin',
@@ -23,6 +24,7 @@ class PermissionSeeder extends Seeder
             'updated_at' => DB::raw('NOW()')
         ]);
         DB::table('roles')->insert([
+            'id' => 2,
             'title' => 'Khách hàng',
             'name' => 'customer',
             'guard_name' => 'web',
@@ -140,6 +142,23 @@ class PermissionSeeder extends Seeder
             'id' => 13,
             'name' => 'QL Thông báo',
             'description' => '<p>QL Thông báo</p>',
+            'status' => 2,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+        DB::table('modules')->insert([
+            'id' => 14,
+            'name' => 'QL Vai trò',
+            'description' => '<p>QL Vai trò</p>',
+            'status' => 2,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('modules')->insert([
+            'id' => 15,
+            'name' => 'QL Admin',
+            'description' => '<p>QL Admin</p>',
             'status' => 2,
             'created_at' => DB::raw('NOW()'),
             'updated_at' => DB::raw('NOW()')
@@ -676,7 +695,86 @@ class PermissionSeeder extends Seeder
             'created_at' => DB::raw('NOW()'),
             'updated_at' => DB::raw('NOW()')
         ]);
-        for ($i = 1; $i <= 54; $i++) {
+        DB::table('permissions')->insert([
+            'id' => 55,
+            'title' => 'Xem Vai Trò',
+            'name' => 'viewRole',
+            'guard_name' => 'admin',
+            'module_id' => 14,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 56,
+            'title' => 'Thêm Vai Trò',
+            'name' => 'createRole',
+            'guard_name' => 'admin',
+            'module_id' => 14,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 57,
+            'title' => 'Sửa Vai Trò',
+            'name' => 'updateRole',
+            'guard_name' => 'admin',
+            'module_id' => 14,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 58,
+            'title' => 'Xóa Vai Trò',
+            'name' => 'deleteRole',
+            'guard_name' => 'admin',
+            'module_id' => 14,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 59,
+            'title' => 'Xem Admin',
+            'name' => 'viewAdmin',
+            'guard_name' => 'admin',
+            'module_id' => 15,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 60,
+            'title' => 'Thêm Admin',
+            'name' => 'createAdmin',
+            'guard_name' => 'admin',
+            'module_id' => 15,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 61,
+            'title' => 'Sửa Admin',
+            'name' => 'updateAdmin',
+            'guard_name' => 'admin',
+            'module_id' => 15,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+
+        DB::table('permissions')->insert([
+            'id' => 62,
+            'title' => 'Xóa Admin',
+            'name' => 'deleteAdmin',
+            'guard_name' => 'admin',
+            'module_id' => 15,
+            'created_at' => DB::raw('NOW()'),
+            'updated_at' => DB::raw('NOW()')
+        ]);
+        for ($i = 1; $i <= 62; $i++) {
             DB::table('role_has_permissions')->insert([
                 'permission_id' => $i,
                 'role_id' => 1

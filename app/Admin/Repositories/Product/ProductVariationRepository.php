@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Admin\Repositories\Product;
+
 use App\Admin\Repositories\EloquentRepository;
 use App\Admin\Repositories\Product\ProductVariationRepositoryInterface;
 use App\Models\ProductVariation;
@@ -11,33 +12,36 @@ class ProductVariationRepository extends EloquentRepository implements ProductVa
 
     protected $select = [];
 
-    public function getModel(){
+    public function getModel()
+    {
         return ProductVariation::class;
     }
-    public function getByIdsAndOrderByIdsWithRelations(array $ids, array $relations = ['product']){
+    public function getByIdsAndOrderByIdsWithRelations(array $ids, array $relations = ['product'])
+    {
         $this->instance = $this->model
-        ->whereIn('id', $ids)
-        ->with($relations)
-        ->orderByRaw(DB::raw("FIELD(id, " . implode(',', $ids) . ")"))
-        ->get();
+            ->whereIn('id', $ids)
+            ->with($relations)
+            ->orderByRaw(DB::raw("FIELD(id, " . implode(',', $ids) . ")"))
+            ->get();
 
         return $this->instance;
     }
-    public function createOrUpdateWithVariation($product_id, array $productVariation){
+    public function createOrUpdateWithVariation($product_id, array $productVariation)
+    {
         $position = 0;
         $ids = [];
-        foreach($productVariation['attribute_variation_id'] as $key => $item){
+        foreach ($productVariation['attribute_variation_id'] as $key => $item) {
             $dataModel = $this->model->updateOrCreate([
                 'id' => $productVariation['id'][$key],
                 'product_id' => $product_id,
-            ],[
+            ], [
                 'price' => $productVariation['price'][$key],
                 'promotion_price' => $productVariation['promotion_price'][$key],
                 'image' => $productVariation['image'][$key],
                 'qty' => $productVariation['qty'][$key],
                 'position' => $position
             ]);
-            $dataModel->attributeVariations()->sync($item);
+            $dataModel->attribute_variations()->sync($item);
             $ids[] = $dataModel->id;
             $position++;
         }
@@ -45,7 +49,8 @@ class ProductVariationRepository extends EloquentRepository implements ProductVa
         return true;
     }
 
-    protected function deleteTrash($product_id, array $ids){
+    protected function deleteTrash($product_id, array $ids)
+    {
         return $this->model->where('product_id', $product_id)->whereNotIn('id', $ids)->delete();
     }
 
@@ -59,7 +64,8 @@ class ProductVariationRepository extends EloquentRepository implements ProductVa
         }
         return false;
     }
-    public function getQueryBuilderOrderBy($column = 'id', $sort = 'DESC'){
+    public function getQueryBuilderOrderBy($column = 'id', $sort = 'DESC')
+    {
         $this->getQueryBuilder();
         $this->instance = $this->instance->orderBy($column, $sort);
         return $this->instance;

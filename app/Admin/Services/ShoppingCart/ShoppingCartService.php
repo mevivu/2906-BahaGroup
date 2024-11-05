@@ -428,8 +428,10 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 'vnp_TxnRef' => $order->code,
                 'expires_at' => now()->addMinutes(15),
             ];
-
-            $this->transactionRepository->getBy(['vnp_TxnRef' => $transactionData['vnp_TxnRef']])->delete();
+            $items = $this->transactionRepository->getBy(['vnp_TxnRef' => $transactionData['vnp_TxnRef']]);
+            foreach ($items as $item) {
+                $item->delete();
+            }
 
             $this->transactionRepository->create($transactionData);
 

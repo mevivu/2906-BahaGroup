@@ -5,9 +5,11 @@ namespace App\Api\V1\Http\Controllers\ShoppingCart;
 use App\Admin\Http\Controllers\Controller;
 use App\Admin\Traits\AuthService;
 use App\Api\V1\Http\Requests\ShoppingCart\CheckoutRequest;
+use App\Api\V1\Http\Requests\ShoppingCart\DeleteShoppingCartRequest;
 use App\Api\V1\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Api\V1\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
-use App\Api\V1\Http\Requests\ShoppingCart\ShoppingCartRequest;
+use App\Api\V1\Http\Requests\ShoppingCart\CreateShoppingCartRequest;
+use App\Api\V1\Http\Requests\ShoppingCart\UpdateShoppingCartRequest;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResource;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResourceNoLogin;
 use Illuminate\Http\Request;
@@ -118,8 +120,6 @@ class ShoppingCartController extends Controller
      * @bodyParam qty integer required
      * Số lượng sản phẩm. Example: 1
      *
-     * @authenticated
-     *
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công."
@@ -129,7 +129,7 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(ShoppingCartRequest $request)
+    public function store(CreateShoppingCartRequest $request)
     {
         $response = $this->service->store($request);
         if ($response === 1) {
@@ -159,9 +159,7 @@ class ShoppingCartController extends Controller
      * Danh sách id item giỏ hàng. Example: 1
      *
      * @bodyParam qty[] integer required
-     * Danh sách qty phải tương ứng với ds id (nếu qty = 0 item sẽ bị xóa). Example: 1
-     *
-     * @authenticated
+     * Danh sách qty phải tương ứng với ds id. Example: 1
      *
      * @response 200 {
      *      "status": 200,
@@ -172,18 +170,23 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(ShoppingCartRequest $request)
+    public function update(UpdateShoppingCartRequest $request)
     {
         $response = $this->service->update($request);
-        if ($response) {
+        if ($response === true) {
             return response()->json([
                 'status' => 200,
-                'message' => __('Thực hiện thành công.')
+                'message' => __('Cập nhật giỏ hàng thành công.')
             ]);
+        } else if ($response) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Cập nhật giỏ hàng thành công.'),
+            ])->withCookie(cookie('cart', json_encode($response), 86400));
         }
         return response()->json([
             'status' => 400,
-            'message' => __('Thực hiện không thành công.')
+            'message' => __('Cập nhật giỏ hàng không thành công.')
         ], 400);
     }
     /**
@@ -200,9 +203,6 @@ class ShoppingCartController extends Controller
      * @bodyParam id[] integer required
      * Danh sách id item giỏ hàng. Example: 1
      *
-     *
-     * @authenticated
-     *
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công."
@@ -212,14 +212,19 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function delete(ShoppingCartRequest $request)
+    public function delete(DeleteShoppingCartRequest $request)
     {
         $response = $this->service->deleteMultiple($request);
-        if ($response) {
+        if ($response === true) {
             return response()->json([
                 'status' => 200,
                 'message' => __('Thực hiện thành công.')
             ]);
+        } else if ($response) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thực hiện thành công.'),
+            ])->withCookie(cookie('cart', json_encode($response), 86400));
         }
         return response()->json([
             'status' => 400,
@@ -227,18 +232,91 @@ class ShoppingCartController extends Controller
         ], 400);
     }
 
+    /**
+     * Đặt hàng
+     *
+     * Tiến hành đặt hàng.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @bodyParam id[] integer required
+     * Danh sách id item giỏ hàng. Example: 1
+     *
+     * @bodyParam discount_code string optional
+     * Mã giảm giá. Example: SALE10
+     *
+     * @bodyParam order[payment_method] string required
+     * Phương thức thanh toán. Example: "1"
+     *
+     * @bodyParam order[email] string required
+     * Email của người đặt hàng. Example: "example@example.com"
+     *
+     * @bodyParam order[province_id] integer required
+     * ID của tỉnh. Example: 1
+     *
+     * @bodyParam order[district_id] integer required
+     * ID của huyện. Example: 10
+     *
+     * @bodyParam order[ward_id] integer required
+     * ID của xã/phường. Example: 100
+     *
+     * @bodyParam order[fullname] string required
+     * Họ tên đầy đủ của người nhận. Example: "Nguyen Van A"
+     *
+     * @bodyParam order[address] string required
+     * Địa chỉ nhận hàng. Example: "123 Nguyen Trai, Ha Noi"
+     *
+     * @bodyParam order[phone] string required
+     * Số điện thoại người nhận. Example: "0123456789"
+     *
+     * @bodyParam order[note] string optional
+     * Ghi chú đơn hàng. Example: "Giao hàng giờ hành chính"
+     *
+     * @bodyParam order[name_other] string optional
+     * Tên người nhận khác. Example: "Nguyen Thi B"
+     *
+     * @bodyParam order[address_other] string optional
+     * Địa chỉ người nhận khác. Example: "456 Le Loi, Ho Chi Minh"
+     *
+     * @bodyParam order[phone_other] string optional
+     * Số điện thoại người nhận khác. Example: "0987654321"
+     *
+     * @bodyParam order[note_other] string optional
+     * Ghi chú khác. Example: "Chuyển khoản trước khi giao"
+     *
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Đặt hàng thành công."
+     * }
+     *
+     * @response 500 {
+     *      "status": 500,
+     *      "message": "Đặt hàng thất bại."
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function checkout(CheckoutRequest $request)
     {
-        $order = $this->service->checkout($request);
-        if ($order) {
+        $response = $this->service->checkout($request);
+        if ($response === true) {
             return response()->json([
                 'status' => 200,
                 'message' => __('Đặt hàng thành công.')
             ]);
+        } else if ($response) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Đặt hàng thành công.'),
+            ])->withCookie(cookie('cart', json_encode($response), 86400));
         }
         return response()->json([
-            'status' => 400,
+            'status' => 500,
             'message' => __('Đặt hàng thất bại.')
-        ], 400);
+        ], 500);
     }
 }

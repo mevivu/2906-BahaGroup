@@ -22,4 +22,9 @@ class ProductVariation extends Model
     {
         return $this->belongsToMany(AttributeVariation::class, 'products_variations_variations', 'product_variation_id', 'attribute_variation_id')->orderBy('position', 'asc');
     }
+
+    public function attributeVariations()
+    {
+        return $this->belongsToMany(AttributeVariation::class, 'products_variations_variations', 'product_variation_id', 'attribute_variation_id')->orderBy('position', 'asc');
+    }
 }

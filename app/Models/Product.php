@@ -78,6 +78,11 @@ class Product extends Model
         return $this->hasMany(ProductVariation::class, 'product_id')->orderBy('position', 'asc');
     }
 
+    public function product_variations(): HasMany
+    {
+        return $this->hasMany(ProductVariation::class, 'product_id')->orderBy('position', 'asc');
+    }
+
     public function getMinPromotionPriceAttribute()
     {
         return $this->productVariations->min('promotion_price');

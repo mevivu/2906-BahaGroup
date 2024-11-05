@@ -21,7 +21,6 @@ class CheckoutRequest extends BaseRequest
     {
         return [
             'id' => ['required'],
-            'id.*' => ['required', 'exists:App\Models\ShoppingCart,id'],
             'discount_code' => ['nullable', 'exists:App\Models\Discount,code'],
             'order.payment_method' => ['required', new Enum(PaymentMethod::class)],
             'order.email' => ['required'],
@@ -49,24 +48,26 @@ class CheckoutRequest extends BaseRequest
     protected function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $userId = auth()->id();
-            $cartIds = $this->input('id');
+            if (auth()->id()) {
+                $userId = auth()->id();
+                $cartIds = $this->input('id');
 
-            $invalidCartIds = ShoppingCart::whereIn('id', $cartIds)
-                ->where('user_id', '!=', $userId)
-                ->pluck('id')
-                ->all();
+                $invalidCartIds = ShoppingCart::whereIn('id', $cartIds)
+                    ->where('user_id', '!=', $userId)
+                    ->pluck('id')
+                    ->all();
 
-            if (!empty($invalidCartIds)) {
-                $validator->errors()->add('id', 'Một hoặc nhiều giỏ hàng không thuộc về người dùng hiện tại.');
+                if (!empty($invalidCartIds)) {
+                    $validator->errors()->add('id', 'Một hoặc nhiều giỏ hàng không thuộc về người dùng hiện tại.');
+                }
+                // $pendingOrdersCount = Order::where('user_id', $userId)
+                //     ->where('status', OrderStatus::Pending)
+                //     ->count();
+
+                // if ($pendingOrdersCount >= 3) {
+                //     $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
+                // }
             }
-            // $pendingOrdersCount = Order::where('user_id', $userId)
-            //     ->where('status', OrderStatus::Pending)
-            //     ->count();
-
-            // if ($pendingOrdersCount >= 3) {
-            //     $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
-            // }
         });
     }
 }

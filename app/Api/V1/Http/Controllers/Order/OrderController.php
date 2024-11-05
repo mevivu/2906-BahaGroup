@@ -126,8 +126,6 @@ class OrderController extends Controller
      * @pathParam id integer required
      * id của đơn hàng. Example: 1
      *
-     * @authenticated
-     *
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
@@ -208,9 +206,6 @@ class OrderController extends Controller
      *
      * @bodyParam id integer required
      * id đơn hàng. Example: 1
-     *
-     *
-     * @authenticated
      *
      * @response 200 {
      *      "status": 200,

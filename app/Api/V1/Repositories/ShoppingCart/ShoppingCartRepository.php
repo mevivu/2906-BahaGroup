@@ -15,7 +15,7 @@ class ShoppingCartRepository extends AdminShoppingCartRepository implements Shop
     public function getAuthCurrent()
     {
         $this->instance = $this->model->currentAuth()
-            ->with(['product', 'productVariation.attributeVariations'])
+            ->with(['product', 'productVariation.attribute_variations'])
             ->orderBy('id', 'desc')
             ->get();
 

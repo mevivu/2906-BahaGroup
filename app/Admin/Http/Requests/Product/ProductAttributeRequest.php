@@ -3,7 +3,9 @@
 namespace App\Admin\Http\Requests\Product;
 
 use App\Admin\Http\Requests\BaseRequest;
+use App\Enums\Product\ProductType;
 use BenSampo\Enum\Rules\EnumValue;
+use Illuminate\Validation\Rules\Enum;
 
 class ProductAttributeRequest extends BaseRequest
 {
@@ -30,7 +32,7 @@ class ProductAttributeRequest extends BaseRequest
             'desc' => ['nullable'],
             'categories_id.*' => ['required', 'exists:App\Models\Category,id'],
             'avatar' => ['required'],
-            'type' => ['required', new EnumValue(ProductType::class, false)],
+            'type' => ['required', new Enum(ProductType::class)],
             'price' => ['nullable', 'numeric'],
             'promotion_price' => ['nullable', 'numeric'],
             'in_stock' => ['required', 'boolean'],
@@ -45,9 +47,9 @@ class ProductAttributeRequest extends BaseRequest
         return [
             'id' => ['required', 'exists:App\Models\User,id'],
             // 'username' => [
-            //     'required', 
+            //     'required',
             //     'string', 'min:6', 'max:50',
-            //     'unique:App\Models\User,username,'.$this->id, 
+            //     'unique:App\Models\User,username,'.$this->id,
             //     'regex:/^[A-Za-z0-9_-]+$/',
             //     function ($attribute, $value, $fail) {
             //         if (in_array(strtolower($value), ['admin', 'user', 'password'])) {

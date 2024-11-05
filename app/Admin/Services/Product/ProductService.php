@@ -7,9 +7,11 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use App\Admin\Repositories\Product\{ProductRepositoryInterface,
+use App\Admin\Repositories\Product\{
+    ProductRepositoryInterface,
     ProductAttributeRepositoryInterface,
-    ProductVariationRepositoryInterface};
+    ProductVariationRepositoryInterface
+};
 use Illuminate\Http\Request;
 use App\Admin\Traits\Setup;
 use Illuminate\Support\Facades\DB;
@@ -41,8 +43,7 @@ class ProductService implements ProductServiceInterface
         AttributeVariationRepositoryInterface $repositoryAttributeVariation,
         ProductAttributeRepositoryInterface $repositoryProductAttribute,
         ProductVariationRepositoryInterface $repositoryProductVariation,
-    )
-    {
+    ) {
         $this->repository = $repository;
         $this->repositoryAttributeVariation = $repositoryAttributeVariation;
         $this->repositoryProductAttribute = $repositoryProductAttribute;
@@ -155,17 +156,17 @@ class ProductService implements ProductServiceInterface
 
         $data = $request->validated();
 
-        $attributeVariations = $this->repositoryAttributeVariation->getOrderByFollow($data['product_attribute']['attribute_variation_id']);
+        $attribute_variations = $this->repositoryAttributeVariation->getOrderByFollow($data['product_attribute']['attribute_variation_id']);
         if ($data['variation_action'] == ProductVariationAction::AddSimple) {
             $response = view($view['product_variation'], [
-                'attributeVariations' => $attributeVariations,
+                'attribute_variations' => $attribute_variations,
                 'identity' => $this->uniqidReal(5)
             ]);
         } elseif ($data['variation_action'] == ProductVariationAction::AddFromAllVariations) {
-            $collect = collect($attributeVariations[0]->keys()->all());
+            $collect = collect($attribute_variations[0]->keys()->all());
             $arr = [];
 
-            foreach ($attributeVariations as $key => $attributeVariation) {
+            foreach ($attribute_variations as $key => $attributeVariation) {
                 if ($key != 0) {
                     $arr[] = $attributeVariation->keys()->all();
                 }
@@ -174,7 +175,7 @@ class ProductService implements ProductServiceInterface
             $response = '';
             foreach ($collect as $item) {
                 $response .= view($view['product_variation'], [
-                    'attributeVariations' => $attributeVariations,
+                    'attribute_variations' => $attribute_variations,
                     'identity' => $this->uniqidReal(5),
                     'selected' => $item
                 ])->render();

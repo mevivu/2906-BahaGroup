@@ -2,12 +2,8 @@
 
 namespace App\Admin\Services\Admin;
 
-use App\Admin\Services\Admin\AdminServiceInterface;
 use App\Admin\Repositories\Admin\AdminRepositoryInterface;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-
-
 
 class AdminService implements AdminServiceInterface
 {

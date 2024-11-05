@@ -3,11 +3,13 @@
 namespace App\Admin\Http\Requests\Product;
 
 use App\Admin\Http\Requests\BaseRequest;
+use App\Enums\Product\ProductType;
 use App\Enums\Product\ProductVariationAction;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Enum;
 
 class ProductVariationRequest extends BaseRequest
 {
@@ -42,7 +44,7 @@ class ProductVariationRequest extends BaseRequest
             'desc' => ['nullable'],
             'categories_id.*' => ['required', 'exists:App\Models\Category,id'],
             'avatar' => ['required'],
-            'type' => ['required', new EnumValue(ProductType::class, false)],
+            'type' => ['required', new Enum(ProductType::class)],
             'price' => ['nullable', 'numeric'],
             'promotion_price' => ['nullable', 'numeric'],
             'in_stock' => ['required', 'boolean'],

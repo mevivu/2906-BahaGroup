@@ -198,7 +198,7 @@ class OrderService implements OrderServiceInterface
                 $unitPrice = $product->on_flash_sale ? $product->flashsale_price : $product->promotion_price;
             } else {
                 $product = $product->load(['productVariation' => function ($query) use ($key) {
-                    $query->with('attributeVariations')->where('id', $this->data['order_detail']['product_variation_id'][$key]);
+                    $query->with('attribute_variations')->where('id', $this->data['order_detail']['product_variation_id'][$key]);
                 }]);
                 $unitPrice = $product->productVariation->promotion_price ?: $product->productVariation->price;
                 unset($product->productVariation);
@@ -314,7 +314,7 @@ class OrderService implements OrderServiceInterface
         $product = $this->repositoryProduct->findOrFail($data['product_id']);
         if ($product->type == ProductType::Variable) {
             $product = $product->load(['productVariation' => function ($query) use ($data) {
-                $query->where('id', $data['product_variation_id'] ?? 0)->with('attributeVariations');
+                $query->where('id', $data['product_variation_id'] ?? 0)->with('attribute_variations');
             }]);
             if (!$product->productVariation) {
                 return false;

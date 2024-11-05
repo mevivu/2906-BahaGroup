@@ -110,50 +110,50 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             });
         });
 
-    // Route::prefix('/module')->as('module.')->group(function () {
-    //     Route::controller(App\Admin\Http\Controllers\Module\ModuleController::class)->group(function () {
-    //         Route::get('/them', 'create')->name('create');
-    //         Route::get('/', 'index')->name('index');
-    //         Route::get('/summary', 'summary')->name('summary');
-    //         Route::get('/sua/{id}', 'edit')->name('edit');
-    //         Route::put('/sua', 'update')->name('update');
-    //         Route::post('/them', 'store')->name('store');
-    //         Route::delete('/xoa/{id}', 'delete')->name('delete');
-    //     });
-    // });
+    //admin
+    Route::prefix('/admins')->as('admin.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\Admin\AdminController::class)->group(function () {
+            Route::group(['middleware' => ['permission:createAdmin', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewAdmin', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
 
-    // Route::prefix('/permission')->as('permission.')->group(function () {
-    //     Route::controller(App\Admin\Http\Controllers\Permission\PermissionController::class)->group(function () {
-    //         Route::get('/them', 'create')->name('create');
-    //         Route::get('/', 'index')->name('index');
-    //         Route::get('/sua/{id}', 'edit')->name('edit');
-    //         Route::put('/sua', 'update')->name('update');
-    //         Route::post('/them', 'store')->name('store');
-    //         Route::delete('/xoa/{id}', 'delete')->name('delete');
-    //     });
-    // });
+            Route::group(['middleware' => ['permission:updateAdmin', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
 
-    // Route::prefix('/role')->as('role.')->group(function () {
-    //     Route::controller(App\Admin\Http\Controllers\Role\RoleController::class)->group(function () {
+            Route::group(['middleware' => ['permission:deleteAdmin', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
 
-    //         Route::group(['middleware' => ['permission:createRole', 'auth:admin']], function () {
-    //             Route::get('/them', 'create')->name('create');
-    //             Route::post('/them', 'store')->name('store');
-    //         });
-    //         Route::group(['middleware' => ['permission:viewRole', 'auth:admin']], function () {
-    //             Route::get('/', 'index')->name('index');
-    //             Route::get('/sua/{id}', 'edit')->name('edit');
-    //         });
+    //role
+    Route::prefix('/role')->as('role.')->group(function () {
+        Route::controller(App\Admin\Http\Controllers\Role\RoleController::class)->group(function () {
 
-    //         Route::group(['middleware' => ['permission:updateRole', 'auth:admin']], function () {
-    //             Route::put('/sua', 'update')->name('update');
-    //         });
+            Route::group(['middleware' => ['permission:createRole', 'auth:admin']], function () {
+                Route::get('/them', 'create')->name('create');
+                Route::post('/them', 'store')->name('store');
+            });
+            Route::group(['middleware' => ['permission:viewRole', 'auth:admin']], function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/sua/{id}', 'edit')->name('edit');
+            });
 
-    //         Route::group(['middleware' => ['permission:deleteRole', 'auth:admin']], function () {
-    //             Route::delete('/xoa/{id}', 'delete')->name('delete');
-    //         });
-    //     });
-    // });
+            Route::group(['middleware' => ['permission:updateRole', 'auth:admin']], function () {
+                Route::put('/sua', 'update')->name('update');
+            });
+
+            Route::group(['middleware' => ['permission:deleteRole', 'auth:admin']], function () {
+                Route::delete('/xoa/{id}', 'delete')->name('delete');
+            });
+        });
+    });
 
     Route::prefix('/posts')->as('post.')->group(function () {
         Route::controller(App\Admin\Http\Controllers\Post\PostController::class)->group(function () {

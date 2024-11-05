@@ -2,11 +2,9 @@
 
 namespace App\Admin\Services\Role;
 
-use App\Admin\Services\Role\RoleServiceInterface;
 use  App\Admin\Repositories\Role\RoleRepositoryInterface;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 
 class RoleService implements RoleServiceInterface

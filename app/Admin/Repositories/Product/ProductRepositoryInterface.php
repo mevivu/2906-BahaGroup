@@ -9,7 +9,7 @@ use App\Models\Product;
 interface ProductRepositoryInterface extends EloquentRepositoryInterface
 {
     public function getByIdsAndOrderByIds(array $ids);
-    public function getByColumnsWithRelationsLimit(array $data, array $relations = ['productVariations.attributeVariations'], $limit = 10);
+    public function getByColumnsWithRelationsLimit(array $data, array $relations = ['productVariations.attribute_variations'], $limit = 10);
 
     public function getAllByColumns(array $data);
 
@@ -37,7 +37,7 @@ interface ProductRepositoryInterface extends EloquentRepositoryInterface
 
     public function getMinMaxPromotionPrices($relations = ['productVariations']);
 
-    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc');
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attribute_variations'], $desc = 'desc');
 
     public function getFlashSaleProductsWithRelations(array $relations = ['categories', 'productVariations']);
     public function findOrFailBySlug($slug);

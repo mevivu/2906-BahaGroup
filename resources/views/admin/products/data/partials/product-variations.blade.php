@@ -1,11 +1,11 @@
 <div class="wrap-item-product-variation ui-sortable-handle bg-white">
 				<div class="d-flex justify-content-between align-items-center border-bottom shadow-sm">
 								<div class="wrap-select-attribute-for-variation d-flex flex-fill gap-2 p-2">
-												@foreach ($attributeVariations as $keyParent => $attributeVariation)
+												@foreach ($attribute_variations as $keyParent => $attributeVariation)
 																<x-select
 																				name="products_variations[attribute_variation_id][{{ $identity ?? ($productVariation->id ?? '') }}][]">
 																				@foreach ($attributeVariation as $key => $value)
-																								<x-select-option :option="$selected[$keyParent] ?? ($productVariation->attributeVariations ?? '')" :value="$key" :title="$value" />
+																								<x-select-option :option="$selected[$keyParent] ?? ($productVariation->attribute_variations ?? '')" :value="$key" :title="$value" />
 																				@endforeach
 																</x-select>
 												@endforeach

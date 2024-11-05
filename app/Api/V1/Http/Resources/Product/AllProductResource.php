@@ -6,6 +6,7 @@ use App\Api\V1\Http\Resources\PaginationResource;
 use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Api\V1\Support\AuthSupport;
+use App\Enums\Product\ProductInStock;
 use Illuminate\Support\Facades\Log;
 
 class AllProductResource extends ResourceCollection
@@ -27,7 +28,7 @@ class AllProductResource extends ResourceCollection
                 'name' => $product->name,
                 'slug' => $product->slug,
                 'on_flashsale' => false,
-                'in_stock' => $product->in_stock,
+                'in_stock' => ProductInStock::getDescription($product->in_stock->value),
                 'avatar' => asset($product->avatar)
             ];
             if ($product->on_flash_sale) {

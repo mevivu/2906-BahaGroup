@@ -5,6 +5,7 @@ namespace App\Api\V1\Http\Resources\ShoppingCart;
 use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Api\V1\Support\AuthSupport;
+use App\Enums\Product\ProductInStock;
 use App\Models\Product;
 use App\Models\ProductVariation;
 
@@ -21,8 +22,9 @@ class ShoppingCartResourceNoLogin extends ResourceCollection
     {
         return $this->collection->map(function ($shoppingCart) {
             $product = Product::find($shoppingCart['product']['id']);
-            $productVariation = ProductVariation::find($shoppingCart['productVariation']['id']);
-            dd($productVariation->attributeVariations);
+            if ($shoppingCart['productVariation']) {
+                $productVariation = ProductVariation::find($shoppingCart['productVariation']['id']);
+            }
             $data = [
                 'id' => $shoppingCart['id'],
                 'qty' => $shoppingCart['qty'],
@@ -30,9 +32,9 @@ class ShoppingCartResourceNoLogin extends ResourceCollection
                     'id' => $product->id,
                     'name' => $product->name,
                     'slug' => $product->slug,
-                    'in_stock' => $product->in_stock,
+                    'in_stock' => ProductInStock::getDescription($product->in_stock->value),
                     'avatar' => asset($product->avatar)
-                ]
+                ],
             ];
             if ($product->on_flash_sale) {
                 $data['product']['flashsale_price'] = $shoppingCart['product']['flashsale_price'];
@@ -48,7 +50,7 @@ class ShoppingCartResourceNoLogin extends ResourceCollection
                     'promotion_price' => $productVariation->promotion_price,
                     'flashsale_price' => $product->on_flash_sale ? $productVariation->flashsale_price : null,
                     'image' => asset($productVariation->image),
-                    'attributeVariations' => $productVariation->attributeVariations->map(function ($item) {
+                    'attribute_variations' => $productVariation->attribute_variations->map(function ($item) {
                         return [
                             'id' => $item->id,
                             'name' => $item->name

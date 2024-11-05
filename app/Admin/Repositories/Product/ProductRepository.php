@@ -50,7 +50,7 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         $this->instance = $this->instance->get();
         return $this->instance;
     }
-    public function getByColumnsWithRelationsLimit(array $data, array $relations = ['productVariations.attributeVariations.attribute'], $limit = 10)
+    public function getByColumnsWithRelationsLimit(array $data, array $relations = ['productVariations.attribute_variations.attribute'], $limit = 10)
     {
         $this->getQueryBuilderWithRelations($relations);
 
@@ -146,7 +146,7 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         ];
     }
 
-    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attributeVariations'], $desc = 'desc')
+    public function getProductsWithRelations(array $filterData = [], array $relations = ['categories', 'productVariations', 'productVariations.attribute_variations'], $desc = 'desc')
     {
         $this->instance = $this->instance->with($relations);
 
@@ -175,13 +175,13 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         }
 
         if (isset($filterData['color_slug'])) {
-            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+            $this->instance = $this->instance->whereHas('productAttributes.attribute_variations', function ($query) use ($filterData) {
                 $query->where('slug', $filterData['color_slug']);
             });
         }
 
         if (isset($filterData['size_slug'])) {
-            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
+            $this->instance = $this->instance->whereHas('productAttributes.attribute_variations', function ($query) use ($filterData) {
                 $query->where('slug', $filterData['size_slug']);
             });
         }

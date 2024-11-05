@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductRepository extends AdminProductRepository implements ProductRepositoryInterface
 {
-    public function findOrFailWithRelations($id, array $relations = ['productAttributes', 'productVariations.attributeVariations'])
+    public function findOrFailWithRelations($id, array $relations = ['productAttributes', 'productVariations.attribute_variations'])
     {
         $this->findOrFail($id);
         if (in_array('productAttributes', $relations)) {
             $relations['productAttributes'] = function ($query) {
-                return $query->with(['attribute', 'attributeVariations']);
+                return $query->with(['attribute', 'attribute_variations']);
             };
         }
         $this->instance = $this->instance->load($relations);

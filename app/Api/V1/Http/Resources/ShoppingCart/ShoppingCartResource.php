@@ -5,6 +5,7 @@ namespace App\Api\V1\Http\Resources\ShoppingCart;
 use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Api\V1\Support\AuthSupport;
+use App\Enums\Product\ProductInStock;
 
 class ShoppingCartResource extends ResourceCollection
 {
@@ -28,7 +29,7 @@ class ShoppingCartResource extends ResourceCollection
                     'id' => $shoppingCart->product->id,
                     'name' => $shoppingCart->product->name,
                     'slug' => $shoppingCart->product->slug,
-                    'in_stock' => $shoppingCart->product->in_stock,
+                    'in_stock' => ProductInStock::getDescription($shoppingCart->product->in_stock),
                     'avatar' => asset($shoppingCart->product->avatar)
                 ]
             ];
@@ -46,7 +47,7 @@ class ShoppingCartResource extends ResourceCollection
                     'promotion_price' => $shoppingCart->productVariation->promotion_price * $discount ?: null,
                     'flashsale_price' => $shoppingCart->product->on_flash_sale ? $shoppingCart->productVariation->flashsale_price : null,
                     'image' => asset($shoppingCart->productVariation->image),
-                    'attributeVariations' => $shoppingCart->productVariation->attributeVariations->map(function ($item) {
+                    'attribute_variations' => $shoppingCart->productVariation->attribute_variations->map(function ($item) {
                         return [
                             'id' => $item->id,
                             'name' => $item->name

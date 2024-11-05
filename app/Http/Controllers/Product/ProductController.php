@@ -21,7 +21,7 @@ use App\Admin\Http\Requests\Review\ReviewRequest;
 use App\Admin\Services\Review\ReviewServiceInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
-use App\Api\V1\Http\Resources\Product\ShowProductVariationResource;
+use App\Api\V1\Http\Resources\Product\ShowProductVariationResourceForSearch;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -125,9 +125,9 @@ class ProductController extends Controller
         $product = $this->repository->loadRelations($this->repository->findOrFailBySlug($slug), [
             'categories:id,name',
             'productAttributes' => function ($query) {
-                return $query->with(['attribute.variations', 'attributeVariations:id']);
+                return $query->with(['attribute.variations', 'attribute_variations:id']);
             },
-            'productVariations.attributeVariations'
+            'productVariations.attribute_variations'
         ]);
         $randomProducts = $this->repository->getRelatedProducts($product->id);
         $product = new ProductEditResource($product);
@@ -164,9 +164,9 @@ class ProductController extends Controller
             'categories:id,name',
             'reviews:rating,content,product_id',
             'productAttributes' => function ($query) {
-                return $query->with(['attribute.variations', 'attributeVariations:id']);
+                return $query->with(['attribute.variations', 'attribute_variations:id']);
             },
-            'productVariations.attributeVariations'
+            'productVariations.attribute_variations'
         ]);
         $product = new ProductEditResource($product);
         $avg_review_rate = 0;
@@ -188,19 +188,18 @@ class ProductController extends Controller
         $id = $request->input('product_id');
         $attributeVariationIds = $request->input('attribute_variation_ids');
         $product = $this->repository->loadRelations($this->repository->findOrFail($id), [
-            'productVariations.attributeVariations'
+            'productVariations.attribute_variations'
         ]);
 
         $matchingProductVariation = $product->productVariations->first(function ($productVariation) use ($attributeVariationIds) {
-            $variationAttributeIds = $productVariation->attributeVariations->pluck('id')->toArray();
+            $variationAttributeIds = $productVariation->attribute_variations->pluck('id')->toArray();
             return empty(array_diff($attributeVariationIds, $variationAttributeIds)) &&
                 count($attributeVariationIds) === count($variationAttributeIds);
         });
-
         if ($matchingProductVariation) {
             return response()->json([
                 'status' => true,
-                'data' => new ShowProductVariationResource($matchingProductVariation)
+                'data' => new ShowProductVariationResourceForSearch($matchingProductVariation)
             ]);
         } else {
             return response()->json([

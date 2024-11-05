@@ -6,6 +6,7 @@ use App\Enums\Attribute\AttributeType;
 use App\Enums\Product\ProductType;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Api\V1\Support\AuthSupport;
+use App\Enums\Product\ProductInStock;
 
 class ShowProductResource extends JsonResource
 {
@@ -25,7 +26,7 @@ class ShowProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'in_stock' => $this->in_stock,
+            'in_stock' => ProductInStock::getDescription($this->in_stock->value),
             'on_flashsale' => $this->on_flash_sale ? true : false,
             'avatar' => asset($this->avatar),
             'gallery' => $this->gallery ? array_map(function ($value) {
@@ -55,7 +56,7 @@ class ShowProductResource extends JsonResource
                     "promotion_price" => $item->promotion_price,
                     "flashsale_price" => $this->on_flash_sale ? $item->flashsale_price : null,
                     "image" => $item->image,
-                    'attributeVariations' => $item->attributeVariations->map(function ($item) {
+                    'attribute_variations' => $item->attribute_variations->map(function ($item) {
                         return [
                             'id' => $item->id,
                             'attribute_id' => $item->attribute_id,
@@ -90,7 +91,7 @@ class ShowProductResource extends JsonResource
     private function handleAttribute($productAttribute)
     {
         $attribute = $productAttribute->attribute;
-        $attributesVariations = $productAttribute->attributeVariations;
+        $attributesVariations = $productAttribute->attribute_variations;
         $productAttribute = [];
 
         $productAttribute = [
