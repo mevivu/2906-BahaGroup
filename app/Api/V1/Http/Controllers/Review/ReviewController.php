@@ -3,6 +3,7 @@
 namespace App\Api\V1\Http\Controllers\Review;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Services\Review\ReviewServiceInterface;
 use App\Api\V1\Http\Requests\Review\ReviewRequest;
 use App\Api\V1\Http\Resources\Review\{ReviewResource, ShowReviewResource};
 use App\Api\V1\Repositories\Review\ReviewRepositoryInterface;
@@ -14,29 +15,30 @@ use App\Api\V1\Repositories\Review\ReviewRepositoryInterface;
 class ReviewController extends Controller
 {
     public function __construct(
-        ReviewRepositoryInterface $repository
-    )
-    {
+        ReviewRepositoryInterface $repository,
+        ReviewServiceInterface $service
+    ) {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
     /**
-     * Danh sách review của sản phẩm
+     * Danh sách đánh giá của sản phẩm
      *
-     * Lấy danh sách review của sản phẩm.
+     * Lấy danh sách đánh giá của sản phẩm.
      *
      * @headersParam X-TOKEN-ACCESS string required
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
-     * 
+     *
      * @queryParam product_id integer required
      * id sản phẩm. Example: 1
-     * 
+     *
      * @response 200 {
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
      *      "data": [
      *          {
-     *              "id": 10,
+     *               "id": 10,
      *               "fullname": "Tran Van A",
      *               "avatar": "http://domain.com/public/assets/images/default-image.png",
      *               "content": "content",
@@ -46,11 +48,12 @@ class ReviewController extends Controller
      * }
      *
      * @param  \Illuminate\Http\Request  $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
 
-    public function index(ReviewRequest $request){
+    public function index(ReviewRequest $request)
+    {
         $reviews = $this->repository->getByProductId($request->get('product_id'));
         return response()->json([
             'status' => 200,
@@ -62,22 +65,23 @@ class ReviewController extends Controller
     /**
      * Tạo đánh giá
      *
-     * Tạo đánh giá cho sản phẩm.
+     * Tạo đánh giá cho toàn bộ sản phẩm trong đơn hàng.
      *
      * @headersParam X-TOKEN-ACCESS string
      * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
-     * 
-     * @bodyParam product_id integer required
-     * id sản phẩm. Example: 1
-     * 
+     *
+     * @authenticated Authorization string required
+     * access_token được cấp sau khi đăng nhập. Example: Bearer 1|WhUre3Td7hThZ8sNhivpt7YYSxJBWk17rdndVO8K
+     *
+     * @bodyParam order_id integer required
+     * id đơn hàng. Example: 1
+     *
      * @bodyParam rating integer required
-     * Xếp hạng đánh giá. Example: 5
-     * 
+     * Số sao đánh giá. Example: 5
+     *
      * @bodyParam content string
      * Nội dung đánh giá. Example: content
-     * 
-     * @authenticated
-     * 
+     *
      * @response {
      *      "status": 200,
      *      "message": "Thực hiện thành công.",
@@ -90,18 +94,28 @@ class ReviewController extends Controller
      *      }
      * }
      *
+     * @response {
+     *      "status": 500,
+     *      "message": "Thực hiện thất bại."
+     * }
+     *
      * @param  \Illuminate\Http\Request  $request
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
 
-    public function store(ReviewRequest $request){
-        $data = $request->validated();
-        $response = $this->repository->createAuthCurrent($data)->load(['user']);
+    public function store(ReviewRequest $request)
+    {
+        $response = $this->service->store($request);
+        if ($response) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Đánh giá thành công.'),
+            ], 200);
+        }
         return response()->json([
-            'status' => 200,
-            'message' => __('notifySuccess'),
-            'data' => new ShowReviewResource($response)
-        ], 200);
+            'status' => 500,
+            'message' => __('notifyFail'),
+        ], 500);
     }
 }

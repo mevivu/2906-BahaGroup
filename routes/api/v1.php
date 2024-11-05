@@ -90,6 +90,15 @@ Route::prefix('/products')
             });
     });
 
+//review
+Route::controller(App\Api\V1\Http\Controllers\Review\ReviewController::class)
+    ->prefix('/reviews')
+    ->as('review.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'store')->name('store')->middleware('auth:sanctum');
+    });
+
 //slider
 Route::controller(App\Api\V1\Http\Controllers\Slider\SliderController::class)
     ->prefix('/sliders')

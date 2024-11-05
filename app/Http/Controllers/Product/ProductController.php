@@ -247,17 +247,6 @@ class ProductController extends Controller
     public function review(ReviewRequest $request)
     {
         $instance = $this->reviewService->store($request);
-        $orderDetailIds = $this->orderDetailRepository->getQueryBuilder()
-            ->where('order_id', $request->order_id)
-            ->pluck('id')->toArray();
-        $reviews = $this->reviewRepository->getQueryBuilder()
-            ->where('order_id', $request->order_id)
-            ->pluck('id')->toArray();
-        if (count($orderDetailIds) == 1) {
-            $this->orderRepository->update($request->order_id, ['is_reviewed' => App\Enums\Order\OrderReview::Reviewed->value]);
-        } else if (count($orderDetailIds) == count($reviews)) {
-            $this->orderRepository->update($request->order_id, ['is_reviewed' => App\Enums\Order\OrderReview::Reviewed->value]);
-        }
         if ($instance) {
             return back()->with('success', __('notifySuccess'));
         }

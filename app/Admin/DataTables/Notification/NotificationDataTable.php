@@ -49,7 +49,7 @@ class NotificationDataTable extends BaseDataTable
     {
         $this->customEditColumns = [
             'status' => $this->view['status'],
-            'user' => $this->view['user'],
+            'user_id' => $this->view['user'],
             'id' => $this->view['id'],
             'created_at' => '{{ format_date($created_at) }}',
         ];
@@ -90,7 +90,7 @@ class NotificationDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['id', 'status', 'user', 'action'];
+        $this->customRawColumns = ['id', 'status', 'user_id', 'action'];
     }
 
     public function setCustomFilterColumns(): void

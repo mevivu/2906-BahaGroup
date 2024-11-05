@@ -164,6 +164,12 @@ return [
         ],
     ],
     'notification' => [
+        'id' => [
+            'title' => 'Mã',
+            'icon' => 'ti-discount-2',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
         'title' => [
             'title' => 'Tiêu đề',
             'icon' => 'ti-bell',

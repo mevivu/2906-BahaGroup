@@ -8,18 +8,16 @@ use App\Models\Review;
 
 class ReviewRepository extends EloquentRepository implements ReviewRepositoryInterface
 {
-    public function getModel(){
+    public function getModel()
+    {
         return Review::class;
     }
 
-    public function getByProductId($product_id){
+    public function getByProductId($product_id)
+    {
         $this->instance = $this->model->where('product_id', $product_id)
-        ->with('user')
-        ->get();
-        return $this->instance;
-    }
-    public function createAuthCurrent($data){
-        $this->instance = auth('sanctum')->user()->reviews()->create($data);
+            ->with('user')
+            ->get();
         return $this->instance;
     }
 }
