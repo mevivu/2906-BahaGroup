@@ -123,7 +123,7 @@
 																																				<x-input id="hiddenAttribute" type="hidden"
 																																								name="attribute_variation_ids[{{ $item->attribute->id }}]" />
 																																				<div class="row me-3 mt-2">
-																																								@foreach ($item->attribute->variations as $attributeVariation)
+																																								@foreach ($item->attributeVariations as $attributeVariation)
 																																												@if ($item->attribute->type == App\Enums\Attribute\AttributeType::Color)
 																																																<a style="background-color: {{ $attributeVariation->meta_value['color'] }}"
 																																																				data-attribute-name="{{ $attributeVariation->name }}"

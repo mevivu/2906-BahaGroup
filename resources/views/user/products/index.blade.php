@@ -131,19 +131,30 @@
 																																<label for="filter-by-price" class="mb-0">Lọc theo giá</label>
 																												</div>
 																												<div class="d-flex align-items-center mb-2">
-																																<input type="range" id="min-price" name="min_product_price" class="form-range me-2"
-																																				min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
-																																				value="{{ $minMax['min_product_price'] }}" oninput="updatePrice()"
-																																				@if (!request('min_product_price')) disabled @endif>
-																																<input type="range" id="max-price" name="max_product_price" class="form-range"
-																																				min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
-																																				value="{{ $minMax['max_product_price'] }}" oninput="updatePrice()"
-																																				@if (!request('max_product_price')) disabled @endif>
+																																@if (request('min_product_price') && request('max_product_price'))
+																																				<input type="range" id="min-price" name="min_product_price" class="form-range me-2"
+																																								min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
+																																								value="{{ request('min_product_price') }}" oninput="updatePrice()">
+																																				<input type="range" id="max-price" name="max_product_price" class="form-range"
+																																								min="{{ $minMax['min_product_price'] }}" max="{{ $minMax['max_product_price'] }}"
+																																								value="{{ request('max_product_price') }}" oninput="updatePrice()">
+																																@else
+																																				<input disabled type="range" id="min-price" name="min_product_price"
+																																								class="form-range me-2" min="{{ $minMax['min_product_price'] }}"
+																																								max="{{ $minMax['max_product_price'] }}"
+																																								value="{{ $minMax['min_product_price'] }}" oninput="updatePrice()">
+																																				<input disabled type="range" id="max-price" name="max_product_price"
+																																								class="form-range" min="{{ $minMax['min_product_price'] }}"
+																																								max="{{ $minMax['max_product_price'] }}"
+																																								value="{{ $minMax['max_product_price'] }}" oninput="updatePrice()">
+																																@endif
 																												</div>
 																												<div class="d-flex justify-content-between">
-																																<span id="min-price-value">{{ format_price($minMax['min_product_price']) }}</span>
+																																<span
+																																				id="min-price-value">{{ format_price(request('min_product_price') ? request('min_product_price') : $minMax['min_product_price']) }}</span>
 																																<i class="fa fa-arrow-circle-right"></i>
-																																<span id="max-price-value">{{ format_price($minMax['max_product_price']) }}</span>
+																																<span
+																																				id="max-price-value">{{ format_price(request('max_product_price') ? request('max_product_price') : $minMax['max_product_price']) }}</span>
 																												</div>
 																								</div>
 																								<button type="submit" class="btn btn-default w-100 rounded-1 mt-3">

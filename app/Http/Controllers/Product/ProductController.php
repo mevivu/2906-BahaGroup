@@ -21,7 +21,7 @@ use App\Admin\Http\Requests\Review\ReviewRequest;
 use App\Admin\Services\Review\ReviewServiceInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
-use App\Api\V1\Http\Resources\Product\ShowProductVariationResourceForSearch;
+use App\Api\V1\Http\Resources\Product\ProductVariationResource;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -199,13 +199,13 @@ class ProductController extends Controller
         if ($matchingProductVariation) {
             return response()->json([
                 'status' => true,
-                'data' => new ShowProductVariationResourceForSearch($matchingProductVariation)
+                'data' => new ProductVariationResource($matchingProductVariation)
             ]);
         } else {
             return response()->json([
                 'status' => false,
                 'message' => __('Không tìm thấy sản phẩm phù hợp.')
-            ], 400);
+            ], 404);
         }
     }
 

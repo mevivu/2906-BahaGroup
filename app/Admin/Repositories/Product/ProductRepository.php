@@ -150,20 +150,11 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
     {
         $this->instance = $this->instance->with($relations);
 
-        if (isset($filterData['min_product_price'])) {
+        if (isset($filterData['min_product_price']) && isset($filterData['max_product_price'])) {
             $this->instance = $this->instance->where(function ($query) use ($filterData) {
-                $query->where('promotion_price', '>=', $filterData['min_product_price'])
+                $query->whereBetween('promotion_price', [$filterData['min_product_price'], $filterData['max_product_price']])
                     ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
-                        $subQuery->where('promotion_price', '>=', $filterData['min_product_price']);
-                    });
-            });
-        }
-
-        if (isset($filterData['max_product_price'])) {
-            $this->instance = $this->instance->where(function ($query) use ($filterData) {
-                $query->where('promotion_price', '<=', $filterData['min_product_price'])
-                    ->orWhereHas('productVariations', function ($subQuery) use ($filterData) {
-                        $subQuery->where('promotion_price', '<=', $filterData['min_product_price']);
+                        $subQuery->whereBetween('promotion_price', [$filterData['min_product_price'], $filterData['max_product_price']]);
                     });
             });
         }
@@ -175,16 +166,17 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         }
 
         if (isset($filterData['color_slug'])) {
-            $this->instance = $this->instance->whereHas('productAttributes.attribute_variations', function ($query) use ($filterData) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
                 $query->where('slug', $filterData['color_slug']);
             });
         }
 
         if (isset($filterData['size_slug'])) {
-            $this->instance = $this->instance->whereHas('productAttributes.attribute_variations', function ($query) use ($filterData) {
+            $this->instance = $this->instance->whereHas('productAttributes.attributeVariations', function ($query) use ($filterData) {
                 $query->where('slug', $filterData['size_slug']);
             });
         }
+
         $desc = $desc ?? 'asc';
         $this->instance = $this->instance->orderBy(function ($query) {
             $query->selectRaw('CASE
