@@ -12,20 +12,16 @@ class Notification extends  Model
     use HasFactory;
     protected $table = 'notifications';
 
-    protected $fillable = [
-        /** user_id */
-        'user_id',
-        /** Tiêu đề thông báo */
-        'title',
-        /** Nội dung thông báo */
-        'message',
-        /** Trạng thái thông báo 1: Chưa đọc, 2: Đã đọc */
-        'status',
-    ];
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class);
     }
 
     protected $casts = [

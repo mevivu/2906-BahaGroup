@@ -176,6 +176,12 @@ return [
             'addClass' => 'text-center align-middle',
             'orderable' => false,
         ],
+        'admin_id' => [
+            'title' => 'Admin nhận',
+            'icon' => 'ti-shield',
+            'addClass' => 'text-center align-middle',
+            'orderable' => false,
+        ],
         'user_id' => [
             'title' => 'Khách hàng nhận',
             'icon' => 'ti-user',
@@ -503,6 +509,13 @@ return [
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],
+        'flashsale_price' => [
+            'title' => 'Giá Flash Sale',
+            'width' => '150px',
+            'icon' => 'ti-bolt',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
         'categories' => [
             'title' => 'Danh mục',
             'icon' => 'ti-folder',
@@ -571,6 +584,53 @@ return [
         'created_at' => [
             'title' => 'Thời gian đặt',
             'icon' => 'ti-calendar',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'action' => [
+            'title' => 'Thao tác',
+            'icon' => 'ti-settings',
+            'orderable' => false,
+            'exportable' => false,
+            'printable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+    ],
+    'order_user' => [
+        'id' => [
+            'title' => 'Mã đơn hàng',
+            'icon' => 'ti-receipt',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'payment_method' => [
+            'title' => 'PT thanh toán',
+            'icon' => 'ti-credit-card',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'payment_status' => [
+            'title' => 'TT thanh toán',
+            'width' => '150px',
+            'icon' => 'ti-credit-card-pay',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle',
+        ],
+        'status' => [
+            'title' => 'Trạng thái',
+            'icon' => 'ti-toggle-right',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'total' => [
+            'title' => 'Tổng tiền',
+            'icon' => 'ti-currency-dollar',
+            'orderable' => false,
+            'addClass' => 'text-center align-middle'
+        ],
+        'created_at' => [
+            'title' => 'Thời gian đặt',
+            'icon' => 'ti-clock',
             'orderable' => false,
             'addClass' => 'text-center align-middle'
         ],

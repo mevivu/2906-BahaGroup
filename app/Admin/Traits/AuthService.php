@@ -54,13 +54,8 @@ trait AuthService
         return Auth::guard('admin')->user();
     }
 
-    public function getCurrentAdminId():?int{
+    public function getCurrentAdminId(): ?int
+    {
         return Auth::guard('admin')->id();
     }
-
-
-
-
-
-
 }

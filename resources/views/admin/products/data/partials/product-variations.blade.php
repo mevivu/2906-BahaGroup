@@ -5,7 +5,7 @@
 																<x-select
 																				name="products_variations[attribute_variation_id][{{ $identity ?? ($productVariation->id ?? '') }}][]">
 																				@foreach ($attributeVariation as $key => $value)
-																								<x-select-option :option="$selected[$keyParent] ?? ($productVariation->attribute_variations ?? '')" :value="$key" :title="$value" />
+																								<x-select-option :option="$selected[$keyParent] ?? ($productVariation->attributeVariations ?? '')" :value="$key" :title="$value" />
 																				@endforeach
 																</x-select>
 												@endforeach
@@ -54,10 +54,8 @@
 																				<label for="mb-3">{{ __('Giá Flash Sale') . ' (' . config('custom.currency') . ')' }}</label>
 																				<x-input
 																								name="products_variations[flashsale_price][{{ $identity ?? ($productVariation->id ?? '') }}]"
-																								:value="$productVariation->flashsale_price ?? ''" :placeholder="__('Giá khuyến mãi')" data-parsley-type="number"
-																								data-parsley-lt="#inputPMP{{ $identity ?? ($productVariation->id ?? '') }}"
-																								data-parsley-number-message="Trường này phải là số."
-																								data-parsley-lt-message="Giá khuyến mãi phải nhỏ hơn giá mặc định." />
+																								:value="$productVariation->flashsale_price ?? ''" :placeholder="__('Giá flash sale')" data-parsley-type="number"
+																								data-parsley-number-message="Trường này phải là số." />
 																</div>
 																<div class="">
 																				<label for="mb-3">{{ __('Số lượng') }}</label>

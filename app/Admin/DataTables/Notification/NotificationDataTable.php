@@ -41,6 +41,7 @@ class NotificationDataTable extends BaseDataTable
             'action' => 'admin.notifications.datatable.action',
             'status' => 'admin.notifications.datatable.status',
             'user' => 'admin.notifications.datatable.user',
+            'admin' => 'admin.notifications.datatable.admin',
             'id' => 'admin.notifications.datatable.id',
         ];
     }
@@ -50,6 +51,7 @@ class NotificationDataTable extends BaseDataTable
         $this->customEditColumns = [
             'status' => $this->view['status'],
             'user_id' => $this->view['user'],
+            'admin_id' => $this->view['admin'],
             'id' => $this->view['id'],
             'created_at' => '{{ format_date($created_at) }}',
         ];
@@ -62,7 +64,7 @@ class NotificationDataTable extends BaseDataTable
      */
     public function query(): Builder
     {
-        return $this->repository->getByQueryBuilder([], ['user']);
+        return $this->repository->getByQueryBuilder([], ['user', 'admin']);
     }
 
     /**
@@ -90,7 +92,7 @@ class NotificationDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['id', 'status', 'user_id', 'action'];
+        $this->customRawColumns = ['id', 'status', 'user_id', 'admin_id', 'action'];
     }
 
     public function setCustomFilterColumns(): void
@@ -98,6 +100,11 @@ class NotificationDataTable extends BaseDataTable
         $this->customFilterColumns = [
             'user' => function ($query, $keyword) {
                 $query->whereHas('user', function ($subQuery) use ($keyword) {
+                    $subQuery->where('fullname', 'like', '%' . $keyword . '%');
+                });
+            },
+            'admin' => function ($query, $keyword) {
+                $query->whereHas('admin', function ($subQuery) use ($keyword) {
                     $subQuery->where('fullname', 'like', '%' . $keyword . '%');
                 });
             },

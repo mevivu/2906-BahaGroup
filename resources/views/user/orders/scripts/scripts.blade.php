@@ -24,7 +24,7 @@
                 </div>
             `,
 												showCancelButton: true,
-												confirmButtonColor: "#3085d6",
+												confirmButtonColor: "#1c5639",
 												cancelButtonColor: "#d33",
 												confirmButtonText: "Đánh giá!",
 												cancelButtonText: "Quay lại!",
@@ -59,7 +59,6 @@
 												dataType: 'json',
 												success: function(data) {
 																let reviewHtml = '';
-
 																data.response.reviewsDetail.forEach(review => {
 																				reviewHtml += `
                     <div class="d-flex mb-3">
@@ -78,8 +77,7 @@
 																Swal.fire({
 																				title: "Đánh giá đơn hàng",
 																				html: reviewHtml,
-																				cancelButtonColor: "#d33",
-																				cancelButtonText: "Quay lại!",
+																				confirmButtonColor: "#1c5639"
 																});
 												},
 												error: function(xhr, status, error) {

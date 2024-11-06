@@ -60,13 +60,22 @@ class CheckoutRequest extends BaseRequest
                 if (!empty($invalidCartIds)) {
                     $validator->errors()->add('id', 'Một hoặc nhiều giỏ hàng không thuộc về người dùng hiện tại.');
                 }
-                // $pendingOrdersCount = Order::where('user_id', $userId)
-                //     ->where('status', OrderStatus::Pending)
-                //     ->count();
+                $pendingOrdersCount = Order::where('user_id', $userId)
+                    ->where('status', OrderStatus::Pending)
+                    ->count();
 
-                // if ($pendingOrdersCount >= 3) {
-                //     $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
-                // }
+                if ($pendingOrdersCount >= 3) {
+                    $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
+                }
+            } else {
+                $inputIds = request()->input('id', []);
+                $cart = session('cart', []);
+                $cartIds = array_column($cart, 'id'); // Lấy tất cả 'id' từ cart trong cookie
+
+                $missingIds = array_diff($inputIds, $cartIds);
+                if (!empty($missingIds)) {
+                    $validator->errors()->add('id', 'Danh sách id giỏ hàng không hợp lệ.');
+                }
             }
         });
     }

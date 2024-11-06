@@ -20,7 +20,7 @@
 																@include('admin.products.data.partials.product-arttibutes', [
 																				'attribute' => $productAttribute->attribute,
 																				'productAttributeId' => $productAttribute->id,
-																				'attribute_variations' => $productAttribute->attribute_variations,
+																				'attribute_variations' => $productAttribute->attributeVariations,
 																])
 												@endforeach
 								@endisset

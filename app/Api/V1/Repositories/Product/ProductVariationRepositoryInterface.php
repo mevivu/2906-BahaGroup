@@ -2,8 +2,9 @@
 
 namespace App\Api\V1\Repositories\Product;
 
-interface ProductVariationRepositoryInterface
+use App\Admin\Repositories\EloquentRepositoryInterface;
+
+interface ProductVariationRepositoryInterface extends EloquentRepositoryInterface
 {
     public function findByProductAndAttributeVariation($product_id, array $variation_id = []);
-	
 }

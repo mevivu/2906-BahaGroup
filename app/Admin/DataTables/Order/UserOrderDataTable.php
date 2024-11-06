@@ -6,6 +6,7 @@ use App\Admin\DataTables\BaseDataTable;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Traits\AuthService;
 use App\Enums\Order\OrderStatus;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Payment\PaymentMethod;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -19,17 +20,16 @@ class UserOrderDataTable extends BaseDataTable
 
     public function __construct(
         OrderRepositoryInterface $repository
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->repository = $repository;
     }
     protected function setColumnSearch()
     {
-        $this->columnAllSearch = [0, 1, 2, 3, 4];
+        $this->columnAllSearch = [0, 1, 2, 3, 4, 5];
 
-        $this->columnSearchDate = [4];
+        $this->columnSearchDate = [5];
 
         $this->columnSearchSelect = [
             [
@@ -38,6 +38,10 @@ class UserOrderDataTable extends BaseDataTable
             ],
             [
                 'column' => 2,
+                'data' => PaymentStatus::asSelectArray()
+            ],
+            [
+                'column' => 3,
                 'data' => OrderStatus::asSelectArray()
             ],
         ];
@@ -49,6 +53,7 @@ class UserOrderDataTable extends BaseDataTable
             'action' => 'user.orders.datatable.action',
             'editlink' => 'user.orders.datatable.editlink',
             'status' => 'user.orders.datatable.status',
+            'payment_status' => 'user.orders.datatable.payment_status',
         ];
     }
 
@@ -57,7 +62,8 @@ class UserOrderDataTable extends BaseDataTable
         $this->customEditColumns = [
             'id' => $this->view['editlink'],
             'status' => $this->view['status'],
-            'total' => '{{ format_price($total) }}',
+            'payment_status' => $this->view['payment_status'],
+            'total' => '{{ format_price($total - $discount_value + $surcharge) }}',
             'payment_method' => '{{ App\Enums\Payment\PaymentMethod::getDescription($payment_method) }}',
             'created_at' => '{{ format_datetime($created_at) }}',
         ];
@@ -104,12 +110,11 @@ class UserOrderDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['id', 'status', 'action'];
+        $this->customRawColumns = ['id', 'status', 'action', 'payment_status'];
     }
 
     public function setCustomFilterColumns(): void
     {
-        $this->customFilterColumns = [
-        ];
+        $this->customFilterColumns = [];
     }
 }

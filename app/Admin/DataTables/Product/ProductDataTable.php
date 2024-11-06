@@ -30,13 +30,14 @@ class ProductDataTable extends BaseDataTable
             'edit_link' => 'admin.products.datatable.editlink',
             'instock' => 'admin.products.datatable.instock',
             'price' => 'admin.products.datatable.price',
+            'flashsale_price' => 'admin.products.datatable.flashsale_price',
             'categories' => 'admin.products.datatable.categories',
         ];
     }
 
     public function setColumnSearch(): void
     {
-        $this->columnAllSearch = [1, 2, 4, 5];
+        $this->columnAllSearch = [1, 2, 5, 6];
 
         $this->columnSearchDate = [5];
 
@@ -70,6 +71,7 @@ class ProductDataTable extends BaseDataTable
         $this->customEditColumns = [
             'name' => $this->view['edit_link'],
             'avatar' => $this->view['avatar'],
+            'flashsale_price' => $this->view['flashsale_price'],
             'in_stock' => $this->view['instock'],
             'categories' => $this->view['categories'],
             'created_at' => '{{ format_date($created_at) }}',
@@ -86,7 +88,7 @@ class ProductDataTable extends BaseDataTable
 
     protected function setCustomRawColumns(): void
     {
-        $this->customRawColumns = ['action', 'avatar', 'name', 'in_stock', 'price', 'categories'];
+        $this->customRawColumns = ['action', 'avatar', 'name', 'in_stock', 'price', 'categories', 'flashsale_price'];
     }
 
     protected function setCustomFilterColumns(): void

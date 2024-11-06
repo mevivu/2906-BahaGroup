@@ -33,6 +33,23 @@
 																				<x-input type="date" name="birthday" :value="isset($user->birthday) ? format_date($user->birthday, 'Y-m-d') : null" required="true" />
 																</div>
 												</div>
+												<!-- new password -->
+												<div class="col-md-6 col-12">
+																<div class="mb-3">
+																				<label class="control-label"><i class="ti ti-key"></i> {{ __('Mật khẩu') }}: <span
+																												class="text-danger">*</span></label>
+																				<x-input-password name="password" />
+																</div>
+												</div>
+												<!-- new password confirmation-->
+												<div class="col-md-6 col-12">
+																<div class="mb-3">
+																				<label class="control-label"><i class="ti ti-key"></i> {{ __('Xác nhận mật khẩu') }}: <span
+																												class="text-danger">*</span></label>
+																				<x-input-password name="password_confirmation" data-parsley-equalto="input[name='password']"
+																								data-parsley-equalto-message="{{ __('Mật khẩu không khớp.') }}" />
+																</div>
+												</div>
 
 												<!-- gender -->
 												<div class="col-md-6 col-sm-12">

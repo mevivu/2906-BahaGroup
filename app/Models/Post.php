@@ -48,10 +48,15 @@ class Post extends Model
         return $query->where('status', PostStatus::Published);
     }
 
-    public function scopeHasCategory($query, int $categoryId)
+    public function scopeHasCategories($query, array $categoriesId)
     {
-        return $query->whereHas('categories', function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
+        return $query->whereHas('categories', function ($query) use ($categoriesId) {
+            $query->whereIn('id', $categoriesId);
         });
+    }
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
     }
 }

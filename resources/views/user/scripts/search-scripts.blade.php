@@ -1,4 +1,25 @@
 <script>
+				function addChip(slug, name, type) {
+								let chipID = type + '-' + slug;
+								$('#filter-chips-container').append(`
+<div class="col col-sm col-md col-lg my-1" id="${chipID}">
+       <button button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
+            <span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
+                </button>
+    </div>
+`);
+				}
+
+				function removeChip(slug, type) {
+								let chipID = type + '-' + slug;
+								$('#' + chipID).remove();
+				}
+
+				function arraysEqual(arr1, arr2) {
+								if (arr1.length !== arr2.length) return false;
+								return arr1.every((value, index) => value === arr2[index]);
+				}
+
 				function handleAddToCartAnimation(productImageUrl) {
 								Swal.fire({
 												icon: 'success',

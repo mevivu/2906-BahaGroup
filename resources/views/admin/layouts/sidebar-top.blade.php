@@ -115,45 +115,16 @@
 												</button>
 								</div>
 
-								<div class="navbar-nav order-md-last flex-row">
+								<div id="notification-icon" class="navbar-nav order-md-last flex-row">
 												<div class="nav-item dropdown">
 																<a href="#" class="nav-link dropdown-toggle me-2" data-bs-toggle="dropdown" aria-expanded="false">
 																				<span class="icon-bell position-relative">
 																								<i class="ti ti-bell me-5"></i>
-																								<span class="badge bg-danger rounded-pill position-absolute translate-middle top-0">9</span>
+																								<span id="notification-badge"
+																												class="badge bg-danger rounded-pill position-absolute translate-middle top-0"></span>
 																				</span>
 																</a>
-																<div class="dropdown-menu dropdown-menu-end">
-																				<div class="dropdown-item">
-																								<div class="notification">
-																												<h6 class="dropdown-title">New Message</h6>
-																												<p class="dropdown-message">You have a new message from John Doe.</p>
-																								</div>
-																				</div>
-																				<div class="dropdown-item">
-																								<div class="notification">
-																												<h6 class="dropdown-title">Account Update</h6>
-																												<p class="dropdown-message">Your account has been updated successfully.</p>
-																								</div>
-																				</div>
-																				<div class="dropdown-item">
-																								<div class="notification">
-																												<h6 class="dropdown-title">Order Confirmation</h6>
-																												<p class="dropdown-message">Your order #12345 has been confirmed.</p>
-																								</div>
-																				</div>
-																				<div class="dropdown-item">
-																								<div class="notification">
-																												<h6 class="dropdown-title">System Maintenance</h6>
-																												<p class="dropdown-message">The system will undergo maintenance on 2023-05-15.</p>
-																								</div>
-																				</div>
-																				<div class="dropdown-item">
-																								<div class="notification">
-																												<h6 class="dropdown-title">New Features</h6>
-																												<p class="dropdown-message">Check out the new features added to the platform.</p>
-																								</div>
-																				</div>
+																<div id="notification-dropdown" class="dropdown-menu dropdown-menu-end">
 																</div>
 												</div>
 												@include('admin.layouts.partials.account')
@@ -163,3 +134,65 @@
 								</div>
 				</div>
 </header>
+
+@push('custom-js')
+				<script>
+								$(document).ready(function() {
+												// Hàm để lấy thông báo
+												function fetchNotifications() {
+																$.ajax({
+																				url: "{{ route('admin.notification.getAllNotificationAdmin') }}",
+																				method: "GET",
+																				success: function(response) {
+																								console.log(response);
+																								if (response.status === 200) {
+																												const notifications = response.data;
+																												const notificationCount = notifications.length;
+
+																												// Cập nhật số lượng trên badge
+																												const badgeText = notificationCount > 9 ? '9+' : notificationCount;
+																												$('#notification-badge').text(badgeText);
+
+																												// Xóa nội dung cũ của dropdown
+																												$('#notification-dropdown').empty();
+
+																												// Thêm từng thông báo vào dropdown
+																												notifications.forEach(notification => {
+																																$('#notification-dropdown').append(`
+                         <div class="dropdown-item" id="notification-${notification.id}">
+                             <div class="notification">
+                                 <h6 class="dropdown-title">${notification.title}</h6>
+                                 <p class="dropdown-message">${notification.message}</p>
+                             </div>
+                         </div>
+                     `);
+																												});
+																								}
+																				},
+																				error: function() {
+																								console.error("Có lỗi xảy ra khi lấy danh sách thông báo.");
+																				}
+																});
+												}
+
+												// Gọi fetchNotifications khi trang load
+												fetchNotifications();
+
+												// Khi nhấp vào biểu tượng thông báo
+												$('#notification-icon').on('click', function() {
+																$.ajax({
+																				url: "{{ route('admin.notification.readAllNotification') }}",
+																				method: "GET",
+																				success: function(response) {
+																								if (response.status === 200) {
+																												$('#notification-badge').text('0');
+																								}
+																				},
+																				error: function() {
+																								console.error("Có lỗi xảy ra khi đánh dấu thông báo đã đọc.");
+																				}
+																});
+												});
+								});
+				</script>
+@endpush

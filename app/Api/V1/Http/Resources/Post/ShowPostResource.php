@@ -20,7 +20,7 @@ class ShowPostResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'image' => asset($this->image),
-            'is_featured' => $this->is_featured,
+            'is_featured' => $this->is_featured ? 'Nổi bật' : 'Không nổi bật',
             'excerpt' => $this->excerpt,
             'content' => $this->content,
             'posted_at' => $this->posted_at,

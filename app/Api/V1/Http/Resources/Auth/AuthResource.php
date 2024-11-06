@@ -2,6 +2,7 @@
 
 namespace App\Api\V1\Http\Resources\Auth;
 
+use App\Enums\User\Gender;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AuthResource extends JsonResource
@@ -21,7 +22,7 @@ class AuthResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
-            'gender' => $this->gender,
+            'gender' => Gender::getDescription($this->gender->value),
             'vip' => $this->vip,
             'created_at' => $this->created_at,
         ];

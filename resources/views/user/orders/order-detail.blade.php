@@ -20,10 +20,17 @@
 																																												$instance->payment_method->value)->badge(),
 																																				])>{{ \App\Enums\Payment\PaymentMethod::getDescription($instance->payment_method->value) }}</span>
 																												</p>
+																												<p><strong>Trạng thái thanh toán:</strong>
+																																<span
+																																				@class([
+																																								'badge-status',
+																																								App\Enums\Order\PaymentStatus::from($instance->payment_status)->badge(),
+																																				])>{{ \App\Enums\Order\PaymentStatus::getDescription($instance->payment_status) }}</span>
+																												</p>
 																												<p><strong>Địa chỉ giao hàng:</strong> {{ $instance->province->name }},
 																																{{ $instance->district->name }}, {{ $instance->ward->name }}</p>
 																												<p><strong>Địa chỉ chi tiết:</strong> {{ $instance->address }}</p>
-																												@if ($instance->discount_value)
+																												@if ($instance->discount_value && $instance->status != App\Enums\Order\OrderStatus::Cancelled)
 																																<p><strong>Mã giảm giá áp dụng:</strong> {{ $instance->discount->code }}</p>
 																												@endif
 																												<p><strong>Trạng thái đơn hàng:</strong>

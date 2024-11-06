@@ -41,7 +41,7 @@ class ProductEditResource extends JsonResource
             'flashsale_price' => $this->flashsale_price,
             'in_stock' => $this->in_stock,
             'is_active' => $this->is_active,
-            'is_featured' => $this->is_featured,
+            'is_featured' => $this->is_featured ? 'Nổi bật' : 'Không nổi bật',
             'avatar' => $this->avatar,
             'gallery' => $this->gallery,
             'desc' => $this->desc,

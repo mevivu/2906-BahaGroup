@@ -37,6 +37,7 @@ class ProductVariationRepository extends EloquentRepository implements ProductVa
             ], [
                 'price' => $productVariation['price'][$key],
                 'promotion_price' => $productVariation['promotion_price'][$key],
+                'flashsale_price' => $productVariation['flashsale_price'][$key],
                 'image' => $productVariation['image'][$key],
                 'qty' => $productVariation['qty'][$key],
                 'position' => $position

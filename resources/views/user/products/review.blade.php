@@ -26,7 +26,7 @@
 																								<x-textarea name="content" class="form-control" :required="true"></x-textarea>
 																				</div>
 																				<div class="card-body d-flex justify-content-between p-2">
-																								<x-button.submit :title="__('Đăng')" />
+																								<x-button.submit style="border: none" class="btn-default" :title="__('Đăng')" />
 																				</div>
 																</div>
 												</form>

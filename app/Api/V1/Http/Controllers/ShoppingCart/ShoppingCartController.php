@@ -13,6 +13,7 @@ use App\Api\V1\Http\Requests\ShoppingCart\UpdateShoppingCartRequest;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResource;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResourceNoLogin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Giỏ hàng
@@ -79,7 +80,7 @@ class ShoppingCartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         if ($this->getCurrentUser()) {
             $shoppingCart = $this->repository->getAuthCurrent();
@@ -90,8 +91,7 @@ class ShoppingCartController extends Controller
                 'data' => $shoppingCart
             ]);
         } else {
-            // Lấy giỏ hàng từ cookie
-            $shoppingCart = json_decode($request->cookie('cart', '[]'), true);
+            $shoppingCart = session('cart', []);
             $shoppingCart = new ShoppingCartResourceNoLogin($shoppingCart);
             return response()->json([
                 'status' => 200,
@@ -138,10 +138,17 @@ class ShoppingCartController extends Controller
                 'message' => __('Thêm sản phẩm thất bại, số lượng có thể mua đã đạt tối đa.'),
             ], 400);
         }
+        if ($response === true) {
+            return response()->json([
+                'status' => 200,
+                'message' => __('Thêm vào giỏ hàng thành công.'),
+            ], 200);
+        }
+        session(['cart' => $response]);
         return response()->json([
             'status' => 200,
             'message' => __('Thêm vào giỏ hàng thành công.'),
-        ])->withCookie(cookie('cart', json_encode($response), 86400));
+        ]);
     }
 
     /**
@@ -179,10 +186,11 @@ class ShoppingCartController extends Controller
                 'message' => __('Cập nhật giỏ hàng thành công.')
             ]);
         } else if ($response) {
+            session(['cart' => $response]);
             return response()->json([
                 'status' => 200,
                 'message' => __('Cập nhật giỏ hàng thành công.'),
-            ])->withCookie(cookie('cart', json_encode($response), 86400));
+            ]);
         }
         return response()->json([
             'status' => 400,
@@ -221,10 +229,11 @@ class ShoppingCartController extends Controller
                 'message' => __('Thực hiện thành công.')
             ]);
         } else if ($response) {
+            session(['cart' => $response]);
             return response()->json([
                 'status' => 200,
                 'message' => __('Thực hiện thành công.'),
-            ])->withCookie(cookie('cart', json_encode($response), 86400));
+            ]);
         }
         return response()->json([
             'status' => 400,
@@ -308,15 +317,16 @@ class ShoppingCartController extends Controller
                 'status' => 200,
                 'message' => __('Đặt hàng thành công.')
             ]);
-        } else if ($response) {
+        } else if ($response === false) {
             return response()->json([
-                'status' => 200,
-                'message' => __('Đặt hàng thành công.'),
-            ])->withCookie(cookie('cart', json_encode($response), 86400));
+                'status' => 500,
+                'message' => __('Đặt hàng thất bại.')
+            ], 500);
         }
+        session(['cart' => $response]);
         return response()->json([
-            'status' => 500,
-            'message' => __('Đặt hàng thất bại.')
-        ], 500);
+            'status' => 200,
+            'message' => __('Đặt hàng thành công.'),
+        ]);
     }
 }

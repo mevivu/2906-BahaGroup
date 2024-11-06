@@ -56,7 +56,7 @@ class OrderDataTable extends BaseDataTable
         $this->customEditColumns = [
             'id' => $this->view['editlink'],
             'status' => $this->view['status'],
-            'total' => '{{ format_price($total) }}',
+            'total' => '{{ format_price($total - $discount_value + $surcharge) }}',
             'surcharge' => '{{ format_price($surcharge) }}',
             'discount_value' => '{{ format_price($discount_value) }}',
             'payment_method' => '{{ App\Enums\Payment\PaymentMethod::getDescription($payment_method) }}',

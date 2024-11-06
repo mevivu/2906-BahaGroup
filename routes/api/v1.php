@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
 //shopping cart
 Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartController::class)
     ->prefix('/shopping-cart')
+    ->middleware('web', 'optional.sanctum')
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');

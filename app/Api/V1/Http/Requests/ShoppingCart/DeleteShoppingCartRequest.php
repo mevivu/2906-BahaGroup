@@ -37,7 +37,7 @@ class DeleteShoppingCartRequest extends BaseRequest
                 }
             } else {
                 // Trường hợp người dùng chưa đăng nhập
-                $cart = json_decode(request()->cookie('cart', '[]'), true);
+                $cart = session('cart', []);
                 $cartIds = array_column($cart, 'id'); // Lấy tất cả 'id' từ cart trong cookie
 
                 $missingIds = array_diff($inputIds, $cartIds);

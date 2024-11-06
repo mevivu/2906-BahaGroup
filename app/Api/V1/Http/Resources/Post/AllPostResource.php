@@ -14,20 +14,17 @@ class AllPostResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection->map(function($post){
-            
+        return $this->collection->map(function ($post) {
+
             return [
                 'id' => $post->id,
                 'title' => $post->title,
                 'slug' => $post->slug,
                 'image' => asset($post->image),
-                'is_featured' => $post->is_featured,
+                'is_featured' => $post->is_featured ? 'Nổi bật' : 'Không nổi bật',
                 'excerpt' => $post->excerpt,
                 'posted_at' => $post->posted_at,
             ];
-            
         });
     }
-
-    
 }

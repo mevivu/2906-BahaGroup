@@ -25,6 +25,8 @@ Route::group(['middleware' => 'admin.auth.admin:admin'], function () {
             });
             Route::group(['middleware' => ['permission:viewNotification', 'auth:admin']], function () {
                 Route::get('/', 'index')->name('index');
+                Route::get('/admin', 'getAllNotificationAdmin')->name('getAllNotificationAdmin');
+                Route::get('/read-all', 'readAllNotification')->name('readAllNotification');
                 Route::get('/sua/{id}', 'edit')->name('edit');
             });
 

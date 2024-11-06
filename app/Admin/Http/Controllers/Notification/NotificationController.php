@@ -8,6 +8,7 @@ use App\Admin\Http\Requests\Notification\NotificationRequest;
 use App\Admin\Repositories\Notification\NotificationRepositoryInterface;
 use App\Admin\Repositories\User\UserRepositoryInterface;
 use App\Admin\Services\Notification\NotificationServiceInterface;
+use App\Admin\Traits\AuthService;
 use App\Enums\Notification\NotificationStatus;
 use App\Enums\Notification\NotificationType;
 use Illuminate\Contracts\Foundation\Application;
@@ -16,6 +17,7 @@ use Illuminate\View\View;
 
 class NotificationController extends Controller
 {
+    use AuthService;
     protected $driverRepository;
     protected $storeRepository;
     protected $userRepository;
@@ -72,6 +74,26 @@ class NotificationController extends Controller
             return redirect()->route($this->route['index'])->with('success', __('notifySuccess'));
         }
         return redirect()->route($this->route['create'])->with('error', __('notifyFail'));
+    }
+
+    public function getAllNotificationAdmin()
+    {
+        $notifications = $this->repository->getBy(['admin_id' => $this->getCurrentAdminId(), 'status' => NotificationStatus::NOT_READ]);
+        return response()->json([
+            'status' => 200,
+            'data' => $notifications
+        ]);
+    }
+
+    public function readAllNotification()
+    {
+        $notifications = $this->repository->getBy(['admin_id' => $this->getCurrentAdminId()]);
+        foreach ($notifications as $notification) {
+            $notification->update(['status' => NotificationStatus::READ]);
+        }
+        return response()->json([
+            'status' => 200,
+        ]);
     }
 
 

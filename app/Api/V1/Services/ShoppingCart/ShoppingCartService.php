@@ -18,8 +18,6 @@ use App\Enums\Product\ProductType;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -108,7 +106,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 if (isset($this->data['discount_code'])) {
                     $this->handleDiscount($order, $discount);
                 }
-
                 $this->storeOrderDetail($order->id, $this->orderDetails);
                 foreach ($order->details as $detail) {
                     if ($detail->product->on_flash_sale) {
@@ -141,7 +138,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 DB::commit();
                 return true;
             } else {
-                $cart = json_decode($request->cookie('cart', '[]'), true);
+                $cart = session('cart', []);
                 $shopping_cart = collect($cart)->map(function ($item) {
                     return (object) $item;
                 });
@@ -156,7 +153,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 if (isset($this->data['discount_code'])) {
                     $this->handleDiscount($order, $discount);
                 }
-
                 $this->storeOrderDetail($order->id, $this->orderDetails);
                 foreach ($order->details as $detail) {
                     if ($detail->product->on_flash_sale) {
@@ -257,13 +253,17 @@ class ShoppingCartService implements ShoppingCartServiceInterface
             if ($product->type == ProductType::Simple) {
                 $unitPrice = $product->on_flash_sale ? $product->flashsale_price : $product->promotion_price;
             } else {
-                $instance = $product->productVariation()->where('id', $item->product_variation_id)->first();
-                $unitPrice = $instance->product->on_flash_sale ? $instance->flashsale_price : $instance->promotion_price;
+                if ($this->getCurrentUser()) {
+                    $productVariation = $this->productVariationRepository->findOrFail($item->product_variation_id);
+                } else {
+                    $productVariation = $this->productVariationRepository->findByProductAndAttributeVariation($item->product_id, $item->variation_id);
+                }
+                $unitPrice = $productVariation->product->on_flash_sale ? $productVariation->flashsale_price : $productVariation->promotion_price;
             }
             $this->orderDetails[] = [
                 'product_id' => $product->id,
                 'unit_price' => $unitPrice,
-                'product_variation_id' => $item->product_variation_id ?: null,
+                'product_variation_id' => isset($productVariation) ? $productVariation->id : null,
                 'qty' => $item->qty,
             ];
         }
@@ -287,11 +287,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     $compare['product_variation_id'] = $productVariation->id;
                 }
 
-                $instance = $this->repository->updateOrCreate($compare, [
+                $this->repository->updateOrCreate($compare, [
                     'qty' => DB::raw("qty + {$this->data['qty']}")
                 ]);
                 DB::commit();
-                return $instance;
+                return true;
             } else {
                 return $this->storeNotLogin($request);
             }
@@ -307,7 +307,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->data = $request->validated();
 
         // Lấy giỏ hàng từ cookie
-        $cart = json_decode($request->cookie('cart', '[]'), true);
+        $cart = session('cart', []);
 
         $product = $this->productRepository->findOrFail($this->data['product_id']);
         // Kiểm tra số lượng sản phẩm
@@ -363,7 +363,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 DB::commit();
                 return true;
             } else {
-                $cart = json_decode($request->cookie('cart', '[]'), true);
+                $cart = session('cart', []);
                 foreach ($this->data['id'] as $key => $value) {
                     foreach ($cart as &$item) {
                         if ($item['id'] == $value) {
@@ -391,7 +391,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 DB::commit();
                 return true;
             } else {
-                $cart = json_decode($request->cookie('cart', '[]'), true);
+                $cart = session('cart', []);
                 $idsToDelete = $request->input('id', []);
                 $cart = array_filter($cart, function ($item) use ($idsToDelete) {
                     return !in_array($item['id'], $idsToDelete);

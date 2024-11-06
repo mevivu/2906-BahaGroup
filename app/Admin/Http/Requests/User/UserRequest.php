@@ -25,6 +25,7 @@ class UserRequest extends BaseRequest
             ],
             'email' => ['required', 'email', 'unique:App\Models\User,email'],
             'address' => ['nullable'],
+            'password' => ['required', 'string', 'confirmed'],
             'gender' => ['required', new Enum(Gender::class)],
             'birthday' => ['required', 'date_format:Y-m-d'],
             'active' => ['required'],
@@ -44,6 +45,7 @@ class UserRequest extends BaseRequest
                 'unique:App\Models\User,phone,' . $this->id
             ],
             'address' => ['nullable'],
+            'password' => ['nullable', 'string', 'confirmed'],
             'gender' => ['required', new Enum(Gender::class)],
             'birthday' => ['required', 'date_format:Y-m-d'],
             'avatar' => ['nullable'],

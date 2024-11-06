@@ -90,8 +90,8 @@
 																												@else
 																																<p id="productDetailPrice" class="lead">
 																																				<del
-																																								id="productVariationPrice">{{ format_price($productModal->productVariations[0]->price) }}</del>
-																																				<strong id="productVariationPromotionPrice"
+																																								id="productVariationPriceModal">{{ format_price($productModal->productVariations[0]->price) }}</del>
+																																				<strong id="productVariationPromotionPriceModal"
 																																								class="text-red">{{ format_price($productModal->productVariations[0]->promotion_price) }}</strong><br>
 																																				@if (isset($productModal->on_flash_sale))
 																																								<span class="flashsale-price">FLASH SALE -
@@ -210,6 +210,7 @@
 
 <script>
 				$(document).ready(function() {
+								let currentHiddenAttributeValuesModal = [];
 								document.querySelectorAll('.color-btn-modal').forEach(button => {
 												button.addEventListener('click', function() {
 																document.querySelectorAll('.color-btn-modal').forEach(btn => btn.classList.remove(
@@ -256,11 +257,18 @@
 												$('input[name="attribute_variation_modal_ids[' + attributeId + ']"]').val(
 																attributeVariationId);
 
+												$('.color-btn-modal, .capacity-btn-modal').addClass('disabled').css({
+																'pointer-events': 'none',
+																'opacity': '0.5'
+												});
+
+
 												elements.forEach(element => {
 																hiddenAttributeModalValues.push(element.value);
 												});
 												const hasEmpty = hiddenAttributeModalValues.some(value => value === '');
-												if (!hasEmpty) {
+												if (!hasEmpty && !arraysEqual(currentHiddenAttributeValuesModal, hiddenAttributeModalValues)) {
+																currentHiddenAttributeValuesModal = hiddenAttributeModalValues;
 																$.ajax({
 																				type: "GET",
 																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
@@ -289,9 +297,24 @@
 																				},
 																				error: function(response) {
 																								handleAjaxError(response);
+																				},
+																				complete: function() {
+																								// Remove "disabled" class and reset CSS to enable the buttons after AJAX completes
+																								$('.color-btn-modal, .capacity-btn-modal').removeClass('disabled')
+																												.css({
+																																'pointer-events': 'auto',
+																																'opacity': '1'
+																												});
 																				}
 																})
+												} else {
+																// Enable buttons if no AJAX call is made
+																$('.color-btn-modal, .capacity-btn-modal').removeClass('disabled').css({
+																				'pointer-events': 'auto',
+																				'opacity': '1'
+																});
 												}
+
 								});
 
 								$('#btnBuyNowModal').click(function(e) {

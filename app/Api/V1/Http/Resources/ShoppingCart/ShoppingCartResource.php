@@ -29,7 +29,7 @@ class ShoppingCartResource extends ResourceCollection
                     'id' => $shoppingCart->product->id,
                     'name' => $shoppingCart->product->name,
                     'slug' => $shoppingCart->product->slug,
-                    'in_stock' => ProductInStock::getDescription($shoppingCart->product->in_stock),
+                    'in_stock' => ProductInStock::getDescription($shoppingCart->product->in_stock->value),
                     'avatar' => asset($shoppingCart->product->avatar)
                 ]
             ];

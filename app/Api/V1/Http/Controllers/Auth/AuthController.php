@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use \Illuminate\Http\Request;
 use App\Api\V1\Http\Resources\Auth\AuthResource;
 use App\Mail\AccountActivation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -170,7 +171,7 @@ class AuthController extends Controller
                     'status' => 200,
                     'message' =>  __('LoginSuccess'),
                     'access_token' => $token
-                ], 200);
+                ])->withCookie(cookie()->forget(env('SESSION_COOKIE')));
             } else {
                 return response()->json([
                     'status' => 401,
@@ -349,16 +350,23 @@ class AuthController extends Controller
         $this->login = $request->validated();
         if (Auth::attempt($this->login)) {
             if ($request->user()->active) {
+                // Cập nhật trạng thái tài khoản người dùng
                 $this->repository->update($request->user()->id, ['active' => 0]);
+
+                // Xóa tất cả các token liên quan đến người dùng này
+                DB::table('personal_access_tokens')
+                    ->where('tokenable_id', $request->user()->id)
+                    ->delete();
+
                 return response()->json([
                     'status' => 200,
-                    'message' =>  __('Xóa tài khoản thành công'),
+                    'message' => __('Xóa tài khoản thành công'),
                 ], 200);
             }
         }
         return response()->json([
             'status' => 500,
-            'message' =>  __('Xóa tài khoản thất bại')
+            'message' => __('Xóa tài khoản thất bại')
         ], 500);
     }
 
@@ -386,10 +394,12 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
+        session()->flush();
+
         return response()->json([
             'status' => 200,
             'message' => __('notifySuccess'),
-        ]);
+        ])->withCookie(cookie()->forget(env('SESSION_COOKIE')));
     }
 
     /**

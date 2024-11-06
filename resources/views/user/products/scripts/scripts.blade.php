@@ -1,21 +1,6 @@
 <script>
+				let currentHiddenAttributeValues = [];
 				$(document).ready(function() {
-								function addChip(slug, name, type) {
-												let chipID = type + '-' + slug;
-												$('#filter-chips-container').append(`
-            <div class="col col-sm col-md col-lg my-1" id="${chipID}">
-																																																																<button class="btn btn-sm bg-default text-white rounded-pill text-truncate chip" type="button" >
-																																																																																				<span>${name}</span> <i class="ti ti-x remove-chip" data-type="${type}" data-slug="${slug}"></i>
-																																																																				</button>
-																																																</div>
-        `);
-								}
-
-								function removeChip(slug, type) {
-												let chipID = type + '-' + slug;
-												$('#' + chipID).remove();
-								}
-
 								$('.category-checkbox:checked, input[name="color_slugs[]"]:checked, input[name="size_slugs[]"]:checked')
 												.each(function() {
 																let slug = $(this).val();
@@ -68,6 +53,11 @@
 								}
 
 								$('.color-btn, .capacity-btn').click(function() {
+												// Prevent click if the button is "disabled"
+												if ($(this).hasClass('disabled')) {
+																return; // Exit the function, preventing AJAX call
+												}
+
 												var attributeName = $(this).data('attribute-name');
 												var attributeId = $(this).data('attribute-id');
 												var attributeVariationId = $(this).data('attribute-variation-id');
@@ -75,14 +65,21 @@
 												const elements = document.querySelectorAll("#hiddenAttribute");
 
 												$('#attribute_variation_name' + attributeId).text(attributeName);
-
 												$('input[name="attribute_variation_ids[' + attributeId + ']"]').val(attributeVariationId);
+
+												// Add "disabled" class to temporarily disable the buttons
+												$('.color-btn, .capacity-btn').addClass('disabled').css({
+																'pointer-events': 'none',
+																'opacity': '0.5'
+												});
 
 												elements.forEach(element => {
 																hiddenAttributeValues.push(element.value);
 												});
+
 												const hasEmpty = hiddenAttributeValues.some(value => value === '');
-												if (!hasEmpty) {
+												if (!hasEmpty && !arraysEqual(currentHiddenAttributeValues, hiddenAttributeValues)) {
+																currentHiddenAttributeValues = hiddenAttributeValues;
 																$.ajax({
 																				type: "GET",
 																				url: '{{ route('user.product.findVariationByAttributeVariationIds') }}',
@@ -116,10 +113,26 @@
 																												showConfirmButton: true,
 																												confirmButtonColor: "#1c5639",
 																								});
+																				},
+																				complete: function() {
+																								// Remove "disabled" class and reset CSS to enable the buttons after AJAX completes
+																								$('.color-btn, .capacity-btn').removeClass('disabled').css({
+																												'pointer-events': 'auto',
+																												'opacity': '1'
+																								});
 																				}
-																})
+																});
+												} else {
+																// Enable buttons if no AJAX call is made
+																$('.color-btn, .capacity-btn').removeClass('disabled').css({
+																				'pointer-events': 'auto',
+																				'opacity': '1'
+																});
 												}
 								});
+
+
+
 								$('#btnAddToCart').click(function(e) {
 												$('#btnAddToCart').prop('disabled', true);
 												var productId = $('input[name="hidden_product_id"]').val();
