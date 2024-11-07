@@ -3,7 +3,9 @@
 namespace App\Api\V1\Http\Controllers\ShoppingCart;
 
 use App\Admin\Http\Controllers\Controller;
+use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Traits\AuthService;
+use App\Api\V1\Http\Requests\ShoppingCart\ApplyDiscountCodeRequest;
 use App\Api\V1\Http\Requests\ShoppingCart\CheckoutRequest;
 use App\Api\V1\Http\Requests\ShoppingCart\DeleteShoppingCartRequest;
 use App\Api\V1\Services\ShoppingCart\ShoppingCartServiceInterface;
@@ -22,12 +24,16 @@ use Illuminate\Support\Facades\Auth;
 class ShoppingCartController extends Controller
 {
     use AuthService;
+    protected $discountRepository;
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
+        DiscountRepositoryInterface $discountRepository,
         ShoppingCartServiceInterface $service
     ) {
         $this->repository = $repository;
         $this->service = $service;
+
+        $this->discountRepository = $discountRepository;
     }
     /**
      * Danh sách sản phẩm trong giỏ hàng
@@ -328,5 +334,135 @@ class ShoppingCartController extends Controller
             'status' => 200,
             'message' => __('Đặt hàng thành công.'),
         ]);
+    }
+
+    /**
+     * Áp dụng mã giảm giá
+     *
+     * Áp dụng mã giảm giá trước khi đặt hàng.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @bodyParam id[] integer required
+     * Danh sách id item giỏ hàng. Example: 1
+     *
+     * @bodyParam discount_code string optional
+     * Mã giảm giá. Example: SALE10
+     *
+     * @bodyParam order[payment_method] string required
+     * Phương thức thanh toán. Example: "1"
+     *
+     * @bodyParam order[email] string required
+     * Email của người đặt hàng. Example: "example@example.com"
+     *
+     * @bodyParam order[province_id] integer required
+     * ID của tỉnh. Example: 1
+     *
+     * @bodyParam order[district_id] integer required
+     * ID của huyện. Example: 10
+     *
+     * @bodyParam order[ward_id] integer required
+     * ID của xã/phường. Example: 100
+     *
+     * @bodyParam order[fullname] string required
+     * Họ tên đầy đủ của người nhận. Example: "Nguyen Van A"
+     *
+     * @bodyParam order[address] string required
+     * Địa chỉ nhận hàng. Example: "123 Nguyen Trai, Ha Noi"
+     *
+     * @bodyParam order[phone] string required
+     * Số điện thoại người nhận. Example: "0123456789"
+     *
+     * @bodyParam order[note] string optional
+     * Ghi chú đơn hàng. Example: "Giao hàng giờ hành chính"
+     *
+     * @bodyParam order[name_other] string optional
+     * Tên người nhận khác. Example: "Nguyen Thi B"
+     *
+     * @bodyParam order[address_other] string optional
+     * Địa chỉ người nhận khác. Example: "456 Le Loi, Ho Chi Minh"
+     *
+     * @bodyParam order[phone_other] string optional
+     * Số điện thoại người nhận khác. Example: "0987654321"
+     *
+     * @bodyParam order[note_other] string optional
+     * Ghi chú khác. Example: "Chuyển khoản trước khi giao"
+     *
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Áp dụng mã giảm giá thành công.",
+     *      "data": {
+     *          "total": 1000000,
+     *          "discount_value": 50000
+     *      }
+     * }
+     *
+     * @response 400 {
+     *      "status": 400,
+     *      "message": "Áp dụng mã giảm giá không thành công."
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function applyDiscountCode(ApplyDiscountCodeRequest $request)
+    {
+        $user = $this->getCurrentUser();
+        if ($user) {
+            $shoppingCart = $this->repository->getQueryBuilder()->whereIn('id', $request->input('id'))->get();
+            $total = $this->service->calculateTotal($shoppingCart);
+            $discount = $this->discountRepository->findByField('code', $request->input('discount_code'));
+            if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
+                        . format_price($total) . ', giá trị đơn hàng đủ điều kiện: '
+                        . format_price($discount->min_order_amount) . '.',
+                    'data' => [
+                        'total' => $total,
+                        'discount_value' => 0
+                    ]
+                ], 400);
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => __('Áp dụng mã giảm giá thành công.'),
+                'data' => [
+                    'total' => $total,
+                    'discount_value' => $this->service->calculateDiscountValue($total, $discount)
+                ]
+            ]);
+        } else {
+            $cart = session()->get('cart', []);
+            $cartCollection = collect($cart)->map(function ($item) {
+                return (object) $item;
+            });
+            $cartCollection = $cartCollection->whereIn('id', $request->input('id'));
+            $total = $this->service->calculateTotal($cartCollection);
+            $discount = $this->discountRepository->findByField('code', $request->input('discount_code'));
+            if ($total < $discount->min_order_amount || $discount->max_usage <= 0) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Mã giảm giá đã hết hoặc Đơn hàng chưa đủ điều kiện sử dụng mã giảm giá này. Giá trị đơn hàng hiện tại: '
+                        . format_price($total) . ', giá trị đơn hàng đủ điều kiện: '
+                        . format_price($discount->min_order_amount) . '.',
+                    'data' => [
+                        'total' => $total,
+                        'discount_value' => 0
+                    ]
+                ], 400);
+            }
+            return response()->json([
+                'status' => 200,
+                'message' => __('Áp dụng mã giảm giá thành công.'),
+                'data' => [
+                    'total' => $total,
+                    'discount_value' => $this->service->calculateDiscountValue($total, $discount)
+                ]
+            ]);
+        }
     }
 }

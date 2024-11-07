@@ -23,7 +23,6 @@ return new class extends Migration
             $table->tinyInteger('payment_method')->default(PaymentMethod::Online->value);
             $table->text('note')->nullable();
             $table->text('address')->nullable();
-            $table->text('avatar')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('fullname')->nullable();

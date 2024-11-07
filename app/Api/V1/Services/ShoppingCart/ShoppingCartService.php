@@ -38,8 +38,8 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
         OrderRepositoryInterface $orderRepository,
-        ProductRepositoryInterface $productRepository,
         OrderDetailRepositoryInterface $orderDetailRepository,
+        ProductRepositoryInterface $productRepository,
         ProductVariationRepositoryInterface $productVariationRepository,
         DiscountRepositoryInterface $discountRepository,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
@@ -201,7 +201,6 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         if (is_array($shoppingCart) || $shoppingCart instanceof \Traversable) {
             foreach ($shoppingCart as $item) {
                 $total += $this->calculateItemTotal($item);
-                Log::info($total);
             }
         } else {
             $total += $this->calculateItemTotal($shoppingCart);

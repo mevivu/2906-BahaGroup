@@ -61,6 +61,7 @@ Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartControlle
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::post('/checkout', 'checkout')->name('checkout');
+        Route::post('/apply-code', 'applyDiscountCode')->name('applyDiscountCode');
         Route::post('/update', 'update')->name('update');
         Route::delete('/delete', 'delete')->name('delete');
     });

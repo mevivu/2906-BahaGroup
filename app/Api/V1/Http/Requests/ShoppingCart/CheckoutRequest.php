@@ -70,7 +70,7 @@ class CheckoutRequest extends BaseRequest
             } else {
                 $inputIds = request()->input('id', []);
                 $cart = session('cart', []);
-                $cartIds = array_column($cart, 'id'); // Lấy tất cả 'id' từ cart trong cookie
+                $cartIds = array_column($cart, 'id');
 
                 $missingIds = array_diff($inputIds, $cartIds);
                 if (!empty($missingIds)) {
