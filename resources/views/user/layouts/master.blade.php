@@ -17,10 +17,11 @@
 												<x-bottom-nav />
 												<x-footer />
 												<x-quickview />
-								</div>
+								</div>''
 								@include('user.layouts.modal.modal-logout')
 								@include('user.scripts.scripts')
 								<x-alert />
+								<x-shoppingcart />
 				</body>
 
 </html>

@@ -360,32 +360,38 @@
 												var productImageUrl = $('input[name="hidden_avatar_modal"]').val();
 												var productVariationId = $('input[name="hidden_product_variation_modal_id"]').val();
 												var qty = $('#filter-input-detail-modal').val();
+												if (requestDone) {
+																requestDone = false;
+																$.ajax({
+																				type: "POST",
+																				url: '{{ route('user.cart.store') }}',
+																				data: {
+																								product_id: productId,
+																								product_variation_id: productVariationId,
+																								qty: qty,
+																								_token: '{{ csrf_token() }}'
+																				},
+																				success: function(response) {
+																								$('#cart-count-mobile').text(response.data.count);
+																								$('#cart-count').text(response.data.count);
+																								handleAddToCartAnimation(productImageUrl);
+																				},
+																				error: function(response) {
+																								Swal.fire({
+																												icon: 'warning',
+																												title: 'Thất bại',
+																												text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
+																												showConfirmButton: true,
+																												confirmButtonColor: "#1c5639",
+																								});
+																								handleAjaxError(response);
+																				},
+																				complete: function() {
+																								requestDone = true;
+																				}
+																});
+												}
 
-												$.ajax({
-																type: "POST",
-																url: '{{ route('user.cart.store') }}',
-																data: {
-																				product_id: productId,
-																				product_variation_id: productVariationId,
-																				qty: qty,
-																				_token: '{{ csrf_token() }}'
-																},
-																success: function(response) {
-																				$('#cart-count-mobile').text(response.data.count);
-																				$('#cart-count').text(response.data.count);
-																				handleAddToCartAnimation(productImageUrl);
-																},
-																error: function(response) {
-																				Swal.fire({
-																								icon: 'warning',
-																								title: 'Thất bại',
-																								text: 'Thêm sản phẩm vào giỏ hàng thất bại!',
-																								showConfirmButton: true,
-																								confirmButtonColor: "#1c5639",
-																				});
-																				handleAjaxError(response);
-																}
-												});
 								});
 				});
 

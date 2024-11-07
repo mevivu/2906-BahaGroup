@@ -1,4 +1,6 @@
 <script>
+				let requestDone = true;
+
 				function addChip(slug, name, type) {
 								let chipID = type + '-' + slug;
 								$('#filter-chips-container').append(`
@@ -22,38 +24,64 @@
 
 				function handleAddToCartAnimation(productImageUrl) {
 								Swal.fire({
+												html: `
+            <p>Thêm sản phẩm vào giỏ hàng thành công!</p>
+            <div id="cartAnimation" class="custom-cart-success">
+                <div class="product-image-animation"
+                    style="background-image: url('${productImageUrl}')">
+                </div>
+                <div class="cart-image cart-animation"
+                    style="background-image: url('{{ asset('user/assets/images/cart.png') }}')">
+                </div>
+            </div>
+        `,
 												icon: 'success',
 												title: 'Thành công',
-												text: 'Thêm sản phẩm vào giỏ hàng thành công!',
 												showConfirmButton: true,
 												confirmButtonColor: "#1c5639",
+												didOpen: () => {
+																setTimeout(() => {
+																								const cartAnimation = document.getElementById('cartAnimation');
+																								if (cartAnimation) {
+																												cartAnimation.classList.add('hide');
+																								}
+																				},
+																				2000
+																);
+												}
 								});
 				}
 
 				function addToCart(id, productImageUrl) {
-								$.ajax({
-												type: "POST",
-												url: '{{ route('user.cart.store') }}',
-												data: {
-																product_id: id,
-																qty: 1,
-																_token: '{{ csrf_token() }}'
-												},
-												success: function(response) {
-																$('#cart-count-mobile').text(response.data.count);
-																$('#cart-count').text(response.data.count);
-																handleAddToCartAnimation(productImageUrl);
-												},
-												error: function(response) {
-																Swal.fire({
-																				icon: 'error',
-																				title: 'Lưu ý',
-																				text: `${response.responseJSON.message}`,
-																				showConfirmButton: true,
-																				confirmButtonColor: "#1c5639",
-																});
-												}
-								});
+								if (requestDone) {
+												requestDone = false;
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.store') }}',
+																data: {
+																				product_id: id,
+																				qty: 1,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				$('#cart-count-mobile').text(response.data.count);
+																				$('#cart-count').text(response.data.count);
+																				handleAddToCartAnimation(productImageUrl);
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'error',
+																								title: 'Lưu ý',
+																								text: `${response.responseJSON.message}`,
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
+																				});
+																},
+																complete: function() {
+																				requestDone = true;
+																}
+												});
+								}
 				}
 
 				function debounce(func, wait) {

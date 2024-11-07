@@ -1614,32 +1614,12 @@ input:checked~.checkmark:after {
     }
 }
 
-@keyframes addToCartAnimation {
-    0% {
-        transform: scale(1) translateY(0);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.2) translateY(0);
-        opacity: 1;
-    }
-
-    75% {
-        transform: scale(0.8) translateY(-100px);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: scale(0.5) translateY(-150px);
-        opacity: 0;
-    }
-}
 
 .custom-cart-success {
     position: relative;
     width: 200px;
     height: 100px;
+    overflow: hidden;
     margin: 0 auto 1rem;
     display: flex;
     justify-content: space-between;
@@ -1715,7 +1695,7 @@ input:checked~.checkmark:after {
     }
 
     100% {
-        transform: scale(0) translateX(140px);
+        transform: scale(0) translateX(160px);
         opacity: 0;
     }
 }

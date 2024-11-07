@@ -5,6 +5,7 @@ namespace App\Api\V1\Services\ShoppingCart;
 use App\Admin\Repositories\Discount\DiscountApplicationRepositoryInterface;
 use App\Admin\Repositories\Discount\DiscountRepositoryInterface;
 use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
+use App\Admin\Repositories\Transaction\TransactionRepositoryInterface;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
 use App\Api\V1\Repositories\Order\OrderRepositoryInterface;
@@ -14,7 +15,9 @@ use App\Api\V1\Repositories\Product\{ProductRepositoryInterface, ProductVariatio
 use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderReview;
 use App\Enums\Order\OrderStatus;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Product\ProductType;
+use App\Enums\Transaction\TransactionStatus;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
@@ -35,6 +38,8 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     protected $discountRepository;
     protected $discountApplicationRepository;
 
+    protected $transactionRepository;
+
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
         OrderRepositoryInterface $orderRepository,
@@ -43,6 +48,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         ProductVariationRepositoryInterface $productVariationRepository,
         DiscountRepositoryInterface $discountRepository,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
+        TransactionRepositoryInterface $transactionRepository,
     ) {
         $this->repository = $repository;
         $this->orderRepository = $orderRepository;
@@ -51,6 +57,136 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->productVariationRepository = $productVariationRepository;
         $this->discountRepository = $discountRepository;
         $this->discountApplicationRepository = $discountApplicationRepository;
+        $this->transactionRepository = $transactionRepository;
+    }
+
+    public function handleVnpay(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $language = $request->get('language');
+            $orderId = $request->get('order_id');
+            $bankcode = $request->get('bankcode');
+
+            $order = $this->orderRepository->find($orderId);
+            $transactionData = [
+                'vnp_Amount' => ($order->total - $order->discount_value + $order->surcharge) * 100,
+                'vnp_BankCode' => $bankcode,
+                'vnp_OrderInfo' => 'Thanh toan don hang #' . $order->code,
+                'vnp_TmnCode' => env('VNP_TMNCODE'),
+                'vnp_TxnRef' => $order->code,
+                'expires_at' => now()->addMinutes(15),
+            ];
+            $items = $this->transactionRepository->getBy(['vnp_TxnRef' => $transactionData['vnp_TxnRef']]);
+            foreach ($items as $item) {
+                $item->delete();
+            }
+
+            $this->transactionRepository->create($transactionData);
+
+            $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+            $vnp_Returnurl = route('api.v1.handleVnpayReturn');
+            $vnp_HashSecret = env('VNP_HASHSECRET'); //Chuỗi bí mật
+            $vnp_OrderType = 'billpayment';
+            $vnp_Locale = $language;
+            $vnp_BankCode = $bankcode;
+            $inputData = array(
+                "vnp_Version" => "2.1.0",
+                "vnp_TmnCode" => env('VNP_TMNCODE'),
+                "vnp_Amount" => $transactionData['vnp_Amount'],
+                "vnp_Command" => "pay",
+                "vnp_CreateDate" => date('YmdHis'),
+                "vnp_CurrCode" => "VND",
+                "vnp_IpAddr" => request()->ip(),
+                "vnp_Locale" => $vnp_Locale,
+                "vnp_OrderInfo" => $transactionData['vnp_OrderInfo'],
+                "vnp_OrderType" => $vnp_OrderType,
+                "vnp_ReturnUrl" => $vnp_Returnurl,
+                "vnp_TxnRef" => $transactionData['vnp_TxnRef']
+            );
+
+            if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+                $inputData['vnp_BankCode'] = $vnp_BankCode;
+            }
+            if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+                $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+            }
+
+            ksort($inputData);
+            $query = "";
+            $i = 0;
+            $hashdata = "";
+            foreach ($inputData as $key => $value) {
+                if ($i == 1) {
+                    $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+                } else {
+                    $hashdata .= urlencode($key) . "=" . urlencode($value);
+                    $i = 1;
+                }
+                $query .= urlencode($key) . "=" . urlencode($value) . '&';
+            }
+
+            $vnp_Url = $vnp_Url . "?" . $query;
+            if (isset($vnp_HashSecret)) {
+                $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
+                $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+            }
+            DB::commit();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Khởi tạo thanh toán VNPAY thành công.',
+                'redirect_url' => $vnp_Url,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Khởi tạo thanh toán VNPAY thất bại.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function handleVnpayReturn(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $inputData = $request->all();
+            $transaction = $this->transactionRepository->findByField('vnp_TxnRef', $inputData['vnp_TxnRef']);
+            $order = $this->orderRepository->findByField('code', $inputData['vnp_TxnRef']);
+            if ($inputData['vnp_ResponseCode'] == '00' && $inputData['vnp_TransactionStatus'] == '00') {
+                if ($transaction && $transaction->vnp_Amount == $inputData['vnp_Amount'] && $transaction->expires_at > now() && $transaction->status == TransactionStatus::Pending->value) {
+                    $transaction->update([
+                        'status' => TransactionStatus::Success
+                    ]);
+                    $order->update([
+                        'payment_status' => PaymentStatus::Paid
+                    ]);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Thanh toán thành công.'
+                    ], 200);
+                }
+            }
+            $transaction->update([
+                'status' => TransactionStatus::Failed
+            ]);
+            DB::commit();
+            return response()->json([
+                'status' => 400,
+                'message' => 'Thanh toán thất bại.'
+            ], 400);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Error handling VNPAY return.',
+                'error' => $th->getMessage()
+            ], 500);
+        }
     }
 
     public function calculateDiscountValue($total, $discount)
@@ -132,11 +268,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         "số lượng sản phẩm không áp dụng flash sale: $flashSaleExcessQty.";
                     $order->save();
                 }
-                $shopping_cart->each(function ($item) {
-                    $item->delete();
-                });
+                // $shopping_cart->each(function ($item) {
+                //     $item->delete();
+                // });
                 DB::commit();
-                return true;
+                return $order;
             } else {
                 $cart = session('cart', []);
                 $shopping_cart = collect($cart)->map(function ($item) {
@@ -185,7 +321,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                 });
 
                 DB::commit();
-                return $updatedCart;
+                return [$order, $updatedCart];
             }
         } catch (Exception $e) {
             $this->logError('Failed to process checkout: ', $e);

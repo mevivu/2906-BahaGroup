@@ -12,6 +12,7 @@ use App\Api\V1\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Api\V1\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
 use App\Api\V1\Http\Requests\ShoppingCart\CreateShoppingCartRequest;
 use App\Api\V1\Http\Requests\ShoppingCart\UpdateShoppingCartRequest;
+use App\Api\V1\Http\Resources\Order\ShowOrderResource;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResource;
 use App\Api\V1\Http\Resources\ShoppingCart\ShoppingCartResourceNoLogin;
 use Illuminate\Http\Request;
@@ -303,7 +304,21 @@ class ShoppingCartController extends Controller
      *
      * @response 200 {
      *      "status": 200,
-     *      "message": "Đặt hàng thành công."
+     *      "message": "Đặt hàng thành công.",
+     *      "order": {
+     *          "id": 38,
+     *          "customer_fullname": "Phạm Minh Mạnh",
+     *          "customer_phone": "0961592552",
+     *          "customer_email": "marispham1509@gmail.com",
+     *          "shipping_address": "Thành phố Hồ Chí Minh, Hồ Chí Minh, Việt Nam",
+     *          "total": 3300000,
+     *          "code": "HDBA1B51730986340",
+     *          "status": "Chờ xác nhận",
+     *          "payment_method": "Online",
+     *          "payment_type": "Trả góp",
+     *          "note": "Ghi chú",
+     *          "created_at": "2024-11-07T13:32:20.000000Z",
+     *      }
      * }
      *
      * @response 500 {
@@ -318,10 +333,12 @@ class ShoppingCartController extends Controller
     public function checkout(CheckoutRequest $request)
     {
         $response = $this->service->checkout($request);
-        if ($response === true) {
+        if (!isset($response[1])) {
             return response()->json([
                 'status' => 200,
-                'message' => __('Đặt hàng thành công.')
+                'message' => __('Đặt hàng thành công.'),
+                'order' => $response
+
             ]);
         } else if ($response === false) {
             return response()->json([
@@ -329,10 +346,11 @@ class ShoppingCartController extends Controller
                 'message' => __('Đặt hàng thất bại.')
             ], 500);
         }
-        session(['cart' => $response]);
+        session(['cart' => $response[1]]);
         return response()->json([
             'status' => 200,
             'message' => __('Đặt hàng thành công.'),
+            'order' => $response[0]
         ]);
     }
 
@@ -347,47 +365,8 @@ class ShoppingCartController extends Controller
      * @bodyParam id[] integer required
      * Danh sách id item giỏ hàng. Example: 1
      *
-     * @bodyParam discount_code string optional
+     * @bodyParam discount_code string required
      * Mã giảm giá. Example: SALE10
-     *
-     * @bodyParam order[payment_method] string required
-     * Phương thức thanh toán. Example: "1"
-     *
-     * @bodyParam order[email] string required
-     * Email của người đặt hàng. Example: "example@example.com"
-     *
-     * @bodyParam order[province_id] integer required
-     * ID của tỉnh. Example: 1
-     *
-     * @bodyParam order[district_id] integer required
-     * ID của huyện. Example: 10
-     *
-     * @bodyParam order[ward_id] integer required
-     * ID của xã/phường. Example: 100
-     *
-     * @bodyParam order[fullname] string required
-     * Họ tên đầy đủ của người nhận. Example: "Nguyen Van A"
-     *
-     * @bodyParam order[address] string required
-     * Địa chỉ nhận hàng. Example: "123 Nguyen Trai, Ha Noi"
-     *
-     * @bodyParam order[phone] string required
-     * Số điện thoại người nhận. Example: "0123456789"
-     *
-     * @bodyParam order[note] string optional
-     * Ghi chú đơn hàng. Example: "Giao hàng giờ hành chính"
-     *
-     * @bodyParam order[name_other] string optional
-     * Tên người nhận khác. Example: "Nguyen Thi B"
-     *
-     * @bodyParam order[address_other] string optional
-     * Địa chỉ người nhận khác. Example: "456 Le Loi, Ho Chi Minh"
-     *
-     * @bodyParam order[phone_other] string optional
-     * Số điện thoại người nhận khác. Example: "0987654321"
-     *
-     * @bodyParam order[note_other] string optional
-     * Ghi chú khác. Example: "Chuyển khoản trước khi giao"
      *
      *
      * @response 200 {
@@ -464,5 +443,47 @@ class ShoppingCartController extends Controller
                 ]
             ]);
         }
+    }
+
+    /**
+     * Tạo url thanh toán vnpay sau khi đặt hàng
+     *
+     * Tiến hành Tạo url thanh toán vnpay sau khi đặt hàng.
+     *
+     * @headersParam X-TOKEN-ACCESS string
+     * token để lấy dữ liệu. Example: ijCCtggxLEkG3Yg8hNKZJvMM4EA1Rw4VjVvyIOb7
+     *
+     * @bodyParam order_id integer required
+     * id đơn hàng cần thanh toán. Example: 1
+     *
+     * @bodyParam language string required
+     * Mã ngôn ngữ. Example: "vn"
+     *
+     * @bodyParam bankcode string required
+     * Mã ngân hàng. Example: "ncb"
+     *
+     * @response 200 {
+     *      "status": 200,
+     *      "message": "Khởi tạo thành công.",
+     *      "redirect_url": "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=15000000&vnp_BankCode=ncb&vnp_Command=pay&vnp_CreateDate=20241107200136&vnp_CurrCode=VND&vnp_IpAddr=%3A%3A1&vnp_Locale=vn&vnp_OrderInfo=Thanh+to%C3%A1n+tr%E1%BA%A3+g%C3%B3p+%C4%91%E1%BB%A3t+3+cho+h%C3%B3a+%C4%91%C6%A1n+HD5EEEE1730975142&vnp_OrderType=billpayment&vnp_ReturnUrl=http%3A%2F%2Flocalhost%3A8080%2F2976-AppBanSach%2Fapi%2Fv1%2Fshopping-cart%2Freturn-installment-vnpay&vnp_TmnCode=91FYLEJN&vnp_TxnRef=98&vnp_Version=2.1.0&vnp_SecureHash=229468f03afe6b0f482d9ec738aa7a1cbf0e1ab13b9867cf11fed80633aab497161ce14596cc00360592c2802f0c267c4b877c1e4c5a49ce0802130c91b8a77f"
+     * }
+     *
+     * @response 500 {
+     *      "status": 500,
+     *      "message": "Thao tác thất bại."
+     * }
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createPaymentVnpay(Request $request)
+    {
+        return $this->service->handleVnpay($request);
+    }
+
+    public function handleVnpayReturn(Request $request)
+    {
+        return $this->service->handleVnpayReturn($request);
     }
 }

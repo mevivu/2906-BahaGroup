@@ -5,6 +5,7 @@ namespace App\Api\V1\Http\Resources\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Api\V1\Support\AuthSupport;
 use App\Enums\Order\OrderStatus;
+use App\Enums\Order\PaymentStatus;
 use App\Enums\Payment\PaymentMethod;
 
 class ShowOrderResource extends JsonResource
@@ -35,6 +36,7 @@ class ShowOrderResource extends JsonResource
             'discount_value' => $this->discount_value ?? 0,
             'code' => $this->code,
             'status' => OrderStatus::getDescription($this->status->value),
+            'payment_status' => PaymentStatus::getDescription($this->payment_status),
             'payment_method' => PaymentMethod::getDescription($this->payment_method->value),
             'created_at' => $this->created_at,
             'province' => $this->province->name,

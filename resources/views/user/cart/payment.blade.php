@@ -3,6 +3,7 @@
 
 @push('libs-css')
 				<link rel="stylesheet" href="{{ asset('/public/libs/select2/dist/css/select2.min.css') }}">
+				<link rel="stylesheet" href="{{ asset('user/assets/css/payment/order-button.css') }}">
 				<link rel="stylesheet" href="{{ asset('/public/libs/select2/dist/css/select2-bootstrap-5-theme.min.css') }}">
 @endpush
 
@@ -129,7 +130,22 @@
 																																@endif
 																												@endforeach
 																								</div>
-																								<button type="submit" class="btn btn-default w-100 mb-3"><strong>Đặt hàng</strong></button>
+																								<button class="truck-button w-100 mt-2">
+																												<span class="default bold-text">ĐẶT HÀNG</span>
+																												<span class="success bold-text">
+																																TIẾN HÀNH XỬ LÝ
+																																<svg viewbox="0 0 12 10">
+																																				<polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+																																</svg>
+																												</span>
+																												<div class="truck">
+																																<div class="wheel"></div>
+																																<div class="back"></div>
+																																<div class="front"></div>
+																																<div class="box"></div>
+																												</div>
+																								</button>
+																								{{-- <button type="submit" class="btn btn-default w-100 mb-3"><strong>Đặt hàng</strong></button> --}}
 																				</div>
 																</div>
 												</x-form>
@@ -166,6 +182,9 @@
 @endpush
 
 @push('custom-js')
+				<script src="{{ asset('user/assets/js/gsap.min.js') }}"></script>
+				<script src="{{ asset('user/assets/js/order-placed-animation.js') }}"></script>
+
 				<script>
 								function updateText(response) {
 												$('#totalOrder').text(formatPrice(response.data.total));

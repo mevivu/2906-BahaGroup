@@ -64,6 +64,8 @@ Route::controller(App\Api\V1\Http\Controllers\ShoppingCart\ShoppingCartControlle
         Route::post('/apply-code', 'applyDiscountCode')->name('applyDiscountCode');
         Route::post('/update', 'update')->name('update');
         Route::delete('/delete', 'delete')->name('delete');
+        Route::post('/create-payment-checkout-vnpay', 'createPaymentVnpay')->name('createPaymentVnpay');
+        Route::get('/return-checkout-vnpay', 'handleVnpayReturn')->name('handleVnpayReturn');
     });
 
 Route::prefix('/categories')

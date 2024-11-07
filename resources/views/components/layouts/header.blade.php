@@ -52,9 +52,8 @@
 																								</div>
 																				</div>
 																@endif
-																<div class="position-relative">
-																				<i onclick="location.href='{{ route('user.cart.index') }}';" style="font-size: 2em;cursor: pointer;"
-																								class="fa fa-shopping-cart"></i>
+																<div id="cartButton" class="position-relative">
+																				<i style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
 																				<span id="cart-count"
 																								class="position-absolute start-100 translate-middle badge rounded-pill bg-danger top-0"
 																								style="left: 100% !important;">

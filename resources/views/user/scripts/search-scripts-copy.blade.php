@@ -28,6 +28,16 @@
 								});
 				}
 
+				function handleAddToCartAnimation(productImageUrl) {
+								Swal.fire({
+												icon: 'success',
+												title: 'Thành công',
+												text: 'Thêm sản phẩm vào giỏ hàng thành công!',
+												showConfirmButton: true,
+												confirmButtonColor: "#1c5639",
+								});
+				}
+
 				function addToCart(id, productImageUrl) {
 								$.ajax({
 												type: "POST",
