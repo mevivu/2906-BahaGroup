@@ -63,7 +63,6 @@
 																},
 																success: function(response) {
 																				updateText(response);
-																				$(button).prop('disabled', false);
 																},
 																error: function(response) {
 																				Swal.fire({
@@ -72,7 +71,9 @@
 																								text: `${response.responseJSON.message}`,
 																								showConfirmButton: false
 																				});
-																				$(button).prop('disabled', true);
+																},
+																complete: function() {
+																				$(button).prop('disabled', false);
 																}
 												});
 												updateProductTotal(id);
@@ -100,7 +101,6 @@
 												},
 												success: function(response) {
 																updateText(response);
-																$(button).prop('disabled', false);
 												},
 												error: function(response) {
 																Swal.fire({
@@ -111,6 +111,8 @@
 																				confirmButtonColor: "#1c5639",
 																});
 																updateText(response.responseJSON);
+												},
+												complete: function() {
 																$(button).prop('disabled', false);
 												}
 								});

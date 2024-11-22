@@ -151,7 +151,6 @@
 																success: function(response) {
 																				$('#cart-count-mobile').text(response.data.count);
 																				$('#cart-count').text(response.data.count);
-																				$('#btnAddToCart').removeAttr('disabled');
 																				handleAddToCartAnimation(productImageUrl);
 																},
 																error: function(response) {
@@ -162,6 +161,10 @@
 																								showConfirmButton: true,
 																								confirmButtonColor: "#1c5639",
 																				});
+
+																},
+																complete: function() {
+																				loadCartItems();
 																				$('#btnAddToCart').removeAttr('disabled');
 																}
 												});

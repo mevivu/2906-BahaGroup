@@ -70,7 +70,7 @@
 																}
 												@endphp
 												<div class="card-body d-flex justify-content-between p-2">
-																<x-select name="order[discount_id]" id="discount_id" class="select2-bs5-ajax"
+																<x-select name="discount_id" id="discount_id" class="select2-bs5-ajax"
 																				data-url="{{ route('admin.search.select.discount') }}">
 																				<x-select-option :option="$order->discount->id" :value="$order->discount->id" :title="$order->discount->code .
 																				    ' - Tối thiểu: ' .
@@ -83,7 +83,7 @@
 												</div>
 								@else
 												<div class="card-body d-flex justify-content-between p-2">
-																<x-select name="order[discount_id]" id="discount_id" class="select2-bs5-ajax"
+																<x-select name="discount_id" id="discount_id" class="select2-bs5-ajax"
 																				data-url="{{ route('admin.search.select.discount') }}">
 																</x-select>
 												</div>

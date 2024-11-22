@@ -387,6 +387,7 @@
 																								handleAjaxError(response);
 																				},
 																				complete: function() {
+																								loadCartItems();
 																								requestDone = true;
 																				}
 																});

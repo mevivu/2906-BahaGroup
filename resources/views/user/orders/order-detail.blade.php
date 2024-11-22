@@ -8,8 +8,8 @@
 																@include('user.auth.menu')
 																<div class="col-md-10">
 																				<div class="row">
-																								<div class="col-md-6 col-12 border-right">
-																												<h4>Chi tiết đơn hàng</h4>
+																								<div class="col-md-6 col-12 border-right order-info">
+																												<h3>Chi tiết đơn hàng</h3>
 																												<p><strong>Mã đơn hàng:</strong> {{ $instance->code }}</p>
 																												<p><strong>Ngày đặt:</strong> {{ format_datetime($instance->created_at) }}</p>
 																												<p><strong>Phương thức thanh toán:</strong>
@@ -56,18 +56,18 @@
 																																<div class="col-6 mt-1 text-start">Tổng</div>
 																																<div class="col-6 mb-3 mt-1 text-end">
 																																				<strong
-																																								id="totalAfterDiscount">{{ format_price($instance->total - $instance->discount_value - $instance->surcharge) }}</strong>
+																																								id="totalAfterDiscount">{{ format_price($instance->total - $instance->discount_value) }}</strong>
 																																</div>
 																												</div>
 																								</div>
 
 																								<!-- Thông tin người dùng -->
-																								<div class="col-md-6 col-12 border-right mt-md-0 mt-4">
-																												<h4>Thông tin người dùng</h4>
+																								<div class="col-md-6 col-12 border-right order-info">
+																												<h3>Thông tin người dùng</h3>
 																												<p><strong>Tên:</strong> {{ $instance->user->fullname }}</p>
 																												<p><strong>Địa chỉ:</strong> {{ $instance->user->address }}</p>
 																												<p><strong>Số điện thoại:</strong> {{ $instance->user->phone }}</p>
-																												<h4 class="mt-3">Thông tin khác</h4>
+																												<h3 class="mt-3">Thông tin khác</h3>
 																												<p><strong>Tên người nhận:</strong> {{ $instance->name_other }}</p>
 																												<p><strong>Địa chỉ người nhận:</strong> {{ $instance->address_other }}</p>
 																												<p><strong>Số điện thoại người nhận:</strong> {{ $instance->phone_other }}</p>

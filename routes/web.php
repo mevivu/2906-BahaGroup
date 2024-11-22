@@ -8,6 +8,7 @@ Route::controller(App\Http\Controllers\Home\UserHomeController::class)
         Route::get('/', 'index')->name('index');
         Route::get('/gioi-thieu', 'information')->name('information');
         Route::get('/lien-he', 'contact')->name('contact');
+        Route::get('/tra-cuu/{code}', 'getOrderDetailForCustomer')->name('getOrderDetailForCustomer');
     });
 
 Route::controller(App\Http\Controllers\Home\UserHomeController::class)
@@ -38,6 +39,7 @@ Route::controller(App\Http\Controllers\ShoppingCart\ShoppingCartController::clas
     ->as('cart.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('/load-cart', 'getCartItems')->name('items');
         Route::post('/', 'store')->name('store');
         Route::put('/', 'update')->name('update');
         Route::post('/apply', 'applyDiscountCode')->name('applyCode');

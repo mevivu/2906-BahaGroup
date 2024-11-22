@@ -39,6 +39,7 @@ return [
     PaymentStatus::class => [
         PaymentStatus::UnPaid->value => 'Chưa thanh toán',
         PaymentStatus::Paid->value => 'Đã thanh toán',
+        PaymentStatus::Pending->value => 'Chờ duyệt thanh toán',
     ],
     TransactionStatus::class => [
         TransactionStatus::Pending->value => 'Đang xử lý',
@@ -70,8 +71,9 @@ return [
         ProductInStock::OutOfStock->value => 'Hết hàng',
     ],
     PaymentMethod::class => [
-        PaymentMethod::Online->value => 'Online',
-        PaymentMethod::Direct->value => 'Trực tiếp',
+        PaymentMethod::Online->value => 'Online (VNPAY)',
+        PaymentMethod::Direct->value => 'COD (Tiền mặt)',
+        PaymentMethod::Banking->value => 'Chuyển khoản ngân hàng',
     ],
     UserVip::class => [
         UserVip::Default => 'Mặc định',

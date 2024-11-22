@@ -11,7 +11,7 @@
 				@include('user.layouts.partials.breadcrumbs', ['breadcrumbs' => $breadcrumbs])
 				<div class="d-flex justify-content-center align-items-center container bg-white">
 								<div class="container gap-64">
-												<x-form id="formCheckout" :action="route('user.cart.checkoutFinal')" type="post" :validate="true">
+												<x-form id="formCheckout" :action="route('user.cart.checkoutFinal')" type="post" :validate="true" enctype="multipart/form-data">
 																<x-input :value="$isBuyNow" type="hidden" name="isBuyNow" />
 																<div class="row">
 																				<div class="col-md-6 col-12 mt-3">
@@ -112,25 +112,31 @@
 																								<div class="col-12 mt-4">
 																												@foreach ($payment_methods as $key => $value)
 																																<div class="form-check">
-																																				<input class="form-check-input ms-2" type="radio" name="order[payment_method]"
-																																								id="payment_method{{ $key }}" value="{{ $key }}">
+																																				<input class="form-check-input payment-method-radio ms-2" type="radio"
+																																								name="order[payment_method]" id="payment_method{{ $key }}"
+																																								value="{{ $key }}">
 																																				<label class="form-check-label" for="payment_method{{ $key }}">
 																																								{{ $value }}
 																																				</label>
 																																</div>
-																																@if ($key == App\Enums\Payment\PaymentMethod::Online->value)
-																																				<p class="text-777777">Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi.
-																																								Vui
-																																								lòng
-																																								sử dụng Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ được giao
-																																								sau
-																																								khi
-																																								tiền
-																																								đã chuyển.</p>
+																																@if ($key == App\Enums\Payment\PaymentMethod::Banking->value)
+																																				<div class="banking-info" style="display: none;">
+																																								<p>Thực hiện thanh toán vào ngay tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng
+																																												Mã đơn hàng của bạn trong phần Nội dung thanh toán. Đơn hàng sẽ được giao sau
+																																												khi tiền đã chuyển.</p>
+																																								<div class="image-upload">
+																																												<label for="banking-receipt">{{ __('Tải ảnh chuyển khoản') }}</label>
+																																												<input name="order[payment_image]" type="file" class="form-control"
+																																																id="banking-receipt" accept="image/*">
+																																												<img id="image-preview" class="image-preview img-thumbnail" src="#"
+																																																alt="Preview" style="display: none;">
+																																								</div>
+																																				</div>
 																																@endif
 																												@endforeach
 																								</div>
-																								<button class="truck-button w-100 mt-2">
+
+																								<button class="truck-button w-100 mb-3 mt-3">
 																												<span class="default bold-text">ĐẶT HÀNG</span>
 																												<span class="success bold-text">
 																																TIẾN HÀNH XỬ LÝ
@@ -153,6 +159,23 @@
 								</div>
 				</div>
 				<script>
+								document.getElementById('banking-receipt').addEventListener('change', function() {
+												var preview = document.getElementById('image-preview');
+												var file = this.files[0];
+												var reader = new FileReader();
+
+												reader.onloadend = function() {
+																preview.src = reader.result;
+																preview.style.display = 'block';
+												}
+
+												if (file) {
+																reader.readAsDataURL(file);
+												} else {
+																preview.src = '';
+																preview.style.display = 'none';
+												}
+								});
 								document.getElementById('formCheckout').addEventListener('submit', function(event) {
 												var selectedRadioButton = document.querySelector('input[name="order[payment_method]"]:checked');
 												if (!selectedRadioButton) {
@@ -186,6 +209,18 @@
 				<script src="{{ asset('user/assets/js/order-placed-animation.js') }}"></script>
 
 				<script>
+								$(document).ready(function() {
+												$('.payment-method-radio').on('change', function() {
+																const bankingMethodValue = "{{ App\Enums\Payment\PaymentMethod::Banking->value }}";
+
+																if ($(this).val() == bankingMethodValue) {
+																				$('.banking-info').show();
+																} else {
+																				$('.banking-info').hide();
+																}
+												});
+								});
+
 								function updateText(response) {
 												$('#totalOrder').text(formatPrice(response.data.total));
 												$('#discountValue').text(formatPrice(response.data.discount_value));

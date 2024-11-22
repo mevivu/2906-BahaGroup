@@ -53,7 +53,12 @@
 																				</div>
 																@endif
 																<div id="cartButton" class="position-relative">
-																				<i style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
+																				@if (Route::is('user.cart.checkout'))
+																								<i onclick="location.href='{{ route('user.cart.index') }}';"
+																												style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
+																				@else
+																								<i style="font-size: 2em;cursor: pointer;" class="fa fa-shopping-cart"></i>
+																				@endif
 																				<span id="cart-count"
 																								class="position-absolute start-100 translate-middle badge rounded-pill bg-danger top-0"
 																								style="left: 100% !important;">

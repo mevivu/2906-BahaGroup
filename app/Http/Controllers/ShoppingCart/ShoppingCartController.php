@@ -163,7 +163,14 @@ class ShoppingCartController extends Controller
                     'breadcrumbs' =>  $this->crums->add(__('Giỏ hàng'), route('user.cart.index'))->add(__('Thanh toán'))->getBreadcrumbs()
                 ]);
             }
-            return to_route('user.index')->with('success', __('Đặt hàng thành công'));
+            if ($order->surcharge) {
+                return to_route('user.getOrderDetailForCustomer', [
+                    'code' => $order->code,
+                ])->with('success', __('Đặt hàng thành công, số lượng sản phẩm vượt quá chương trình flash sale. Chúng tôi sẽ tiến hành phụ thu, hãy kiểm tra kĩ đơn hàng.'));
+            }
+            return to_route('user.getOrderDetailForCustomer', [
+                'code' => $order->code,
+            ])->with('success', __('Đặt hàng thành công, hãy kiểm tra thông tin đơn hàng của bạn.'));
         }
         return back()->with('error', __('Đặt hàng thất bại'));
     }
@@ -384,6 +391,12 @@ class ShoppingCartController extends Controller
     public function increament(ChangeQtyRequest $request)
     {
         $result = $this->service->increament($request);
+        if ($result === 1) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Số lượng có thể mua đã đạt tối đa.!'
+            ], 400);
+        }
         if ($result) {
             if ($this->getCurrentUser()) {
                 $user = $this->getCurrentUser();
@@ -413,12 +426,11 @@ class ShoppingCartController extends Controller
                     ]
                 ]);
             }
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tăng số lượng thất bại!'
-            ], 400);
         }
+        return response()->json([
+            'status' => false,
+            'message' => 'Tăng số lượng thất bại!'
+        ], 400);
     }
 
     public function decreament(ChangeQtyRequest $request)
@@ -544,6 +556,86 @@ class ShoppingCartController extends Controller
                 'status' => false,
                 'message' => 'Cập nhật giỏ hàng thất bại.'
             ], 400);
+        }
+    }
+
+    public function getCartItems()
+    {
+        $user = $this->getCurrentUser();
+        if ($user) {
+            $cart = $user->shopping_cart;
+            if (isset($cart[0])) {
+                foreach ($cart as $item) {
+                    $price = isset($item['productVariation'])
+                        ? $item['productVariation']['promotion_price']
+                        : $item['product']['promotion_price'];
+
+                    // Fetch attribute variations if a product variation exists
+                    $attributes = isset($item['productVariation'])
+                        ? $item['productVariation']['attributeVariations']->pluck('name')->toArray()
+                        : []; // If no variation, no attributes
+
+                    $cartItems[] = [
+                        'id' => $item['id'],
+                        'name' => $item['product']['name'],
+                        'price' => $price,
+                        'quantity' => $item['qty'],
+                        'image' => asset($item['product']['avatar']),
+                        'total_price' => $price * $item['qty'],
+                        'attributes' => $attributes, // Add attributes here
+                    ];
+                }
+
+                $cartTotal = array_reduce($cartItems, function ($carry, $item) {
+                    return $carry + $item['total_price'];
+                }, 0);
+
+                return response()->json([
+                    'cart_items' => $cartItems,
+                    'cart_total' => $cartTotal,
+                ]);
+            }
+            return response()->json([
+                'cart_items' => [],
+                'cart_total' => 0,
+            ]);
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[0])) {
+                foreach ($cart as $item) {
+                    $price = isset($item['productVariation'])
+                        ? $item['productVariation']['promotion_price']
+                        : $item['product']['promotion_price'];
+
+                    // Fetch attribute variations if a product variation exists
+                    $attributes = isset($item['productVariation'])
+                        ? $item['productVariation']['attributeVariations']->pluck('name')->toArray()
+                        : []; // If no variation, no attributes
+
+                    $cartItems[] = [
+                        'id' => $item['id'],
+                        'name' => $item['product']['name'],
+                        'price' => $price,
+                        'quantity' => $item['qty'],
+                        'image' => asset($item['product']['avatar']),
+                        'total_price' => $price * $item['qty'],
+                        'attributes' => $attributes, // Add attributes here
+                    ];
+                }
+
+                $cartTotal = array_reduce($cartItems, function ($carry, $item) {
+                    return $carry + $item['total_price'];
+                }, 0);
+
+                return response()->json([
+                    'cart_items' => $cartItems,
+                    'cart_total' => $cartTotal,
+                ]);
+            }
+            return response()->json([
+                'cart_items' => [],
+                'cart_total' => 0,
+            ]);
         }
     }
 }

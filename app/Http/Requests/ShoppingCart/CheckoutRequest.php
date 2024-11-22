@@ -25,6 +25,7 @@ class CheckoutRequest extends BaseRequest
             'shopping_cart_id' => ['required'],
             'order.payment_method' => ['required', new Enum(PaymentMethod::class)],
             'order.email' => ['required'],
+            'order.payment_image' => ['nullable'],
             'order.province_id' => ['required', 'exists:App\Models\Province,id'],
             'order.district_id' => ['required', 'exists:App\Models\District,id'],
             'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
@@ -60,6 +61,11 @@ class CheckoutRequest extends BaseRequest
 
                 if ($pendingOrdersCount >= 3) {
                     $validator->errors()->add('order_limit', 'Bạn chỉ được phép có tối đa 3 đơn hàng đang chờ xác nhận. Hãy chờ người bán xác nhận đơn hàng');
+                }
+            }
+            if ($this->order['payment_method'] == PaymentMethod::Banking->value) {
+                if (!$this->order['payment_image']) {
+                    $validator->errors()->add('order.payment_image', 'Với phương thức chuyển khoản ngân hàng, vui lòng cung cấp hình ảnh chuyển khoản.');
                 }
             }
         });

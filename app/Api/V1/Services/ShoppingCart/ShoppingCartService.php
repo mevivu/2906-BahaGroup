@@ -70,7 +70,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
             $order = $this->orderRepository->find($orderId);
             $transactionData = [
-                'vnp_Amount' => ($order->total - $order->discount_value + $order->surcharge) * 100,
+                'vnp_Amount' => ($order->total - $order->discount_value) * 100,
                 'vnp_BankCode' => $bankcode,
                 'vnp_OrderInfo' => 'Thanh toan don hang #' . $order->code,
                 'vnp_TmnCode' => env('VNP_TMNCODE'),
@@ -268,9 +268,9 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         "số lượng sản phẩm không áp dụng flash sale: $flashSaleExcessQty.";
                     $order->save();
                 }
-                // $shopping_cart->each(function ($item) {
-                //     $item->delete();
-                // });
+                $shopping_cart->each(function ($item) {
+                    $item->delete();
+                });
                 DB::commit();
                 return $order;
             } else {

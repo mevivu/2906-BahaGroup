@@ -59,7 +59,7 @@ class OrderService implements OrderServiceInterface
                 return false;
             }
             $order = $this->repository->create($this->data['order']);
-            if (isset($this->data['order']['discount_id'])) {
+            if (isset($this->data['discount_id'])) {
                 $this->handleDiscount('store', $order);
             }
             $this->storeOrderDetail($order->id, $this->orderDetails);
@@ -75,8 +75,8 @@ class OrderService implements OrderServiceInterface
     public function checkValidDiscount(Request $request)
     {
         $this->data = $request->validated();
-        if (isset($this->data['order']['discount_id'])) {
-            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+        if (isset($this->data['discount_id'])) {
+            $discount = $this->discountRepository->findOrFail($this->data['discount_id']);
             if ($discount->min_order_amount > $this->data['order']['total']) {
                 return false;
             }
@@ -120,18 +120,6 @@ class OrderService implements OrderServiceInterface
                     } else {
                         if ($remainFlashSaleQty > 0) {
                             $flashSaleDetail->update(['sold' => $flashSaleDetail->qty]);
-                            $surcharge = ($detail->product->promotion_price - $detail->unit_price) * ($detail->qty - $remainFlashSaleQty);
-                            $order->surcharge = ($order->surcharge ?? 0) + $surcharge;
-                            if ($order->discount) {
-                                if ($order->discount->type != DiscountType::Money->value) {
-                                    $surcharge = $surcharge - $surcharge * $order->discount->discount_value / 100;
-                                }
-                            }
-                            $note = "Áp dụng flash sale cho " . $remainFlashSaleQty . " sản phẩm " . $detail->product->name . ". " . ($detail->qty - $remainFlashSaleQty) . " sản phẩm còn lại được tính giá thường. " .
-                                "Phụ thu: " . format_price($surcharge) . " đã được thêm vào tổng đơn hàng.";
-                            $order->note = ($order->note ? $order->note . "\n\n" : '') . $note;
-                            $order->total = $order->total + $surcharge;
-                            $order->save();
                         }
                     }
                 } else {
@@ -226,7 +214,7 @@ class OrderService implements OrderServiceInterface
         $this->data = $request->validated();
         DB::beginTransaction();
         try {
-            if (isset($this->data['order']['user_id'])) {
+            if (isset($this->data['user_id'])) {
                 $dataOrderDetail = $this->updateOrCreateDataOrderDetail();
                 if (!empty($dataOrderDetail)) {
                     $this->data['order_detail'] = $dataOrderDetail;
@@ -234,7 +222,7 @@ class OrderService implements OrderServiceInterface
                     $this->storeOrderDetail($this->data['order']['id'], $this->orderDetails);
                 }
             }
-            if (isset($this->data['order']['discount_id'])) {
+            if (isset($this->data['discount_id'])) {
                 $this->handleDiscount('update', '');
             }
             $order = $this->repository->update($this->data['order']['id'], $this->data['order']);
@@ -251,7 +239,7 @@ class OrderService implements OrderServiceInterface
     private function handleDiscount($type, $order)
     {
         if ($type == 'store') {
-            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+            $discount = $this->discountRepository->findOrFail($this->data['discount_id']);
             $this->discountApplicationRepository->create([
                 'discount_code_id' => $discount->id,
                 'order_id' => $order->id,
@@ -261,11 +249,11 @@ class OrderService implements OrderServiceInterface
             $discount->save();
         } else {
             $oldOrder = $this->repository->findOrFail($this->data['order']['id']);
-            $discount = $this->discountRepository->findOrFail($this->data['order']['discount_id']);
+            $discount = $this->discountRepository->findOrFail($this->data['discount_id']);
             $discount->max_usage = $discount->max_usage - 1;
             $discount->save();
             if ($oldOrder->discount) {
-                if ($oldOrder->discount->id != $this->data['order']['discount_id']) {
+                if ($oldOrder->discount->id != $this->data['discount_id']) {
                     $oldDiscount = $this->discountRepository->findOrFail($oldOrder->discount->id);
                     $oldDiscount->max_usage = $oldDiscount->max_usage + 1;
                     $oldDiscount->save();

@@ -26,12 +26,12 @@
 												@if (isset($discountValue) && $discountValue > 0)
 																<td class="text-end">{{ format_price($totalAfterDiscount + $surCharge) }}</td>
 												@elseif (isset($order) && $order->discount_value)
-																<td class="text-end">{{ format_price($order->total - $order->discount_value + $order->surcharge) }}
+																<td class="text-end">{{ format_price($order->total - $order->discount_value) }}
 																</td>
 												@else
 																<td class="text-end">
 																				@if (isset($order))
-																								{{ format_price($total - $order->discount_value + $order->surcharge) }}
+																								{{ format_price($total - $order->discount_value) }}
 																				@else
 																								{{ format_price($total) }}
 																				@endif

@@ -8,24 +8,29 @@ use App\Admin\Repositories\Order\OrderDetailRepositoryInterface;
 use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Services\ShoppingCart\ShoppingCartServiceInterface;
 use App\Admin\Repositories\ShoppingCart\ShoppingCartRepositoryInterface;
-use App\Admin\Repositories\Product\{ProductRepositoryInterface};
+use App\Admin\Repositories\Product\{ProductRepositoryInterface, ProductVariationRepositoryInterface};
 use App\Admin\Repositories\Transaction\TransactionRepositoryInterface;
+use App\Admin\Services\File\FileService;
 use App\Admin\Traits\AuthService;
 use App\Admin\Traits\Setup;
 use App\Enums\Discount\DiscountType;
 use App\Enums\Order\OrderStatus;
 use App\Enums\Order\OrderReview;
 use App\Enums\Order\PaymentStatus;
+use App\Enums\Payment\PaymentMethod;
 use App\Enums\Product\ProductType;
 use App\Enums\Transaction\TransactionStatus;
 use App\Traits\UseLog;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ShoppingCartService implements ShoppingCartServiceInterface
 {
     use UseLog, Setup, AuthService;
+
+    protected $fileService;
 
     protected $data;
     protected $orderDetails;
@@ -33,6 +38,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     protected $repository;
     protected $orderRepository;
     protected $productRepository;
+    protected $productVariationRepository;
     protected $orderDetailRepository;
     protected $discountRepository;
     protected $discountApplicationRepository;
@@ -41,19 +47,23 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function __construct(
         ShoppingCartRepositoryInterface $repository,
         ProductRepositoryInterface $productRepository,
+        ProductVariationRepositoryInterface $productVariationRepository,
         OrderRepositoryInterface $orderRepository,
         OrderDetailRepositoryInterface $orderDetailRepository,
         DiscountRepositoryInterface $discountRepository,
         DiscountApplicationRepositoryInterface $discountApplicationRepository,
         TransactionRepositoryInterface $transactionRepository,
+        FileService $fileService,
     ) {
         $this->repository = $repository;
         $this->orderRepository = $orderRepository;
         $this->productRepository = $productRepository;
+        $this->productVariationRepository = $productVariationRepository;
         $this->orderDetailRepository = $orderDetailRepository;
         $this->discountRepository = $discountRepository;
         $this->discountApplicationRepository = $discountApplicationRepository;
         $this->transactionRepository = $transactionRepository;
+        $this->fileService = $fileService;
     }
 
     public function store(Request $request)
@@ -206,30 +216,55 @@ class ShoppingCartService implements ShoppingCartServiceInterface
     public function increament(Request $request)
     {
         $this->data = $request->validated();
-        if ($this->getCurrentUser()) {
-            DB::beginTransaction();
-            try {
+        DB::beginTransaction();
+        try {
+            if ($this->getCurrentUser()) {
                 $shoppingCart = $this->repository->findOrFail($this->data['id']);
+                if ($shoppingCart->product_variation_id) {
+                    $productVariation = $this->productVariationRepository->findOrFail($shoppingCart->product_variation_id);
+                    if ($productVariation->qty < $shoppingCart->qty + 1) {
+                        return 1;
+                    }
+                } else {
+                    $product = $this->productRepository->findOrFail($shoppingCart->product_id);
+                    if ($product->qty < $shoppingCart->qty + 1) {
+                        return 1;
+                    }
+                }
                 $shoppingCart->update(['qty' => $shoppingCart->qty + 1]);
                 DB::commit();
-                return $shoppingCart;
-            } catch (Exception $e) {
-                $this->logError('Failed to increament quantity shopping cart: ', $e);
-                DB::rollBack();
-                return false;
-            }
-        } else {
-            $cart = session()->get('cart', []);
-            foreach ($cart as &$item) {
-                if ($item['id'] == $this->data['id']) {
-                    $item['qty'] += 1;
+                return true;
+            } else {
+                $cart = session()->get('cart', []);
+                foreach ($cart as &$item) {
+                    if ($item['id'] == $this->data['id']) {
+                        if (isset($item['product_variation_id'])) {
+                            $productVariation = $this->productVariationRepository->findOrFail($item['product_variation_id']);
+                            if ($productVariation->qty < $item['qty'] + 1) {
+                                return 1;
+                            }
+                        } else {
+                            $product = $this->productRepository->findOrFail($item['product_id']);
+                            if ($product->qty < $item['qty'] + 1) {
+                                return 1;
+                            }
+                        }
+                        $item['qty'] += 1;
+                        break;
+                    }
                 }
+                session()->put('cart', $cart);
+                session()->save();
+                DB::commit();
+                return true;
             }
-            session()->put('cart', $cart);
-            session()->save();
-            return true;
+        } catch (Exception $e) {
+            $this->logError('Failed to increment quantity in shopping cart: ', $e);
+            DB::rollBack();
+            return false;
         }
     }
+
 
     public function decreament(Request $request)
     {
@@ -297,6 +332,12 @@ class ShoppingCartService implements ShoppingCartServiceInterface
         $this->data['order']['status'] = OrderStatus::Pending->value;
         $this->data['order']['is_reviewed'] = OrderReview::NotReviewed->value;
         $this->data['order']['code'] = $this->createCodeOrder();
+        if (isset($this->data['order']['payment_image'])) {
+            $this->data['order']['payment_image'] = $this->fileService->uploadAvatar('images', $this->data['order']['payment_image'], null);
+        }
+        if ($this->data['order']['payment_method'] == PaymentMethod::Banking->value) {
+            $this->data['order']['payment_status'] = PaymentStatus::Pending->value;
+        }
         DB::beginTransaction();
         try {
             if ($user) {
@@ -326,7 +367,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         if ($remainFlashSaleQty < $detail->qty) {
 
                             $excessQty = $detail->qty - $remainFlashSaleQty;
-                            $surcharge += $excessQty * ($detail->product->promotion_price - $flashSaleDetail->price);
+                            if ($detail->product->type == ProductType::Simple) {
+                                $surcharge += $excessQty * ($detail->product->promotion_price - $detail->product->flashsale_price);
+                            } else {
+                                $surcharge += $excessQty * ($detail->productVariation->promotion_price - $detail->productVariation->flashsale_price);
+                            }
 
                             $flashSaleAppliedQty += $remainFlashSaleQty;
                             $flashSaleExcessQty += $excessQty;
@@ -343,6 +388,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         $instance->update(['qty' => $instance->qty - $item->qty]);
                     }
                 });
+                if ($surcharge > 0) {
+                    $order->surcharge = $surcharge;
+                    $order->note = "Đơn hàng sẽ thu thêm phụ phí: " . format_price($surcharge) .
+                        " do vượt quá số lượng còn lại của chương trình flash sale. " .
+                        "Số lượng sản phẩm áp dụng flash sale: $flashSaleAppliedQty, " .
+                        "số lượng sản phẩm không áp dụng flash sale: $flashSaleExcessQty.";
+                    $order->save();
+                }
             } else {
                 $cart = session()->get('cart', []);
                 $cartCollection = collect($cart)->map(function ($item) {
@@ -376,8 +429,11 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                         if ($remainFlashSaleQty < $detail->qty) {
 
                             $excessQty = $detail->qty - $remainFlashSaleQty;
-                            $surcharge += $excessQty * ($detail->product->promotion_price - $flashSaleDetail->price);
-
+                            if ($detail->product->type == ProductType::Simple) {
+                                $surcharge += $excessQty * ($detail->product->promotion_price - $detail->product->flashsale_price);
+                            } else {
+                                $surcharge += $excessQty * ($detail->productVariation->promotion_price - $detail->productVariation->flashsale_price);
+                            }
                             $flashSaleAppliedQty += $remainFlashSaleQty;
                             $flashSaleExcessQty += $excessQty;
                         } else {
@@ -402,6 +458,14 @@ class ShoppingCartService implements ShoppingCartServiceInterface
                     session()->save();
                 }
             }
+            if ($surcharge > 0) {
+                $order->surcharge = $surcharge;
+                $order->note = "Đơn hàng sẽ thu thêm phụ phí: " . format_price($surcharge) .
+                    " do vượt quá số lượng còn lại của chương trình flash sale. " .
+                    "Số lượng sản phẩm áp dụng flash sale: $flashSaleAppliedQty, " .
+                    "số lượng sản phẩm không áp dụng flash sale: $flashSaleExcessQty.";
+                $order->save();
+            }
             DB::commit();
             return $order;
         } catch (Exception $e) {
@@ -421,7 +485,7 @@ class ShoppingCartService implements ShoppingCartServiceInterface
 
             $order = $this->orderRepository->find($orderId);
             $transactionData = [
-                'vnp_Amount' => ($order->total - $order->discount_value + $order->surcharge) * 100,
+                'vnp_Amount' => ($order->total - $order->discount_value) * 100,
                 'vnp_BankCode' => $bankcode,
                 'vnp_OrderInfo' => 'Thanh toan don hang #' . $order->code,
                 'vnp_TmnCode' => env('VNP_TMNCODE'),

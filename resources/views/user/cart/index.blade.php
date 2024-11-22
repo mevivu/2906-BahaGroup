@@ -28,7 +28,7 @@
 																																												<div onclick="location.href='{{ route('user.product.detail', ['slug' => $item->product->slug]) }}';"
 																																																style="cursor: pointer" class="align-items-center product-info row">
 																																																<div class="col-md-4 col-12"><img
-																																																								src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
+																																																								src="{{ asset($item['product']['avatar']) }}"
 																																																								class="img-fluid card-item-img"></div>
 																																																<div class="col-md-8 col-12">
 																																																				<div class="product-name">{{ $item->product->name }}</div>
@@ -95,7 +95,7 @@
 																																												<div onclick="location.href='{{ route('user.product.detail', ['slug' => $item['product']['slug']]) }}';"
 																																																style="cursor: pointer" class="align-items-center product-info row">
 																																																<div class="col-md-4 col-12"><img
-																																																								src="https://img.global.news.samsung.com/vn/wp-content/uploads/2019/03/Galaxy-A50-Mat-truoc-3.jpg"
+																																																								src="{{ asset($item['product']['avatar']) }}"
 																																																								class="img-fluid card-item-img"></div>
 																																																<div class="col-md-8 col-12">
 																																																				<div class="product-name">

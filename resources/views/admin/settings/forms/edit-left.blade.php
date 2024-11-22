@@ -4,7 +4,7 @@
 				</div>
 				<div class="row card-body wrap-loop-input">
 								@foreach ($settings as $setting)
-												<div class="col-6 col-sm-6 col-md-6 col-lg-6">
+												<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 																<div class="mb-3">
 																				<label for="">{{ $setting->setting_name }}</label>
 																				<x-dynamic-component :component="$setting->getNameComponentTypeInput()" :name="$setting->setting_key" :value="$setting->plain_value"

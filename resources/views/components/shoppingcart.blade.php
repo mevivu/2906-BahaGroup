@@ -6,104 +6,18 @@
 				</button>
 
 				<div class="cart-panel">
-								<div data-price="70" class="cart-item">
+								<div data-price="150000" class="cart-item">
 												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
 																alt="Product 1">
 												<div class="cart-item-info">
-																<h6>Product Name 1Product Name 1Product Name 1</h6>
-																<p>70đ/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">1</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 2">
-												<div class="cart-item-info">
-																<h6>Product Name 2</h6>
-																<p>$50/1 product</p>
+																<h6>Cell phone X</h6>
+																<p>150.000đ</p>
 																<div class="quantity-controls">
 																				<button class="minus-btn">-</button>
 																				<span class="quantity">4</span>
 																				<button class="plus-btn">+</button>
 																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 2">
-												<div class="cart-item-info">
-																<h6>Product Name 2</h6>
-																<p>$50/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">4</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 3">
-												<div class="cart-item-info">
-																<h6>Product Name 3</h6>
-																<p>$250/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">1</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 3">
-												<div class="cart-item-info">
-																<h6>Product Name 3</h6>
-																<p>$250/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">1</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 3">
-												<div class="cart-item-info">
-																<h6>Product Name 3</h6>
-																<p>$250/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">1</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
-												</div>
-								</div>
-								<div data-price="70" class="cart-item">
-												<img src="{{ asset('/userfiles/images/phone/samsung-galaxy-s21-plus-256gb-bac-600x600-600x600.jpg') }}"
-																alt="Product 3">
-												<div class="cart-item-info">
-																<h6>Product Name 3</h6>
-																<p>$250/1 product</p>
-																<div class="quantity-controls">
-																				<button class="minus-btn">-</button>
-																				<span class="quantity">1</span>
-																				<button class="plus-btn">+</button>
-																</div>
-																<p class="item-total">Total: 70đ</p>
+																<p class="item-total">Tổng: 600.000đ</p>
 												</div>
 								</div>
 				</div>
@@ -119,8 +33,7 @@
 </div>
 
 <script>
-				// JavaScript Code
-				const cartButtons = document.querySelectorAll('#cartButton');
+				const cartButton = document.querySelector('#cartButton');
 				const cartContainer = document.getElementById('cartContainer');
 				const closeButton = document.querySelector('.close-button');
 				const checkoutButton = document.querySelector('.checkout-button');
@@ -129,10 +42,195 @@
 				const quantitySpans = document.querySelectorAll('.quantity');
 				const cartTotalElement = document.querySelector('.cart-total p');
 
-				cartButtons.forEach(cartButton => {
-								cartButton.addEventListener('click', () => {
-												cartContainer.classList.toggle('open');
+				function removeCart(button, id) {
+								var row = $(button).closest('.cart-item'); // Get the closest cart item element
+								if (row) {
+												Swal.fire({
+																title: "Bạn có chắc chắn muốn thực hiện?",
+																icon: "info",
+																showCancelButton: true,
+																confirmButtonColor: "#1c5639",
+																cancelButtonColor: "#d33",
+																confirmButtonText: "Chắc chắn!",
+																cancelButtonText: "Quay lại!"
+												}).then((result) => {
+																if (result.isConfirmed) {
+																				row.remove(); // Remove the cart item from UI
+
+																				// Send DELETE request to server to remove the item from the cart
+																				$.ajax({
+																								type: "DELETE",
+																								url: '{{ route('user.cart.remove') }}' + `/${id}`,
+																								data: {
+																												_token: '{{ csrf_token() }}'
+																								},
+																								success: function(response) {
+																												updateText(response); // Update cart information based on response
+																								},
+																								error: function(response) {
+																												Swal.fire({
+																																icon: 'warning',
+																																title: 'Lưu ý',
+																																text: `${response.responseJSON.message ?? 'Thao tác thất bại!'}`,
+																																showConfirmButton: true,
+																																confirmButtonColor: "#1c5639",
+																												});
+																												updateText(response.responseJSON); // Update UI on error
+																								}
+																				});
+
+																				updateCartTotal(); // Update cart total after deletion
+																}
+												});
+								}
+				}
+
+
+				function loadCartItems() {
+								$.ajax({
+												type: "GET",
+												url: '{{ route('user.cart.items') }}',
+												success: function(response) {
+																let cartPanel = $('.cart-panel');
+																cartPanel.empty();
+
+																response.cart_items.forEach(item => {
+																				const attributes = item.attributes.join(', ');
+
+																				cartPanel.append(`
+                    <div data-id="${item.id}" data-price="${item.price}" class="cart-item">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="cart-item-info">
+                            <h6>${item.name} <div class="product-color">${attributes}</div></h6>
+                            <p>${formatPrice(item.price)}</p>
+                            <div class="quantity-controls">
+                                <button class="minus-btn" onclick="decrementCart(this, '${item.id}')">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="plus-btn" onclick="incrementCart(this, '${item.id}')">+</button>
+                                <button class="remove-btn ms-3" onclick="removeCart(this, '${item.id}')">X</button>
+                            </div>
+                            <p class="item-total">Tổng: ${formatPrice(item.total_price)}</p>
+                        </div>
+                    </div>
+                `);
+																});
+
+																attachQuantityHandlers(); // Attach event listeners to buttons
+																$('.cart-total p').text(formatPrice(response.cart_total)); // Update total
+												},
+												error: function() {
+																alert('Failed to load cart items.');
+												}
 								});
+				}
+
+
+
+				function attachQuantityHandlers() {
+								// Attach click listeners to minus buttons
+								$('.minus-btn').on('click', function() {
+												const cartItem = $(this).closest('.cart-item');
+												const id = cartItem.data('id');
+												decrementCart(this, id); // Pass the button and item ID to decrementCart
+								});
+
+								// Attach click listeners to plus buttons
+								$('.plus-btn').on('click', function() {
+												const cartItem = $(this).closest('.cart-item');
+												const id = cartItem.data('id');
+												incrementCart(this, id); // Pass the button and item ID to incrementCart
+								});
+				}
+
+				function decrementCart(button, id) {
+								if (requestDone) {
+												requestDone = false;
+												$(button).prop('disabled', true); // Disable button
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.decreament') }}',
+																data: {
+																				id: id,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				const cartItem = $(button).closest('.cart-item');
+																				const quantityElement = cartItem.find('.quantity');
+																				let quantity = parseInt(quantityElement.text());
+
+																				if (quantity > 1) {
+																								quantity -= 1;
+																								quantityElement.text(quantity);
+																								updateItemTotal(cartItem, quantity);
+																				} else {
+																								cartItem.remove(); // Remove item from the cart if quantity reaches 0
+																				}
+																				updateCartTotal(); // Update total only after successful response
+																				updateText(response);
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response?.responseJSON?.message ?? 'Thao tác thất bại!'}`,
+																								showConfirmButton: true,
+																								confirmButtonColor: "#1c5639",
+																				});
+																},
+																complete: function() {
+																				requestDone = true;
+																				$(button).prop('disabled', false); // Re-enable button
+																}
+												});
+								}
+				}
+
+				function incrementCart(button, id) {
+								if (requestDone) {
+												requestDone = false;
+												$(button).prop('disabled', true); // Disable button
+												$.ajax({
+																type: "POST",
+																url: '{{ route('user.cart.increament') }}',
+																data: {
+																				id: id,
+																				_token: '{{ csrf_token() }}'
+																},
+																success: function(response) {
+																				const cartItem = $(button).closest('.cart-item');
+																				const quantityElement = cartItem.find('.quantity');
+																				let quantity = parseInt(quantityElement.text());
+
+																				quantity += 1;
+																				quantityElement.text(quantity);
+																				updateItemTotal(cartItem, quantity);
+																				updateCartTotal(); // Update total only after successful response
+																				updateText(response);
+																},
+																error: function(response) {
+																				Swal.fire({
+																								icon: 'warning',
+																								title: 'Lưu ý',
+																								text: `${response?.responseJSON?.message ?? 'Thao tác thất bại!'}`,
+																								showConfirmButton: false
+																				});
+																},
+																complete: function() {
+																				requestDone = true;
+																				$(button).prop('disabled', false); // Re-enable button
+																}
+												});
+								}
+				}
+
+				function updateText(response) {
+								$('#cart-count-mobile').text(response.data.count);
+								$('#cart-count').text(response.data.count);
+				}
+
+				cartButton.addEventListener('click', () => {
+								loadCartItems();
+								cartContainer.classList.toggle('open');
 				});
 
 				closeButton.addEventListener('click', () => {
@@ -140,49 +238,22 @@
 				});
 
 				function updateItemTotal(cartItem, quantity) {
-								const price = parseFloat(cartItem.getAttribute('data-price'));
+								const price = parseFloat(cartItem.data('price')); // Use jQuery to get data attribute
 								const itemTotal = price * quantity;
-								cartItem.querySelector('.item-total').textContent = `Total: ${itemTotal.toFixed(2)}đ`;
+								cartItem.find('.item-total').text(`Tổng: ` + formatPrice(itemTotal)); // Use jQuery to find and update element
 								return itemTotal;
 				}
 
 				function updateCartTotal() {
-								const cartItems = document.querySelectorAll('.cart-item');
+								const cartItems = $('.cart-item'); // Use jQuery to select cart items
 								let cartTotal = 0;
 
-								cartItems.forEach(cartItem => {
-												const quantity = parseInt(cartItem.querySelector('.quantity').textContent);
-												cartTotal += updateItemTotal(cartItem, quantity);
+								cartItems.each(function() {
+												const cartItem = $(this); // Wrap each item in jQuery
+												const quantity = parseInt(cartItem.find('.quantity').text()); // Get quantity
+												cartTotal += updateItemTotal(cartItem, quantity); // Update total
 								});
 
-								cartTotalElement.textContent = `${cartTotal.toFixed(2)}đ`; // Update cart total
+								$('.cart-total p').text(formatPrice(cartTotal)); // Update cart total display
 				}
-
-				minusBtns.forEach((btn, index) => {
-								btn.addEventListener('click', () => {
-												const cartItem = btn.closest('.cart-item');
-												const quantityElement = cartItem.querySelector('.quantity');
-												let quantity = parseInt(quantityElement.textContent);
-
-												if (quantity > 1) {
-																quantityElement.textContent = quantity - 1;
-																updateCartTotal();
-												} else {
-																// Remove the item from the cart if quantity is 1 and minus is clicked
-																cartItem.remove();
-																updateCartTotal();
-												}
-								});
-				});
-
-				plusBtns.forEach((btn, index) => {
-								btn.addEventListener('click', () => {
-												const cartItem = btn.closest('.cart-item');
-												const quantityElement = cartItem.querySelector('.quantity');
-												let quantity = parseInt(quantityElement.textContent);
-
-												quantityElement.textContent = quantity + 1;
-												updateCartTotal();
-								});
-				});
 </script>

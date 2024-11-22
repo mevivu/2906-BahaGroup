@@ -7,6 +7,7 @@ use App\Admin\Http\Resources\Product\ProductEditResource;
 use App\Admin\Repositories\Category\CategoryRepositoryInterface;
 use App\Admin\Repositories\Product\ProductRepositoryInterface;
 use App\Admin\Repositories\FlashSale\FlashSaleRepositoryInterface;
+use App\Admin\Repositories\Order\OrderRepositoryInterface;
 use App\Admin\Repositories\Setting\SettingRepositoryInterface;
 use App\Enums\Category\HomeSliderOption;
 use App\Enums\Setting\SettingGroup;
@@ -17,17 +18,20 @@ class UserHomeController extends Controller
     protected SettingRepositoryInterface $settingRepository;
     protected FlashSaleRepositoryInterface $flashSaleRepository;
     protected CategoryRepositoryInterface $categoryRepository;
+    protected OrderRepositoryInterface $orderRepository;
     public function __construct(
         ProductRepositoryInterface   $repository,
         SettingRepositoryInterface $settingRepository,
         FlashSaleRepositoryInterface $flashSaleRepository,
         CategoryRepositoryInterface $categoryRepository,
+        OrderRepositoryInterface $orderRepository,
     ) {
         parent::__construct();
         $this->repository = $repository;
         $this->flashSaleRepository = $flashSaleRepository;
         $this->settingRepository = $settingRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->orderRepository = $orderRepository;
     }
     public function getView()
     {
@@ -35,6 +39,7 @@ class UserHomeController extends Controller
             'index' => 'user.home.index',
             'information' => 'user.information.index',
             'contact' => 'user.contact.index',
+            'order' => 'user.home.check-order'
         ];
     }
     public function index()
@@ -94,5 +99,17 @@ class UserHomeController extends Controller
         $settingsFooter = $this->settingRepository->getByGroup([SettingGroup::Footer]);
         $settingsContact = $this->settingRepository->getByGroup([SettingGroup::Contact]);
         return view($this->view['contact'], compact('title', 'meta_desc', 'settingsContact', 'settingsFooter', 'breadcrumbs'));
+    }
+
+    public function getOrderDetailForCustomer($code)
+    {
+        $settingsGeneral = $this->settingRepository->getByGroup([SettingGroup::General]);
+        $title = 'Tra cứu đơn hàng';
+        $meta_desc = 'Trang tra cứu đơn hàng Mevivu dùng để tra cứu thông tin các đơn hàng dựa vào mã hóa đơn.';
+        $order = $this->orderRepository->findByField('code', $code);
+        if ($order) {
+            return view($this->view['order'], compact('settingsGeneral', 'meta_desc', 'title', 'order'));
+        };
+        return view($this->view['order'], compact('settingsGeneral', 'meta_desc', 'title'));
     }
 }

@@ -21,7 +21,9 @@
 								@include('user.layouts.modal.modal-logout')
 								@include('user.scripts.scripts')
 								<x-alert />
-								<x-shoppingcart />
+								@if (!Route::is('user.cart.index') && !Route::is('user.cart.checkout'))
+												<x-shoppingcart />
+								@endif
 				</body>
 
 </html>

@@ -21,6 +21,37 @@ class SettingSeeder extends Seeder
         DB::table('settings')->insert([
             // General
             [
+                'setting_key' => 'qr',
+                'setting_name' => 'Ảnh QR Thanh toán',
+                'plain_value' => 'Baha Office',
+                'type_input' => SettingTypeInput::Image,
+                'group' => 1
+            ],
+            [
+                'setting_key' => 'banking_information',
+                'setting_name' => 'Thông tin chuyển khoản',
+                'plain_value' =>
+                '<p><strong>NGUYỄN PH&Uacute;C NH&Acirc;N - ACB - PGD AN DONG</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>194500879</strong><br />
+                    ----------------<br />
+                    <strong>NGUYỄN PH&Uacute;C NH&Acirc;N - Dong A Bank - Q10</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>0109527645</strong><br />
+                    ------------------<br />
+                    <strong>NGUYEN PHUC NHAN - Vietcombank - CN Ph&uacute; Thọ</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>0421000488622</strong><br />
+                    ------------------<br />
+                    <strong>NGUYEN PHUC NHAN - Sacombank - PGD HOA HAO</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>060200565455</strong><br />
+                    ------------------<br />
+                    <strong>NGUYEN PHUC NHAN - Agribank - CN Ly Thuong Kiet</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>1603205538619</strong><br />
+                    ------------------<br />
+                    <strong>NGUYEN PHUC NHAN - OCB- CN Cho Lon</strong><br />
+                    SỐ T&Agrave;I KHOẢN: <strong>0017100006209007</strong></p>',
+                'type_input' => SettingTypeInput::Ckeditor,
+                'group' => 1
+            ],
+            [
                 'setting_key' => 'site_name',
                 'setting_name' => 'Tên site',
                 'plain_value' => 'Baha Office',
@@ -245,29 +276,29 @@ class SettingSeeder extends Seeder
                 'group' => 4
             ],
             [
-                'setting_key' => 'help_center',
-                'setting_name' => 'Help Center',
+                'setting_key' => 'privacy_policy',
+                'setting_name' => 'Chính sách bảo mật',
                 'plain_value' => 'http://localhost:8080/2906-BahaGroup',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 4
             ],
             [
-                'setting_key' => 'how_to_buy',
-                'setting_name' => 'How to Buy',
+                'setting_key' => 'operating_regulations',
+                'setting_name' => 'Quy chế hoạt động',
                 'plain_value' => 'http://localhost:8080/2906-BahaGroup',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 4
             ],
             [
-                'setting_key' => 'shipping_delivery',
-                'setting_name' => 'Shipping & Delivery',
+                'setting_key' => 'shipping_policy',
+                'setting_name' => 'Chính sách vận chuyển',
                 'plain_value' => 'http://localhost:8080/2906-BahaGroup',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 4
             ],
             [
-                'setting_key' => 'product_policy',
-                'setting_name' => 'Product Policy',
+                'setting_key' => 'return_and_refund_policy',
+                'setting_name' => 'Chính sách trả hàng & hoàn tiền',
                 'plain_value' => 'http://localhost:8080/2906-BahaGroup',
                 'type_input' => SettingTypeInput::Text,
                 'group' => 4

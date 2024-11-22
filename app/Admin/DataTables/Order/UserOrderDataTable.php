@@ -63,7 +63,7 @@ class UserOrderDataTable extends BaseDataTable
             'id' => $this->view['editlink'],
             'status' => $this->view['status'],
             'payment_status' => $this->view['payment_status'],
-            'total' => '{{ format_price($total - $discount_value + $surcharge) }}',
+            'total' => '{{ format_price($total - $discount_value) }}',
             'payment_method' => '{{ App\Enums\Payment\PaymentMethod::getDescription($payment_method) }}',
             'created_at' => '{{ format_datetime($created_at) }}',
         ];

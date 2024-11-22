@@ -43,17 +43,16 @@
 												<div class="col-md-3 col-12 box">
 																<h6><strong>Hỗ trợ</strong></h6>
 																<ul>
-																				<li><a href="{{ $settingsFooter->where('setting_key', 'help_center')->first()->plain_value }}">Help
-																												Center</a></li>
-																				<li><a href="{{ $settingsFooter->where('setting_key', 'how_to_buy')->first()->plain_value }}">How
-																												to Buy</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'privacy_policy')->first()->plain_value }}">Chính
+																												sách bảo mật</a></li>
 																				<li><a
-																												href="{{ $settingsFooter->where('setting_key', 'shipping_delivery')->first()->plain_value }}">Shipping
-																												& Delivery</a></li>
-																				<li><a href="{{ $settingsFooter->where('setting_key', 'product_policy')->first()->plain_value }}">Product
-																												Policy</a></li>
-																				<li><a href="{{ $settingsFooter->where('setting_key', 'how_to_return')->first()->plain_value }}">How
-																												to Return</a></li>
+																												href="{{ $settingsFooter->where('setting_key', 'operating_regulations')->first()->plain_value }}">Quy
+																												chế hoạt động</a></li>
+																				<li><a href="{{ $settingsFooter->where('setting_key', 'shipping_policy')->first()->plain_value }}">Chính
+																												sách vận chuyển</a></li>
+																				<li><a
+																												href="{{ $settingsFooter->where('setting_key', 'return_and_refund_policy')->first()->plain_value }}">Chính
+																												sách trả hàng và hoàn tiền</a></li>
 																</ul>
 												</div>
 												<div class="col-md-3 col-12 box">

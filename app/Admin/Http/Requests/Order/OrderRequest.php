@@ -15,7 +15,7 @@ class OrderRequest extends BaseRequest
             'order.ward_id' => ['required', 'exists:App\Models\Ward,id'],
             'order.province_id' => ['required', 'exists:App\Models\Province,id'],
             'order.district_id' => ['required', 'exists:App\Models\District,id'],
-            'order.discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
+            'discount_id' => ['nullable', 'exists:App\Models\Discount,id'],
             'order.address' => ['required'],
             'order.note' => ['nullable'],
             'order.total' => ['nullable'],
